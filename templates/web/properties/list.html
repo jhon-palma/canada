@@ -1,0 +1,400 @@
+{% load static %}{% load tags %}{% load humanize %}{% include 'web/header_web.html' %}
+
+    <script type="text/javascript" language="javascript">
+
+        function createCookie(name, value, days) {
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days * 60 * 1000));
+                var expires = "; expires=" + date.toGMTString();
+            }
+            else var expires = "";
+            document.cookie = name + "=" + value + expires + "; path=/";
+        }
+
+        function readCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+
+        function eraseCookie(name) {
+            createCookie(name, "", -1);
+        }
+
+        // You can also use "$(window).load(function() {"
+
+        $(function () {
+            $("#btn_mosaique").click(function () {
+                $("#content_maisons").attr('class', 'mosaique');
+                createCookie('affichage', 'mosaique', 10)
+            });
+            $("#btn_liste").click(function () {
+                $("#content_maisons").attr('class', 'liste');
+                createCookie('affichage', 'liste', 10)
+            });
+        });
+
+        $(document).ready(function () {
+            $("#content_maisons").attr('class', 'mosaique');
+            if (readCookie('affichage') == 'liste')
+                $("#content_maisons").attr('class', 'liste');
+        });
+
+        /* ]]> */
+    </script>
+
+   
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $('#menu').mmenu({
+                offCanvas: {
+                    position: "top",
+                    zposition: "front",
+                    menuWrapperSelector: "#the-current-wrapper"
+                }
+            }, {
+                clone: true
+            });
+
+        });
+    </script>
+
+    <script type="text/javascript">
+
+        function isMobile() {
+            try {
+                document.createEvent("TouchEvent");
+                return true;
+            }
+            catch (e) {
+                return false;
+            }
+        }
+
+        function filtermobile() {
+            $(".toogletit").click(function (e) {
+                $(".tooglelist").each(function () {
+                    $(this).hide();
+                });
+                e.stopPropagation();
+                $(this).toggleClass("active").next().slideToggle("slow");
+            });
+
+            $(document).on("click", function (e) {
+                if (e.target != $('.toogletit').get(0)) {
+                    $(".tooglelist").each(function () {
+                        $(this).slideUp();
+                    });
+                }
+            });
+
+        }
+
+        $(document).ready(function () {
+            if (isMobile()) {
+                filtermobile();
+            }
+
+        });
+    </script>
+
+
+		<!-- Google Tag Manager (noscript) -->
+		<noscript>
+            <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5VZG49W" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+        </noscript>
+		<!-- End Google Tag Manager (noscript) -->
+
+		<div class="content_maisons2" id="content_maisons">
+
+			<section class="banner nothome">
+				<img src="{%  static 'web/images2/banner-prop.jpg' %}" alt="Photo - LJ Realties, Real estate agency" class="bannerimg" />
+				<h1>
+					{{ labels.index.title.one }} <br><span>{{ labels.index.title.two }}</span> {{ labels.index.title.three }}
+				</h1>
+			</section>
+
+			<div class="prop-bg">
+				
+				{% include 'web/properties/search/'|add:language|add:'.html' %}
+
+				<div class="content_center">
+					<div class="content_center3">
+						<div class="option_affiche">
+							<div class="trier_txt">{{ labels.properties.text.one }} :</div>
+							<div style="cursor:pointer" class="btn_liste" id="btn_liste"><i class="fa fa-bars" aria-hidden="true"></i>{{ labels.properties.text.two }}</div>
+							<div style="cursor:pointer" class="btn_mosaique" id="btn_mosaique"><i class="fa fa-th-large" aria-hidden="true"></i>{{ labels.properties.text.three }}</div>
+						</div>
+                        <div class="pagination">
+                            <ul class="pagination-immo">
+                                {% if inscriptions.has_previous %}
+                                    <li class="previous"><a href="?page={{ inscriptions.previous_page_number }}"> « </a></li>
+                                {% endif %}
+                                {% for num in inscriptions.paginator.page_range %}
+                                    {% if inscriptions.number == num %}
+                                        <li class="active">{{ num }}</li>
+                                    {% else %}
+                                        <li><a href="?page={{ num }}">{{ num }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if inscriptions.has_next %}
+                                    <li class="next"><a href="?page={{ inscriptions.next_page_number }}"> » </a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+						<div class="content_maisons">
+                            <!-- <div class="ligne_maison"> -->
+                            {% if inscriptions %}
+                                {% for inscription in inscriptions %}
+                                    {% if forloop.counter0|divisibleby:4 %}
+                                        </div><div class="ligne_maison">
+                                    {% endif %}
+								    <div class="box_maison">
+                                        <div class="box_maison_img">
+                                            <div class="photo_vendu">
+                                                <a href="{% url 'web:detail-propertie' language=language option='propriete' propertie_id=inscription.id %}">
+                                                    {% for photo in inscription.photos.all %}
+                                                        {% if photo.seq == 1 %}
+                                                            <img src="{{ photo.photourl }}" alt="{% if language == 'en' %}{{ inscription.genre_propriete.description_anglaise }}{% else %}{{ inscription.genre_propriete.description_francaise }}{% endif %}
+                                                            {% if inscription.prix_demande %}{% if language == 'en' %} for sale{% else %}à vendre {% endif %}{% endif %}{% if inscription.prix_location_demande %}
+                                                            {% if language == 'en' %}for rent{% else %}à louer{% endif %}{% endif %} {{inscription.mun_code.description}}" title="{% if language == 'en' %}{{ inscription.genre_propriete.description_anglaise }}{% else %}{{ inscription.genre_propriete.description_francaise }}{% endif %}{% if inscription.prix_demande %}{% if language == 'en' %} for sale{% else %}à vendre{% endif %}{% endif %}{% if inscription.prix_location_demande %}{% if language == 'en' %} for rent{% else %}à louer{% endif %}{% endif %} {{inscription.mun_code.description}}" />
+                                                            {% for visite in inscription.no_inscription_visites_libres.all %}
+                                                                {% if language == 'en' %}
+                                                                    <img src="{% static 'web/images/newicons/visite_libreen.png' %}" alt="Vendu" class="marq_vendu">
+                                                                {% else %}
+                                                                    <img src="{% static 'web/images/newicons/visite_libre.png' %}" alt="Vendu" class="marq_vendu">
+                                                                {%endif%}
+                                                            {% endfor %}
+                                                            {% if inscription.code_statut.valeur == "VE" %}
+                                                                {% if language == 'en' %}
+                                                                    <img src="{% static 'web/images/newicons/venduen.png' %}" alt="Vendu" class="marq_vendu">
+                                                                {% else %}
+                                                                    <img src="{% static 'web/images/newicons/vendu.png' %}" alt="Vendu" class="marq_vendu">
+                                                                {%endif%}
+                                                            {% endif %}
+                                                        {%endif%}
+                                                    {% endfor %}
+                                                    <!-- <img src="{{inscription.no_inscription}}" alt="maison à vendre Montréal (Le Plateau-Mont-Royal)" title="maison à vendre Montréal (Le Plateau-Mont-Royal)" /> -->
+                                                </a>
+                                            </div>
+                                            
+                                        </div>
+                                        
+                                        <div class="box_infos_maison">
+                                            <div class="secteur_maison">
+                                                <a href="{% url 'web:detail-propertie' language=language option='propriete' propertie_id=inscription.id %}">{{inscription.mun_code.description}}</a>
+                                            </div>
+                                            <div class="prix_maison">
+                                                <a href="{% url 'web:detail-propertie' language=language option='propriete' propertie_id=inscription.id %}">
+                                                    {% if inscription.code_statut.valeur == "VE" %}
+                                                        <span class="prix_maison_hid">{% if language == "en" %}Sold{% else %}Vendu{% endif%}</span>
+                                                    {% else %}
+                                                        {% if inscription.prix_demande and language == "en" %}
+                                                            ${{inscription.prix_demande|floatformat:0|intcomma}} {% if inscription.ind_taxes_prix_demande %}<span> +GST/QST{% endif %}</span>
+                                                        {% elif inscription.prix_demande and language == "fr" %}
+                                                            {{inscription.prix_demande|floatformat:0|intcomma}}$ {% if inscription.ind_taxes_prix_demande %}<span> +GST/QST{% endif %}</span>
+                                                        {%endif%}
+                                                        {% if inscription.prix_location_demande and language == "en" %}
+                                                            ${{inscription.prix_location_demande|floatformat:0|intcomma}}
+                                                        {% elif inscription.prix_location_demande and language == "fr" %}
+                                                            {{inscription.prix_location_demande|floatformat:0|intcomma}}$
+                                                        {%endif%}
+                                                        {% if inscription.frequence_prix_location and language == "en" %}
+                                                            / <span class="text-lowercase">{{ inscription.frequence_prix_location.description_anglaise }}</span>
+                                                        {% elif inscription.frequence_prix_location and language == "fr"  %}
+                                                            / <span class="text-lowercase">{{ inscription.frequence_prix_location.description_francaise }}</span>
+                                                        {% endif %}
+                                                    {% endif %}
+                                                </a>
+                                            </div>
+                                            <div>
+                                            </div>
+                                            <div class="box_pieces">
+                                                {% if inscription.nb_pieces %}
+                                                    <div class="btn_pieces">{{inscription.nb_pieces}}</div>
+                                                {%endif%}
+                                                {% if inscription.nb_chambres %}
+                                                    <div class="btn_chamb">{{inscription.nb_chambres}}</div>
+                                                {%endif%}
+                                                {% if inscription.nb_salles_bains %}
+                                                    <div class="btn_salleb">{{inscription.nb_salles_bains}}</div>
+                                                {%endif%}
+                                                {% if inscription.nb_salles_eau %}
+                                                    <div class="btn_salle_eau">{{inscription.nb_salles_eau}}</div>
+                                                {%endif%}
+                                            </div>
+                                            <!--  -->
+                                            <div class="adresse_maison">
+                                                <a href="{% url 'web:detail-propertie' language=language option='propriete' propertie_id=inscription.id %}">
+                                                    {{inscription.no_civique_debut}}{% if inscription.no_civique_fin %} - {{inscription.no_civique_fin}}{%endif%}, {{inscription.nom_rue_complet}}{% if inscription.appartement %}, apt. {{inscription.appartement}}{%endif%}
+                                                </a>
+                                            </div>
+                                            <div class="descrip_maison">
+                                                {% for remarque in inscription.remarques.all %}
+                                                    {% if language == 'fr' and remarque.code_langue.valeur == 'F' %}
+                                                        {{ remarque.texte }}
+                                                    {% elif language == 'en' and remarque.code_langue.valeur == 'A' %}
+                                                        {{ remarque.texte }}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                            <div class="type_maison">
+                                                <a href="{% url 'web:detail-propertie' language=language option='propriete' propertie_id=inscription.id %}">
+                                                    {% if language == "en" %}
+                                                        {{ inscription.genre_propriete.description_anglaise }}
+                                                    {% else %}
+                                                        {{ inscription.genre_propriete.description_francaise }}
+                                                    {% endif %}
+                                                    {% if inscription.prix_demande %}
+                                                        {% if language == "en" %}
+                                                            for sale
+                                                        {% else %}
+                                                            à vendre 
+                                                        {% endif %}
+                                                    {% endif %}
+                                                    {% if inscription.prix_location_demande %}
+                                                        {% if language == "en" %}
+                                                            for rent
+                                                        {% else %}
+                                                            à louer
+                                                        {% endif %}
+                                                    {% endif %}
+                                                </a>
+                                            </div>
+                                            <div class="adresse_maison">
+                                                <a href="{% url 'web:detail-propertie' language=language option='propriete' propertie_id=inscription.id %}">
+                                                    {% if language == "en" %}Centris No. {% else %}No Centris {%endif%}{{inscription.no_inscription}}
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% if forloop.last%}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                <section class="piecesbloc" style="display: flex; justify-content: center; align-items: center;">
+                                    <div class="adressebloc">
+                                        <div class="box_vendu">No properties</div>
+                                    </div>
+                                </section>
+                            {% endif %}
+                            </div>
+						   
+
+						<div class="pagination">
+                            <ul class="pagination-immo">
+                                {% if inscriptions.has_previous %}
+                                <li class="previous"><a href="?page={{ inscriptions.previous_page_number }}"> « </a></li>
+                                {% endif %}
+                                {% for num in inscriptions.paginator.page_range %}
+                                    {% if inscriptions.number == num %}
+                                        <li class="active">{{ num }}</li>
+                                    {% else %}
+                                        <li><a href="?page={{ num }}">{{ num }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if inscriptions.has_next %}
+                                    <li class="next"><a href="?page={{ inscriptions.next_page_number }}"> » </a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+
+					</div>
+				</div>
+				<div style="clear:both;"></div>
+			</div>
+
+			<div style="clear:both;"></div>
+			<script language="javascript">
+				function codeTouche(evenement) {
+				    for (prop in evenement) {
+				        if (prop == 'which') return (evenement.which);
+				        }		return (evenement.keyCode);	}
+				        function scanTouche(evenement) {
+				            var reCarValides = '0123456789 ()#';
+				            var codeDecimal = codeTouche(evenement);
+				            var car = String.fromCharCode(codeDecimal);
+				            var autorisation = reCarValides.indexOf(car);
+				            if ((autorisation == -1) && (codeDecimal != 8) && (codeDecimal != 0))
+				            {			return false
+				            }
+				            else
+				            return true;
+				        }
+			</script>
+		</div>
+
+    {% load static %}{% include 'web/footer_web.html' %}
+
+    <script type="text/javascript">
+        var language = "{{ language }}";
+        $(function () {
+            $('#reset').click(function(){
+                var st= $('input[name="status"]:checked').val();
+                // alert("Entro"+st);
+                // location.href = '?page='+st
+            });
+    
+            $(window).click(function() {
+                $("#fserach").val('')
+            });
+            $("#fserach").autocomplete({
+                minLength: 3,
+                autoFocus: true,
+                source: function (request, response) {
+                    var status = $('input[name=status]:checked'). val();
+                    $.ajax({
+                        type: 'GET',
+                        url: "{% url 'web:searchpropriete' %}",
+                        dataType: "json",
+                        data: {
+                            term: request.term,
+                            status: status,
+                        },
+                        success: function(data) {
+                            console.log(data);
+                            response(data);
+                        }
+                    });
+                },
+                select: function (event, data) {
+                    if (data.item.categorie == 2) {
+                    $('#freeform-filters ul').prepend('<li><a href="#">' + data.item.value + '</a><input type="hidden" name="adress[mun][]" value="' + data.item.id + '" ></li>');
+                }
+                if (data.item.categorie == 3) {
+                    $('#freeform-filters ul').prepend('<li><a href="#">' + data.item.value + '</a><input type="hidden" name="adress[ville][]" value="' + data.item.id + '" ></li>');
+                }
+                if (data.item.categorie == 1) {
+                    $('#freeform-filters ul').prepend('<li><a href="#">' + data.item.value + '</a><input type="hidden" name="adress[region][]" value="' + data.item.id + '" ></li>');
+                }
+                if (data.item.categorie == 4) {
+                    if (language == "en") {
+                        location.href = "/en/propriete/" + data.item.id + "/";
+                    } else {
+                        location.href = "/fr/propriete/" + data.item.id + "/";
+                    }
+                }
+                    $('#freeform-filters ul li').click(function (e) {
+                        e.preventDefault();
+                        $(this).remove();
+                    });
+                    event.target.value = '';
+                    // stop la propagation de l'évènement
+                    return false;
+                }
+            });
+            $('#freeform-filters ul li').click(function (e) {
+                e.preventDefault();
+                $(this).remove();
+            });
+        });
+    </script>

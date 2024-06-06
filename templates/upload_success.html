@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Éxito</title>
+</head>
+<body>
+    <h2>El archivo se ha procesado exitosamente:</h2>
+    {% if mensaje %}
+        <p>{{ mensaje }}</p>
+    {% endif %}
+    <a href="{% url 'upload_file' %}">Subir otro archivo</a>
+</body>
+</html>

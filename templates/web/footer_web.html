@@ -1,0 +1,200 @@
+{% load tags %}{% load static %}
+
+<script type="text/javascript" src="https://use.fontawesome.com/e686055a0b.js"></script>
+<script type="text/javascript" src="{% static 'web/js/cookies.js' %}"></script>
+<script type="text/javascript" src="{% static 'web/js/cookies.js' %}"></script>
+<script type="text/javascript" src="{% static 'web/js/jquery.bxslider.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'web/js/common.js' %}"></script>
+<script type="text/javascript" src="{% static 'web/js/wow.js' %}"></script>
+<script type="text/javascript" src="{% static 'web/js/jquery.mmenu.min.all.js' %}"></script>
+
+<div id="privacy-policies-message" class="displayed">
+    <div class="close" onclick="acceptCookies()"><i class="fa fa-times"></i></div>
+    <div class="content">
+        <div class="heading h3 "><span>{{ labels.index.text.twenty_seven }}</span>
+            <div class="post-heading"></div>
+        </div>
+        <p>{{ labels.index.text.twenty_eight }}<br>
+			{{ labels.index.text.twenty_nine }}' <a href='{{ server|server_url }}/{{ language }}/privacy-policy/'>{{ labels.index.text.thirty }}</a>.</p>
+		<div class="wrapper_btn_policies">
+        	<button type="button" class="btn_policies" onclick="acceptCookies()">{{ labels.index.text.thirty_one }}</button>
+		</div>
+    </div>
+</div>
+
+<section class="popnews">
+    <span class="close">+</span>
+    <article>
+        <div id="confirm_message" class="confirm_message"></div>
+        <form id="formNewsFooter" method="post" action="{% url 'web:contact_messages' %}">
+            {% csrf_token %}
+            <input type="hidden" id="sujet" name="sujet" value="Newsletter">
+            <p class="h2def">{{ labels.index.button.eight }}</p>
+            <input type="email" name="email" id="emailnews" class="champs_tem" required="required" placeholder="{{ labels.index.placeholder.five }} *" />
+            <div id="errNews"></div>
+            <input type="submit" value="{{ labels.index.button.nine }}">
+        </form>
+    </article>
+</section>
+
+<footer>
+    <div class="wrap wrap_contact">
+        <div class="fcontact_col1">
+            <a href="{{ server|server_url }}/{{ language }}/" class="logof">
+                <img src="{% static 'web/images2/logo.png' %}" alt="LJ Immobilier">
+            </a>
+        </div>
+        <div class="finfo fcontact_col2">
+            <p><i class="fa fa-map-marker"></i><a href="https://g.page/LJRealties?share" target="_blank">1275 Av. des Canadiens-de-Montréal <br>5th floor, Montreal, Quebec H3B 0G4</a></p>
+            <p><i class="fa fa-phone"></i><a href="tel:+1514-500-4040">514-500-4040</a></p>
+            <div class="socf">
+                <a target="_blank" href="https://www.facebook.com/LJRealties/?ref=br_rs" class="btnsoc">
+                    <img src="{% static 'web/images2/facebook.png' %}" alt="Facebook">
+                </a>
+                <a target="_blank" href="https://www.instagram.com/ljrealties/" class="btnsoc">
+                    <img src="{% static 'web/images2/instagram.png' %}" alt="Instagram">
+                </a>
+                <a target="_blank" href="https://fr.linkedin.com/company/lj-realties-lj-immobilier" class="btnsoc">
+                    <img src="{% static 'web/images2/linkedin.png' %}" alt="Linked in">
+                </a>
+                <a target="_blank" href="https://www.youtube.com/channel/UC-N5wwzJke86zXT-zcEFR1A/featured" class="btnsoc">
+                    <img src="{% static 'web/images2/youtube.png' %}" alt="YouTube">
+                </a>
+                <a target="_blank" href="https://www.tiktok.com/@ljaguinaga" class="btnsoc">
+                    <img src="{% static 'web/images2/tiktok.png' %}" alt="Tik tok">
+                </a>
+            </div>
+            <a href="#" class="bouton openNewletter">{{ labels.index.button.eight }}</a>
+        </div>
+        <div class="fcontact_col3">
+            <form id="formContactFooter" method="post" action="{% url 'web:contact_messages' %}">
+                {% csrf_token %}
+                <input type="hidden" id="g-recaptcha-response-footer" name="g-recaptcha-response-footer" value="">
+                <input type="hidden" id="sujet" name="sujet" value="Contact">
+                <input type="text" name="prenom" id="prenom" class="champs_tem" required="required" placeholder="{{ labels.index.placeholder.two }} *" />
+                <input type="email" name="email" id="email" class="champs_tem" required="required" placeholder="{{ labels.index.placeholder.three }} *" />
+                <input type="text" name="tel" id="tel" class="champs_tem" onKeyPress="return scanTouche(event)" required="required" placeholder="{{ labels.index.placeholder.four }} *" />
+                <div id="errFooter"></div>
+                <div class="ligne_oublig"><span class="red">*</span> {{ labels.index.text.twenty_four }}</div>
+                <button type="submit" class="float_right">{{ labels.index.button.three }}</button>
+            </form>
+        </div>
+    </div>
+    <div class="wrap">
+        <p class="quartiers">				
+			<a href=""> Montréal (Lachine)</a> |
+			<a href=""> Montréal (Ville-Marie)</a> |
+			<a href=""> Montréal (Le Sud-Ouest)</a> |
+			<a href=""> La Prairie</a> |
+			<a href=""> Saint-Jérôme</a> |
+			<a href=""> Dollard-des-Ormeaux</a> |
+			<a href=""> Montréal (Verdun/Île-des-Soeurs)</a> |
+			<a href=""> Brossard</a> |
+			<a href=""> Montréal (Côte-des-Neiges/Notre-Dame-de-Grâce)</a> |
+			<a href=""> Montréal (Montréal-Nord)</a> |
+			<a href=""> Montréal-Ouest</a> |
+			<a href=""> Montréal (Le Plateau-Mont-Royal)</a> |
+			<a href=""> Montréal (Rosemont/La Petite-Patrie)</a> |
+			<a href=""> Montréal (Outremont)</a> |
+			<a href=""> Beaconsfield</a> |
+			<a href=""> Dorval</a> |
+			<a href="">Two or more storey</a> |
+			<a href="">Condo</a> |
+			<a href="">Bungalow</a> |
+			<a href="">Duplex</a> |
+			<a href="">Commercial condo</a> |
+			<a href="">Split-level</a> |
+			<a href="">Triplex</a> |
+			<a href="">Loft / Studio</a> |
+			<a href="">Revenue property</a> |
+			<a href="">Quadruplex</a> |
+			<a href="">Revenue property</a> |
+			<a href="">Revenue property</a> |
+			<a href="">Quintuplex</a>
+		</p>	
+
+		<script>
+
+            $(document).ready(function () {		
+                $('.popnews span.close').click(function(){			
+                    $('#confirm_message').html("");			
+                    $('#formNewsFooter')[0].reset();			
+                    $('#formNewsFooter').show();		});        
+                    $("#formContactFooter").on('submit', function (e) {            
+                        e.preventDefault();            
+                        var form = $("#formContactFooter");            
+                        $.ajax({                
+                            type: "POST",                
+                            url: form.attr("action"),                
+                            data: form.serialize(), 
+                            dataType: 'json',               
+                            success: function (response) {  
+                                if (response.response == 1) { 
+                                    var language = "{{ language }}";
+                                    if (language === "en") {
+                                        var message = "Thank you, your message has been sent";
+                                    } else {
+                                        var message = "Merci, votre message a bien été envoyé";
+                                    }                       
+                                    $("#formContactFooter").html(message);                    
+                                    }                   
+                                    else {
+                                        var language = "{{ language }}";
+                                        if (language === "en") {
+                                            var message = "Required fields";
+                                        } else {
+                                            var message = "Champs obligatoires";
+                                        }
+                                        $("#errFooter").html(message);                    
+                                    }                
+                                }            
+                            });        
+                        });		
+                    $("#formNewsFooter").on('submit', function (e) {            
+                        e.preventDefault();            
+                        var form = $("#formNewsFooter");            
+                        $.ajax({                
+                            type: "POST",                
+                            url: form.attr("action"),                
+                            data: form.serialize(),               
+                            success: function (response) {                    
+                                if (response.response == 1) {     
+                                    var language = "{{ language }}";
+                                    if (language === "en") {
+                                        var message = "Thank you, your message has been sent";
+                                    } else {
+                                        var message = "Merci, votre message a bien été envoyé";
+                                    }
+                                    $("#confirm_message").html("<p>"+ message +"</p>");						
+                                    $('#formNewsFooter')[0].reset();						
+                                    $('#formNewsFooter').hide();                    
+                                    }                   
+                                else {
+                                    var language = "{{ language }}";
+                                    if (language === "en") {
+                                        var message = "Required fields";
+                                    } else {
+                                        var message = "Champs obligatoires";
+                                    }
+                                    $("#errNews").html(message);                   
+                                }                
+                            }            
+                        });        
+                        
+                    });  
+                });
+		</script>
+
+        <div class="footer_copy">
+            <span class="link_poli">
+                <a href="{{ server|server_url }}/{{ language }}/{{ labels.privacy.url }}/">{{ labels.index.text.twenty_five }}</a>
+            </span>
+			© {% now "Y" %}, {{ labels.index.text.twenty_six }}</a>
+        </div>
+
+    </div>
+</footer>
+
+</body>
+
+</html>

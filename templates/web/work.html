@@ -1,0 +1,199 @@
+{% load static %}{% load tags %}{% include 'web/header_web.html' %}
+
+<section class="banner nothome">
+	<img src="{% static 'web/images2/banner-team4.jpg' %}" alt="Photo - LJ Realties, Agence immobilière" class="bannerimg" />
+	<h1>{{ labels.work.title.one }} <span>{{ labels.work.title.two }}</span></h1>
+</section>
+
+<section class="popwwu buyers">
+	<span class="close">+</span>
+	<article>
+		<div class="confirmation" id="confirmationBuyers"></div>
+		<form id="formBuyers" method="post" action="{% url 'web:contact_messages' %}">
+            {% csrf_token %}
+			<p class="h2def">{{ labels.work.button.one }}</p>
+			<p class="link_download">{{ labels.work.text.nine }}</p>
+			<input type="hidden" id="g-recaptcha-response-buyers" name="g-recaptcha-response-buyers" value="" />
+            <input type="hidden" id="sujet" name="sujet" value="Booklet Buyers">
+			<input type="text" name="prenom" id="prenom-buyers" placeholder="{{ labels.work.placeholder.one }} *" required="required" />
+			<input type="email" name="email" id="email-buyers" placeholder="{{ labels.work.placeholder.two }} *" required="required" />
+			<input type="tel" name="tel" id="tel-buyers" placeholder="{{ labels.work.placeholder.three }} *" onKeyPress="return scanTouche(event)" required="required" />
+			<div id="errBuyers"></div>
+			<input type="submit" value="{{ labels.work.button.four }}" />
+		</form>
+	</article>
+</section>
+
+<section class="popwwu listing">
+	<span class="close">+</span>
+	<article>
+		<div class="confirmation" id="confirmationListing"></div>
+		<form id="formListing" method="post" action="{% url 'web:contact_messages' %}">
+            {% csrf_token %}
+			<p class="h2def">{{ labels.work.button.two }}</p>
+			<p class="link_download">{{ labels.work.text.nine }}</p>
+			<input type="hidden" id="g-recaptcha-response-listing" name="g-recaptcha-response-listing" value="" />
+            <input type="hidden" id="sujet" name="sujet" value="Booklet Listing">
+			<input type="text" name="prenom" id="prenom-listing" placeholder="{{ labels.work.placeholder.one }} *" required="required" />
+			<input type="email" name="email" id="email-listing" placeholder="{{ labels.work.placeholder.two }} *" required="required" />
+			<input type="tel" name="tel" id="tel-listing" placeholder="{{ labels.work.placeholder.three }} *" onKeyPress="return scanTouche(event)" required="required" />
+			<div id="errListing"></div>
+			<input type="submit" value="{{ labels.work.button.four }}"/>
+		</form>
+	</article>
+</section>
+
+<section class="popwwu popcontact">
+	<span class="close">+</span>
+
+	<article>
+		<div class="confirmation" id="confirmationContact"></div>
+		<form id="formContact" method="post" action="{% url 'web:contact_messages' %}">
+            {% csrf_token %}
+			<p class="h2def">{{ labels.work.button.three }}</p>
+			<input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" value="" />
+            <input type="hidden" id="sujet" name="sujet" value="Contact">
+			<input type="text" name="prenom" id="prenom" placeholder="{{ labels.work.placeholder.one }} *" required="required" />
+			<input type="email" name="email" id="email" placeholder="{{ labels.work.placeholder.two }} *" required="required" />
+			<input type="tel" name="tel" id="tel" placeholder="{{ labels.work.placeholder.three }} *" onKeyPress="return scanTouche(event)" required="required" />
+			<div id="err"></div>
+			<input type="submit" value="{{ labels.work.button.five }}" />
+		</form>
+	</article>
+</section>
+
+<section class="wwupage">
+	<div class="wrap">
+		<div class="cta">
+			<div class="img">
+				<img src="{% static 'web/images2/buy.jpg' %}" alt="photo" />
+				<h2 class="h2def"><span>{{ labels.work.text.one }}</span> {{ labels.work.text.two }}</h2>
+			</div>
+			<div class="txt">
+				<p>
+					{{ labels.work.text.five }}
+				</p>
+				<a href="#" class="bouton btn-wwu" data-pop="buyers">{{ labels.work.button.one }}</a>
+			</div>
+		</div>
+		<div class="cta">
+			<div class="img">
+				<img src="{% static 'web/images2/sell.jpg' %}" alt="photo" />
+				<h2 class="h2def"><span>{{ labels.work.text.three }}</span> {{ labels.work.text.four }}</h2>
+			</div>
+			<div class="txt">
+				<p>
+					{{ labels.work.text.six }}
+				</p>
+				<a target="_blank" href="#" class="bouton btn-wwu" data-pop="listing">{{ labels.work.button.two }}</a>
+			</div>
+		</div>
+		<div class="ctawide">
+			<h2 class="h2def"><span>{{ labels.work.text.seven }}</span> {{ labels.work.text.eight }}</h2>
+			<a href="#" class="bouton btn-wwu" data-pop="popcontact">{{ labels.work.button.three }}</a>
+		</div>
+	</div>
+</section>
+<br><br><br>
+<script>
+
+    $(document).ready(function () {
+        $("#formContact").on('submit', function (e) {
+            e.preventDefault();
+            var form = $("#formContact");
+            $.ajax({
+                type: "POST",
+                url: form.attr("action"),
+                data: form.serialize(),
+                success: function (response) {
+                    if (response.response == 1) {
+                        var language = "{{ language }}";
+                        if (language === "en") {
+                            var message = "A specialist will contact you in 24 hrs";
+                        } else {
+                            var message = "Un spécialiste vous contactera dans les 24 heures";
+                        }
+                        $("#confirmationContact").html("<p>" + message + "</p>");
+						$('#formContact')[0].reset();
+						$('#formContact').hide();
+                    }
+                    else {
+                        var language = "{{ language }}";
+                        if (language === "en") {
+                            var message = "Required fields";
+                        } else {
+                            var message = "Champs obligatoires";
+                        }
+                        $("#err").html(message);
+                    }
+                }
+            });
+        });
+
+		$("#formBuyers").on('submit', function (e) {
+            e.preventDefault();
+            var form = $("#formBuyers");
+            $.ajax({
+                type: "POST",
+                url: form.attr("action"),
+                data: form.serialize(),
+                success: function (response) {
+                    if (response.response == 1) {
+                        var language = "{{ language }}";
+                        if (language === "en") {
+                            var link = '<a target="_blank" href="{% static "web/pdf/Buyers booklet EN - LJ Realties - BUYERS BOOKLET 2024.pdf" %}" download>Click here to download buyers booklet</a>';
+                        } else {
+                            var link = '<a target="_blank" href="{% static "web/pdf/Buyers booklet FR - LJ Immobilier - ORIENTATION EN MATIERE ACHAT IMMOBILIER 2024.pdf" %}" download>Cliquez ici pour télécharger la brochure de l\'acheteur</a>';
+                        }
+                        $("#confirmationBuyers").html("<p><p>" + link + "</p></p>");
+						$('#formBuyers')[0].reset();
+						$('#formBuyers').hide();
+                    }
+                    else {
+                        var language = "{{ language }}";
+                        if (language === "en") {
+                            var message = "Required fields";
+                        } else {
+                            var message = "Champs obligatoires";
+                        }
+                        $("#errBuyers").html(message);
+                    }
+                }
+            });
+        });
+
+		$("#formListing").on('submit', function (e) {
+            e.preventDefault();
+            var form = $("#formListing");
+            $.ajax({
+                type: "POST",
+                url: form.attr("action"),
+                data: form.serialize(),
+                success: function (response) {
+                    if (response.response == 1) {
+                        var language = "{{ language }}";
+                        if (language === "en") {
+                            var link = '<a target="_blank" href="{% static "web/pdf/Listing booklet EN - LJ Realties - HOME SELLING ORIENTATION 2024.pdf" %}" download>Click here to download listing booklet</a>';
+                        } else {
+                            var link = '<a target="_blank" href="{% static "web/pdf/Listing booklet FR - LJ Immobilier - ORIENTATION EN MATIERE DE VENTE IMMOBILIERE 2024.pdf" %}" download>Cliquez ici pour télécharger la brochure du vendeur</a>';
+                        }
+                        $("#confirmationListing").html("<p>" + link + "</p>");
+						$('#formListing')[0].reset();
+						$('#formListing').hide();
+                    }
+                    else {
+                        var language = "{{ language }}";
+                        if (language === "en") {
+                            var message = "Required fields";
+                        } else {
+                            var message = "Champs obligatoires";
+                        }
+                        $("#errListing").html(message);
+                    }
+                }
+            });
+        });
+    });
+
+</script>
+{% load static %}{% include 'web/footer_web.html' %}

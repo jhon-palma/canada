@@ -1,0 +1,141 @@
+{% extends 'users/base.html' %}
+{% load tags %}{% load static %}
+{% block title %}Download Data Server{% endblock %}
+{% block head_page %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'vendors/datatables/css/dataTables.dataTables.css' %}" />
+    <script src="{% static 'vendors/datatables/js/datatables.js' %}"></script>
+    <script src="{% static 'app/js/core/libraries/bootstrap.min.js' %}"></script>
+    <style>
+        #load_spinner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 9999;
+            overflow: hidden;
+            background: #000000cb;
+        }
+
+        #load_spinner:before {
+            content: "";
+            position: fixed;
+            top: calc(50% - 30px);
+            left: calc(50% - 30px);
+            border: 6px solid #63b3b1;
+            border-top-color: #1a5e5c;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: animate-load_spinner 1s linear infinite;
+        }
+
+        @keyframes animate-load_spinner {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="page-header">
+        <div class="page-header-content">
+            <div class="page-title">
+                <ul class="breadcrumb">
+                    <li>
+                    <h4><span class="no-margin text-bold">Descargar Archivos Server</span></h4>
+                    </li>
+                    <div class="heading-elements">
+                    </div>
+                </ul>
+            </div>
+        </div>
+        <div class="breadcrumb-line">
+            <ul class="breadcrumb">
+                <li><a href="#">Settings</a></li>
+                <li>properties</li>
+                <li class="active">Download Files Server</li>
+            </ul>
+        </div>
+    </div>
+    <div class="content">
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == "error"%}
+                    <div class="alert alert-danger">
+                        {{ message }}
+                        <ul>
+                            {% for error in profile_form.errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% else %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %} 
+        <div class="panel panel-flat">
+            <div class="panel-heading">
+                <h5 class="panel-title"></h5>
+                <div class="panel-body">
+                    <form method="post">
+                        <fieldset class="content-group">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <legend class="text-bold"><i class="icon-download position-left"></i>Descargar Archivos Servidor</legend>
+                                </div>
+                                <button type="button" class="btn bg-primary-800 btn-labeled btn-xlg" style="width: auto; float: left;" data-toggle="modal" data-target="#confirmacionModal"><b><i class="icon-arrow-down16"></i></b><span class="margin-left-20">Descargar archivos</span></button>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="confirmacionModal" name="confirmacionModal" tabindex="-1" role="dialog" aria-labelledby="confirmacionModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmacionModalLabel">Confirmación Descarga Archivos Servidor</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de que deseas descargar la información?
+                </div>
+                <div class="modal-footer">
+                    <form id="borrarForm" method="post">
+                        {% csrf_token %}
+                        <div class="btn-container">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-danger">Confirmar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="load_spinner" class="hide"></div>
+{% endblock %}
+{% block javascript %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('borrarForm');
+            const loader = document.getElementById('load_spinner');
+            form.addEventListener('submit', function () {
+                loader.classList.remove("hide");
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% load static %}{% load tags %}{% include 'web/header_web.html' %}
+
+<section class="banner nothome">
+	<img src="{% static 'web/images2/banner-team.jpg' %}" alt="Photo - LJ Realties, Agence immobilière" class="bannerimg" />
+	<h1>{{ labels.team.title.one }} <span>{{ labels.team.title.two }}</span></h1>
+</section>
+
+{% if language == 'en' %}
+	{% define 'broker' as broker %}
+{% else %}
+	{% define 'courtier' as broker %}
+{% endif %}
+
+{% if team %}
+    <section class="teampage">
+	    <div class="wrap">
+            {% for member in team %}
+                <div class="member">
+                    <a href="{{ server|server_url }}/{{ language }}/{{ broker }}/" class="img">
+                        <img src="{{ member.image_over.url }}" alt="{{ member.user.get_full_name}}" class="overIMG">
+                        <img src="{{ member.image.url }}" alt="{{ member.user.get_full_name }}">
+                        <h2>{{ member.user.get_full_name }}</h2>
+                    </a>
+                    <div class="memberinfo">
+                        <p style="margin: 0 1px 10px;">{% if language == 'en' %}{% if member.occupation %}{{ member.occupation }} & {% endif %}{{ member.membre.type_certificat.description_anglaise }}{% else %}{% if member.occupation_anglaise %}{{ member.occupation_anglaise }} et {% endif %}{{ member.membre.type_certificat.description_francaise }}{% endif %}</p>
+                        <div class="socmember">
+                            <a class="btnsoc" href="tel:+1{{ member.membre.telephone_1 }}"><i class="fa fa-phone"></i></a>
+                            <a class="btnsoc" href="mailto:{{ member.membre.courriel }}"><i class="fa fa-envelope"></i></a>
+                            {% for media_social in member.membre.membresmediassociaux_set.all %}
+                                {% if media_social.type_media_social.description_abregee_francaise == "FACEBOOK" %}
+                                    <a class="btnsoc" href="{{ media_social.lien_media_social }}" target="_blank"><img src="{% static 'web/images2/facebook.png' %}" alt="Facebook" /></a>
+                                {% endif %}
+                                {% if media_social.type_media_social.description_abregee_francaise == "INSTAGRAM" %}
+                                    <a class="btnsoc" href="{{ media_social.lien_media_social }}" target="_blank"><img src="{% static 'web/images2/instagram.png' %}" alt="Instagram" /></a>
+                                {% endif %}
+                                {% if media_social.type_media_social.description_abregee_francaise == "LINKEDIN" %}
+                                    <a class="btnsoc" href="{{ media_social.lien_media_social }}" target="_blank"><img src="{% static 'web/images2/linkedin.png' %}" alt="LinkedIn" /></a>
+                                {% endif %}
+                                {% if media_social.type_media_social.description_abregee_francaise == "TWITTER" %}
+                                    <a class="btnsoc" href="{{ media_social.lien_media_social }}" target="_blank"><img src="{% static 'web/images2/twitter.png' %}" alt="Facebook" /></a>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        {% if member.membre %}
+                            <a href="{% url 'web:member' language=language option='courtier' member_id=member.membre.id %}" class="bouton">{{ labels.team.button.one }}</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% else %}
+        <section class="piecesbloc" style="display: flex; justify-content: center; align-items: center;">
+            <div class="adressebloc">
+                <div class="box_vendu">No members created</div>
+            </div>
+        </section>
+    {% endif %}
+
+{% load static %}{% include 'web/footer_web.html' %}

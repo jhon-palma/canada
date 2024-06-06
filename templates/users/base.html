@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    {% include "apps/head.html" %}
+    {% block head_page %}{% endblock %}
+</head>
+<body>
+    {% include "apps/header.html" %}
+    <div class="page-container">
+        <div class="page-content">
+            {% include "users/menu.html" %}
+            {%  block content %}
+            {% endblock %}
+        </div>
+    </div>
+    {% block javascript %}
+    {% endblock %}
+</body>
+</html>

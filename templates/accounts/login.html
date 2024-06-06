@@ -1,0 +1,40 @@
+{% include "apps/head.html" %}{% load tags %}{% load static %}
+<style>
+@media only screen and (min-width: 300px) and (max-width: 400px){.centrado-porcentual{width:100%;margin-left:0px}}@media only screen and (min-width: 1280px) and (max-width: 1920px){.form-login{width:120%}}.centrado-porcentual{position:absolute;left:50%;top:50%;transform:translate(-50%, -50%);-webkit-transform:translate(-50%, -50%)}.panel{margin-bottom:20px;background-color:#fff;border:0px solid transparent;border-radius:0px;box-shadow:0 12px 15px rgba(0, 0, 0, 0.18), 1px 1px 6px 6px rgba(0, 0, 0, 0.19)}.panel-body{padding:35px}
+</style>
+<body style="background-color: #478d8c;">
+  <div class="centrado-porcentual">
+    <div class="page-content">
+      <div class="content-wrapper">
+        <div class="content">
+          <form class="form-login" action="{% url 'accounts:login' %}" method="post">{% csrf_token %}
+            <div class="sombras panel panel-body login-form">
+              <div class="text-center">
+                <img id="foto_usuario" style="width: 60%; height: 100%" src="{% static 'web/images/logo.png' %}"/>
+                 <h5 class="content-group">Ingreso al Sistema<small class="display-block">Introduzca sus credenciales abajo</small></h5>
+              </div>
+              {% if error %}
+                <div class="alert alert-danger alert-bordered">
+                  <button type="button" class="close" data-dismiss="alert"><span>×</span><span class="sr-only">Close</span></button>
+                  <span class="text-semibold">{{ error }}</span>
+                </div>
+	            {% endif %}
+              <div class="form-group has-feedback has-feedback-left">
+                <input type="email" name="email" class="form-control" placeholder="Email" required="required">
+                <div class="form-control-feedback"><i class="icon-user text-muted"></i></div>
+              </div>
+              <div class="form-group has-feedback has-feedback-left">
+                <input type="password" name="password" class="form-control" placeholder="Password" required="required">
+                <div class="form-control-feedback"><i class="icon-lock2 text-muted"></i></div>
+              </div>
+              <div class="form-group">
+                <button type="submit" class="btn bg-danger btn-block">Ingresar <i class="icon-circle-right2 position-right"></i></button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+{% include "apps/footer.html" %}

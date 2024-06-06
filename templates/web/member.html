@@ -1,0 +1,48 @@
+{% load static %}{% load tags %}{% include 'web/header_web.html' %}
+
+<section class="banner nothome">
+	<img src="{% static 'web/images2/banner-team.jpg' %}" alt="Photo - LJ Realties, Agence immobilière" class="bannerimg" />
+	<h1>{{ labels.team.title.one }} <span>{{ labels.team.title.two }}</span></h1>
+</section>
+
+<section class="teamsingle">
+	<div class="wrap">
+		<div class="img"><img src="{{ member.image.url }}" alt="{{ member.membre.prenom }} {{ member.membre.nom }}"></div>
+		<div class="singleinfo">
+			<h1 class="h2def"><span>Rencontrez</span> {{ member.membre.prenom }} {{ member.membre.nom }}</h1>
+			<p style="color: red;">Courtier Immobilier Résidentiel  </p>
+			<div class="socmember">
+                <a class="btnsoc" href="tel:+1{{ member.membre.telephone_1 }}"><i class="fa fa-phone"></i></a>
+                <a class="btnsoc" href="mailto:{{ member.courriel }}"><i class="fa fa-envelope"></i></a>
+                {% for media_social in member.membre.membresmediassociaux_set.all %}
+                    {% if media_social.type_media_social.description_abregee_francaise == "FACEBOOK" %}
+                        <a class="btnsoc" href="{{ media_social.lien_media_social }}" target="_blank"><img src="{% static 'web/images2/facebook.png' %}" alt="Facebook" /></a>
+                    {% endif %}
+                    {% if media_social.type_media_social.description_abregee_francaise == "INSTAGRAM" %}
+                        <a class="btnsoc" href="{{ media_social.lien_media_social }}" target="_blank"><img src="{% static 'web/images2/instagram.png' %}" alt="Instagram" /></a>
+                    {% endif %}
+                    {% if media_social.type_media_social.description_abregee_francaise == "LINKEDIN" %}
+                        <a class="btnsoc" href="{{ media_social.lien_media_social }}" target="_blank"><img src="{% static 'web/images2/linkedin.png' %}" alt="LinkedIn" /></a>
+                    {% endif %}
+                    {% if media_social.type_media_social.description_abregee_francaise == "TWITTER" %}
+                        <a class="btnsoc" href="{{ media_social.lien_media_social }}" target="_blank"><img src="{% static 'web/images2/twitter.png' %}" alt="Facebook" /></a>
+                    {% endif %}
+                {% endfor %}
+			</div>
+			<hr>
+			<div class="minibionew">
+				<div class="minibiotxt">
+					<p> {% if language == "en" %}{{ member.membre.presentation_a }}{% else %}{{ member.membre.presentation_f }}{% endif %}</p>
+				</div>
+				<div class="minibiocontact">
+					<a href="mailto:{{ member.membre.courriel }}" class="bouton">Contact</a>
+				</div>	
+			</div>
+			<hr>
+		</div>
+		<div class="fullbtn"><a href="{{ server|server_url }}/{{ language }}/{{ labels.menu.url.two }}/" class="bouton bouton3">Retour aux membres de l'équipe</a></div>
+	</div>
+</section>
+
+
+{% load static %}{% include 'web/footer_web.html' %}

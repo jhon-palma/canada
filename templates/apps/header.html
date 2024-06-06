@@ -1,0 +1,30 @@
+{% load static %}
+    <div class="navbar navbar-inverse navbar-fixed-top line bg-primary-800">
+        <div class="navbar-header">
+            <ul class="nav navbar-nav navbar-left">
+                <li><a class="sidebar-control sidebar-main-toggle hidden-xs"><i class="icon-paragraph-justify3"></i></a></li>
+            </ul>
+            <a id="logo1" class="navbar-brand" href="/"><img src="{% static 'app/img/logos/logoBlanco.png' %}"></a>
+            <div id="saludo_user" class="navbar-brand">SISTEMA DE ADMINISTRACIÓN</div>
+            <ul class="nav navbar-nav pull-right visible-xs-block">
+                <li><a id="logo2" class="navbar-brand" href="/"><img src="{% static 'app/img/logos/logoBlanco.png' %}"></a></li>
+                <li><a class="sidebar-mobile-main-toggle"><i class="icon-paragraph-justify3"></i></a></li>
+            </ul>
+        </div>
+        <div class="navbar-collapse collapse" id="navbar-mobile">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown dropdown-user">
+                    <a class="dropdown-toggle" data-toggle="dropdown">
+                        <span>{{ request.user.email}}</span>
+                        <i class="caret"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                
+                        <li><a href="{% url 'users:profile' %}"><i class="icon-user"></i> Perfil</a></li>
+            
+                        <li><a href="{% url 'accounts:logout' %}"><i class="icon-switch2"></i> Cerrar Sessión</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>

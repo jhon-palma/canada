@@ -1,0 +1,18 @@
+<nav>
+    <ul class="pager" style="margin-top: -10px; z-index: 9999; margin-bottom: 24px;">
+      <li>Pagina {{ objects.number }} de {{ objects.paginator.num_pages }} </li>
+      <li>&nbsp;&nbsp;&nbsp;&nbsp;</li>
+      {% if objects.has_previous %}
+      <li>
+          <a onclick="modificarUrl(this, 1, '')">Primera</a>
+          <a onclick="modificarUrl(this, '{{ objects.previous_page_number }}', '')"><i class="icon-chevron-left"></i></a>
+      </li>
+      {% endif %}
+      {% if objects.has_next %}
+      <li>
+          <a onclick="modificarUrl(this, '{{ objects.next_page_number }}', '')"><i class="icon-chevron-right"></i></a>
+          <a onclick="modificarUrl(this, '{{ objects.paginator.num_pages }}', '')">Última</i></a>
+      </li>
+      {% endif %}
+    </ul>
+</nav>

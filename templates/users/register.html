@@ -1,0 +1,169 @@
+{% extends 'users/base.html' %}
+{% load tags %}{% load static %}
+{% block head_page %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'vendors/datatables/css/dataTables.dataTables.css' %}" />
+    <script src="{% static 'vendors/datatables/js/datatables.js' %}"></script>
+    <script src="{% static 'app/js/core/libraries/bootstrap.min.js' %}"></script>
+{% endblock %}
+{% block content %}
+    
+
+
+    <div class="page-header">
+        <div class="page-header-content">
+        <div class="page-title">
+            <ul class="breadcrumb">
+                <li>
+                <h4><span class="no-margin text-bold">CREAR USUARIO</span></h4>
+                </li>
+                <div class="heading-elements">
+                </div>
+            </ul>
+        </div>
+        </div>
+        <div class="breadcrumb-line">
+        <ul class="breadcrumb">
+            <li><a href="#">Usuarios</a></li>
+            <li>Perfil</li>
+            <li class="active">Crear usuario</li>
+        </ul>
+        </div>
+    </div>
+    <div class="content">
+        {% if messages %}
+                {% for message in messages %}
+                    {% if message.tags == "error"%}
+                        <div class="alert alert-danger">
+                            {{ message }}
+                            <ul>
+                                {% for error in profile_form.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-success">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %} 
+        <div class="panel panel-flat">
+            <div class="panel-heading">
+                <h5 class="panel-title"></h5>
+                <div class="panel-body">
+                    <form method="POST" enctype="multipart/form-data">{% csrf_token %}
+                        <fieldset class="content-group">
+                            <div class="col-lg-12">
+                                <legend class="text-bold"><i class="icon-user position-left"></i>Crear usuario</legend>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="text-center mb-3">
+                                            <div class="form-group">
+                                                <img src="/static/media/default.png" class="img-circle mx-auto d-block" style="width: 150px; height: 150px;">
+                                            </div>
+                                        </div>
+                                        <div class="form-group ">
+                                            <label for="id_image">Cambiar Imagen:</label>
+                                            <span class="text-danger">{{profile_form.image.errors}}</span>
+                                            <input type="file" class="form-control-file" accept="image/*" id="id_image" name="image">
+                                        </div>
+                                        <div class="form-group ">
+                                            <label for="id_image">Cambiar Imagen Secundaria:</label>
+                                            <span class="text-danger">{{profile_form.image_over.errors}}</span>
+                                            <input type="file" class="form-control-file" accept="image/*" id="id_image_over" name="image_over">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="id_first_name">Nombres:</label>
+                                                    <span class="text-danger">{{user_form.first_name.errors}}</span>
+                                                    <input type="text" class="form-control" id="id_first_name" name="first_name" value="{{ user_form.data.first_name }}" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="id_last_name">Apellidos:</label>
+                                                    <span class="text-danger">{{user_form.last_name.errors}}</span>
+                                                    <input type="text" class="form-control" id="id_last_name" name="last_name" value="{{ user_form.data.last_name }}" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="id_email">Email:</label>
+                                                    <span class="text-danger">{{user_form.email.errors}}</span>
+                                                    <input type="email" class="form-control" id="id_email" name="email" value="{{ user_form.data.email }}" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="id_type_user">Tipo de Usuario:</label>
+                                                    <span class="text-danger">{{profile_form.type_user.errors}}</span>
+                                                    <select class="form-control" id="id_type_user" name="type_user">
+                                                        <option value="">Seleccione una opción</option>
+                                                        <option value="admin" {% if profile_form.data.type_user == "admin" %}selected{% endif %}>Administrador</option>
+                                                        <option value="operador" {% if profile_form.data.type_user == "operador" %}selected{% endif %}>Operador</option>
+                                                        <option value="supervisor" {% if profile_form.data.type_user == "supervisor" %}selected{% endif %}>Supervisor</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="id_member">Miembro:</label>
+                                                    <span class="text-danger">{{profile_form.member.errors}}</span>
+                                                    <select class="form-control" id="id_member" name="member">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="id_password1">Contraseña:</label>
+                                                    <span class="text-danger">{{user_form.password1.errors}}</span>
+                                                    <input type="password" class="form-control" id="id_password1" name="password1" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="id_password2">Contraseña:</label>
+                                                    <span class="text-danger">{{user_form.password2.errors}}</span>
+                                                    <input type="password" class="form-control" id="id_password2" name="password2" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <a href="{% url 'users:profile_list' %}" class="btn bg-orange-600 btn-labeled btn-xlg"  style="width: auto;"><b><i class="icon-undo2"></i></b><span class="margin-left-20">VOLVER</span></a>
+                                <button type="submit" class="btn bg-primary-800 btn-labeled btn-xlg"  style="width: auto;"><b><i class="icon-floppy-disk"></i></b><span class="margin-left-20">CREAR</span></button>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+{% block javascript %}
+
+<script type="text/javascript" src="{% static 'app/js/pages/form_validation.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/js/plugins/forms/tags/tokenfield.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/js/pages/form_tags_input.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/js/core/libraries/jquery_ui/interactions.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/js/plugins/forms/selects/select2.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/js/pages/form_select2.js' %}"></script>
+
+{% endblock %}

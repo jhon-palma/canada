@@ -1,0 +1,140 @@
+<div class="wrap">
+    <form method="GET" id="seach_form" class="propsearch" action="{% url 'web:search' %}">
+        <input type="hidden" name="Codelang" value="{{ language }}" />
+        <input type="radio" name="status" id="forwhat1" {% if status == '1' %}checked{% endif %} />
+        <label for="forwhat1" class="tablabel">{{ labels.index.sale }}</label>
+        <input type="radio" name="status" id="forwhat2" value="2" {% if status == '2' %}checked{% endif %}/>
+        <label for="forwhat2" class="tablabel">{{ labels.index.rent }}</label>
+        <div class="searchbarcont">
+            <input type="search" placeholder="{{ labels.index.placeholder.one }}" class="mainsearch" id="fserach" name="fserach" />
+        </div>
+        <div id="freeform-filters" class="filters-list">
+            <ul></ul>
+        </div>
+        <a href="#" class="avanceea">Advanced search <i class="fa fa-chevron-down"></i></a>
+        <div class="avanceediv">
+            <div class="selectswrap">
+                <div class="selectcont">
+                    <label for="">Bedroom(s)</label>
+                    <select name="nbchambre">
+                        <option value="0">Number</option>
+                        <option value="1">1 bedroom or +</option>
+                        <option value="2">2 bedrooms or +</option>
+                        <option value="3">3 bedrooms or +</option>
+                        <option value="4">4 bedrooms or +</option>
+                        <option value="5">5 bedrooms or +</option>
+                    </select>
+                </div>
+                <div class="selectcont">
+                    <label for="">Bathroom(s)</label>
+                    <select name="nbbain" id="nbbain">
+                        <option value="0">Number</option>
+                        <option value="1">1 bath/powder room or +</option>
+                        <option value="2">2 bath/powder rooms or +</option>
+                        <option value="3">3 bath/powder rooms or +</option>
+                        <option value="4">4 bath/powder rooms or +</option>
+                        <option value="5">5 bath/powder rooms or +</option>
+                    </select>
+                </div>
+                <div class="selectcont">
+                    <label for="">Price</label>
+                    <select name="minamount">
+                        <option value="0">Min</option>
+                        <option value="0"> $0</option>
+                        <option value="1000"> $1,000</option>
+                        <option value="1500"> $1,500</option>
+                        <option value="2000"> $2,000</option>
+                        <option value="2500"> $2,500</option>
+                        <option value="3000"> $3,000</option>
+                        <option value="3500"> $3,500</option>
+                        <option value="4000"> $4,000</option>
+                        <option value="4500"> $4,500</option>
+                        <option value="5000"> $5,000</option>
+                        <option value="5500"> $5,500</option>
+                        <option value="6000"> $6,000</option>
+                        <option value="200000"> $200,000</option>
+                        <option value="300000"> $300,000</option>
+                        <option value="400000"> $400,000</option>
+                        <option value="500000"> $500,000</option>
+                        <option value="600000"> $600,000</option>
+                        <option value="700000"> $700,000</option>
+                        <option value="800000"> $800,000</option>
+                        <option value="900000"> $900,000</option>
+                        <option value="1000000"> $1,000,000</option>
+                        <option value="1250000"> $1,250,000</option>
+                        <option value="1500000"> $1,500,000</option>
+                        <option value="2000000"> $2,000,000</option>
+                        <option value="3000000"> $3,000,000</option>
+                        <option value="4000000"> $4,000,000</option>
+                        <option value="5000000"> $5,000,000</option>
+                    </select>
+                    <select name="maxamount">
+                        <option value="">Max</option>
+                        <option value="1000"> $1,000</option>
+                        <option value="1500"> $1,500</option>
+                        <option value="2000"> $2,000</option>
+                        <option value="2500"> $2,500</option>
+                        <option value="3000"> $3,000</option>
+                        <option value="3500"> $3,500</option>
+                        <option value="4000"> $4,000</option>
+                        <option value="4500"> $4,500</option>
+                        <option value="5000"> $5,000</option>
+                        <option value="5500"> $5,500</option>
+                        <option value="6000"> $6,000</option>
+                        <option value="200000"> $200,000</option>
+                        <option value="300000"> $300,000</option>
+                        <option value="400000"> $400,000</option>
+                        <option value="500000"> $500,000</option>
+                        <option value="600000"> $600,000</option>
+                        <option value="700000"> $700,000</option>
+                        <option value="800000"> $800,000</option>
+                        <option value="900000"> $900,000</option>
+                        <option value="1000000"> $1,000,000</option>
+                        <option value="1250000"> $1,250,000</option>
+                        <option value="1500000"> $1,500,000</option>
+                        <option value="2000000"> $2,000,000</option>
+                        <option value="3000000"> $3,000,000</option>
+                        <option value="4000000"> $4,000,000</option>
+                        <option value="5000000"> $5,000,000</option>
+                    </select>
+                </div>
+            </div>
+            <hr/>
+            <input type="checkbox" id="cbvislib" />
+            <label for="cbvislib">Results with open houses only</label>
+            <hr/>
+            <p><strong>Property Type</strong></p>
+            <div class="cbgrid">
+                <div><input type="checkbox" id="C-BVE" name="propriete[]" value="C-BVE" /><label for="C-BVE">Building and business sale</label></div>
+                <div><input type="checkbox" id="C-LEC" name="propriete[]" value="C-LEC" /><label for="C-LEC">Commercial rental space/Office</label></div>
+                <div><input type="checkbox" id="C-VEN" name="propriete[]" value="C-VEN" /><label for="C-VEN">Business sale</label></div>
+                <div><input type="checkbox" id="I-BAI" name="propriete[]" value="I-BAI" /><label for="I-BAI">Industrial building</label></div>
+                <div><input type="checkbox" id="C-BTC" name="propriete[]" value="C-BTC" /><label for="C-BTC">Commercial building and land</label></div>
+                <div><input type="checkbox" id="C-CC" name="propriete[]" value="C-CC" /><label for="C-CC">Commercial condo</label></div>
+                <div><input type="checkbox" id="I-BTI" name="propriete[]" value="I-BTI" /><label for="I-BTI">Industrial building and land</label></div>
+                <div><input type="checkbox" id="I-CI" name="propriete[]" value="I-CI" /><label for="I-CI">Industrial condo</label></div>
+                <div><input type="checkbox" id="I-LEI" name="propriete[]" value="I-LEI" /><label for="I-LEI">Industrial space leasing</label></div>
+                <div><input type="checkbox" id="M-2X" name="propriete[]" value="M-2X" /><label for="M-2X">Duplex</label></div>
+                <div><input type="checkbox" id="M-3X" name="propriete[]" value="M-3X" /><label for="M-3X">Triplex</label></div>
+                <div><input type="checkbox" id="M-4X" name="propriete[]" value="M-4X" /><label for="M-4X">Triplex</label></div>
+                <div><input type="checkbox" id="M-5X" name="propriete[]" value="M-5X" /><label for="M-5X">Quadruplex</label></div>
+                <div><input type="checkbox" id="R-AP" name="propriete[]" value="R-AP" /><label for="R-AP">Condo</label></div>
+                <div><input type="checkbox" id="R-CH" name="propriete[]" value="R-CH" /><label for="R-CH">Chalet</label></div>
+                <div><input type="checkbox" id="R-F" name="propriete[]" value="R-F" /><label for="R-F">Hobby Farm</label></div>
+                <div><input type="checkbox" id="R-LS" name="propriete[]" value="R-LS" /><label for="R-LS">Loft/Studio</label></div>
+                <div><input type="checkbox" id="R-ME" name="propriete[]" value="R-ME" /><label for="R-ME">House with more than one storey</label></div>
+                <div><input type="checkbox" id="R-MPM" name="propriete[]" value="R-MPM" /><label for="R-MPM">House with split level</label></div>
+                <div><input type="checkbox" id="R-MEM" name="propriete[]" value="R-MEM" /><label for="R-MEM">Maison à un étage et demi</label></div>
+                <div><input type="checkbox" id="R-MM" name="propriete[]" value="R-MM" /><label for="R-MM">Mobile home</label></div>
+                <div><input type="checkbox" id="R-PP" name="propriete[]" value="R-PP" /><label for="R-PP">Maison de plain-pied</label></div>
+                <div><input type="checkbox" id="T-TV" name="propriete[]" value="T-TV" /><label for="T-TV">Land</label></div>
+                <div><input type="checkbox" id="C-BCB" name="propriete[]" value="C-BCB" /><label for="C-BCB">Commercial building/Office</label></div>
+                <div><input type="checkbox" id="F-FER" name="propriete[]" value="F-FER" /><label for="F-FER">Farm</label></div>
+            </div>
+        </div>
+        <div class="submitclearcont">
+            <input type="button" style="cursor: pointer" id="reset" value="Clear"/>
+            <input type="submit" style="cursor: pointer" value="Search"/>
+        </div>
+    </form>
+</div>
