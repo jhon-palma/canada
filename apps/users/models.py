@@ -15,8 +15,8 @@ class Profile(models.Model):
     order = models.SmallIntegerField(blank=True, null=True)
     membre = models.ForeignKey(Membres, on_delete=models.CASCADE, blank=True, null=True)
     type_user = models.CharField(default='admin', max_length=20, choices=TYPE_USER, blank=True, null=False)
-    occupation= models.CharField(blank=True, null=True)
-    occupation_anglaise = models.CharField(blank=True, null=True)
+    occupation = models.CharField(blank=True, max_length=60, null=True)
+    occupation_anglaise = models.CharField(blank=True, max_length=60, null=True)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
