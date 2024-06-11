@@ -66,9 +66,11 @@
 		<div class="fichetitlebloc">
 			<h1>
 				{% if language == "en" %}
-                    {{ inscription.genre_propriete.description_anglaise }}
+                    {{ inscription.categorie_propriete.description_anglaise }}
+                    <!-- {{ inscription.genre_propriete.description_anglaise }} -->
                 {% else %}
-                    {{ inscription.genre_propriete.description_francaise }}
+                    {{ inscription.categorie_propriete.description_francaise }}
+                    <!-- {{ inscription.genre_propriete.description_francaise }} -->
                 {% endif %}
                 {% if inscription.prix_demande %}
                     {% if language == "en" %}
@@ -194,7 +196,7 @@
             <div class="simultable charact">
                 <div class="tr">
                     <div class="td">{% if language == "en" %}Property Type{% else %}Genre de propriété{% endif %}</div>
-                    <div class="td">{% if language == "en" %}{{ inscription.genre_propriete.description_anglaise }}{% else %}{{ inscription.genre_propriete.description_francaise }}{% endif %}</div>
+                    <div class="td">{% if language == "en" %}{{ inscription.categorie_propriete.description_anglaise }}{% else %}{{ inscription.categorie_propriete.description_francaise }}{% endif %}</div>
                 </div>
                 <div class="tr">
                     <div class="td">{% if language == "en" %}Year of construction{% else %}Année de construction{% endif %}</div>
@@ -220,7 +222,7 @@
                 </div>
                 <div class="tr">
                     <div class="td">{% if language == "en" %}Living area{% else %}Superficie habitable{% endif %}</div>
-                    <div class="td">{{ inscription.superficie_habitable|floatformat:2 }} m<sup>2</sup></div>
+                    <div class="td">{% if inscription.superficie_habitable %}{{ inscription.superficie_habitable|floatformat:2 }} m<sup>2</sup>{% endif %}</div>
                 </div>
                 <div class="tr">
                     <div class="td">Lot dimensions</div>
@@ -2789,21 +2791,27 @@
                                 <a href="{% url 'web:detail-propertie' language=language option='propriete' propertie_id=same.id %}">{{ same.mun_code.description }}</a>
                             </div>
                             <div class="prix_maison">
-                                <a href="{% url 'web:detail-propertie' language=language option='propriete' propertie_id=same.id %}">{% if same.prix_demande and language == "en" %}
-                                    ${{ same.prix_demande|floatformat:0|intcomma}} {% if same.ind_taxes_prix_demande %}<span> +GST/QST{% endif %}</span>
-                                {% elif same.prix_demande and language == "fr" %}
-                                    {{ same.prix_demande|floatformat:0|intcomma}}$ {% if same.ind_taxes_prix_demande %}<span> +GST/QST{% endif %}</span>
-                                {%endif%}
-                                {% if same.prix_location_demande and language == "en" %}
-                                    ${{ same.prix_location_demande|floatformat:0|intcomma}}
-                                {% elif same.prix_location_demande and language == "fr" %}
-                                    {{ same.prix_location_demande|floatformat:0|intcomma}}$
-                                {%endif%}
-                                {% if same.frequence_prix_location and language == "en" %}
-                                    / <span class="text-lowercase">{{ same.frequence_prix_location.description_anglaise }}</span>
-                                {% elif same.frequence_prix_location and language == "fr"  %}
-                                    / <span class="text-lowercase">{{ same.frequence_prix_location.description_francaise }}</span>
-                                {% endif %}</a>
+                                <a href="{% url 'web:detail-propertie' language=language option='propriete' propertie_id=same.id %}">
+                                    {% if same.code_statut.valeur == "VE" %}
+                                        <span class="prix_maison_hid">{% if language == "en" %}Sold{% else %}Vendu{% endif%}</span>
+                                    {% else %}
+                                        {% if same.prix_demande and language == "en" %}
+                                            ${{ same.prix_demande|floatformat:0|intcomma}} {% if same.ind_taxes_prix_demande %}<span> +GST/QST{% endif %}</span>
+                                        {% elif same.prix_demande and language == "fr" %}
+                                            {{ same.prix_demande|floatformat:0|intcomma}}$ {% if same.ind_taxes_prix_demande %}<span> +GST/QST{% endif %}</span>
+                                        {%endif%}
+                                        {% if same.prix_location_demande and language == "en" %}
+                                            ${{ same.prix_location_demande|floatformat:0|intcomma}}
+                                        {% elif same.prix_location_demande and language == "fr" %}
+                                            {{ same.prix_location_demande|floatformat:0|intcomma}}$
+                                        {%endif%}
+                                        {% if same.frequence_prix_location and language == "en" %}
+                                            / <span class="text-lowercase">{{ same.frequence_prix_location.description_anglaise }}</span>
+                                        {% elif same.frequence_prix_location and language == "fr"  %}
+                                            / <span class="text-lowercase">{{ same.frequence_prix_location.description_francaise }}</span>
+                                        {% endif %}
+                                    {% endif %}
+                                </a>
                             </div>
                             <div class="adresse_maison">
                                 <a href="{% url 'web:detail-propertie' language=language option='propriete' propertie_id=same.id %}">

@@ -1,7 +1,7 @@
 <div class="wrap">
-    <form method="GET" id="seach_form" class="propsearch" action="{% url 'web:search' %}">
+    <form method="GET" id="seach_form" class="propsearch" action="{% url 'web:search' language=language %}">
         <input type="hidden" name="Codelang" value="{{ language }}" />
-        <input type="radio" name="status" id="forwhat1" {% if status == '1' %}checked{% endif %} />
+        <input type="radio" name="status" id="forwhat1" value="1" {% if status == '1' %}checked{% endif %} />
         <label for="forwhat1" class="tablabel">{{ labels.index.sale }}</label>
         <input type="radio" name="status" id="forwhat2" value="2" {% if status == '2' %}checked{% endif %}/>
         <label for="forwhat2" class="tablabel">{{ labels.index.rent }}</label>
@@ -68,7 +68,7 @@
                         <option value="4000000"> $4,000,000</option>
                         <option value="5000000"> $5,000,000</option>
                     </select>
-                    <select name="maxamount">
+                    <select name="maxamount" id="maxamount">
                         <option value="">Max</option>
                         <option value="1000"> $1,000</option>
                         <option value="1500"> $1,500</option>
@@ -138,3 +138,11 @@
         </div>
     </form>
 </div>
+<script>
+    document.getElementById('seach_form').addEventListener('submit', function(e) {
+        var maxamount = document.getElementById('maxamount');
+        if (maxamount.value === '') {
+            maxamount.removeAttribute('name');
+        }
+    });
+</script>

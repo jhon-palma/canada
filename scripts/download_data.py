@@ -1,22 +1,18 @@
-from pathlib import Path
 from ftplib import FTP
 import re, os, zipfile
 import sys 
 import shutil
 import datetime
 
-
-PATH_BASE = '{}/data'.format(Path(__file__).resolve().parent.parent)
-PATH_BACKUP = '/{}/backups'.format(PATH_BASE)
-
 try:
-
     fecha_hora_actual = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    nueva_carpeta = '{}/Backup_{}'.format(PATH_BACKUP, fecha_hora_actual)
+
+    nueva_carpeta = os.path.join('c:\Proyectos\Canada\Data', 'backups', 'Backup_' + fecha_hora_actual)
+
     os.makedirs(nueva_carpeta)
 
-    for archivo in os.listdir(PATH_BASE):
-        ruta_archivo = os.path.join(PATH_BASE, archivo)
+    for archivo in os.listdir('c:\Proyectos\Canada\Data'):
+        ruta_archivo = os.path.join('c:\Proyectos\Canada\Data', archivo)
         if os.path.isfile(ruta_archivo) and archivo.lower().endswith('.txt'):
             shutil.move(ruta_archivo, nueva_carpeta)
 
@@ -43,7 +39,7 @@ try:
         
         print(os.getcwd())
         
-        try: os.rmdir(PATH_BASE)
+        try: os.rmdir('c:\Proyectos\Canada\Data')
         except: pass
         
         # Descargar el archivo zip
@@ -52,7 +48,7 @@ try:
 
         # Descomprimir el archivo zip
         with zipfile.ZipFile(ultimo_archivo_zip, 'r') as archivo_zip:
-            archivo_zip.extractall(PATH_BASE)  # Extraer archivos en la carpeta 'data'
+            archivo_zip.extractall('c:\Proyectos\Canada\Data')  # Extraer archivos en la carpeta 'data'
         
         print("Archivo zip descargado y descomprimido correctamente.")
         

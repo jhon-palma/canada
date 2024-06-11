@@ -1,7 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-
 import os
 import pdb
 import io
@@ -29,8 +25,6 @@ from apps.users.models import Log
 from immobilier.local_settings import PYTHON, PATH_BACKUP, PATH_BASE
 
 import subprocess
-
-
 
 def upload_file(request):
     mensaje = ''
@@ -67,7 +61,6 @@ def upload_file(request):
     else:
         form = UploadFileForm()
     return render(request, 'upload.html',{'form': form})
-
 
 def upload_data_auto(request):
     mensaje = ''

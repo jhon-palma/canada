@@ -129,15 +129,15 @@ class SearchView(View):
         maxamount = request.GET.get('maxamount', '')
         propriete = request.GET.getlist('propriete[]')
         
-        print("codelang: ",codelang)
-        print("status: ",status)
-        print('adress_region: ',adress_region)
-        print('adress_mun: ',adress_mun)
-        print("nbchambre: ",nbchambre)
-        print("nbbain: ",nbbain)
-        print("minamount: ",minamount)
-        print("maxamount: ",maxamount)
-        print('propriete: ', propriete)
+        # print("codelang: ",codelang)
+        # print("status: ",status)
+        # print('adress_region: ',adress_region)
+        # print('adress_mun: ',adress_mun)
+        # print("nbchambre: ",nbchambre)
+        # print("nbbain: ",nbbain)
+        # print("minamount: ",minamount)
+        # print("maxamount: ",maxamount)
+        # print('propriete: ', propriete)
         query = Q()
         
         if status == '2':
@@ -171,6 +171,7 @@ class SearchView(View):
                 query &= (inscriptions_location | inscriptions_demande)
 
         if maxamount:
+            print(maxamount)
             maxamount = float(maxamount)
             if status == '2':
                 query &= Q(prix_location_demande__lte=maxamount)

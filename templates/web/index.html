@@ -3,7 +3,7 @@
 <section class="banner">
 	<div class="baninfo">
 		<h1>{{ labels.index.title.one }} <br><span>{{ labels.index.title.two }}</span> {{ labels.index.title.three }}</h1>
-		<form method="GET" id="formserach" action="{% url 'web:search' %}">
+		<form method="GET" id="formserach" action="{% url 'web:search' language=language %}">
 			<input type="hidden" name="Codelang" value="{{ language }}">
 			<input type="radio" name="status" id="forwhat1" value="1" checked>
 			<label for="forwhat1" class="tablabel">{{ labels.index.sale }}</label>

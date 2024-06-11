@@ -158,3 +158,5 @@ media/
 python
 .zip
 
+# Carpeta de SCRIPTS
+scripts/

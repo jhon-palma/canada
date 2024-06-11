@@ -129,7 +129,7 @@ def uploadDataGeneric(data, model_name):
                 foreign_keys.append(campo.name)
     for row in data:
         if model_name == "VALEURS_FIXES":
-            domaine_value = row[0]
+            domaine_value = row[0].rstrip()
             valeur_value = row[1]
             if model.objects.filter(domaine=domaine_value, valeur=valeur_value).exists():
                 repetidos = repetidos + 1
@@ -164,10 +164,11 @@ def uploadDataGeneric(data, model_name):
             if model.objects.filter(code=code).exists():
                 repetidos = repetidos + 1
                 continue
-
         model_instance = model()
         for field_name, value in zip(fields, row):
             if field_name in foreign_keys:
+                if(model_name == model_name == "VALEURS_FIXES"):
+                    value = value.rstrip()
                 modelo_relacionado = model._meta.get_field(field_name).related_model
                 foreign_key_field = model._meta.get_field(field_name)
                 campo = model._meta.get_field(field_name)
@@ -186,6 +187,8 @@ def uploadDataGeneric(data, model_name):
                     related_object = modelo_relacionado.objects.get(**{to_field_value: value})
 
                 value = related_object if related_object else None
+            if(model_name == model_name == "VALEURS_FIXES"):
+                value = value.rstrip()
             setattr(model_instance, field_name, value)
         model_instance.save()
         total_nuevos = total_nuevos + 1
@@ -522,7 +525,6 @@ def uploadMembresMediasSociaux(data):
         try:
             membresMedia = MembresMediasSociaux.objects.get(membre_code=membre_code, type_media_social=type_media_social)
             cambios = []
-            # pdb.set_trace()
             if membresMedia.lien_media_social != lien_media_social:
                 membresMedia.lien_media_social = lien_media_social
                 cambios.append('lien_media_social')
@@ -1225,7 +1227,6 @@ def uploadInscriptions(data):
                 cambios.append('addenda_complet_a')
 
             if cambios:
-                print(cambios)
                 inscription.save()
                 total_actualizadas = total_actualizadas + 1
 
@@ -2307,16 +2308,13 @@ def uploadCaracteristiques(data):
         except Caracteristiques.DoesNotExist:
             mensaje += f"Error: No se encontró la Caracteristiques a eliminar: {caracteristiques_del}\n"
     for row in data:
-        # pdb.set_trace()
 
         no_inscription = get_id_inscription(str(row[0]))
         if no_inscription == None:
             errors.append(row[0])
             continue
         tcar_code = get_id_tcar_code(str(row[1]))
-        # print(tcar_code)
         scarac_code = get_id_scarac_code(str(row[2]),tcar_code)
-        # print(scarac_code)
         nombre = int(row[3]) if row[3] else None
         informations_francaises = row[4] if row[4] else None
         informations_anglaises = row[5] if row[5] else None
@@ -2340,7 +2338,6 @@ def uploadCaracteristiques(data):
                 caracteristiques.save()
                 total_actualizadas = total_actualizadas + 1
         except ObjectDoesNotExist:
-            # pdb.set_trace()
             caracteristiques = Caracteristiques.objects.create(
                 no_inscription = no_inscription,
                 tcar_code = tcar_code,

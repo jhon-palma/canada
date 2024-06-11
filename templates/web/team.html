@@ -26,7 +26,7 @@
                         <div class="socmember">
                             <a class="btnsoc" href="tel:+1{{ member.membre.telephone_1 }}"><i class="fa fa-phone"></i></a>
                             <a class="btnsoc" href="mailto:{{ member.membre.courriel }}"><i class="fa fa-envelope"></i></a>
-                            {% for media_social in member.membre.membresmediassociaux_set.all %}
+                            <!-- {% for media_social in member.membre.membresmediassociaux_set.all %}
                                 {% if media_social.type_media_social.description_abregee_francaise == "FACEBOOK" %}
                                     <a class="btnsoc" href="{{ media_social.lien_media_social }}" target="_blank"><img src="{% static 'web/images2/facebook.png' %}" alt="Facebook" /></a>
                                 {% endif %}
@@ -39,7 +39,19 @@
                                 {% if media_social.type_media_social.description_abregee_francaise == "TWITTER" %}
                                     <a class="btnsoc" href="{{ media_social.lien_media_social }}" target="_blank"><img src="{% static 'web/images2/twitter.png' %}" alt="Facebook" /></a>
                                 {% endif %}
-                            {% endfor %}
+                            {% endfor %} -->
+                            {% if member.facebook %}
+                                <a class="btnsoc" href="{{ member.facebook }}" target="_blank"><img src="{% static 'web/images2/facebook.png' %}" alt="Facebook" /></a>
+                            {% endif %}
+                            {% if member.instagram %}
+                                <a class="btnsoc" href="{{ member.instagram }}" target="_blank"><img src="{% static 'web/images2/instagram.png' %}" alt="Instagram" /></a>
+                            {% endif %}
+                            {% if member.linkedin %}
+                                <a class="btnsoc" href="{{ member.linkedin }}" target="_blank"><img src="{% static 'web/images2/linkedin.png' %}" alt="LinkedIn" /></a>
+                            {% endif %}
+                            {% if member.twitter %}
+                                <a class="btnsoc" href="{{ member.twitter }}" target="_blank"><img src="{% static 'web/images2/twitter.png' %}" alt="Facebook" /></a>
+                            {% endif %}
                         </div>
                         {% if member.membre %}
                             <a href="{% url 'web:member' language=language option='courtier' member_id=member.membre.id %}" class="bouton">{{ labels.team.button.one }}</a>

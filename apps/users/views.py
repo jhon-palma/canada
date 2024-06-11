@@ -188,7 +188,7 @@ def user_verification():
                 profile = Profile.objects.create(
                     user=user,
                     image='static/media/default.png',
-                    membre=membre,
+                    membre = membre,
                     order= order,
                     type_user="operador",
                 )
