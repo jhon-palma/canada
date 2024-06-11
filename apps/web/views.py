@@ -171,7 +171,6 @@ class SearchView(View):
                 query &= (inscriptions_location | inscriptions_demande)
 
         if maxamount:
-            print(maxamount)
             maxamount = float(maxamount)
             if status == '2':
                 query &= Q(prix_location_demande__lte=maxamount)

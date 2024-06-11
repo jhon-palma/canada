@@ -6,6 +6,8 @@ from django.utils import timezone
 import pdb
 import csv
 
+from apps.users.models import Profile
+
 from .models import *
 # UPLOAD DATA TO POPULATE THE GENERIC TABLES OF THE DATABASE
 # UPLOAD GENERIC DATA
@@ -543,6 +545,29 @@ def uploadMembresMediasSociaux(data):
             mensaje = f"Se encontraron múltiples coincidencias para {membre_code}, revise la base de datos"
 
     mensaje = f"MembresMediasSociaux creadas: {total_nuevas}, MembresMediasSociaux Actualizadas: {total_actualizadas}"
+    try:
+        medias_sociaux = MembresMediasSociaux.objects.all()
+        for media_social in medias_sociaux:
+            membre_code = media_social.membre_code
+            type_media = media_social.type_media_social
+            lien = media_social.lien_media_social
+
+            try:
+                profile = Profile.objects.get(membre_id=membre_code)
+            except Profile.DoesNotExist:
+                continue
+
+            if type_media.description_abregee_francaise == 'FACEBOOK':
+                profile.facebook = lien
+            elif type_media.description_abregee_francaise == 'INSTAGRAM':
+                profile.instagram = lien
+            elif type_media.description_abregee_francaise == 'LINKEDIN':
+                profile.linkedin = lien
+            elif type_media.description_abregee_francaise == 'TWITTER':
+                profile.twitter = lien
+            profile.save()
+    except:
+        pass
     return mensaje
 
 def uploadInscriptions(data):

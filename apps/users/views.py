@@ -13,7 +13,7 @@ from django.http import HttpResponse
 from django.core import serializers
 from django.contrib.auth.mixins import LoginRequiredMixin
 from apps.accounts.models import CustomUser
-from apps.properties.models import Membres
+from apps.properties.models import Membres, MembresMediasSociaux
 from apps.users.form import ProfileEditForm, UserEditForm, CustomUserCreationForm
 from apps.users.models import Profile
 from apps.vars import *
