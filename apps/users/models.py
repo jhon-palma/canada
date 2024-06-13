@@ -17,10 +17,10 @@ class Profile(models.Model):
     type_user = models.CharField(default='admin', max_length=20, choices=TYPE_USER, blank=True, null=False)
     occupation = models.CharField(blank=True, max_length=60, null=True)
     occupation_anglaise = models.CharField(blank=True, max_length=60, null=True)
-    facebook  = models.CharField(blank=True, null=False)
-    instagram = models.CharField(blank=True, null=False)
-    linkedin = models.CharField(blank=True, null=False)
-    twitter = models.CharField(blank=True, null=False)
+    facebook  = models.CharField(blank=True, null=False, max_length=60)
+    instagram = models.CharField(blank=True, null=False, max_length=60)
+    linkedin = models.CharField(blank=True, null=False, max_length=60)
+    twitter = models.CharField(blank=True, null=False, max_length=60)
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
