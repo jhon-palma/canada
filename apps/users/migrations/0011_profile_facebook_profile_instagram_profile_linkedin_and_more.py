@@ -13,21 +13,21 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='profile',
             name='facebook',
-            field=models.CharField(blank=True),
+            field=models.CharField(blank=True, max_length=60),
         ),
         migrations.AddField(
             model_name='profile',
             name='instagram',
-            field=models.CharField(blank=True),
+            field=models.CharField(blank=True, max_length=60),
         ),
         migrations.AddField(
             model_name='profile',
             name='linkedin',
-            field=models.CharField(blank=True),
+            field=models.CharField(blank=True, max_length=60),
         ),
         migrations.AddField(
             model_name='profile',
             name='twitter',
-            field=models.CharField(blank=True),
+            field=models.CharField(blank=True, max_length=60),
         ),
     ]
