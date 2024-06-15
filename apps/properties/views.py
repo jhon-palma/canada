@@ -136,7 +136,6 @@ def upload_data_auto(request):
         return redirect('properties:upload_data_auto')
     return render(request, 'upload_auto.html')
 
-
 def download_files(request):
     if request.method == 'POST':
         try:

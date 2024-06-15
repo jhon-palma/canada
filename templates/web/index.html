@@ -202,7 +202,7 @@
 		var point = new Array();
 
         {% for inscription in inscriptions_vendu %}
-            point.push(new Array("{{ inscription.latitude }}", "{{ inscription.longitude }}"));
+            point.push(new Array("{{ inscription.latitude|stringformat:'s'|cut:',' }}", "{{ inscription.longitude|stringformat:'s'|cut:',' }}"));
         {% endfor %}
 		// point.push(new Array("46.0326814","-74.2823293"));
 		// point.push(new Array("45.533176","-73.558621"));

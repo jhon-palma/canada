@@ -39,15 +39,23 @@ from .models import *
     #   PIECES_UNITES
     #   CARACTERISTIQUES
 
-
+import chardet 
 def process_txt_data(file_path):
     data = []
-    with open(file_path, encoding='latin-1') as txt_file:
+
+    with open(file_path, 'rb') as file:
+        raw_data = file.read()
+
+    result = chardet.detect(raw_data)
+    encoding = result['encoding']
+
+    with open(file_path, encoding=encoding) as txt_file:
         for line in txt_file:
             line = line.strip()
             reader = csv.reader([line])
             fields = next(reader)
             data.append(fields)
+
     return data
 
 
@@ -112,6 +120,9 @@ def create_objects(data, model_name):
         return mensaje
     elif model_name == "CARACTERISTIQUES":
         mensaje = uploadCaracteristiques(data)
+        return mensaje
+    elif model_name == "MUNICIPALITES":
+        mensaje = uploadMunicipalites(data)
         return mensaje
     else:
         mensaje = uploadDataGeneric(data, model_name)
@@ -2449,3 +2460,39 @@ def get_id_scarac_code(code, tcar_code):
         return scarac_code
     except SousTypeCaracteristiques.DoesNotExist:
         return None
+
+import django
+from django.utils.encoding import smart_str
+django.utils.encoding.smart_text = smart_str
+
+def uploadMunicipalites(data):
+    mensaje = ''
+    total_actualizadas = 0
+    total_nuevas = 0
+
+    for row in data:
+        code = row[0]
+        description = row[1]
+        region_code = Regions.objects.get(code=row[2])
+        try:
+            municipalite = Municipalites.objects.get(code=code)
+            cambios = []
+            if municipalite.description != description:
+                municipalite.description = description
+                cambios.append('description')
+            if cambios:
+                municipalite.save()
+                total_actualizadas = total_actualizadas + 1
+        except ObjectDoesNotExist:
+            municipalite = Municipalites.objects.create(
+                code = code,
+                description = description,
+                region_code = region_code,
+            )
+            total_nuevas = total_nuevas + 1
+
+        except MultipleObjectsReturned:
+            mensaje = f"Se encontraron múltiples coincidencias para {code}, revise la base de datos"
+
+    mensaje = f"Municipalites creadas: {total_nuevas}, Municipalites Actualizadas: {total_actualizadas}"
+    return mensaje

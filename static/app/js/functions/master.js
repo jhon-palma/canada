@@ -2,6 +2,7 @@
 dict_en = {
   'en':'fr',
   'properties':'proprietes',
+  'propertie':'propriete',
   'properties-for-sale':'proprietes-a-vendre',
   'properties-for-rent':'proprietes-a-louer',
   'real-estate-broker':'courtier-immobilier',
@@ -13,6 +14,7 @@ dict_en = {
 dict_fr = {
   'fr':'en',
   'proprietes':'properties',
+  'propriete':'propertie',
   'proprietes-a-vendre':'properties-for-sale',
   'proprietes-a-louer':'properties-for-rent',
   'courtier-immobilier':'real-estate-broker',

@@ -160,3 +160,9 @@ python
 
 # Carpeta de SCRIPTS
 scripts/
+
+database/
+data/backups/
+!data/generic/
+
+download_data.py

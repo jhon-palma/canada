@@ -23,8 +23,6 @@ from ..properties.models import Addenda, Caracteristiques, Inscriptions, Membres
 from ..labels import DICT_LABELS
 # import os, time, json, httplib2, requests
 
-
-
 class WebIndex(View):
     template_name = 'web/index.html'
 
