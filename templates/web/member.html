@@ -10,7 +10,7 @@
 		<div class="img"><img src="{{ member.image.url }}" alt="{{ member.membre.prenom }} {{ member.membre.nom }}"></div>
 		<div class="singleinfo">
 			<h1 class="h2def"><span>Rencontrez</span> {{ member.membre.prenom }} {{ member.membre.nom }}</h1>
-			<p style="color: red;">Courtier Immobilier Résidentiel  </p>
+			<p>{% if language == 'en' %}{% if member.occupation %}{{ member.occupation }} & {% endif %}{{ member.membre.type_certificat.description_anglaise }}{% else %}{% if member.occupation_anglaise %}{{ member.occupation_anglaise }} et {% endif %}{{ member.membre.type_certificat.description_francaise }}{% endif %}</p>
 			<div class="socmember">
                 <a class="btnsoc" href="tel:+1{{ member.membre.telephone_1 }}"><i class="fa fa-phone"></i></a>
                 <a class="btnsoc" href="mailto:{{ member.courriel }}"><i class="fa fa-envelope"></i></a>
@@ -32,7 +32,7 @@
 			<hr>
 			<div class="minibionew">
 				<div class="minibiotxt">
-					<p> {% if language == "en" %}{{ member.membre.presentation_a }}{% else %}{{ member.membre.presentation_f }}{% endif %}</p>
+					<p> {% if language == "en" %}{{ member.membre.presentation_a|default_if_none:''  }}{% else %}{{ member.membre.presentation_f|default_if_none:''  }}{% endif %}</p>
 				</div>
 				<div class="minibiocontact">
 					<a href="mailto:{{ member.membre.courriel }}" class="bouton">Contact</a>

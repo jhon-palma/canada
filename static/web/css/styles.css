@@ -1881,3 +1881,14 @@ h1.h1styled{
 .realestatebroker_content a:link {
 	text-decoration: underline !important;
 }
+
+.content_search{
+    padding: 0px 160px 0px 160px;
+}
+
+form.propsearch.specific-padding {
+    padding-top: 40px;
+    padding-right: 0 !important;
+    padding-bottom: 0 !important;
+    padding-left: 0 !important;
+}

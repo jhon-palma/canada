@@ -10,13 +10,24 @@
 {% else %}
 	{% define 'courtier' as broker %}
 {% endif %}
-
 {% if team %}
     <section class="teampage">
-	    <div class="wrap">
+        <div class="content_search">
+            <div class="prop-bg">
+                    <form method="GET" id="search_form" class="propsearch specific-padding" action="">
+                        <input type="hidden" name="Codelang" value="{{ language }}" />
+                        <label for="forwhat1" class="tablabel">{{ labels.team.text.eight }}</label>
+                        <div class="searchbarcont">
+                            <input type="search" placeholder="{{ labels.team.text.eight }}" class="mainsearch" id="fserach" name="fserach" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="wrap" id="team-results">
             {% for member in team %}
                 <div class="member">
-                    <a href="{{ server|server_url }}/{{ language }}/{{ broker }}/" class="img">
+                    <a href="{% url 'web:member' language=language option='courtier' member_id=member.membre.id %}" class="img">
                         <img src="{{ member.image_over.url }}" alt="{{ member.user.get_full_name}}" class="overIMG">
                         <img src="{{ member.image.url }}" alt="{{ member.user.get_full_name }}">
                         <h2>{{ member.user.get_full_name }}</h2>
@@ -26,20 +37,6 @@
                         <div class="socmember">
                             <a class="btnsoc" href="tel:+1{{ member.membre.telephone_1 }}"><i class="fa fa-phone"></i></a>
                             <a class="btnsoc" href="mailto:{{ member.membre.courriel }}"><i class="fa fa-envelope"></i></a>
-                            <!-- {% for media_social in member.membre.membresmediassociaux_set.all %}
-                                {% if media_social.type_media_social.description_abregee_francaise == "FACEBOOK" %}
-                                    <a class="btnsoc" href="{{ media_social.lien_media_social }}" target="_blank"><img src="{% static 'web/images2/facebook.png' %}" alt="Facebook" /></a>
-                                {% endif %}
-                                {% if media_social.type_media_social.description_abregee_francaise == "INSTAGRAM" %}
-                                    <a class="btnsoc" href="{{ media_social.lien_media_social }}" target="_blank"><img src="{% static 'web/images2/instagram.png' %}" alt="Instagram" /></a>
-                                {% endif %}
-                                {% if media_social.type_media_social.description_abregee_francaise == "LINKEDIN" %}
-                                    <a class="btnsoc" href="{{ media_social.lien_media_social }}" target="_blank"><img src="{% static 'web/images2/linkedin.png' %}" alt="LinkedIn" /></a>
-                                {% endif %}
-                                {% if media_social.type_media_social.description_abregee_francaise == "TWITTER" %}
-                                    <a class="btnsoc" href="{{ media_social.lien_media_social }}" target="_blank"><img src="{% static 'web/images2/twitter.png' %}" alt="Facebook" /></a>
-                                {% endif %}
-                            {% endfor %} -->
                             {% if member.facebook %}
                                 <a class="btnsoc" href="{{ member.facebook }}" target="_blank"><img src="{% static 'web/images2/facebook.png' %}" alt="Facebook" /></a>
                             {% endif %}
@@ -61,12 +58,62 @@
             {% endfor %}
         </div>
     </section>
-    {% else %}
-        <section class="piecesbloc" style="display: flex; justify-content: center; align-items: center;">
-            <div class="adressebloc">
-                <div class="box_vendu">No members created</div>
-            </div>
-        </section>
-    {% endif %}
+{% else %}
+    <section class="piecesbloc" style="display: flex; justify-content: center; align-items: center;">
+        <div class="adressebloc">
+            <div class="box_vendu">No members created</div>
+        </div>
+    </section>
+{% endif %}
 
 {% load static %}{% include 'web/footer_web.html' %}
+
+<script>
+    $(document).ready(function(){
+        $('#fserach').on('input', function() {
+            var query = $(this).val();
+            var language = "{{ language }}";
+
+            $.ajax({
+                type: 'GET',
+                url: "{% url 'web:searchMember' %}",
+                data: {
+                    'term': query,
+                    'Codelang': language
+                },
+                dataType: 'json',
+                success: function(data) {
+                    var results = data.results;
+                    $('#team-results').empty();
+                    for (var i = 0; i < results.length; i++) {
+                        var member = results[i];
+                        var memberUrl = `/{{language}}/courtier/${member.id}/`;
+                        var occupationText = member.occupation ? `${member.occupation} & ` : '';
+                        var memberElement = `
+                            <div class="member">
+                                <a href="${memberUrl}" class="img">
+                                    <img src="${member.image_over}" alt="${member.name}" class="overIMG">
+                                    <img src="${member.image}" alt="${member.name}">
+                                    <h2>${member.name}</h2>
+                                </a>
+                                <div class="memberinfo">
+                                    <p style="margin: 0 1px 10px;">${occupationText}${member.certification}</p>
+                                    <div class="socmember">
+                                        <a class="btnsoc" href="tel:+1${member.phone}"><i class="fa fa-phone"></i></a>
+                                        <a class="btnsoc" href="mailto:${member.email}"><i class="fa fa-envelope"></i></a>
+                                        ${member.facebook ? `<a class="btnsoc" href="${member.facebook}" target="_blank"><img src="{% static 'web/images2/facebook.png' %}" alt="Facebook" /></a>` : ''}
+                                        ${member.instagram ? `<a class="btnsoc" href="${member.instagram}" target="_blank"><img src="{% static 'web/images2/instagram.png' %}" alt="Instagram" /></a>` : ''}
+                                        ${member.linkedin ? `<a class="btnsoc" href="${member.linkedin}" target="_blank"><img src="{% static 'web/images2/linkedin.png' %}" alt="LinkedIn" /></a>` : ''}
+                                        ${member.twitter ? `<a class="btnsoc" href="${member.twitter}" target="_blank"><img src="{% static 'web/images2/twitter.png' %}" alt="Twitter" /></a>` : ''}
+                                    </div>
+                                    <a href="${memberUrl}" class="bouton">{{ labels.team.button.one }}</a>
+                                </div>
+                            </div>
+                        `;
+                        $('#team-results').append(memberElement);
+                    }
+                }
+            });
+        });
+    });
+</script>

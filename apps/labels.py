@@ -142,6 +142,7 @@ DICT_LABELS = {
                     'five':'Marketing Manager',
                     'six':'Listing Coordinator',
                     'seven':'Transaction Coordinator',
+                    'eight':'Search Real Estate Broker',
                 }
             },
             'work':{
@@ -314,6 +315,7 @@ DICT_LABELS = {
                     'five':'Directrice du Marketing',
                     'six':'Coordonnatrice des inscriptionsr',
                     'seven':'Coordonnatrice des transactions',
+                    'eight':'Recherche Courtier immobilier',
                 }
             },
             'work':{

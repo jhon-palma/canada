@@ -10,6 +10,7 @@ from django.core.paginator import Paginator
 # from django.db.models import F, Q
 from django.db.models import Value, CharField, Q
 from django.template.loader import *
+from django.urls import reverse
 from django.views.decorators.csrf import *
 from django.views.generic import *
 from django.shortcuts import get_object_or_404
@@ -31,9 +32,7 @@ class WebIndex(View):
         option = kwargs.get('option', 'proprietes')
         labels = DICT_LABELS.get(language).get('web')
         inscriptions = Inscriptions.objects.all().order_by('-id')[:3]
-        # inscriptions_vendu = Inscriptions.objects.all()
         inscriptions_vendu = Inscriptions.objects.select_related('code_statut').filter(code_statut__valeur="VE")
-        # print(inscriptions_vendu)
         context = {
             'language':language,
             'option':option,
@@ -67,7 +66,6 @@ def searchpropriete(request):
     status = request.GET.get('status')
     regions = Regions.objects.all()
     municipalites = Municipalites.objects.all()
-    # inscriptions = Inscriptions.objects.all()
     if status == '2':
         inscriptions = Inscriptions.objects.filter(prix_location_demande__isnull=False)
     else:
@@ -107,7 +105,6 @@ def searchpropriete(request):
     }
 
     json_data = {str(i + 1): val for i, val in enumerate(list(filtered_data["regions"].values()) + list(filtered_data["municipalites"].values()) + list(filtered_data["inscriptions"].values()))}
-    # print(json_data)
     return JsonResponse(json_data, safe=False)
 
 class SearchView(View):
@@ -127,15 +124,6 @@ class SearchView(View):
         maxamount = request.GET.get('maxamount', '')
         propriete = request.GET.getlist('propriete[]')
         
-        # print("codelang: ",codelang)
-        # print("status: ",status)
-        # print('adress_region: ',adress_region)
-        # print('adress_mun: ',adress_mun)
-        # print("nbchambre: ",nbchambre)
-        # print("nbbain: ",nbbain)
-        # print("minamount: ",minamount)
-        # print("maxamount: ",maxamount)
-        # print('propriete: ', propriete)
         query = Q()
         
         if status == '2':
@@ -144,7 +132,6 @@ class SearchView(View):
             query &= Q(prix_demande__isnull=False)
         else:
             pass
-            # query &= Q(prix_location_demande__isnull=False) & Q(prix_demande__isnull=False)
 
         if nbchambre:
             nbchambre = int(nbchambre)
@@ -161,9 +148,6 @@ class SearchView(View):
             elif status =='1':
                 query &= Q(prix_demande__gte=minamount)
             else:
-                # inscriptions_location = Inscriptions.objects.filter(prix_location_demande__gte=minamount)
-                # inscriptions_demande = Inscriptions.objects.filter(prix_demande__gte=minamount)
-                # inscriptions_prix = inscriptions_location.union(inscriptions_demande)
                 inscriptions_location = Q(prix_location_demande__gte=minamount)
                 inscriptions_demande = Q(prix_demande__gte=minamount)
                 query &= (inscriptions_location | inscriptions_demande)
@@ -175,15 +159,9 @@ class SearchView(View):
             elif status =='1':
                 query &= Q(prix_demande__lte=maxamount)
             else:
-                # inscriptions_location = Inscriptions.objects.filter(prix_location_demande__lte=maxamount)
-                # inscriptions_demande = Inscriptions.objects.filter(prix_demande__lte=maxamount)
-                # inscriptions_prix = inscriptions_location.union(inscriptions_demande)
                 inscriptions_location_max = Q(prix_location_demande__lte=maxamount)
                 inscriptions_demande_max = Q(prix_demande__lte=maxamount)
                 query &= (inscriptions_location_max | inscriptions_demande_max)
-
-        # inscriptions_mun = Inscriptions.objects.none()
-        # inscriptions_region = Inscriptions.objects.none()
 
         if adress_mun:
             # inscriptions_mun = Inscriptions.objects.filter(query & Q(mun_code__code__in=adress_mun))
@@ -193,20 +171,11 @@ class SearchView(View):
             # inscriptions_region = Inscriptions.objects.filter(query & Q(mun_code__region_code__in=adress_region))
             query &= Q(mun_code__region_code__in=adress_region)
 
-        # inscriptions_combined = set(inscriptions_mun) | set(inscriptions_region)
-        
-        # inscriptions = list(inscriptions_combined)
-
         inscriptions_all = Inscriptions.objects.filter(query)
 
         num_results = len(inscriptions_all)
-        print("===================: ",query)
         if num_results == 0:
             inscriptions_all = Inscriptions.objects.filter(query)
-            print('LEN: ',len(inscriptions_all))
-        # for i in inscriptions:
-        #     print(i.no_inscription)
-        print('num_results: ',num_results)
 
         paginator = Paginator(inscriptions_all, 36)
         page_number = request.GET.get('page')
@@ -417,3 +386,33 @@ def contact_messages(request):
         return JsonResponse({'response': 1})
     else:
         return JsonResponse({'response': 0})
+
+def searchMember(request):
+    query = request.GET.get('term')
+    language = request.GET.get('Codelang', 'en')
+    if query:
+        profiles = Profile.objects.filter(
+                Q(membre__prenom__icontains=query) | 
+                Q(membre__nom__icontains=query) | 
+                Q(membre__bur_code__code__icontains=query)
+            )
+    else:
+        profiles = Profile.objects.all()
+    
+    results = []
+    for profile in profiles:
+        results.append({
+            'name': profile.user.get_full_name(),
+            'occupation': profile.occupation if language == 'en' else profile.occupation_anglaise,
+            'certification': profile.membre.type_certificat.description_anglaise if language == 'en' else profile.membre.type_certificat.description_francaise,
+            'phone': profile.membre.telephone_1,
+            'email': profile.membre.courriel,
+            'facebook': profile.facebook,
+            'instagram': profile.instagram,
+            'linkedin': profile.linkedin,
+            'twitter': profile.twitter,
+            'image': profile.image.url,
+            'image_over': profile.image_over.url,
+            'id': profile.membre.id,
+        })
+    return JsonResponse({'results': results})
