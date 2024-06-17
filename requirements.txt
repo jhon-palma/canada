@@ -33,3 +33,4 @@ six==1.16.0
 sqlparse==0.4.4
 typing_extensions==4.7.1
 tzdata==2024.1
+chardet==3.0.4
