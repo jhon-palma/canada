@@ -22,7 +22,8 @@ def login(request):
             if request.user.is_superuser:
                 return HttpResponseRedirect(reverse('users:profile_list'))
             else:
-                return HttpResponseRedirect(reverse('normal_user_view'))
+                return HttpResponseRedirect(reverse('users:profile_list'))
+                #return HttpResponseRedirect(reverse('normal_user_view'))
         else:
             return render(request, 'accounts/login.html', {'error': validator.getMessage() })
     else:

@@ -17,7 +17,6 @@ from django.db import transaction
 
 from apps.properties.uploadData import create_objects, process_txt_data
 from apps.users.views import user_verification
-from .importdata import importar_datos_desde_archivos
 from .forms import UploadFileForm
 from .models import *
 from datetime import datetime
@@ -93,10 +92,21 @@ def upload_data_auto(request):
         ]
         folder_path = PATH_BASE
 
+        models_base = [
+            'GENRES_PROPRIETES',
+            'MUNICIPALITES',
+            'QUARTIERS',
+            'REGIONS',
+            'SOUS_TYPE_CARACTERISTIQUES',
+            'TYPE_CARACTERISTIQUES',
+            'TYPES_BANNIERES',
+            'VALEURS_FIXES'
+        ]
+
         try:
             
             for modelo in modelos:
-                filename = modelo + '.txt'
+                filename = modelo + '.TXT' if modelo not in models_base else modelo + '.txt'
                 file_path = os.path.join(folder_path, filename)
 
                 if os.path.exists(file_path):
