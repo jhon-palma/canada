@@ -14,6 +14,9 @@ DICT_LABELS = {
                     'one':'Find Your Montréal',
                     'two':'Dream',
                     'three':'Home',
+                    'four': 'Your trusted real estate brokers',
+                    'five': 'Discover your ',
+                    'six': "Home's worth",
                 },
                 'sale':'For Sale',
                 'rent':'For Rent',
@@ -27,6 +30,7 @@ DICT_LABELS = {
                     'seven':'See All Videos',
                     'eight':'Subscribe to our Newsletter',
                     'nine':'Subscribe',
+                    'ten':'Free evaluation',
                 },
                 'placeholder':{
                     'one':'Search by city, neighbourhood, region, address or Centris No.',
@@ -52,7 +56,7 @@ DICT_LABELS = {
                     'fourteen': 'We donate to',
                     'fifteen': 'Autism montreal',
                     'sixteen': 'A percentage of our proceeds from each transaction goes towards Autism Montreal.',
-                    'seventeen': 'We donated over $10,000 in 2022',
+                    'seventeen': 'We donated over $10,000 in 2023',
                     'eighteen': 'Autisme Montréal is a place that inspires, unites, carries hope, promotes growth and social solidarity.',
                     'nineteen': 'Read',
                     'twenty': 'Our clients testimonials',
@@ -106,6 +110,7 @@ DICT_LABELS = {
                 'title':{
                     'one':'Contact ',
                     'two':'Us',
+                    'three':'Get your Free home evaluation today!',
                 },
                 'button':{
                     'one':'Contact Us',
@@ -187,6 +192,9 @@ DICT_LABELS = {
                     'one':'Trouvez Votre Maison De',
                     'two':'rêve',
                     'three':'À Montréal',
+                    'four': 'Vos courtiers immobiliers de confiance',
+                    'five': 'Découvrez votre',
+                    'six': 'Valeur de la maison',
                 },
                 'sale':'À Vendre',
                 'rent':'À Louer',
@@ -200,6 +208,7 @@ DICT_LABELS = {
                     'seven':'Voir Toutes Les Vidéos',
                     'eight':"S'abonner À Notre Infolettre",
                     'nine':"S'abonner",
+                    'ten':"Estimation gratuite",
                 },
                 'placeholder':{
                     'one':'Recherche par ville, quartier, région, adresse ou No Centris.',
@@ -225,7 +234,7 @@ DICT_LABELS = {
                     'fourteen': 'Nous faisons don à',
                     'fifteen': 'Autisme Montréal',
                     'sixteen': 'Un pourcentage du produit de chaque transaction est versé à Autisme Montréal.',
-                    'seventeen': 'Nous avons donné plus de 10 000 dollars en 2022',
+                    'seventeen': 'Nous avons donné plus de 10 000 dollars en 2023',
                     'eighteen': "Autisme Montréal est un lieu qui inspire, rassemble, porte l'espoir, favorise l'épanouissement et la solidarité sociale.",
                     'nineteen': 'Lire',
                     'twenty': 'Les témoignages de nos clients',
@@ -279,6 +288,7 @@ DICT_LABELS = {
                 'title':{
                     'one':'Contactez-',
                     'two':'Nous',
+                    'three': "Obtenez une évaluation gratuite de votre logement dès aujourd'hui!",
                 },
                 'button':{
                     'one':'Contactez-Nous',

@@ -20,9 +20,11 @@ from django.shortcuts import get_object_or_404
 from datetime import *
 from apps.users.models import Profile
 from apps.web.models import Formulaire_contact
+from immobilier.local_settings import CHANNEL_ID, KEY_API_YB
 from ..properties.models import Addenda, Caracteristiques, Inscriptions, Membres, Municipalites, Propertie, Regions, SousTypeCaracteristiques
 from ..labels import DICT_LABELS
 # import os, time, json, httplib2, requests
+import requests
 
 class WebIndex(View):
     template_name = 'web/index.html'
@@ -33,12 +35,45 @@ class WebIndex(View):
         labels = DICT_LABELS.get(language).get('web')
         inscriptions = Inscriptions.objects.all().order_by('-id')[:3]
         inscriptions_vendu = Inscriptions.objects.select_related('code_statut').filter(code_statut__valeur="VE")
+        api_key = KEY_API_YB
+        channel_id = CHANNEL_ID
+        max_results = 20
+
+        # url = f'https://www.googleapis.com/youtube/v3/search?key={api_key}&channelId={channel_id}&part=snippet,id&order=date&maxResults={max_results}&type=video'
+        # response = requests.get(url)
+        url = f'https://www.googleapis.com/youtube/v3/search?key={api_key}&channelId={channel_id}&order=date&part=snippet,id&maxResults={max_results}'
+        response = requests.get(url)
+        data = response.json()
+
+        video_urls = []
+        for video in data['items']:
+            if video['id']['kind'] == 'youtube#video':
+                video_url = f"https://www.youtube.com/shorts/{video['id']['videoId']}"
+                head_response = requests.head(video_url)
+                if head_response.status_code != 200:
+                    video_urls.append({
+                        'title': video['snippet']['title'],
+                        'url': video['id']['videoId'],
+                        'publishedAt': video['snippet']['publishedAt']
+                    })
+        # video_urls = [
+        #     {
+        #         'url':f"{video['id']['videoId']}",
+        #         'title': video['snippet']['title'],
+
+        #     }
+        #     for video in data['items']
+        # ]
+        video_urls = sorted(video_urls, key=lambda x: x['publishedAt'], reverse=True)
+        video_urls = video_urls[:3]
+        print(data)
         context = {
             'language':language,
             'option':option,
             'labels':labels,
             'inscriptions':inscriptions,
             'inscriptions_vendu':inscriptions_vendu,
+            'video_urls':video_urls,
         }
         return render(request, self.template_name, context)
 

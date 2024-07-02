@@ -1,22 +1,14 @@
 {% load static %}{% load tags %}{% load humanize %}{% include 'web/header_web.html' %}
-
+{% if language == 'fr' %}
+	{% define 'propriete' as url_propertie %}
+{% else %}
+	{% define 'propertie' as url_propertie %}
+{% endif %}
 <section class="banner">
 	<div class="baninfo">
-		<h1>{{ labels.index.title.one }} <br><span>{{ labels.index.title.two }}</span> {{ labels.index.title.three }}</h1>
-		<form method="GET" id="formserach" action="{% url 'web:search' language=language %}">
-			<input type="hidden" name="Codelang" value="{{ language }}">
-			<input type="radio" name="status" id="forwhat1" value="1" checked>
-			<label for="forwhat1" class="tablabel">{{ labels.index.sale }}</label>
-			<input type="radio" name="status" id="forwhat2" value="2">
-			<label for="forwhat2" class="tablabel">{{ labels.index.rent }}</label>
-			<div class="searchbarcont">
-				<input type="search" placeholder="{{ labels.index.placeholder.one }}" id="fserach" name="fserach">
-				<div id="freeform-filters" class="filters-list">
-					<ul></ul>
-				</div>
-				<div class="submitcont"><input type="submit" value="{{ labels.index.button.one }}"></div>
-			</div>
-		</form>
+		<h2>{{ labels.index.title.four }}</h2>
+        <h1 class="titleban">{{ labels.index.title.five }}<span> {{ labels.index.title.six }}</span></h1>
+        <a href="#" class="button btnpopeval">{{ labels.index.button.ten }}</a>
 	</div>
 	<img src="{% static 'web/images2/small-banner.jpg' %}" alt="View of Montreal" class="bannerimg">
 </section>
@@ -89,7 +81,7 @@
             <h2 class="h2def"><span>{{ labels.index.text.one }}</span> {{ labels.index.text.thirteen }}</h2>
             <div class="propcont">
                 {% for inscription in inscriptions %}
-                    <a href="" class="propa">
+                    <a href="{% url 'web:detail-propertie' language=language option=url_propertie propertie_id=inscription.id %}" class="propa">
                         <span class="img">
                             {% for photo in inscription.photos.all %}
                                 {% if photo.seq == 1 %}
@@ -98,14 +90,30 @@
 {% if language == 'en' %}for rent{% else %}à louer{% endif %}{% endif %} {{inscription.mun_code.description}}" title="{% if language == 'en' %}{{ inscription.genre_propriete.description_anglaise }}{% else %}{{ inscription.genre_propriete.description_francaise }}{% endif %}{% if inscription.prix_demande %}{% if language == 'en' %} for sale{% else %}à vendre{% endif %}{% endif %}{% if inscription.prix_location_demande %}{% if language == 'en' %} for rent{% else %}à louer{% endif %}{% endif %} {{inscription.mun_code.description}}" class="propimg" />
 {%endif%}
                             {% endfor %}
-                            <p>{% if inscription.prix_location_demande and language == "en" %}
-                                ${{inscription.prix_location_demande|floatformat:0|intcomma}}
-                            {% elif inscription.prix_location_demande and language == "fr" %}
-                                {{inscription.prix_location_demande|floatformat:0|intcomma}}$
-                            {%endif%}</p>
+                            <p> 
+                                {% if inscription.code_statut.valeur == "VE" %}
+                                                        <span class="prix_maison_hid">{% if language == "en" %}Sold{% else %}Vendu{% endif%}</span>
+                                                    {% else %}
+                                                        {% if inscription.prix_demande and language == "en" %}
+                                                            ${{inscription.prix_demande|floatformat:0|intcomma}} {% if inscription.ind_taxes_prix_demande %}<span> +GST/QST{% endif %}</span>
+                                                        {% elif inscription.prix_demande and language == "fr" %}
+                                                            {{inscription.prix_demande|floatformat:0|intcomma}}$ {% if inscription.ind_taxes_prix_demande %}<span> +GST/QST{% endif %}</span>
+                                                        {%endif%}
+                                                        {% if inscription.prix_location_demande and language == "en" %}
+                                                            ${{inscription.prix_location_demande|floatformat:0|intcomma}}
+                                                        {% elif inscription.prix_location_demande and language == "fr" %}
+                                                            {{inscription.prix_location_demande|floatformat:0|intcomma}}$
+                                                        {%endif%}
+                                                        {% if inscription.frequence_prix_location and language == "en" %}
+                                                            / <span class="text-lowercase">{{ inscription.frequence_prix_location.description_anglaise }}</span>
+                                                        {% elif inscription.frequence_prix_location and language == "fr"  %}
+                                                            / <span class="text-lowercase">{{ inscription.frequence_prix_location.description_francaise }}</span>
+                                                        {% endif %}
+                                                    {% endif %}
+                            </p>
                         </span>
                         <div class="rollprop">
-                            <p>{% if language == "en" %}
+                            <p class="text-uppercase">{% if language == "en" %}
                                 {{ inscription.genre_propriete.description_anglaise }}
                             {% else %}
                                 {{ inscription.genre_propriete.description_francaise }}
@@ -163,20 +171,15 @@
         <a href="https://www.google.com/search?q=lj+realties&rlz=1C5CHFA_enCA932CA932&oq=lj&aqs=chrome.1.69i57j69i59j46i175i199i512j46i131i433i512j0i512j69i60j69i61l2.3691j0j7&sourceid=chrome&ie=UTF-8#lrd=0x4cc93c824dc00621:0xb6aa87687fd1e9eb,3,,," target="_blank" class="bouton">{{ labels.index.button.six }}</a>
     </div>
 </div>
-
 <section class="videoshome">
     <div class="wrap">
         <h2 class="h2def"><span>{{ labels.index.text.twenty_one }}</span> {{ labels.index.text.twenty_two }}</h2>
         <div class="videoshomecont">
-            <a href="https://www.youtube.com/watch?v=FO3aCXGQFKY" class="thumbhome">
-                <img src="https://img.youtube.com/vi/FO3aCXGQFKY/hqdefault.jpg" alt="Discover Montreal's Top 3 Cyclist-Friendly Neighborhoods">
-            </a>
-            <a href="https://www.youtube.com/watch?v=4ltyWt_K0Ww" class="thumbhome">
-                <img src="https://img.youtube.com/vi/4ltyWt_K0Ww/hqdefault.jpg" alt="From Tranquility to Thriving Communities: South Shore's Top Neighbourhoods">
-            </a>
-            <a href="https://www.youtube.com/watch?v=LYiWFus8kvU" class="thumbhome">
-                <img src="https://img.youtube.com/vi/LYiWFus8kvU/hqdefault.jpg" alt="Maximizing Your Home's Value: The Role of Refinancing">
-            </a>
+            {% for video in video_urls %}
+                <a href="https://www.youtube.com/watch?v={{ video.url }}" class="thumbhome">
+                    <img src="https://img.youtube.com/vi/{{ video.url }}/hqdefault.jpg" alt="{{ video.title }}">
+                </a>
+            {% endfor %}
         </div>
         <a href="{{ server|server_url }}/{{ language }}/media/" class="bouton">{{ labels.index.button.seven }}</a>
     </div>
@@ -248,8 +251,45 @@
 	</script>
 
 </section>
-	
-
+<section class="popeval">
+	<article>
+		<div id="confirm_message_form" class="confirm_message"></div>
+		<form method="post" id="formeval" name="formeval" action="{% url 'web:contact_messages' %}">
+            {% csrf_token %}
+			<h2>{% if language == "en" %}Free evaluation of your property{% else %}Estimation gratuite de la valeur de votre propriété{% endif %}</h2>
+			<input type="hidden" id="g-recaptcha-response-eval" name="g-recaptcha-response-eval" value="">
+            <input type="hidden" id="sujet" name="sujet" value="Evaluation">
+			<input type="text" name="prenom" placeholder="Full name" required="required">
+			<input type="tel" name="tel" placeholder="Phone" required="required">
+			<input type="email" name="email" placeholder="E-mail" required="required">
+			<input type="text" name="adresse" placeholder="Address" required="required">
+			<div id="errEval"></div>
+			<input type="submit" value="{% if language == 'en' %}Send{% else %}Envoyer{% endif %}">
+		</form>
+	</article>
+	<div class="close">+</div>
+</section>	
+<section class="popfiche">
+	<article>
+		<div id="confirm_message" class="confirm_message"></div>
+		<form method="post" id="formfiche" name="formfiche" action="/contact_messages/">
+            {% csrf_token %}
+			<h2></h2>
+			<input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" value="">
+            <input type="hidden" id="sujet-2" name="sujet" value="">
+			<input type="text" name="prenom" placeholder="Full name" required="required">
+			<input type="tel" name="tel" placeholder="Phone" required="required">
+			<input type="email" name="email" placeholder="E-mail" required="required">
+			<textarea name="comment" placeholder="Your message" required="required"></textarea>
+			<input type="hidden" name="adresse" value="1160, Rue MacKay, apt. 2303, Montréal (Ville-Marie)">
+			<input type="hidden" name="maison" value="27135293">
+			<input type="hidden" name="objet" value="">
+			<div id="err"></div>
+			<input id="submitFiche" type="submit" value="">
+		</form>
+	</article>
+	<div class="close">+</div>
+</section>
 <script type="text/javascript">
     var language = "{{ language }}";
     $(function () {
@@ -312,7 +352,75 @@
         });
     });
 </script>
-
-
+<script>
+    $(document).ready(function () {
+        $("#formeval").on('submit', function (e) {
+            e.preventDefault();
+            var form = $("#formeval");
+            $.ajax({
+                type: "POST",
+                url: form.attr("action"),
+                data: form.serialize(),
+                success: function (response) {
+                    if (response.response == 1) {
+                        var language = "{{ language }}";
+                        if (language === "en") {
+                            var message = "Thank you, your message has been sent";
+                        } else {
+                            var message = "Merci, votre message a bien été envoyé";
+                        }
+                        $("#confirm_message_form").html("<p>" + message + "</p>");
+                        $('#formeval').hide();
+                        $('#formeval')[0].reset();					
+                    }
+                    else {
+                        var language = "{{ language }}";
+                        if (language === "en") {
+                            var message = "Required fields";
+                        } else {
+                            var message = "Champs obligatoires";
+                        }
+                        $("#errEval").html(message);
+                    }
+                }
+            });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $("#formfiche").on('submit', function (e) {
+            e.preventDefault();
+            var form = $("#formfiche");
+            $.ajax({
+                type: "POST",
+                url: form.attr("action"),
+                data: form.serialize(),
+                success: function (response) {
+                    if (response.response == 1) {
+                        var language = "en";
+                        if (language === "en") {
+                            var message = "Thank you, your message has been sent";
+                        } else {
+                            var message = "Merci, votre message a bien été envoyé";
+                        }
+                        $("#confirm_message").html("<p>" + message + "</p>");
+                        $('#formfiche').hide();
+                        $('#formfiche')[0].reset();
+                    }
+                    else {
+                        var language = "en";
+                        if (language === "en") {
+                            var message = "Required fields";
+                        } else {
+                            var message = "Champs obligatoires";
+                        }
+                        $("#err").html(message);
+                    }
+                }
+            });
+        });
+    });
+</script>
 {% load static %}{% include 'web/footer_web.html' %}
 

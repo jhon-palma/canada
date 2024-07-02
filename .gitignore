@@ -166,3 +166,5 @@ data/backups/
 !data/generic/
 
 download_data.py
+
+docs/
