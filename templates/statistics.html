@@ -1,0 +1,216 @@
+{% extends 'users/base.html' %}
+{% load tags %}{% load static %}
+{% block title %}Actualizar datos estadísticos{% endblock %}
+{% block head_page %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'app/css/datatables/dataTables.css' %}"/>
+    <script src="{% static 'app/js/datatables/dataTables.js' %}"></script>
+    <script src="{% static 'app/js/core/libraries/bootstrap.min.js' %}"></script>
+    <style>
+        #load_spinner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 9999;
+            overflow: hidden;
+            background: #000000cb;
+        }
+
+        #load_spinner:before {
+            content: "";
+            position: fixed;
+            top: calc(50% - 30px);
+            left: calc(50% - 30px);
+            border: 6px solid #63b3b1;
+            border-top-color: #1a5e5c;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: animate-load_spinner 1s linear infinite;
+        }
+
+        @keyframes animate-load_spinner {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+{% endblock %}
+{% block content %}
+    <div class="page-header">
+        <div class="page-header-content">
+            <div class="page-title">
+                <ul class="breadcrumb">
+                    <li>
+                    <h4><span class="no-margin text-bold">Actualizar datos estadísticos</span></h4>
+                    </li>
+                    <div class="heading-elements">
+                    </div>
+                </ul>
+            </div>
+        </div>
+        <div class="breadcrumb-line">
+            <ul class="breadcrumb">
+                <li><a href="#">Settings</a></li>
+                <li>Web</li>
+                <li class="active">Actualizar datos estadísticos</li>
+            </ul>
+        </div>
+    </div>
+    <div class="content">
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == "error"%}
+                    <div class="alert alert-danger">
+                        {{ message }}
+                        <ul>
+                            {% for error in profile_form.errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% else %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %} 
+        <div class="panel panel-flat">
+            <div class="panel-heading">
+                <h5 class="panel-title"></h5>
+                <div class="panel-body">
+                    <form method="post" name='update-form'>
+                        {% csrf_token %}
+                        <fieldset class="content-group">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <legend class="text-bold"><i class="icon-graph position-left"></i>Precio medio de venta</legend>
+                                    {% if sold_price %}
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="id_price_initial_year">Año Inicial:</label>
+                                                    <input type="text" class="form-control" id="id_price_initial_year" name="price_initial_year" value="{{ sold_price.initial_year|default_if_none:'' }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="id_price_final_year">Año final:</label>
+                                                    <input type="text" class="form-control" id="id_price_final_year" name="price_final_year" value="{{ sold_price.final_year|default_if_none:'' }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="id_price_initial_value">Valor inicial:</label>
+                                                    <input type="text" class="form-control" id="id_price_initial_value" name="price_initial_value" value="{{ sold_price.initial_value|default_if_none:'' }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="id_price_final_value">Valor final:</label>
+                                                    <input type="text" class="form-control" id="id_price_final_value" name="price_final_value" value="{{ sold_price.final_value|default_if_none:'' }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <div class="alert alert-danger">
+                                            Por favor cree en el Admin Django el registro llamado 'sold_price'
+                                        </div>
+                                    {% endif %}
+                                    <legend class="text-bold"><i class="icon-graph position-left"></i>Días promedio</legend>
+                                    {% if days %}
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="id_day_initial_year">Año Inicial:</label>
+                                                    <input type="text" class="form-control" id="id_day_initial_year" name="day_initial_year" value="{{ days.initial_year|default_if_none:'' }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="id_day_final_year">Año final:</label>
+                                                    <input type="text" class="form-control" id="id_day_final_year" name="day_final_year" value="{{ days.final_year|default_if_none:'' }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="id_day_initial_value">Valor inicial:</label>
+                                                    <input type="text" class="form-control" id="id_day_initial_value" name="day_initial_value" value="{{ days.initial_value|default_if_none:'' }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="id_day_final_value">Valor final:</label>
+                                                    <input type="text" class="form-control" id="id_day_final_value" name="day_final_value" value="{{ days.final_value|default_if_none:'' }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <div class="alert alert-danger">
+                                            Por favor cree en el Admin Django el registro llamado 'days'
+                                        </div>
+                                    {% endif %}
+                                    <legend class="text-bold"><i class="icon-graph position-left"></i>Número de transacciones</legend>
+                                    {% if number_transactions %}
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="id_number_initial_year">Año Inicial:</label>
+                                                    <input type="text" class="form-control" id="id_number_initial_year" name="number_initial_year" value="{{ number_transactions.initial_year|default_if_none:'' }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="id_number_final_year">Año final:</label>
+                                                    <input type="text" class="form-control" id="id_number_final_year" name="number_final_year" value="{{ number_transactions.final_year|default_if_none:'' }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="id_number_initial_value">Valor inicial:</label>
+                                                    <input type="text" class="form-control" id="id_number_initial_value" name="number_initial_value" value="{{ number_transactions.initial_value|default_if_none:'' }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="id_number_final_value">Valor final:</label>
+                                                    <input type="text" class="form-control" id="id_number_final_value" name="number_final_value" value="{{ number_transactions.final_value|default_if_none:'' }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% else %}
+                                        <div class="alert alert-danger">
+                                            Por favor cree en el Admin Django el registro llamado 'number_transactions'
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                <button type="submit" class="btn bg-primary-800 btn-labeled btn-xlg"  style="width: auto; float: left;"><b><i class="icon-floppy-disk"></i></b><span class="margin-left-20">Actualizar</span></button>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="load_spinner" class="hide"></div>
+{% endblock %}
+{% block javascript %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.querySelector('form[name="upload-form"]');
+        const loader = document.getElementById('load_spinner');
+        form.addEventListener('submit', function () {
+            $('#load_spinner').removeClass("hide");
+        });
+    });
+</script>
+{% endblock %}

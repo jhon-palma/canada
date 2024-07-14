@@ -22,3 +22,10 @@ class Formulaire_contact(models.Model):
             else:
                 self.no_formulaire = 1
         super(Formulaire_contact, self).save(*args, **kwargs)
+
+class Statistics(models.Model):
+    name = models.CharField(max_length=50, blank=True, null=True)
+    initial_year = models.CharField(max_length=4, blank=True, null=True)
+    final_year = models.CharField(max_length=4, blank=True, null=True)
+    initial_value = models.CharField(max_length=50, blank=True, null=True)
+    final_value = models.CharField(max_length=50, blank=True, null=True)

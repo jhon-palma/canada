@@ -21,42 +21,48 @@
 				<div class="img"><img src="{% static 'web/images2/ico-cta1.png' %}" alt="Icon" /></div>
 				<h3 class="h2def">{{ labels.index.text.three }} <span>{{ labels.index.text.four }}</span></h3>
 				<div class="statels">
-					<div class="statel">
-						<p>2021</p>
-						<p><span class="num">102.88</span>%</p>
-					</div>
-					<div class="statel">
-						<p>2022</p>
-						<p><span class="num">102.58</span>%</p>
-					</div>
+                    {% if sold_price %}
+                        <div class="statel">
+                            <p>{{ sold_price.initial_year|default_if_none:'' }}</p>
+                            <p><span class="num">{{ sold_price.initial_value|default_if_none:'' }}</span>%</p>
+                        </div>
+                        <div class="statel">
+                            <p>{{ sold_price.final_year|default_if_none:'' }}</p>
+                            <p><span class="num">{{ sold_price.final_value|default_if_none:'' }}</span>%</p>
+                        </div>
+                    {% endif %}
 				</div>
 			</div>
 			<div class="statblock">
 				<div class="img"><img src="{% static 'web/images2/ico-cta2.png' %}" alt="Icon" /></div>
 				<h3 class="h2def">{{ labels.index.text.five }} <span>{{ labels.index.text.six }}</span></h3>
 				<div class="statels">
-					<div class="statel">
-						<p>2021</p>
-						<p><span class="num">14.5</span> {{ labels.index.text.nine }}</p>
-					</div>
-					<div class="statel">
-						<p>2022</p>
-						<p><span class="num">17.76</span> {{ labels.index.text.nine }}</p>
-					</div>
+                        {% if days %}
+                            <div class="statel">
+                                <p>{{ days.initial_year|default_if_none:'' }}</p>
+                                <p><span class="num">{{ days.initial_value|default_if_none:'' }}</span> {{ labels.index.text.nine }}</p>
+                            </div>
+                            <div class="statel">
+                                <p>{{ days.final_year|default_if_none:'' }}</p>
+                                <p><span class="num">{{ days.final_value|default_if_none:'' }}</span> {{ labels.index.text.nine }}</p>
+                            </div>
+                        {% endif %}
 				</div>
 			</div>
 			<div class="statblock">
 				<div class="img"><img src="{% static 'web/images2/ico-cta3.png' %}" alt="Icon" /></div>
 				<h3 class="h2def">{{ labels.index.text.seven }} <span>{{ labels.index.text.eight }}</span></h3>
 				<div class="statels">
-					<div class="statel">
-						<p>2021</p>
-						<p><span class="num">152</span></p>
-					</div>
-					<div class="statel">
-						<p>2022</p>
-						<p><span class="num">117</span></p>
-					</div>
+                        {% if number_transactions %}
+                            <div class="statel">
+                                <p>{{ number_transactions.initial_year|default_if_none:'' }}</p>
+                                <p><span class="num">{{ number_transactions.initial_value|default_if_none:'' }}</span></p>
+                            </div>
+                            <div class="statel">
+                                <p>{{ number_transactions.final_year|default_if_none:'' }}</p>
+                                <p><span class="num">{{ number_transactions.final_value|default_if_none:'' }}</span></p>
+                            </div>
+                        {% endif %}
 				</div>
 			</div>
 		</div>

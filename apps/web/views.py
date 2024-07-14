@@ -19,7 +19,7 @@ from django.shortcuts import get_object_or_404
 # from dateutil.relativedelta import *
 from datetime import *
 from apps.users.models import Profile
-from apps.web.models import Formulaire_contact
+from apps.web.models import Formulaire_contact, Statistics
 from immobilier.local_settings import CHANNEL_ID, KEY_API_YB
 from ..properties.models import Addenda, Caracteristiques, Inscriptions, Membres, Municipalites, Propertie, Regions, SousTypeCaracteristiques
 from ..labels import DICT_LABELS
@@ -38,42 +38,49 @@ class WebIndex(View):
         api_key = KEY_API_YB
         channel_id = CHANNEL_ID
         max_results = 20
-
+        try:
+            sold_price = Statistics.objects.get(name = "sold_price")
+        except Statistics.DoesNotExist:
+            sold_price = None
+        try:
+            days = Statistics.objects.get(name="days")
+        except Statistics.DoesNotExist:
+            days = None 
+        try:
+            number_transactions = Statistics.objects.get(name="number_transactions")
+        except Statistics.DoesNotExist:
+            number_transactions = None
         # url = f'https://www.googleapis.com/youtube/v3/search?key={api_key}&channelId={channel_id}&part=snippet,id&order=date&maxResults={max_results}&type=video'
         # response = requests.get(url)
         url = f'https://www.googleapis.com/youtube/v3/search?key={api_key}&channelId={channel_id}&order=date&part=snippet,id&maxResults={max_results}'
-        response = requests.get(url)
-        data = response.json()
+        # response = requests.get(url)
+        # data = response.json()
 
-        video_urls = []
-        for video in data['items']:
-            if video['id']['kind'] == 'youtube#video':
-                video_url = f"https://www.youtube.com/shorts/{video['id']['videoId']}"
-                head_response = requests.head(video_url)
-                if head_response.status_code != 200:
-                    video_urls.append({
-                        'title': video['snippet']['title'],
-                        'url': video['id']['videoId'],
-                        'publishedAt': video['snippet']['publishedAt']
-                    })
-        # video_urls = [
-        #     {
-        #         'url':f"{video['id']['videoId']}",
-        #         'title': video['snippet']['title'],
+        # video_urls = []
+        # for video in data['items']:
+        #     if video['id']['kind'] == 'youtube#video':
+        #         video_url = f"https://www.youtube.com/shorts/{video['id']['videoId']}"
+        #         head_response = requests.head(video_url)
+        #         if head_response.status_code != 200:
+        #             video_urls.append({
+        #                 'title': video['snippet']['title'],
+        #                 'url': video['id']['videoId'],
+        #                 'publishedAt': video['snippet']['publishedAt']
+        #             })
 
-        #     }
-        #     for video in data['items']
-        # ]
-        video_urls = sorted(video_urls, key=lambda x: x['publishedAt'], reverse=True)
-        video_urls = video_urls[:3]
-        print(data)
+        # video_urls = sorted(video_urls, key=lambda x: x['publishedAt'], reverse=True)
+        # video_urls = video_urls[:3]
+
         context = {
             'language':language,
             'option':option,
             'labels':labels,
             'inscriptions':inscriptions,
             'inscriptions_vendu':inscriptions_vendu,
-            'video_urls':video_urls,
+            # 'video_urls':video_urls,
+            'sold_price':sold_price,
+            'days':days,
+            'number_transactions':number_transactions,
         }
         return render(request, self.template_name, context)
 
@@ -451,3 +458,51 @@ def searchMember(request):
             'id': profile.membre.id,
         })
     return JsonResponse({'results': results})
+
+def statistics(request):
+    try:
+        sold_price = Statistics.objects.get(name = "sold_price")
+    except Statistics.DoesNotExist:
+        sold_price = None
+    try:
+        days = Statistics.objects.get(name="days")
+    except Statistics.DoesNotExist:
+        days = None 
+    try:
+        number_transactions = Statistics.objects.get(name="number_transactions")
+    except Statistics.DoesNotExist:
+        number_transactions = None
+    if request.method == "POST":
+        try:
+            sold_price.initial_year = request.POST.get('price_initial_year')
+            sold_price.final_year = request.POST.get('price_final_year')
+            sold_price.initial_value = request.POST.get('price_initial_value')
+            sold_price.final_value = request.POST.get('price_final_value')
+            sold_price.save()
+        except:
+            pass
+        try:
+            days.initial_year = request.POST.get('day_initial_year')
+            days.final_year = request.POST.get('day_final_year')
+            days.initial_value = request.POST.get('day_initial_value')
+            days.final_value = request.POST.get('day_final_value')
+            days.save()
+        except:
+            pass
+        try:
+            number_transactions.initial_year = request.POST.get('number_initial_year')
+            number_transactions.final_year = request.POST.get('number_final_year')
+            number_transactions.initial_value = request.POST.get('number_initial_value')
+            number_transactions.final_value = request.POST.get('number_final_value')
+            number_transactions.save()
+        except:
+            pass
+        messages.success(request, 'Datos actualizados correctamente!')
+        return redirect("web:statistics")
+
+    context = {
+        'sold_price':sold_price,
+        'days':days,
+        'number_transactions':number_transactions,
+    }
+    return render(request, 'statistics.html', context)

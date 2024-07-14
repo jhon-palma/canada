@@ -19,5 +19,5 @@ urlpatterns = [
     # path('search/', views.SearchView.as_view(), name='search'),
     re_path(r'^(?P<language>fr|en)/search/', views.SearchView.as_view(), name='search'),
     path('contact_messages/', views.contact_messages, name='contact_messages'),
-    
-]
+    path('statistics/', views.statistics, name='statistics'),
+    ]
