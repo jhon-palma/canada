@@ -56,11 +56,11 @@
                         {% if number_transactions %}
                             <div class="statel">
                                 <p>{{ number_transactions.initial_year|default_if_none:'' }}</p>
-                                <p><span class="num">{{ number_transactions .initial_value|default_if_none:'' }}</span></p>
+                                <p><span class="num">{{ number_transactions.initial_value|default_if_none:'' }}</span></p>
                             </div>
                             <div class="statel">
                                 <p>{{ number_transactions.final_year|default_if_none:'' }}</p>
-                                <p><span class="num">{{ number_transactions .final_value|default_if_none:'' }}</span></p>
+                                <p><span class="num">{{ number_transactions.final_value|default_if_none:'' }}</span></p>
                             </div>
                         {% endif %}
 				</div>
