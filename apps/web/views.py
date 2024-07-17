@@ -52,24 +52,24 @@ class WebIndex(View):
             number_transactions = None
         # url = f'https://www.googleapis.com/youtube/v3/search?key={api_key}&channelId={channel_id}&part=snippet,id&order=date&maxResults={max_results}&type=video'
         # response = requests.get(url)
-        url = f'https://www.googleapis.com/youtube/v3/search?key={api_key}&channelId={channel_id}&order=date&part=snippet,id&maxResults={max_results}'
-        response = requests.get(url)
-        data = response.json()
+        # url = f'https://www.googleapis.com/youtube/v3/search?key={api_key}&channelId={channel_id}&order=date&part=snippet,id&maxResults={max_results}'
+        # response = requests.get(url)
+        # data = response.json()
 
-        video_urls = []
-        for video in data['items']:
-            if video['id']['kind'] == 'youtube#video':
-                video_url = f"https://www.youtube.com/shorts/{video['id']['videoId']}"
-                head_response = requests.head(video_url)
-                if head_response.status_code != 200:
-                    video_urls.append({
-                        'title': video['snippet']['title'],
-                        'url': video['id']['videoId'],
-                        'publishedAt': video['snippet']['publishedAt']
-                    })
+        # video_urls = []
+        # for video in data['items']:
+        #     if video['id']['kind'] == 'youtube#video':
+        #         video_url = f"https://www.youtube.com/shorts/{video['id']['videoId']}"
+        #         head_response = requests.head(video_url)
+        #         if head_response.status_code != 200:
+        #             video_urls.append({
+        #                 'title': video['snippet']['title'],
+        #                 'url': video['id']['videoId'],
+        #                 'publishedAt': video['snippet']['publishedAt']
+        #             })
 
-        video_urls = sorted(video_urls, key=lambda x: x['publishedAt'], reverse=True)
-        video_urls = video_urls[:3]
+        # video_urls = sorted(video_urls, key=lambda x: x['publishedAt'], reverse=True)
+        # video_urls = video_urls[:3]
 
         context = {
             'language':language,
@@ -77,7 +77,7 @@ class WebIndex(View):
             'labels':labels,
             'inscriptions':inscriptions,
             'inscriptions_vendu':inscriptions_vendu,
-            'video_urls':video_urls,
+            # 'video_urls':video_urls,
             'sold_price':sold_price,
             'days':days,
             'number_transactions':number_transactions,

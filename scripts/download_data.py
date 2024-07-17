@@ -6,8 +6,10 @@ import shutil
 import datetime
 
 
-PATH_BASE = '{}/data'.format(Path(__file__).resolve().parent.parent)
-PATH_BACKUP = '/{}/backups'.format(PATH_BASE)
+# PATH_BASE = '{}/data'.format(Path(__file__).resolve().parent.parent)
+PATH_BASE = Path(__file__).resolve().parent.parent / 'data'
+# PATH_BACKUP = '/{}/backups'.format(PATH_BASE)
+PATH_BACKUP = PATH_BASE / 'backups'
 
 try:
 

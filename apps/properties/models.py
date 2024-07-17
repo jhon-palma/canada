@@ -302,8 +302,9 @@ class Inscriptions(models.Model):
     au_genre_propriete_info_a = models.CharField(db_column='AU_GENRE_PROPRIETE_INFO_A', max_length=255, blank=True, null=True)  
     prix_demande_taxe_incl = models.IntegerField(db_column='PRIX_DEMANDE_TAXE_INCL', blank=True, null=True)  
     ind_visites_interactive = models.CharField(db_column='IND_VISITES_INTERACTIVE', max_length=255, blank=True, null=True)  
-    addenda_complet_f = models.TextField(db_column='ADDENDA_COMPLET_F', blank=True, null=True)  
-    addenda_complet_a = models.TextField(db_column='ADDENDA_COMPLET_A', blank=True, null=True)  
+    addenda_complet_f = models.TextField(db_column='ADDENDA_COMPLET_F', blank=True, null=True)
+    addenda_complet_a = models.TextField(db_column='ADDENDA_COMPLET_A', blank=True, null=True)
+    status = models.BooleanField(default=True)
 
     class Meta:
         db_table = 'INSCRIPTIONS'

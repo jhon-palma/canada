@@ -595,8 +595,11 @@ def uploadInscriptions(data):
             inscription_to_delete = Inscriptions.objects.get(
                 no_inscription=existing_key,
             )
-            inscription_to_delete.delete()
-            mensaje += f"Inscrptions eliminada: {existing_key}\n"
+            inscription_to_delete.status = False  # Cambiar el campo `status` a False
+            inscription_to_delete.save()  # Guardar el cambio en la base de datos
+            mensaje += f"Inscriptions desactividadas: {existing_key}\n"
+            # inscription_to_delete.delete()
+            # mensaje += f"Inscrptions eliminada: {existing_key}\n"
         except Inscriptions.DoesNotExist:
             mensaje += f"Error: No se encontró la Inscriptions a eliminar: {existing_key}\n"
 
@@ -1445,13 +1448,13 @@ def uploadPhotos(data):
     data_txt = {(row[7]) for row in data}
     existing_keys = {(photos.no_version) for photos in Photos.objects.all()}
     photos_to_delete = Photos.objects.filter(no_version__in=existing_keys).exclude(no_version__in=data_txt)
-    for photos_del in photos_to_delete:
-        total_eliminadas = total_eliminadas + 1
-        try:
-            photos_del.delete()
-            mensaje += f"Photos eliminada: {photos_del}\n"
-        except Photos.DoesNotExist:
-            mensaje += f"Error: No se encontró la Photos a eliminar: {photos_del}\n"
+    # for photos_del in photos_to_delete:
+    #     total_eliminadas = total_eliminadas + 1
+    #     try:
+    #         photos_del.delete()
+    #         mensaje += f"Photos eliminada: {photos_del}\n"
+    #     except Photos.DoesNotExist:
+    #         mensaje += f"Error: No se encontró la Photos a eliminar: {photos_del}\n"
     for row in data:
         no_inscription = get_id_inscription(row[0])
         if no_inscription == None:
@@ -1532,14 +1535,14 @@ def uploadLiensAdditionnels(data):
     if not data:
         return "El archivo está en blanco. No hay datos para procesar."
     
-    for liens_del in liens_to_delete:
-        total_eliminadas = total_eliminadas + 1
-        try:
-            no_inscription_value, seq = liens_del
-            LiensAdditionnels.objects.filter(no_inscription__no_inscription=no_inscription_value, seq=seq).delete()
-            mensaje += f"LiensAdditionnels eliminada: {liens_del}\n"
-        except LiensAdditionnels.DoesNotExist:
-            mensaje += f"Error: No se encontró la LiensAdditionnels a eliminar: {liens_del}\n"
+    # for liens_del in liens_to_delete:
+    #     total_eliminadas = total_eliminadas + 1
+    #     try:
+    #         no_inscription_value, seq = liens_del
+    #         LiensAdditionnels.objects.filter(no_inscription__no_inscription=no_inscription_value, seq=seq).delete()
+    #         mensaje += f"LiensAdditionnels eliminada: {liens_del}\n"
+    #     except LiensAdditionnels.DoesNotExist:
+    #         mensaje += f"Error: No se encontró la LiensAdditionnels a eliminar: {liens_del}\n"
     for row in data:
         no_inscription = get_id_inscription(str(row[0]))
         if no_inscription == None:
@@ -1595,14 +1598,14 @@ def uploadVisitesLibres(data):
     existing_keys = {(visites.no_inscription.no_inscription, visites.seq) for visites in VisitesLibres.objects.all()}
     visites_to_delete = existing_keys.difference(data_txt)
 
-    for visites_del in visites_to_delete:
-        total_eliminadas = total_eliminadas + 1
-        try:
-            no_inscription_value, seq = visites_del
-            VisitesLibres.objects.filter(no_inscription__no_inscription=no_inscription_value, seq=seq).delete()
-            mensaje += f"VisitesLibres eliminada: {visites_del}\n"
-        except VisitesLibres.DoesNotExist:
-            mensaje += f"Error: No se encontró la VisitesLibres a eliminar: {visites_del}\n"
+    # for visites_del in visites_to_delete:
+    #     total_eliminadas = total_eliminadas + 1
+    #     try:
+    #         no_inscription_value, seq = visites_del
+    #         VisitesLibres.objects.filter(no_inscription__no_inscription=no_inscription_value, seq=seq).delete()
+    #         mensaje += f"VisitesLibres eliminada: {visites_del}\n"
+    #     except VisitesLibres.DoesNotExist:
+    #         mensaje += f"Error: No se encontró la VisitesLibres a eliminar: {visites_del}\n"
     for row in data:
         no_inscription = get_id_inscription(str(row[0]))
         if no_inscription == None:
@@ -1682,14 +1685,14 @@ def uploadRemarques(data):
     existing_keys = {(remarques.no_inscription.no_inscription, remarques.no_remarque) for remarques in Remarques.objects.all()}
     remarques_to_delete = existing_keys.difference(data_txt)
 
-    for remarques_del in remarques_to_delete:
-        total_eliminadas = total_eliminadas + 1
-        try:
-            no_inscription_value, no_remarque = remarques_del
-            Remarques.objects.filter(no_inscription__no_inscription=no_inscription_value, no_remarque=no_remarque).delete()
-            mensaje += f"Remarques eliminada: {remarques_del}\n"
-        except Remarques.DoesNotExist:
-            mensaje += f"Error: No se encontró la Remarques a eliminar: {remarques_del}\n"
+    # for remarques_del in remarques_to_delete:
+    #     total_eliminadas = total_eliminadas + 1
+    #     try:
+    #         no_inscription_value, no_remarque = remarques_del
+    #         Remarques.objects.filter(no_inscription__no_inscription=no_inscription_value, no_remarque=no_remarque).delete()
+    #         mensaje += f"Remarques eliminada: {remarques_del}\n"
+    #     except Remarques.DoesNotExist:
+    #         mensaje += f"Error: No se encontró la Remarques a eliminar: {remarques_del}\n"
     for row in data:
         no_inscription = get_id_inscription(str(row[0]))
         if no_inscription == None:
@@ -1754,14 +1757,14 @@ def uploadUnitesDetaillees(data):
     existing_keys = {(detaillees.no_inscription.no_inscription, detaillees.seq) for detaillees in UnitesDetaillees.objects.all()}
     detaillees_to_delete = existing_keys.difference(data_txt)
 
-    for detaillees_del in detaillees_to_delete:
-        total_eliminadas = total_eliminadas + 1
-        try:
-            no_inscription_value, seq = detaillees_del
-            UnitesDetaillees.objects.filter(no_inscription__no_inscription=no_inscription_value, seq=seq).delete()
-            mensaje += f"UnitesDetaillees eliminada: {detaillees_del}\n"
-        except UnitesDetaillees.DoesNotExist:
-            mensaje += f"Error: No se encontró la UnitesDetaillees a eliminar: {detaillees_del}\n"
+    # for detaillees_del in detaillees_to_delete:
+    #     total_eliminadas = total_eliminadas + 1
+    #     try:
+    #         no_inscription_value, seq = detaillees_del
+    #         UnitesDetaillees.objects.filter(no_inscription__no_inscription=no_inscription_value, seq=seq).delete()
+    #         mensaje += f"UnitesDetaillees eliminada: {detaillees_del}\n"
+    #     except UnitesDetaillees.DoesNotExist:
+    #         mensaje += f"Error: No se encontró la UnitesDetaillees a eliminar: {detaillees_del}\n"
     for row in data:
         no_inscription = get_id_inscription(str(row[0]))
         if no_inscription == None:
@@ -1891,19 +1894,19 @@ def uploadAddenda(data):
     data_txt = {(str(row[0]),int(row[1]),str(row[2]),int(row[3])) for row in data}
     existing_keys = {(addenda.no_inscription.no_inscription, addenda.no_addenda, addenda.code_langue.valeur, addenda.ordre_affichage) for addenda in Addenda.objects.all()}
     addenda_to_delete = existing_keys.difference(data_txt)
-    for addenda_del in addenda_to_delete:
-        total_eliminadas = total_eliminadas + 1
-        try:
-            no_inscription, no_addenda, code_langue, ordre_affichage = addenda_del
-            Addenda.objects.filter(
-                no_inscription__no_inscription=no_inscription,
-                no_addenda=no_addenda,
-                code_langue=code_langue,
-                ordre_affichage=ordre_affichage
-            ).delete()
-            mensaje += f"UnitesDetaillees eliminada: {addenda_del}\n"
-        except Addenda.DoesNotExist:
-            mensaje += f"Error: No se encontró la UnitesDetaillees a eliminar: {addenda_del}\n"
+    # for addenda_del in addenda_to_delete:
+    #     total_eliminadas = total_eliminadas + 1
+    #     try:
+    #         no_inscription, no_addenda, code_langue, ordre_affichage = addenda_del
+    #         Addenda.objects.filter(
+    #             no_inscription__no_inscription=no_inscription,
+    #             no_addenda=no_addenda,
+    #             code_langue=code_langue,
+    #             ordre_affichage=ordre_affichage
+    #         ).delete()
+    #         mensaje += f"UnitesDetaillees eliminada: {addenda_del}\n"
+    #     except Addenda.DoesNotExist:
+    #         mensaje += f"Error: No se encontró la UnitesDetaillees a eliminar: {addenda_del}\n"
     for row in data:
         no_inscription = get_id_inscription(str(row[0]))
         if no_inscription == None:
@@ -1966,17 +1969,17 @@ def uploadUnitesSommaires(data):
     data_txt = {(str(row[0]),int(row[1])) for row in data}
     existing_keys = {(sommaires.no_inscription.no_inscription, sommaires.seq) for sommaires in UnitesSommaires.objects.all()}
     sommaires_to_delete = existing_keys.difference(data_txt)
-    for sommaires_del in sommaires_to_delete:
-        total_eliminadas = total_eliminadas + 1
-        try:
-            no_inscription, seq = sommaires_del
-            UnitesSommaires.objects.filter(
-                no_inscription__no_inscription=no_inscription,
-                seq=seq,
-            ).delete()
-            mensaje += f"UnitesSommaires eliminada: {sommaires_del}\n"
-        except UnitesSommaires.DoesNotExist:
-            mensaje += f"Error: No se encontró la UnitesSommaires a eliminar: {sommaires_del}\n"
+    # for sommaires_del in sommaires_to_delete:
+    #     total_eliminadas = total_eliminadas + 1
+    #     try:
+    #         no_inscription, seq = sommaires_del
+    #         UnitesSommaires.objects.filter(
+    #             no_inscription__no_inscription=no_inscription,
+    #             seq=seq,
+    #         ).delete()
+    #         mensaje += f"UnitesSommaires eliminada: {sommaires_del}\n"
+    #     except UnitesSommaires.DoesNotExist:
+    #         mensaje += f"Error: No se encontró la UnitesSommaires a eliminar: {sommaires_del}\n"
     for row in data:
         no_inscription = get_id_inscription(str(row[0]))
         if no_inscription == None:
@@ -2046,17 +2049,17 @@ def uploadDepenses(data):
     existing_keys = {(depenses.no_inscription.no_inscription, depenses.tdep_code.valeur) for depenses in Depenses.objects.all()}
     
     depenses_to_delete = existing_keys.difference(data_txt)
-    for depenses_del in depenses_to_delete:
-        total_eliminadas = total_eliminadas + 1
-        try:
-            no_inscription, tdep_code = depenses_del
-            Depenses.objects.filter(
-                no_inscription__no_inscription=no_inscription,
-                tdep_code__valeur=tdep_code,
-            ).delete()
-            mensaje += f"Depenses eliminada: {depenses_del}\n"
-        except Depenses.DoesNotExist:
-            mensaje += f"Error: No se encontró la Depenses a eliminar: {depenses_del}\n"
+    # for depenses_del in depenses_to_delete:
+    #     total_eliminadas = total_eliminadas + 1
+    #     try:
+    #         no_inscription, tdep_code = depenses_del
+    #         Depenses.objects.filter(
+    #             no_inscription__no_inscription=no_inscription,
+    #             tdep_code__valeur=tdep_code,
+    #         ).delete()
+    #         mensaje += f"Depenses eliminada: {depenses_del}\n"
+    #     except Depenses.DoesNotExist:
+    #         mensaje += f"Error: No se encontró la Depenses a eliminar: {depenses_del}\n"
     for row in data:
         no_inscription = get_id_inscription(str(row[0]))
         if no_inscription == None:
@@ -2132,17 +2135,17 @@ def uploadRenovations(data):
     data_txt = {(str(row[0]),int(row[1])) for row in data}
     existing_keys = {(renovations.no_inscription.no_inscription, renovations.seq) for renovations in Renovations.objects.all()}
     renovations_to_delete = existing_keys.difference(data_txt)
-    for renovations_del in renovations_to_delete:
-        total_eliminadas = total_eliminadas + 1
-        try:
-            no_inscription, seq = renovations_del
-            Renovations.objects.filter(
-                no_inscription__no_inscription=no_inscription,
-                seq=seq,
-            ).delete()
-            mensaje += f"Renovations eliminada: {renovations_del}\n"
-        except Renovations.DoesNotExist:
-            mensaje += f"Error: No se encontró la Renovations a eliminar: {renovations_del}\n"
+    # for renovations_del in renovations_to_delete:
+    #     total_eliminadas = total_eliminadas + 1
+    #     try:
+    #         no_inscription, seq = renovations_del
+    #         Renovations.objects.filter(
+    #             no_inscription__no_inscription=no_inscription,
+    #             seq=seq,
+    #         ).delete()
+    #         mensaje += f"Renovations eliminada: {renovations_del}\n"
+    #     except Renovations.DoesNotExist:
+    #         mensaje += f"Error: No se encontró la Renovations a eliminar: {renovations_del}\n"
     for row in data:
         no_inscription = get_id_inscription(str(row[0]))
         if no_inscription == None:
@@ -2210,18 +2213,18 @@ def uploadPiecesUnites(data):
     data_txt = {(str(row[0]),int(row[1]),int(row[2])) for row in data}
     existing_keys = {(pieces.no_inscription.no_inscription, pieces.seq_unite_det, pieces.seq) for pieces in PiecesUnites.objects.all()}
     pieces_to_delete = existing_keys.difference(data_txt)
-    for pieces_del in pieces_to_delete:
-        total_eliminadas = total_eliminadas + 1
-        try:
-            no_inscription, seq_unite_det, seq = pieces_del
-            PiecesUnites.objects.filter(
-                no_inscription__no_inscription=no_inscription,
-                seq_unite_det=seq_unite_det,
-                seq=seq,
-            ).delete()
-            mensaje += f"PiecesUnites eliminada: {pieces_del}\n"
-        except PiecesUnites.DoesNotExist:
-            mensaje += f"Error: No se encontró la PiecesUnites a eliminar: {pieces_del}\n"
+    # for pieces_del in pieces_to_delete:
+    #     total_eliminadas = total_eliminadas + 1
+    #     try:
+    #         no_inscription, seq_unite_det, seq = pieces_del
+    #         PiecesUnites.objects.filter(
+    #             no_inscription__no_inscription=no_inscription,
+    #             seq_unite_det=seq_unite_det,
+    #             seq=seq,
+    #         ).delete()
+    #         mensaje += f"PiecesUnites eliminada: {pieces_del}\n"
+    #     except PiecesUnites.DoesNotExist:
+    #         mensaje += f"Error: No se encontró la PiecesUnites a eliminar: {pieces_del}\n"
     for row in data:
         no_inscription = get_id_inscription(row[0])
         if no_inscription == None:
@@ -2331,18 +2334,18 @@ def uploadCaracteristiques(data):
     data_txt = {(str(row[0]),str(row[1]),str(row[2])) for row in data}
     existing_keys = {(caracteristiques.no_inscription.no_inscription, caracteristiques.tcar_code.code, caracteristiques.scarac_code.code) for caracteristiques in Caracteristiques.objects.all()}
     caracteristiques_to_delete = existing_keys.difference(data_txt)
-    for caracteristiques_del in caracteristiques_to_delete:
-        total_eliminadas = total_eliminadas + 1
-        try:
-            no_inscription, tcar_code, scarac_code = caracteristiques_del
-            Caracteristiques.objects.filter(
-                no_inscription__no_inscription=no_inscription,
-                tcar_code__code=tcar_code,
-                scarac_code__code=scarac_code,
-            ).delete()
-            mensaje += f"Caracteristiques eliminada: {caracteristiques_del}\n"
-        except Caracteristiques.DoesNotExist:
-            mensaje += f"Error: No se encontró la Caracteristiques a eliminar: {caracteristiques_del}\n"
+    # for caracteristiques_del in caracteristiques_to_delete:
+    #     total_eliminadas = total_eliminadas + 1
+    #     try:
+    #         no_inscription, tcar_code, scarac_code = caracteristiques_del
+    #         Caracteristiques.objects.filter(
+    #             no_inscription__no_inscription=no_inscription,
+    #             tcar_code__code=tcar_code,
+    #             scarac_code__code=scarac_code,
+    #         ).delete()
+    #         mensaje += f"Caracteristiques eliminada: {caracteristiques_del}\n"
+    #     except Caracteristiques.DoesNotExist:
+    #         mensaje += f"Error: No se encontró la Caracteristiques a eliminar: {caracteristiques_del}\n"
     for row in data:
 
         no_inscription = get_id_inscription(str(row[0]))
