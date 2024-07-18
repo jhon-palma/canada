@@ -25,6 +25,53 @@ from ..properties.models import Addenda, Caracteristiques, Inscriptions, Membres
 from ..labels import DICT_LABELS
 # import os, time, json, httplib2, requests
 import requests
+from googleapiclient.discovery import build
+import isodate
+
+def get_youtube_videos(api_key, channel_id, max_results=3):
+    youtube = build('youtube', 'v3', developerKey=api_key)
+    
+    # Obtener lista de videos del canal
+    videos_request = youtube.search().list(
+        part='snippet',
+        channelId=channel_id,
+        maxResults=30,
+        order='date',
+        type='video',
+    )
+    videos_response = videos_request.execute()
+    print(videos_response)
+    videos = []
+
+    # Obtener información de duración para cada video
+    for item in videos_response['items']:
+        video_id = item['id']['videoId']
+        video_title = item['snippet']['title']
+
+        # Obtener detalles del video incluyendo duración
+        video_details_request = youtube.videos().list(
+            part='contentDetails',
+            id=video_id
+        )
+        video_details_response = video_details_request.execute()
+
+        # Obtener duración del video en formato ISO 8601
+        duration = video_details_response['items'][0]['contentDetails']['duration']
+        
+        # Convertir la duración a segundos
+        duration_seconds = isodate.parse_duration(duration).total_seconds()
+
+        # Excluir videos con duración mayor a 1 minuto (60 segundos)
+        if duration_seconds > 61:
+            videos.append({
+                'title': video_title,
+                'video_id': video_id,
+            })
+        if len(videos) >= max_results:
+            break
+
+    return videos
+
 
 class WebIndex(View):
     template_name = 'web/index.html'
@@ -37,7 +84,7 @@ class WebIndex(View):
         inscriptions_vendu = Inscriptions.objects.select_related('code_statut').filter(code_statut__valeur="VE")
         api_key = KEY_API_YB
         channel_id = CHANNEL_ID
-        max_results = 20
+        max_results = 3
         try:
             sold_price = Statistics.objects.get(name = "sold_price")
         except Statistics.DoesNotExist:
@@ -53,9 +100,11 @@ class WebIndex(View):
         # url = f'https://www.googleapis.com/youtube/v3/search?key={api_key}&channelId={channel_id}&part=snippet,id&order=date&maxResults={max_results}&type=video'
         # response = requests.get(url)
         # url = f'https://www.googleapis.com/youtube/v3/search?key={api_key}&channelId={channel_id}&order=date&part=snippet,id&maxResults={max_results}'
+        # url = f'https://www.googleapis.com/youtube/v3/search?key={api_key}&channelId={channel_id}&order=date&part=snippet,id&maxResults={max_results}'
         # response = requests.get(url)
-        # data = response.json()
 
+        # data = response.json()
+        # print(data)
         # video_urls = []
         # for video in data['items']:
         #     if video['id']['kind'] == 'youtube#video':
@@ -71,6 +120,8 @@ class WebIndex(View):
         # video_urls = sorted(video_urls, key=lambda x: x['publishedAt'], reverse=True)
         # video_urls = video_urls[:3]
 
+        videos = get_youtube_videos(api_key, channel_id, max_results=3)
+        # print(videos)
         context = {
             'language':language,
             'option':option,
@@ -78,6 +129,7 @@ class WebIndex(View):
             'inscriptions':inscriptions,
             'inscriptions_vendu':inscriptions_vendu,
             # 'video_urls':video_urls,
+            'video_urls':videos,
             'sold_price':sold_price,
             'days':days,
             'number_transactions':number_transactions,

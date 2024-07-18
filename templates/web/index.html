@@ -182,8 +182,8 @@
         <h2 class="h2def"><span>{{ labels.index.text.twenty_one }}</span> {{ labels.index.text.twenty_two }}</h2>
         <div class="videoshomecont">
             {% for video in video_urls %}
-                <a href="https://www.youtube.com/watch?v={{ video.url }}" class="thumbhome">
-                    <img src="https://img.youtube.com/vi/{{ video.url }}/hqdefault.jpg" alt="{{ video.title }}">
+                <a href="https://www.youtube.com/watch?v={{ video.video_id }}" class="thumbhome">
+                    <img src="https://img.youtube.com/vi/{{ video.video_id }}/hqdefault.jpg" alt="{{ video.title }}">
                 </a>
             {% endfor %}
         </div>
