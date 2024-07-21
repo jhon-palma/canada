@@ -155,6 +155,7 @@
                             </ul>
                         </div>
 						<div class="content_maisons">
+                            {{ propiete }}
                             <!-- <div class="ligne_maison"> -->
                             {% if inscriptions %}
                                 {% for inscription in inscriptions %}
@@ -287,11 +288,11 @@
                             {% else %}
                                 <section class="piecesbloc" style="display: flex; justify-content: center; align-items: center;">
                                     <div class="adressebloc">
-                                        <div class="box_vendu">No properties</div>
+                                        <div class="box_vendu">{% if language == "fr" %}Aucun enregistrement correspondant à votre recherche{% else %}No records match your search{% endif %}</div>
                                     </div>
                                 </section>
                             {% endif %}
-                            </div>
+                            
 						   
 
 						<div class="pagination">
@@ -311,7 +312,7 @@
                                 {% endif %}
                             </ul>
                         </div>
-
+                    </div>
 					</div>
 				</div>
 				<div style="clear:both;"></div>
@@ -399,6 +400,36 @@
             $('#freeform-filters ul li').click(function (e) {
                 e.preventDefault();
                 $(this).remove();
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            var nbchambre = {{ nbchambre|default_if_none:""  }};
+            var nbbain = {{ nbbain|default_if_none:"0"  }};
+            var minamount = parseFloat("{{ minamount|default_if_none:"0"  }}".replace(',', '.'));
+            var maxamount = parseFloat("{{ maxamount|default_if_none:"0"  }}".replace(',', '.'));
+            var propiete = "{{ propriete|default_if_none:"" }}";
+            
+            function verificarCondiciones() {
+                if (nbchambre > 0 || nbbain > 0 || minamount > 0 || (propiete !== null && propiete.trim() !== '')) {
+                    $('.avanceediv').slideDown();
+                }
+            }
+            verificarCondiciones();
+            $("a.avanceea").click(function(e) {
+                e.preventDefault();
+                $('.avanceediv').slideToggle();
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('reset').addEventListener('click', function() {
+
+                var form = document.getElementById('seach_form');
+
+                form.reset();
             });
         });
     </script>

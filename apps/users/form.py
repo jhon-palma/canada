@@ -15,7 +15,7 @@ class UserEditForm(forms.ModelForm):
 class ProfileEditForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['image', 'order', 'type_user', 'membre','occupation', 'occupation_anglaise', 'facebook', 'instagram', 'linkedin', 'twitter']
+        fields = ['image', 'order', 'type_user', 'membre','occupation', 'occupation_anglaise', 'facebook', 'instagram', 'linkedin', 'twitter', 'tiktok', 'presentation_f', 'presentation_a']
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(max_length=254, help_text='Required. Inform a valid email address.')

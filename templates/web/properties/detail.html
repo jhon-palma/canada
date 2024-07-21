@@ -143,7 +143,7 @@
 				<span>{% if language == "en" %}Centris No. {% else %}No Centris {%endif%}{{inscription.no_inscription}}</span>
 			</p>
 
-			<a href="{% url 'web:properties' language 'properties' %}" class="btn teal_btn">Back to properties</a>
+			<a href="{% url 'web:properties' language 'properties' %}" class="btn teal_btn">{% if language == "en" %}Back to properties{% else %}RETOUR AUX PROPRIÉTÉS{% endif %}</a>
 		</div>
 	</div>
 </section>

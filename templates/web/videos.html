@@ -7,6 +7,26 @@
 
 <section class="capsules">
 	<div class="wrap">
+        {% for video in videos %}
+        <div href="https://www.youtube.com/watch?v={{ video.video_id }}" class="capsule msrItem">
+			<a href="https://www.youtube.com/watch?v={{ video.video_id }}" class="img"> <img src="https://img.youtube.com/vi/{{ video.video_id }}/hqdefault.jpg" alt="{{ video.title }}t" /></a>
+
+			<h3>{{ video.title }}</h3>
+			<p class="sm">{{ video.publishedAt|date:"d/m/Y" }}</p>
+			<p>
+				{{ video.description }}<br />
+				<a href="#">Lire plus</a>
+			</p>
+			<p class="hiddendesc">
+				Welcome to the latest Montreal Real Estate Market Update for Q3! Whether you're a prospective buyer or seller, stay tuned as I dive deep into the Greater Montreal Area, Island of Montreal, Laval, and the South Shore.
+				Discover the most current statistics, including price trends, days on market, and property market types in each region. Looking for insights into a specific area I didn't cover? Drop a comment below, and I'll personally send
+				you the detailed stats! Stay informed and make confident real estate decisions with LJ Aguinaga, your trusted Certified Real Estate Broker at LJ REALTIES LJ Aguinaga - Q3 Market Update CERTIFIED REAL ESTATE BROKER | LJ
+				REALTIES
+			</p>
+			<a href="https://www.youtube.com/watch?v=O1IPg4nvDrc" class="bouton">{{ labels.videos.button.one }}</a>
+		</div>
+        {% endfor %}
+
 		<div href="https://www.youtube.com/watch?v=O1IPg4nvDrc" class="capsule msrItem">
 			<a href="https://www.youtube.com/watch?v=O1IPg4nvDrc" class="img"> <img src="https://img.youtube.com/vi/O1IPg4nvDrc/hqdefault.jpg" alt="Market Update Q3: Expert Insights on What's Next" /></a>
 

@@ -21,14 +21,14 @@ from datetime import *
 from apps.users.models import Profile
 from apps.web.models import Formulaire_contact, Statistics
 from immobilier.local_settings import CHANNEL_ID, KEY_API_YB
-from ..properties.models import Addenda, Caracteristiques, Inscriptions, Membres, Municipalites, Propertie, Regions, SousTypeCaracteristiques
+from ..properties.models import Addenda, Caracteristiques, GenresProprietes, Inscriptions, Membres, Municipalites, Propertie, Regions, SousTypeCaracteristiques
 from ..labels import DICT_LABELS
 # import os, time, json, httplib2, requests
 import requests
 from googleapiclient.discovery import build
 import isodate
 
-def get_youtube_videos(api_key, channel_id, max_results=3):
+def get_youtube_videos(api_key, channel_id, max_results):
     youtube = build('youtube', 'v3', developerKey=api_key)
     
     # Obtener lista de videos del canal
@@ -40,13 +40,15 @@ def get_youtube_videos(api_key, channel_id, max_results=3):
         type='video',
     )
     videos_response = videos_request.execute()
-    print(videos_response)
+    # print(videos_response)
     videos = []
 
     # Obtener información de duración para cada video
     for item in videos_response['items']:
         video_id = item['id']['videoId']
         video_title = item['snippet']['title']
+        publishedAt = item['snippet']['publishedAt']
+        description = item['snippet']['description']
 
         # Obtener detalles del video incluyendo duración
         video_details_request = youtube.videos().list(
@@ -60,12 +62,14 @@ def get_youtube_videos(api_key, channel_id, max_results=3):
         
         # Convertir la duración a segundos
         duration_seconds = isodate.parse_duration(duration).total_seconds()
-
+        published_datetime = datetime.fromisoformat(publishedAt.replace('Z', '+00:00'))
         # Excluir videos con duración mayor a 1 minuto (60 segundos)
         if duration_seconds > 61:
             videos.append({
                 'title': video_title,
                 'video_id': video_id,
+                'publishedAt': published_datetime,
+                'description': description,
             })
         if len(videos) >= max_results:
             break
@@ -142,8 +146,14 @@ class WebProperties(View):
     def get(self, request, *args, **kwargs):
         language = kwargs.get('language', 'fr')
         option = kwargs.get('option', 'proprietes')
+        print(option)
         labels = DICT_LABELS.get(language).get('web')
-        inscriptions_all = Inscriptions.objects.all()
+        if option == "properties-for-sale" or option == "proprietes-a-vendre":
+            inscriptions_all = Inscriptions.objects.filter(prix_demande__isnull=False)
+        elif option == "properties-for-rent" or option == "proprietes-a-louer":
+            inscriptions_all = Inscriptions.objects.filter(prix_location_demande__isnull=False)
+        else:
+            inscriptions_all = Inscriptions.objects.all()
         paginator = Paginator(inscriptions_all, 36)
         page_number = request.GET.get('page')
         inscriptions = paginator.get_page(page_number)
@@ -203,8 +213,8 @@ def searchpropriete(request):
 
 class SearchView(View):
     template_name = 'web/properties/list.html'
-    
     def get(self, request, *args, **kwargs):
+        
         language = kwargs.get('language', 'fr')
         option = kwargs.get('option', 'proprietes')
         labels = DICT_LABELS.get(language).get('web')
@@ -217,8 +227,14 @@ class SearchView(View):
         minamount = request.GET.get('minamount', '')
         maxamount = request.GET.get('maxamount', '')
         propriete = request.GET.getlist('propriete[]')
-        
         query = Q()
+        if propriete:
+            proprietes = [item.split('-')[1] for item in propriete]
+            
+            try:
+                query &= Q(genre_propriete__in=proprietes)
+            except Http404:
+                print("No se encontraron registros de Inscriptions que cumplan con el filtro.")
         
         if status == '2':
             query &= Q(prix_location_demande__isnull=False)
@@ -266,15 +282,15 @@ class SearchView(View):
             query &= Q(mun_code__region_code__in=adress_region)
 
         inscriptions_all = Inscriptions.objects.filter(query)
-
+        
         num_results = len(inscriptions_all)
-        if num_results == 0:
-            inscriptions_all = Inscriptions.objects.filter(query)
+        # if num_results == 0:
+        #     inscriptions_all = Inscriptions.objects.filter(query)
 
         paginator = Paginator(inscriptions_all, 36)
         page_number = request.GET.get('page')
         inscriptions = paginator.get_page(page_number)
-
+        
         context = {
             'language':language,
             'option':option,
@@ -285,6 +301,7 @@ class SearchView(View):
             'nbbain': nbbain,
             'minamount': minamount,
             'maxamount': maxamount,
+            'propriete':propriete,
             'inscriptions':inscriptions,
         }
 
@@ -367,9 +384,14 @@ class WebVideos(View):
     def get(self, request, *args, **kwargs):
         language = kwargs.get('language', 'fr')
         labels = DICT_LABELS.get(language).get('web')
+        api_key = KEY_API_YB
+        channel_id = CHANNEL_ID
+        videos = get_youtube_videos(api_key, channel_id, max_results=30)
+        print(videos)
         context = {
             'language':language,
             'labels':labels,
+            'videos':videos,
         }
         return render(request, self.template_name, context)
 

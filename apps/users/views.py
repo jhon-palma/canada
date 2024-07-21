@@ -23,11 +23,6 @@ from django.contrib.auth.hashers import make_password
 from apps.web.models import Formulaire_contact
 
 def updateProfile(request):
-    # cantidad_usuarios = range(1, CustomUser.objects.count() + 1)
-    # membres = Membres.objects.all()
-    # existing_orders = Profile.objects.exclude(order__isnull=True).values_list('order', flat=True)
-    # available_orders = [i for i in range(1, 11) if i not in existing_orders]
-
     existing_orders = Profile.objects.exclude(order__isnull=True).values_list('order', flat=True)
     if request.user and request.user.profile.order:
         existing_orders = list(existing_orders)
@@ -73,7 +68,7 @@ def updateProfileUsers(request, user_id):
         existing_orders.remove(user.profile.order)
 
     available_orders = [i for i in range(1, 11) if i not in existing_orders]
-    # cantidad_usuarios = range(1, CustomUser.objects.count() + 1)
+    
     user_membre = user.profile.membre
     available_membres = Membres.objects.filter(profile__isnull=True)
     membres = available_membres | Membres.objects.filter(pk=user_membre.pk) if user_membre else available_membres
