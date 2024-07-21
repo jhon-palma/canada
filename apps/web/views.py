@@ -386,7 +386,10 @@ class WebVideos(View):
         labels = DICT_LABELS.get(language).get('web')
         api_key = KEY_API_YB
         channel_id = CHANNEL_ID
-        videos = get_youtube_videos(api_key, channel_id, max_results=30)
+
+        videos = get_youtube_videos(api_key, channel_id, max_results=50)
+        
+        
         print(videos)
         context = {
             'language':language,
