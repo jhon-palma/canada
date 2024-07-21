@@ -15,7 +15,7 @@
 			<p class="sm">{{ video.publishedAt|date:"d/m/Y" }}</p>
 			<p>
 				{{ video.description }}<br />
-				<a href="#">Lire plus</a>
+				<a href="#">{% if language == "en" %}Read more{% else %}Lire plus{% endif %}</a>
 			</p>
 			<p class="hiddendesc">
 				Welcome to the latest Montreal Real Estate Market Update for Q3! Whether you're a prospective buyer or seller, stay tuned as I dive deep into the Greater Montreal Area, Island of Montreal, Laval, and the South Shore.
