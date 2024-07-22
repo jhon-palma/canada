@@ -191,8 +191,11 @@ DICT_LABELS = {
                     'two':"LJ Realties est votre courtier immobilier résidentiel dans le Sud Ouest, Ville-Marie. Nous avons une expertise et une expérience dans l'immobilier, pour l'achat ou la vente de maisons.",
                 },
                 'title':{
-                    'one':'Trouvez Votre Maison De',
-                    'two':'rêve',
+                    'one':'unlock Your',
+                    'two':'Dream home',
+                    'three':'Obtenez une consultation acheteurs gratuite',
+                    'one':"éverrouillez la maison",
+                    'two':'de vos rêves',
                     'three':'À Montréal',
                     'four': 'Vos courtiers immobiliers de confiance',
                     'five': 'Découvrez votre',
