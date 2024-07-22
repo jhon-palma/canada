@@ -67,6 +67,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'immobilier.wsgi.application'
 
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
+
+
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
