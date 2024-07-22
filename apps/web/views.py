@@ -124,7 +124,8 @@ class WebIndex(View):
         # video_urls = sorted(video_urls, key=lambda x: x['publishedAt'], reverse=True)
         # video_urls = video_urls[:3]
 
-        videos = get_youtube_videos(api_key, channel_id, max_results=3)
+        try: videos = get_youtube_videos(api_key, channel_id, max_results=3)
+        except: videos = []
       
         # print(videos)
         context = {
@@ -388,10 +389,9 @@ class WebVideos(View):
         api_key = KEY_API_YB
         channel_id = CHANNEL_ID
 
-        videos = get_youtube_videos(api_key, channel_id, max_results=50)
+        try: videos = get_youtube_videos(api_key, channel_id, max_results=50)
+        except: videos = []
         
-        
-        print(videos)
         context = {
             'language':language,
             'labels':labels,
