@@ -8,7 +8,7 @@ from apps.users.choices import TYPE_USER
 
 
 def user_photo_directory_path(instance, filename):
-    path = 'media/profile_imgs/{}'.format(filename)
+    path = 'profile_imgs/{}'.format(filename)
     return path
 
 
