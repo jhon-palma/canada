@@ -1,0 +1,100 @@
+.headnew {
+  background-color: #00AAAE;
+  text-align: center;
+  color: #fff;
+  padding: 14px 0px;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.boutonnre {
+  background-color: #000 !important;
+  color: #fff !important;
+  border-radius: 5px;
+  margin-left: 20px;
+  letter-spacing: 2px;
+  padding: 5px 30px !important;
+}
+.boutonnre:hover {
+  color: #fff !important;
+}
+
+.boutonnre2 {
+  background-color: #00AAAE !important;
+  color: #fff !important;
+  border-radius: 5px;
+  margin-left: 20px;
+  letter-spacing: 2px;
+  padding: 7px 30px !important;
+}
+.boutonnre2:hover {
+  color: #fff !important;
+}
+
+.boutonnre3 {
+  background-color: #333 !important;
+  color: #fff !important;
+  border-radius: 5px;
+  margin-left: 20px;
+  letter-spacing: 2px;
+  padding: 7px 50px !important;
+}
+.boutonnre3:hover {
+  color: #fff !important;
+}
+
+.__cnt {
+  position: relative;
+  text-align: center;
+  display: ruby;
+  justify-content: center;
+}
+.__cnt .lineal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background-color: #00AAAE;
+  width: 50%;
+}
+.__cnt .lineal2 {
+  height: 2px;
+  background-color: #ffffff;
+  width: 50%;
+}
+.__cnt .contsjks {
+  font-size: 14px;
+}
+.__cnt .contsjks p {
+  font-size: 14px;
+}
+
+.colorbla {
+  color: #ffffff !important;
+}
+
+#map {
+  width: 800px;
+  height: 600px;
+  border: 0px solid #ccc !important;
+}
+
+.lineal {
+  background-color: #00AAAE;
+  width: 40%;
+  border: none;
+  border-top: 3px solid #00AAAE;
+}
+
+.lineal-2 {
+  background-color: #00AAAE;
+  border: none;
+  border-top: 2px solid #00AAAE;
+}
+
+.lineal-3 {
+  background-color: #FFFFFF;
+  border: none;
+  width: 60%;
+  border-top: 2px solid #FFFFFF;
+}/*# sourceMappingURL=jenner.css.map */

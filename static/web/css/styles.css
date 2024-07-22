@@ -379,6 +379,18 @@ a.bouton.bouton2, .submitclearcont input[type=button], .propsearch input[type=re
 
 a.bouton:hover{color: #000 !important;}
 
+a.bouton3{
+    padding: 10px 50px;
+    background-color: #3F424B;
+	border:1px solid #3F424B;    
+}
+
+a.bouton3:hover{
+    color: #fff !important;
+    background-color: #5A5E68;
+	border:1px solid #5A5E68; 
+}
+
 a.bouton + .bouton2{margin-left: 10px;}
 
 p.quartiers{
@@ -413,13 +425,20 @@ p.quartiers a, .footer_copy a{color: #fff !important;}
 	font-size: 22px;
 	font-weight: 400;
 	margin-top: 0;
-	margin-bottom: 40px;
+	margin-bottom: 25px;
+    color: rgb(0, 170, 174);
+    font-weight: bold;
 }
 
 .h2def span{
 	display: block;
-	/*color: #FFF;*/
-	font-size: 15px;
+	color: rgb(0, 0, 0);
+	font-size: 22px;
+    font-weight: normal;
+}
+
+.txtWhite{
+    color: rgb(255, 255, 255) !important;
 }
 
 .prophome{text-align: center;padding-top: 40px;padding-bottom: 40px;}
@@ -470,7 +489,7 @@ position: relative;color: #fff !important;}
 }
 
 .profilhome{
-	background-image: url("../images2/team-bg.jpg");
+	background-image: url("../images2/team-bg-2.jpg");
 	background-attachment: fixed;
 	background-size: cover;
 	color: #fff;
@@ -480,7 +499,7 @@ position: relative;color: #fff !important;}
 }
 
 .profilhome.wwuhome{
-	background-image: url("../images2/workwithus-bg.jpg");
+	background-image: url("../images2/workwithus-bg-2.png");
 }
 
 .profilhome .wrap{
@@ -500,7 +519,7 @@ position: relative;color: #fff !important;}
 
 .profilhome .txt{
 	width: calc(100% - 530px);
-	text-shadow: 0px 0px 5px #000000;
+	/* text-shadow: 0px 0px 5px #000000; */
 }
 
 .statshome{
@@ -522,11 +541,15 @@ position: relative;color: #fff !important;}
 }
 
 .statblock{
-	border:1px solid #000;
+	/* border:1px solid #000; */
+    background-color: rgb(245,246,247);
 	margin-top: 30px;
 	position: relative;
-	padding-top: 40px;
+	padding-top: 10px;
 	padding-bottom: 40px;
+    -webkit-box-shadow: 0px 35px 26px -32px rgb(163, 161, 161);
+    -moz-box-shadow: 0px 35px 26px -32px rgba(163,161,161,1);
+    box-shadow: 0px 35px 26px -32px rgba(163,161,161,1);
 }
 
 .statblock .img{
@@ -534,6 +557,13 @@ position: relative;color: #fff !important;}
 	left: 50%;
 	top: 0;
 	transform: translate(-50%,-50%);
+	width: 55px;
+	z-index: 2;
+}
+
+.statblock img{
+	left: 50%;
+    text-align: center;
 	width: 55px;
 	background-color: #fff;
 	z-index: 2;
@@ -569,7 +599,7 @@ position: relative;color: #fff !important;}
 .aviscont{margin-bottom: 30px;}
 
 .videoshome{
-	background-image: url("../images2/video-bg.jpg");
+	background-image: url("../images2/video-bg-2.png");
 	background-attachment: fixed;
 	background-size: cover;
 	background-repeat: no-repeat;

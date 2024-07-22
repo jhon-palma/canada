@@ -10,56 +10,75 @@
         <h1 class="titleban">{{ labels.index.title.five }}<span> {{ labels.index.title.six }}</span></h1>
         <a href="#" class="button btnpopeval">{{ labels.index.button.ten }}</a>
 	</div>
-	<img src="{% static 'web/images2/small-banner.jpg' %}" alt="View of Montreal" class="bannerimg">
+	<img src="{% static 'web/images2/small-banner.png' %}" alt="View of Montreal" class="bannerimg">
 </section>
 
 <section class="statshome">
 	<div class="wrap">
 		<h2 class="h2def"><span>{{ labels.index.text.one }}</span> {{ labels.index.text.two }}</h2>
+        <hr class="lineal">
+        <div class="__cnt">
+            <div class="contsjks">
+                <h3>
+                    {{ labels.index.text.thirty_two }}
+                </h3>
+                <p>{{ labels.index.text.thirty_three }}<br>{{ labels.index.text.thirty_four }}</p>
+            </div>
+            
+        </div>
 		<div class="statscont">
 			<div class="statblock">
-				<div class="img"><img src="{% static 'web/images2/ico-cta1.png' %}" alt="Icon" /></div>
+                <img src="{% static 'web/images2/ico-cta1-2.png' %}" alt="Icon">
+				<!-- <div class="img"><img src="{% static 'web/images2/ico-cta1.png' %}" alt="Icon" /></div> -->
 				<h3 class="h2def">{{ labels.index.text.three }} <span>{{ labels.index.text.four }}</span></h3>
 				<div class="statels">
                     {% if sold_price %}
                         <div class="statel">
                             <p>{{ sold_price.initial_year|default_if_none:'' }}</p>
+                            <hr class="lineal-2">
                             <p><span class="num">{{ sold_price.initial_value|default_if_none:'' }}</span>%</p>
                         </div>
                         <div class="statel">
                             <p>{{ sold_price.final_year|default_if_none:'' }}</p>
+                            <hr class="lineal-2">
                             <p><span class="num">{{ sold_price.final_value|default_if_none:'' }}</span>%</p>
                         </div>
                     {% endif %}
 				</div>
 			</div>
 			<div class="statblock">
-				<div class="img"><img src="{% static 'web/images2/ico-cta2.png' %}" alt="Icon" /></div>
+                <img src="{% static 'web/images2/ico-cta2-2.png' %}" alt="Icon">
+				<!-- <div class="img"><img src="{% static 'web/images2/ico-cta2.png' %}" alt="Icon" /></div> -->
 				<h3 class="h2def">{{ labels.index.text.five }} <span>{{ labels.index.text.six }}</span></h3>
 				<div class="statels">
                         {% if days %}
                             <div class="statel">
                                 <p>{{ days.initial_year|default_if_none:'' }}</p>
+                                <hr class="lineal-2">
                                 <p><span class="num">{{ days.initial_value|default_if_none:'' }}</span> {{ labels.index.text.nine }}</p>
                             </div>
                             <div class="statel">
                                 <p>{{ days.final_year|default_if_none:'' }}</p>
+                                <hr class="lineal-2">
                                 <p><span class="num">{{ days.final_value|default_if_none:'' }}</span> {{ labels.index.text.nine }}</p>
                             </div>
                         {% endif %}
 				</div>
 			</div>
 			<div class="statblock">
-				<div class="img"><img src="{% static 'web/images2/ico-cta3.png' %}" alt="Icon" /></div>
+                <img src="{% static 'web/images2/ico-cta3-2.png' %}" alt="Icon">
+				<!-- <div class="img"><img src="{% static 'web/images2/ico-cta3.png' %}" alt="Icon" /></div> -->
 				<h3 class="h2def">{{ labels.index.text.seven }} <span>{{ labels.index.text.eight }}</span></h3>
 				<div class="statels">
                         {% if number_transactions %}
                             <div class="statel">
                                 <p>{{ number_transactions.initial_year|default_if_none:'' }}</p>
+                                <hr class="lineal-2">
                                 <p><span class="num">{{ number_transactions.initial_value|default_if_none:'' }}</span></p>
                             </div>
                             <div class="statel">
                                 <p>{{ number_transactions.final_year|default_if_none:'' }}</p>
+                                <hr class="lineal-2">
                                 <p><span class="num">{{ number_transactions.final_value|default_if_none:'' }}</span></p>
                             </div>
                         {% endif %}
@@ -71,10 +90,12 @@
 
 <section class="profilhome">
     <div class="wrap">
-        <div class="img"><img src="{% static 'web/images2/ljrealties_team.jpg' %}" alt="LJ Immobilier"></div>
-        <div class="txt">
-            <h2 class='h2def'><span>{{ labels.index.text.ten }}</span> {{ labels.index.text.eleven }}</h2>
-			<p>{{ labels.index.text.twelve }}</p>
+        <!-- <div class="img"><img src="{% static 'web/images2/ljrealties_team.jpg' %}" alt="LJ Immobilier"></div> -->
+        <div class="txt2">
+            <h2 class='h2def'><span class="txtWhite">{{ labels.index.text.ten }}</span> {{ labels.index.text.eleven }}</h2>
+            <hr class="lineal">
+			<p><strong>{{ labels.index.text.twelve }}</strong></p>
+			<p>{{ labels.index.text.twelve_one }}</p>
             <a href="{{ server|server_url }}/{{ language }}/real-estate-broker/" class="bouton">{{ labels.index.button.two }}</a>
             <a href="{{ server|server_url }}/{{ language }}/contact-realestate-broker/" class="bouton bouton2">{{ labels.index.button.three }}</a>
         </div>
@@ -157,12 +178,13 @@
 <section class="profilhome wwuhome">
     <div class="wrap">
         <div class="txt">
-            <h2 class="h2def"><span>{{ labels.index.text.fourteen }}</span> {{ labels.index.text.fifteen }}</h2>
-            <p>{{ labels.index.text.sixteen }} <br>{{ labels.index.text.seventeen }}<br><br>{{ labels.index.text.eighteen }}</p>
-            <a target="_blank" href="https://autisme-montreal.com/en/" class="bouton">{{ labels.index.button.five }}</a>
+            <h2 class="h2def txtWhite"><span class="txtWhite">{{ labels.index.text.fourteen }}</span>{{ labels.index.text.fifteen }}</h2>
+            <hr class="lineal-3">
+            <p>{{ labels.index.text.sixteen }} <br><strong>{{ labels.index.text.seventeen }}</strong><br><br>{{ labels.index.text.eighteen }}</p>
+            <a target="_blank" href="https://autisme-montreal.com/en/" class="bouton bouton3">{{ labels.index.button.five }}</a>
         </div>
         <div class="img">
-            <img src="{% static 'web/images2/autisme.jpg' %}" alt="LJ Immobilier">
+            <img src="{% static 'web/images2/autisme-2.png' %}" alt="LJ Immobilier">
         </div>
     </div>
 </section>
@@ -174,12 +196,12 @@
             <div data-romw-token="PZzqTWZUzrgNv4PnX9OJGq3pFaIKjpTUDmgpBRUAl2Qj9nl2dq"></div>
             <script src="https://reviewsonmywebsite.com/js/v2/embed.js?id=fd1f59fcc8467fb2938d974af932af56" type="text/javascript"></script>
         </div>
-        <a href="https://www.google.com/search?q=lj+realties&rlz=1C5CHFA_enCA932CA932&oq=lj&aqs=chrome.1.69i57j69i59j46i175i199i512j46i131i433i512j0i512j69i60j69i61l2.3691j0j7&sourceid=chrome&ie=UTF-8#lrd=0x4cc93c824dc00621:0xb6aa87687fd1e9eb,3,,," target="_blank" class="bouton">{{ labels.index.button.six }}</a>
+        <!-- <a href="https://www.google.com/search?q=lj+realties&rlz=1C5CHFA_enCA932CA932&oq=lj&aqs=chrome.1.69i57j69i59j46i175i199i512j46i131i433i512j0i512j69i60j69i61l2.3691j0j7&sourceid=chrome&ie=UTF-8#lrd=0x4cc93c824dc00621:0xb6aa87687fd1e9eb,3,,," target="_blank" class="bouton">{{ labels.index.button.six }}</a> -->
     </div>
 </div>
 <section class="videoshome">
     <div class="wrap">
-        <h2 class="h2def"><span>{{ labels.index.text.twenty_one }}</span> {{ labels.index.text.twenty_two }}</h2>
+        <h2 class="h2def"><span class="txtWhite">{{ labels.index.text.twenty_one }}</span> {{ labels.index.text.twenty_two }}</h2>
         <div class="videoshomecont">
             {% for video in video_urls %}
                 <a href="https://www.youtube.com/watch?v={{ video.video_id }}" class="thumbhome">
