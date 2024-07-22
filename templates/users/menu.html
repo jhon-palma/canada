@@ -3,7 +3,7 @@
         <div class="sidebar-user">
             <div class="category-content">
                 <div class="media">
-                    <a href="#"><img src="{{ user.profile.image.url }}" class="img-circle img-sm"></a>
+                    <a><img src="{{ user.profile.image.url }}" class="img-circle img-sm"></a>
                     <div class="media-body" id="div_info_agent">
                         <div class="media-heading text-size-big text-semibold">{{ user.first_name }} {{ user.last_name }} </div>
                         <div class="text-size-mini text-muted">{{ user.email }}</div>
@@ -20,6 +20,9 @@
                     </li>
                     -->
                     <li>
+                        <a href="{% url 'web:statistics' %}"> <i class="icon-graph position-left"></i>Estadisticas</a>
+                    </li>
+                    <li>
                         <a href="{% url 'users:profile_list' %}"> <i class="icon-users4 position-left"></i>Usuarios</a>
                     </li>
                     <li>
@@ -28,18 +31,18 @@
                     <li>
                         <a href="/"> <i class="icon-chrome position-left"></i>Web Lj Realties</a>
                     </li>
+                    <!--
                     <li>
                         <a href="{% url 'properties:drop_database' %}"> <i class="icon-eraser2 position-left"></i>1. Borrar base de datos (Local)</a>
                     </li>
+                    -->
                     <li>
-                        <a href="{% url 'properties:download_files' %}"> <i class="icon-download position-left"></i>2. Descargar Data (Centris)</a>
+                        <a href="{% url 'properties:download_files' %}"> <i class="icon-download position-left"></i>1. Descargar Data (Centris)</a>
                     </li>
                     <li>
-                        <a href="{% url 'properties:upload_data_auto' %}"> <i class="icon-database-upload position-left"></i>3. Cargar Data (Centris)</a>
+                        <a href="{% url 'properties:upload_data_auto' %}"> <i class="icon-database-upload position-left"></i>2. Cargar Data (Web)</a>
                     </li>
-                    <li>
-                        <a href="{% url 'web:statistics' %}"> <i class="icon-graph position-left"></i>Estadisticas</a>
-                    </li>
+                    
                     
                 </ul>
             </div>

@@ -125,7 +125,7 @@
                 <div class="baninfo">
                     <h2>{{ labels.index.title.one }}<span> {{ labels.index.title.two }}</span></h2>
                     <h1>{{ labels.index.title.three }}</h1><br>
-                    <a href="#" class="bouton boutonnre2">{{ labels.index.button.eleven }}</a>
+                    <a class="bouton boutonnre2">{{ labels.index.button.eleven }}</a>
                 </div>
             </section>
 
@@ -376,13 +376,13 @@
                 },
                 select: function (event, data) {
                     if (data.item.categorie == 2) {
-                    $('#freeform-filters ul').prepend('<li><a href="#">' + data.item.value + '</a><input type="hidden" name="adress[mun][]" value="' + data.item.id + '" ></li>');
+                    $('#freeform-filters ul').prepend('<li><a>' + data.item.value + '</a><input type="hidden" name="adress[mun][]" value="' + data.item.id + '" ></li>');
                 }
                 if (data.item.categorie == 3) {
-                    $('#freeform-filters ul').prepend('<li><a href="#">' + data.item.value + '</a><input type="hidden" name="adress[ville][]" value="' + data.item.id + '" ></li>');
+                    $('#freeform-filters ul').prepend('<li><a>' + data.item.value + '</a><input type="hidden" name="adress[ville][]" value="' + data.item.id + '" ></li>');
                 }
                 if (data.item.categorie == 1) {
-                    $('#freeform-filters ul').prepend('<li><a href="#">' + data.item.value + '</a><input type="hidden" name="adress[region][]" value="' + data.item.id + '" ></li>');
+                    $('#freeform-filters ul').prepend('<li><a>' + data.item.value + '</a><input type="hidden" name="adress[region][]" value="' + data.item.id + '" ></li>');
                 }
                 if (data.item.categorie == 4) {
                     if (language == "en") {

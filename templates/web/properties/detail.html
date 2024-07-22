@@ -111,7 +111,7 @@
 		<img src="https://www.macleweb.com/immobilier/photo/271352931.jpg" alt="Living room" class="showprint imgprint" />
 		<div class="mediabloccont">
 			<div class="navmedia">
-				<a href="#" data-bloc="slider" class="selected">Photos</a>
+				<a data-bloc="slider" class="selected">Photos</a>
                 {% if inscription.url_visite_virtuelle_francais %}<a target="_blank" href="{{ inscription.url_visite_virtuelle_francais }}" class="">{% if language == "en" %}3D tour{% else %}Visite 3D{% endif %}</a>{% endif %}
 			</div>
             <div class="ficheslider hiddenprint" id="slider">
@@ -2316,10 +2316,10 @@
                         {% endif %}
                     {% endfor %}
                 </div>
-                <a href="#" class="openfiche">
+                <a class="openfiche">
                     <span>{% if language == "en" %}Read more{% else %}Voir plus{% endif %}</span>
                 </a>
-                <a href="#" class="openfiche close">
+                <a class="openfiche close">
                     <span>{% if language == "en" %}Read less{% else %}Voir moins{% endif %}</span>
                 </a>
             </div>
@@ -2354,10 +2354,10 @@
                 {% for supply in inscription.piecesUnites.all %}
                     {% if forloop.counter > 5 and forloop.last %}
                         </div>
-                        <a href="#" class="openfiche">
+                        <a class="openfiche">
                             <span>{% if language == "en" %}Read more{% else %}Voir plus{% endif %}</span>
                         </a>
-                        <a href="#" class="openfiche close">
+                        <a class="openfiche close">
                             <span>{% if language == "en" %}Read less{% else %}Voir moins{% endif %}</span>
                         </a>
                     {% else %}<br>{% endif %}
@@ -2370,10 +2370,10 @@
                     <p class="hiddenprint">{{ inscription.inclus_anglais|slice:":220" }}{% if inscription.inclus_anglais > 220 %}...{% endif %}</p>
                     <p class="fullfichep">{{ inscription.inclus_anglais }}</p>
                     {% if inscription.inclus_anglais|length > 220  %}
-                        <a href="#" class="openfiche openfiche2">
+                        <a class="openfiche openfiche2">
                             <span>Read more</span>
                         </a>
-                        <a href="#" class="openfiche openfiche2 close">
+                        <a class="openfiche openfiche2 close">
                             <span>Read less</span>
                         </a>
                     {% else %}<br>{% endif %}
@@ -2381,10 +2381,10 @@
                     <p class="hiddenprint">{{ inscription.inclus_francais|slice:":220" }}{% if inscription.inclus_francais > 220 %}...{% endif %}</p>
                     <p class="fullfichep">{{ inscription.inclus_francais }}</p>
                     {% if inscription.inclus_francais > 220 %}
-                        <a href="#" class="openfiche openfiche2">
+                        <a class="openfiche openfiche2">
                             <span>Voir plus</span>
                         </a>
-                        <a href="#" class="openfiche openfiche2 close">
+                        <a class="openfiche openfiche2 close">
                             <span>Voir moins</span>
                         </a>
                     {% else %}<br>{% endif %}
@@ -2397,10 +2397,10 @@
                     <p class="hiddenprint">{{ inscription.exclus_anglais|slice:":220" }}{% if inscription.exclus_anglais|length > 220 %}...{% endif %}</p>
                     <p class="fullfichep">{{ inscription.exclus_anglais }}</p>
                     {% if inscription.exclus_anglais|length > 220 %}
-                        <a href="#" class="openfiche openfiche2">
+                        <a class="openfiche openfiche2">
                             <span>Read more</span>
                         </a>
-                        <a href="#" class="openfiche openfiche2 close">
+                        <a class="openfiche openfiche2 close">
                             <span>Read less</span>
                         </a>
                     {% else %}<br>{% endif %}
@@ -2408,10 +2408,10 @@
                     <p class="hiddenprint">{{ inscription.exclus_francais|slice:":220" }}{% if inscription.exclus_francais|length > 220 %}...{% endif %}</p>
                     <p class="fullfichep">{{ inscription.exclus_francais }}</p>
                     {% if inscription.exclus_francais|length > 220 or inscription.exclus_anglais|length > 220 %}
-                        <a href="#" class="openfiche openfiche2">
+                        <a class="openfiche openfiche2">
                             <span>Voir plus</span>
                         </a>
-                        <a href="#" class="openfiche openfiche2 close">
+                        <a class="openfiche openfiche2 close">
                             <span>Voir moins</span>
                         </a>
                     {% else %}<br>{% endif %}
@@ -2438,10 +2438,10 @@
                     {% endif %}
                 {% endfor %}<br/>
             </p>
-            <a href="#" class="openfiche openfiche2">
+            <a class="openfiche openfiche2">
                 <span>{% if language == "en" %}Read more{% else %}Voir plus{% endif %}</span>
             </a>
-            <a href="#" class="openfiche openfiche2 close">
+            <a class="openfiche openfiche2 close">
                 <span>{% if language == "en" %}Read less{% else %}Voir moins{% endif %}</span>
             </a>
             {% if not inscription.code_statut.valeur == "VE" %}
@@ -2733,10 +2733,10 @@
                     </p>
                 </div>
             {% endif %}
-            <a href="#" id="requestVisit" name="{% if language == 'en' %}Request a visit{% else %}Demander une visite{% endif %}" class="teal_btn btnpopfiche">{% if language == "en" %}Schedule a visit{% else %}Planifiez une visite{% endif %}</a>
-            <a href="#" id="$requestInfo" name="{% if language == 'en' %}Send{% else %}Envoyer{% endif %}" class="teal_btn btnpopfiche">{% if language == "en" %}Ask more information{% else %}Demandez plus d'information{% endif %}</a>
+            <a id="requestVisit" name="{% if language == 'en' %}Request a visit{% else %}Demander une visite{% endif %}" class="teal_btn btnpopfiche">{% if language == "en" %}Schedule a visit{% else %}Planifiez une visite{% endif %}</a>
+            <a id="$requestInfo" name="{% if language == 'en' %}Send{% else %}Envoyer{% endif %}" class="teal_btn btnpopfiche">{% if language == "en" %}Ask more information{% else %}Demandez plus d'information{% endif %}</a>
             <a href="javascript:print()" class="teal_btn">{% if language == "en" %}Print this page{% else %}Imprimez cette fiche{% endif %}</a>
-            <a href="#" class="teal_btn btnpopeval">{% if language == "en" %}Free evaluation of your property{% else %}Estimation gratuite de la valeur de votre propriété{% endif %}</a>
+            <a class="teal_btn btnpopeval">{% if language == "en" %}Free evaluation of your property{% else %}Estimation gratuite de la valeur de votre propriété{% endif %}</a>
             <div class="socfiche">
                 <a href="https://www.facebook.com/sharer/sharer.php?u={{ server|server_url }}/{{ language }}properties/{{ propertie.id }}" target="_blank" class="btn_social">
                     <i class="fa fa-facebook"></i>
@@ -2842,7 +2842,7 @@
     </section>
 {% endif %}
 
-<a href="#" class="btnside btnpopfiche btnfixedfiche">Request a visit or information</a>
+<a class="btnside btnpopfiche btnfixedfiche">Request a visit or information</a>
 
 <script>
 	$(document).ready(function(){
