@@ -67,7 +67,7 @@
                                     <div class="col-md-6">
                                         <div class="text-center mb-3">
                                             <div class="form-group">
-                                                <img src="{{ user_form.instance.profile.image.url }}" class="img-circle mx-auto d-block" style="width: 150px; height: 150px;">
+                                                <img src="{% if user_form.instance.profile.image %}{{ user_form.instance.profile.image.url }}{% endif %}" class="img-circle mx-auto d-block" style="width: 150px; height: 150px;">
                                             </div>
                                         </div>
                                         <div class="form-group ">
@@ -78,7 +78,7 @@
                                     <div class="col-md-6">
                                         <div class="text-center mb-3">
                                             <div class="form-group">
-                                                <img src="{{ user_form.instance.profile.image_over.url }}" class="img-circle mx-auto d-block" style="width: 150px; height: 150px;">
+                                                <img src="{% if user_form.instance.profile.image_over %}{{ user_form.instance.profile.image_over.url }}{% endif%}" class="img-circle mx-auto d-block" style="width: 150px; height: 150px;">
                                             </div>
                                         </div>
                                         <div class="form-group ">
