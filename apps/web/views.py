@@ -125,6 +125,7 @@ class WebIndex(View):
         # video_urls = video_urls[:3]
 
         videos = get_youtube_videos(api_key, channel_id, max_results=3)
+      
         # print(videos)
         context = {
             'language':language,

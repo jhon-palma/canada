@@ -4,63 +4,76 @@
 {% else %}
 	{% define 'propertie' as url_propertie %}
 {% endif %}
+
 <section class="banner">
 	<div class="baninfo">
-		<h2>{{ labels.index.title.four }}</h2>
-        <h1 class="titleban">{{ labels.index.title.five }}<span> {{ labels.index.title.six }}</span></h1>
-        <a href="#" class="button btnpopeval">{{ labels.index.button.ten }}</a>
+		<h1>{{ labels.index.title.four }}</h1>
+        <h2>{{ labels.index.title.five }}<span> {{ labels.index.title.six }}</span></h2>
+        <a href="#" class="bouton boutonnre2">{{ labels.index.button.ten }}</a>
 	</div>
-	<img src="{% static 'web/images2/small-banner.jpg' %}" alt="View of Montreal" class="bannerimg">
+	<img src="{% static 'web/images/index/1.png' %}" alt="View of Montreal" class="bannerimg">
 </section>
 
 <section class="statshome">
 	<div class="wrap">
-		<h2 class="h2def"><span>{{ labels.index.text.one }}</span> {{ labels.index.text.two }}</h2>
+		<h2 class="h2def" style="font-size: 30px;"><span class="text-span">{{ labels.index.text.one }}</span> <strong>{{ labels.index.text.two }}</strong></h2>
+        <div class="horizontal-line"></div>
+        <div class="__cnt">
+            <div class="lineal"></div>
+            <div class="contsjks">
+                <h3>
+                    {{ labels.index.button.twelve }}
+                </h3>
+                <p>
+                    {{ labels.index.button.twelve_b }}
+                </p>
+            </div>
+        </div>
 		<div class="statscont">
 			<div class="statblock">
-				<div class="img"><img src="{% static 'web/images2/ico-cta1.png' %}" alt="Icon" /></div>
+				<div class="img"><img src="{% static 'web/images2/1.svg' %}" alt="Icon" /></div>
 				<h3 class="h2def">{{ labels.index.text.three }} <span>{{ labels.index.text.four }}</span></h3>
 				<div class="statels">
                     {% if sold_price %}
                         <div class="statel">
                             <p>{{ sold_price.initial_year|default_if_none:'' }}</p>
-                            <p><span class="num">{{ sold_price.initial_value|default_if_none:'' }}</span>%</p>
+                            <p><span class="num counting">{{ sold_price.initial_value|default_if_none:'' }}</span>%</p>
                         </div>
                         <div class="statel">
                             <p>{{ sold_price.final_year|default_if_none:'' }}</p>
-                            <p><span class="num">{{ sold_price.final_value|default_if_none:'' }}</span>%</p>
+                            <p><span class="num counting">{{ sold_price.final_value|default_if_none:'' }}</span>%</p>
                         </div>
                     {% endif %}
 				</div>
 			</div>
 			<div class="statblock">
-				<div class="img"><img src="{% static 'web/images2/ico-cta2.png' %}" alt="Icon" /></div>
+				<div class="img"><img src="{% static 'web/images2/2.svg' %}" alt="Icon" /></div>
 				<h3 class="h2def">{{ labels.index.text.five }} <span>{{ labels.index.text.six }}</span></h3>
 				<div class="statels">
                         {% if days %}
                             <div class="statel">
                                 <p>{{ days.initial_year|default_if_none:'' }}</p>
-                                <p><span class="num">{{ days.initial_value|default_if_none:'' }}</span> {{ labels.index.text.nine }}</p>
+                                <p><span class="num counting">{{ days.initial_value|default_if_none:'' }}</span> {{ labels.index.text.nine }}</p>
                             </div>
                             <div class="statel">
                                 <p>{{ days.final_year|default_if_none:'' }}</p>
-                                <p><span class="num">{{ days.final_value|default_if_none:'' }}</span> {{ labels.index.text.nine }}</p>
+                                <p><span class="num counting">{{ days.final_value|default_if_none:'' }}</span> {{ labels.index.text.nine }}</p>
                             </div>
                         {% endif %}
 				</div>
 			</div>
 			<div class="statblock">
-				<div class="img"><img src="{% static 'web/images2/ico-cta3.png' %}" alt="Icon" /></div>
+				<div class="img"><img src="{% static 'web/images2/3.svg' %}" alt="Icon" /></div>
 				<h3 class="h2def">{{ labels.index.text.seven }} <span>{{ labels.index.text.eight }}</span></h3>
 				<div class="statels">
                         {% if number_transactions %}
                             <div class="statel">
                                 <p>{{ number_transactions.initial_year|default_if_none:'' }}</p>
-                                <p><span class="num">{{ number_transactions.initial_value|default_if_none:'' }}</span></p>
+                                <p><span class="num counting">{{ number_transactions.initial_value|default_if_none:'' }}</span></p>
                             </div>
                             <div class="statel">
                                 <p>{{ number_transactions.final_year|default_if_none:'' }}</p>
-                                <p><span class="num">{{ number_transactions.final_value|default_if_none:'' }}</span></p>
+                                <p><span class="num counting">{{ number_transactions.final_value|default_if_none:'' }}</span></p>
                             </div>
                         {% endif %}
 				</div>
@@ -71,20 +84,29 @@
 
 <section class="profilhome">
     <div class="wrap">
-        <div class="img"><img src="{% static 'web/images2/ljrealties_team.jpg' %}" alt="LJ Immobilier"></div>
-        <div class="txt">
-            <h2 class='h2def'><span>{{ labels.index.text.ten }}</span> {{ labels.index.text.eleven }}</h2>
-			<p>{{ labels.index.text.twelve }}</p>
+        <div class="txt2">
+        <h2 class='h3def'>
+            <span class="text-span">{{ labels.index.text.ten }}</span> {{ labels.index.text.eleven }}</span>
+        </h2>
+        <div class="horizontal-line"></div>
+        <div class="__cnt">
+            <div class="lineal"></div>
+            <div class="contsjks">
+            <h3>{{ labels.index.text.twelve }}</h3>
+            <p>{{ labels.index.text.twelve_b }}</p>
+            <br>
             <a href="{{ server|server_url }}/{{ language }}/real-estate-broker/" class="bouton">{{ labels.index.button.two }}</a>
             <a href="{{ server|server_url }}/{{ language }}/contact-realestate-broker/" class="bouton bouton2">{{ labels.index.button.three }}</a>
+            </div>
         </div>
     </div>
 </section>
 
+
 {% if inscriptions %}
     <section class="prophome">
         <div class="wrap">
-            <h2 class="h2def"><span>{{ labels.index.text.one }}</span> {{ labels.index.text.thirteen }}</h2>
+            <h2 class="h2def"><span class="text-span">{{ labels.index.text.one }}</span> <strong>{{ labels.index.text.thirteen }}</strong></h2>
             <div class="propcont">
                 {% for inscription in inscriptions %}
                     <a href="{% url 'web:detail-propertie' language=language option=url_propertie propertie_id=inscription.id %}" class="propa">
@@ -119,7 +141,7 @@
                             </p>
                         </span>
                         <div class="rollprop">
-                            <p class="text-uppercase">{% if language == "en" %}
+                            <strong><p class="text-uppercase">{% if language == "en" %}
                                 {{ inscription.genre_propriete.description_anglaise }}
                             {% else %}
                                 {{ inscription.genre_propriete.description_francaise }}
@@ -137,8 +159,8 @@
                                 {% else %}
                                     à louer
                                 {% endif %}
-                            {% endif %}</p>
-                            <p>{{inscription.mun_code.description}}</p>
+                            {% endif %}</p></strong>
+                            <p class="text-capitalize">{{inscription.mun_code.description}}</p>
                         </div>
                     </a>
                 {% endfor %}
@@ -157,19 +179,20 @@
 <section class="profilhome wwuhome">
     <div class="wrap">
         <div class="txt">
-            <h2 class="h2def"><span>{{ labels.index.text.fourteen }}</span> {{ labels.index.text.fifteen }}</h2>
-            <p>{{ labels.index.text.sixteen }} <br>{{ labels.index.text.seventeen }}<br><br>{{ labels.index.text.eighteen }}</p>
-            <a target="_blank" href="https://autisme-montreal.com/en/" class="bouton">{{ labels.index.button.five }}</a>
+            <h2 class="h2def-white">{{ labels.index.text.fourteen }}<br><strong>{{ labels.index.text.fifteen }}</strong></h2>
+            <div class="horizontal-line-white"></div>
+            <p>{{ labels.index.text.sixteen }} <br><strong>{{ labels.index.text.seventeen }}</strong><br><br>{{ labels.index.text.eighteen }}</p>
+            <a target="_blank" href="https://autisme-montreal.com/en/" class="bouton boutonnre3">{{ labels.index.button.five }}</a>
         </div>
         <div class="img">
-            <img src="{% static 'web/images2/autisme.jpg' %}" alt="LJ Immobilier">
+            <img src="{% static 'web/images/index/7.png' %}" alt="LJ Immobilier">
         </div>
     </div>
 </section>
 
 <div class="avishome">
     <div class="wrap">
-        <h2 class="h2def"><span>{{ labels.index.text.nineteen }}</span> {{ labels.index.text.twenty }}</h2>
+        <h2 class="h2def"><span class="text-span">{{ labels.index.text.nineteen }}</span> <strong>{{ labels.index.text.twenty }}</strong></h2>
         <div class="aviscont">
             <div data-romw-token="PZzqTWZUzrgNv4PnX9OJGq3pFaIKjpTUDmgpBRUAl2Qj9nl2dq"></div>
             <script src="https://reviewsonmywebsite.com/js/v2/embed.js?id=fd1f59fcc8467fb2938d974af932af56" type="text/javascript"></script>
@@ -179,7 +202,7 @@
 </div>
 <section class="videoshome">
     <div class="wrap">
-        <h2 class="h2def"><span>{{ labels.index.text.twenty_one }}</span> {{ labels.index.text.twenty_two }}</h2>
+        <h2 class="h3def"><span class="text-span">{{ labels.index.text.twenty_one }}</span> {{ labels.index.text.twenty_two }}</h2>
         <div class="videoshomecont">
             {% for video in video_urls %}
                 <a href="https://www.youtube.com/watch?v={{ video.video_id }}" class="thumbhome">
@@ -192,7 +215,7 @@
 </section>
 
 <section class="soldprop">
-    <h2 class="h2def"><span>{{ labels.index.text.one }}</span> {{ labels.index.text.twenty_three }}</h2>
+    <h2 class="h2def"><span class="text-span">{{ labels.index.text.one }}</span><strong>{{ labels.index.text.twenty_three }}</strong></h2>
 	<div class="soldmap">
 		<div id="map-container">
 			<div id="map" style="height: 450px; width: 100%"></div>
@@ -257,176 +280,7 @@
 	</script>
 
 </section>
-<section class="popeval">
-	<article>
-		<div id="confirm_message_form" class="confirm_message"></div>
-		<form method="post" id="formeval" name="formeval" action="{% url 'web:contact_messages' %}">
-            {% csrf_token %}
-			<h2>{% if language == "en" %}Free evaluation of your property{% else %}Estimation gratuite de la valeur de votre propriété{% endif %}</h2>
-			<input type="hidden" id="g-recaptcha-response-eval" name="g-recaptcha-response-eval" value="">
-            <input type="hidden" id="sujet" name="sujet" value="Evaluation">
-			<input type="text" name="prenom" placeholder="Full name" required="required">
-			<input type="tel" name="tel" placeholder="Phone" required="required">
-			<input type="email" name="email" placeholder="E-mail" required="required">
-			<input type="text" name="adresse" placeholder="Address" required="required">
-			<div id="errEval"></div>
-			<input type="submit" value="{% if language == 'en' %}Send{% else %}Envoyer{% endif %}">
-		</form>
-	</article>
-	<div class="close">+</div>
-</section>	
-<section class="popfiche">
-	<article>
-		<div id="confirm_message" class="confirm_message"></div>
-		<form method="post" id="formfiche" name="formfiche" action="/contact_messages/">
-            {% csrf_token %}
-			<h2></h2>
-			<input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" value="">
-            <input type="hidden" id="sujet-2" name="sujet" value="">
-			<input type="text" name="prenom" placeholder="Full name" required="required">
-			<input type="tel" name="tel" placeholder="Phone" required="required">
-			<input type="email" name="email" placeholder="E-mail" required="required">
-			<textarea name="comment" placeholder="Your message" required="required"></textarea>
-			<input type="hidden" name="adresse" value="1160, Rue MacKay, apt. 2303, Montréal (Ville-Marie)">
-			<input type="hidden" name="maison" value="27135293">
-			<input type="hidden" name="objet" value="">
-			<div id="err"></div>
-			<input id="submitFiche" type="submit" value="">
-		</form>
-	</article>
-	<div class="close">+</div>
-</section>
-<script type="text/javascript">
-    var language = "{{ language }}";
-    $(function () {
-        $('#reset').click(function(){
-            var st= $('input[name="status"]:checked').val();
-            // alert("Entro"+st);
-            // location.href = '?page='+st
-        });
 
-        $(window).click(function() {
-            $("#fserach").val('')
-        });
-        $("#fserach").autocomplete({
-            minLength: 3,
-            autoFocus: true,
-            source: function (request, response) {
-                var status = $('input[name=status]:checked'). val();
-                $.ajax({
-                    type: 'GET',
-                    url: "{% url 'web:searchpropriete' %}",
-                    dataType: "json",
-                    data: {
-                        term: request.term,
-                        status: status,
-                    },
-                    success: function(data) {
-                        response(data);
-                    }
-                });
-            },
-            select: function (event, data) {
-                if (data.item.categorie == 2) {
-                $('#freeform-filters ul').prepend('<li><a href="#">' + data.item.value + '</a><input type="hidden" name="adress[mun][]" value="' + data.item.id + '" ></li>');
-            }
-            if (data.item.categorie == 3) {
-                $('#freeform-filters ul').prepend('<li><a href="#">' + data.item.value + '</a><input type="hidden" name="adress[ville][]" value="' + data.item.id + '" ></li>');
-            }
-            if (data.item.categorie == 1) {
-                $('#freeform-filters ul').prepend('<li><a href="#">' + data.item.value + '</a><input type="hidden" name="adress[region][]" value="' + data.item.id + '" ></li>');
-            }
-            if (data.item.categorie == 4) {
-                if (language == "en") {
-                    location.href = "/en/propriete/" + data.item.id + "/";
-                } else {
-                    location.href = "/fr/propriete/" + data.item.id + "/";
-                }
-            }
-                $('#freeform-filters ul li').click(function (e) {
-                    e.preventDefault();
-                    $(this).remove();
-                });
-                event.target.value = '';
-                // stop la propagation de l'évènement
-                return false;
-            }
-        });
-        $('#freeform-filters ul li').click(function (e) {
-            e.preventDefault();
-            $(this).remove();
-        });
-    });
-</script>
-<script>
-    $(document).ready(function () {
-        $("#formeval").on('submit', function (e) {
-            e.preventDefault();
-            var form = $("#formeval");
-            $.ajax({
-                type: "POST",
-                url: form.attr("action"),
-                data: form.serialize(),
-                success: function (response) {
-                    if (response.response == 1) {
-                        var language = "{{ language }}";
-                        if (language === "en") {
-                            var message = "Thank you, your message has been sent";
-                        } else {
-                            var message = "Merci, votre message a bien été envoyé";
-                        }
-                        $("#confirm_message_form").html("<p>" + message + "</p>");
-                        $('#formeval').hide();
-                        $('#formeval')[0].reset();					
-                    }
-                    else {
-                        var language = "{{ language }}";
-                        if (language === "en") {
-                            var message = "Required fields";
-                        } else {
-                            var message = "Champs obligatoires";
-                        }
-                        $("#errEval").html(message);
-                    }
-                }
-            });
-        });
-    });
-</script>
-<script>
-    $(document).ready(function () {
-        $("#formfiche").on('submit', function (e) {
-            e.preventDefault();
-            var form = $("#formfiche");
-            $.ajax({
-                type: "POST",
-                url: form.attr("action"),
-                data: form.serialize(),
-                success: function (response) {
-                    if (response.response == 1) {
-                        var language = "en";
-                        if (language === "en") {
-                            var message = "Thank you, your message has been sent";
-                        } else {
-                            var message = "Merci, votre message a bien été envoyé";
-                        }
-                        $("#confirm_message").html("<p>" + message + "</p>");
-                        $('#formfiche').hide();
-                        $('#formfiche')[0].reset();
-                    }
-                    else {
-                        var language = "en";
-                        if (language === "en") {
-                            var message = "Required fields";
-                        } else {
-                            var message = "Champs obligatoires";
-                        }
-                        $("#err").html(message);
-                    }
-                }
-            });
-        });
-    });
-</script>
+
 {% load static %}{% include 'web/footer_web.html' %}
 

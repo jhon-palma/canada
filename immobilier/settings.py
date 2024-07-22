@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'apps.properties',
     'apps.web',
     'apps.users',
+    'related_admin',
 ]
 
 MIDDLEWARE = [
