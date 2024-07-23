@@ -7,11 +7,15 @@ from apps.properties.models import Membres
 from apps.users.choices import TYPE_USER
 
 
+def user_photo_directory_path(instance, filename):
+    path = 'profile_imgs/{}'.format(filename)
+    return path
+
 
 class Profile(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    image = models.ImageField(default='static/media/default.png', upload_to='static/media/profile_imgs')
-    image_over = models.ImageField(default='static/media/default_over.png', upload_to='static/media/profile_imgs')
+    image = models.ImageField(default='profile_imgs/default.png', upload_to=user_photo_directory_path)
+    image_over = models.ImageField(default='profile_imgs/default_over.png', upload_to=user_photo_directory_path)
     order = models.SmallIntegerField(blank=True, null=True)
     membre = models.ForeignKey(Membres, on_delete=models.CASCADE, blank=True, null=True)
     type_user = models.CharField(default='admin', max_length=20, choices=TYPE_USER, blank=True, null=False)

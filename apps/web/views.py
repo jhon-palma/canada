@@ -30,7 +30,7 @@ import isodate
 
 def get_youtube_videos(api_key, channel_id, max_results):
     youtube = build('youtube', 'v3', developerKey=api_key)
-    
+
     # Obtener lista de videos del canal
     videos_request = youtube.search().list(
         part='snippet',
@@ -59,7 +59,7 @@ def get_youtube_videos(api_key, channel_id, max_results):
 
         # Obtener duración del video en formato ISO 8601
         duration = video_details_response['items'][0]['contentDetails']['duration']
-        
+
         # Convertir la duración a segundos
         duration_seconds = isodate.parse_duration(duration).total_seconds()
         published_datetime = datetime.fromisoformat(publishedAt.replace('Z', '+00:00'))
@@ -96,7 +96,7 @@ class WebIndex(View):
         try:
             days = Statistics.objects.get(name="days")
         except Statistics.DoesNotExist:
-            days = None 
+            days = None
         try:
             number_transactions = Statistics.objects.get(name="number_transactions")
         except Statistics.DoesNotExist:
@@ -124,8 +124,9 @@ class WebIndex(View):
         # video_urls = sorted(video_urls, key=lambda x: x['publishedAt'], reverse=True)
         # video_urls = video_urls[:3]
 
-        # videos = get_youtube_videos(api_key, channel_id, max_results=3)
-        videos = []
+        try: videos = get_youtube_videos(api_key, channel_id, max_results=3)
+        except: videos = []
+
         # print(videos)
         context = {
             'language':language,
@@ -195,7 +196,7 @@ def searchpropriete(request):
             "id": mun.code,
             "categorie": "2",
         }
-    
+
     for ins in inscriptions:
         data_dict["inscriptions"][ins.id] = {
             "value": "(" + ins.no_inscription +") " + ins.no_civique_debut +" " + ins.nom_rue_complet,
@@ -215,7 +216,7 @@ def searchpropriete(request):
 class SearchView(View):
     template_name = 'web/properties/list.html'
     def get(self, request, *args, **kwargs):
-        
+
         language = kwargs.get('language', 'fr')
         option = kwargs.get('option', 'proprietes')
         labels = DICT_LABELS.get(language).get('web')
@@ -231,12 +232,12 @@ class SearchView(View):
         query = Q()
         if propriete:
             proprietes = [item.split('-')[1] for item in propriete]
-            
+
             try:
                 query &= Q(genre_propriete__in=proprietes)
             except Http404:
                 print("No se encontraron registros de Inscriptions que cumplan con el filtro.")
-        
+
         if status == '2':
             query &= Q(prix_location_demande__isnull=False)
         elif status =='1':
@@ -251,7 +252,7 @@ class SearchView(View):
         if nbbain:
             nbbain = int(nbbain)
             query &= Q(nb_salles_bains__gte=nbbain)
-        
+
         if minamount:
             minamount = float(minamount)
             if status == '2':
@@ -283,7 +284,7 @@ class SearchView(View):
             query &= Q(mun_code__region_code__in=adress_region)
 
         inscriptions_all = Inscriptions.objects.filter(query)
-        
+
         num_results = len(inscriptions_all)
         # if num_results == 0:
         #     inscriptions_all = Inscriptions.objects.filter(query)
@@ -291,7 +292,7 @@ class SearchView(View):
         paginator = Paginator(inscriptions_all, 36)
         page_number = request.GET.get('page')
         inscriptions = paginator.get_page(page_number)
-        
+
         context = {
             'language':language,
             'option':option,
@@ -330,7 +331,7 @@ class WebDetailProperty(View):
         #     caracteristica.tcar_code_value = sous_type.tcar_code.code
         #     caracteristica.scarac_code_value = sous_type.code
         #     caracteristicas_con_descripcion.append(caracteristica)
-        
+
         taxsco = propertie.depenses.filter(tdep_code__valeur='TAXSCO').first()
         taxmun = propertie.depenses.filter(tdep_code__valeur='TAXMUN').first()
         try:
@@ -388,10 +389,9 @@ class WebVideos(View):
         api_key = KEY_API_YB
         channel_id = CHANNEL_ID
 
-        videos = get_youtube_videos(api_key, channel_id, max_results=50)
-        
-        
-        print(videos)
+        try: videos = get_youtube_videos(api_key, channel_id, max_results=50)
+        except: videos = []
+
         context = {
             'language':language,
             'labels':labels,
@@ -412,7 +412,7 @@ class WebContact(View):
             'labels':labels,
         }
         return render(request, self.template_name, context)
-    
+
 class WebPolicy(View):
     template_name = 'web/policy.html'
 
@@ -477,13 +477,13 @@ def calc_monthly_payment_view(request):
         P = float(request.GET.get('hypotheque', 0))
         r_anual = float(request.GET.get('interest_percent', 0))
         n_anos = int(request.GET.get('year_term', 0))
-        
+
         if P and r_anual and n_anos:
             M = calc_monthly_payment(P, r_anual, n_anos)
             response_data = {'monthly_payment': M}
         else:
             response_data = {'error': 'Invalid parameters'}
-        
+
         return JsonResponse(response_data)
     return JsonResponse({'error': 'Invalid request method'})
 
@@ -512,13 +512,13 @@ def searchMember(request):
     language = request.GET.get('Codelang', 'en')
     if query:
         profiles = Profile.objects.filter(
-                Q(membre__prenom__icontains=query) | 
-                Q(membre__nom__icontains=query) | 
+                Q(membre__prenom__icontains=query) |
+                Q(membre__nom__icontains=query) |
                 Q(membre__bur_code__code__icontains=query)
             )
     else:
         profiles = Profile.objects.all()
-    
+
     results = []
     for profile in profiles:
         results.append({
@@ -545,7 +545,7 @@ def statistics(request):
     try:
         days = Statistics.objects.get(name="days")
     except Statistics.DoesNotExist:
-        days = None 
+        days = None
     try:
         number_transactions = Statistics.objects.get(name="number_transactions")
     except Statistics.DoesNotExist:

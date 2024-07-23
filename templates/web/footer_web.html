@@ -1,5 +1,7 @@
 {% load tags %}{% load static %}
 
+{% include 'web/free_evaluation.html' %}
+
 <script type="text/javascript" src="https://use.fontawesome.com/e686055a0b.js"></script>
 <script type="text/javascript" src="{% static 'web/js/cookies.js' %}"></script>
 <script type="text/javascript" src="{% static 'web/js/cookies.js' %}"></script>
@@ -64,7 +66,7 @@
                     <img src="{% static 'web/images2/tiktok.png' %}" alt="Tik tok">
                 </a>
             </div>
-            <a href="#" class="bouton openNewletter">{{ labels.index.button.eight }}</a>
+            <a class="bouton openNewletter">{{ labels.index.button.eight }}</a>
         </div>
         <div class="fcontact_col3">
             <form id="formContactFooter" method="post" action="{% url 'web:contact_messages' %}">

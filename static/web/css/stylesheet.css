@@ -985,7 +985,7 @@ div.bloc_title.detail_title.fixed_pos.nav_fixed .content_center2 {
 .titre_txt {
 	width: 100%;
 	padding: 10px 0 0 0;
-	color: #478d8c;
+	color: #00AAAE;
 	font-size: 28px;
 }
 
@@ -1231,8 +1231,8 @@ div.bloc_title.detail_title.fixed_pos.nav_fixed .content_center2 {
 	text-decoration: none;
 }
 .pagination-immo a:hover {
-	background-color: #478d8c;
-	border: 1px solid #478d8c;
+	background-color: #00AAAE;
+	border: 1px solid #00AAAE;
 	color: #FFF;
 }
 /* Menu trier */
@@ -1276,7 +1276,7 @@ div.bloc_title.detail_title.fixed_pos.nav_fixed .content_center2 {
 .wrapper_mainnav:hover h2, 
 .wrapper_mainnav .filtertit:hover,
 .wrapper_mainnav h2:hover {
-	background: #478d8c;
+	background: #00AAAE;
 	text-decoration: none;
 	cursor: pointer;
 	color: #FFF;
@@ -1535,7 +1535,7 @@ img.courtier_footer {
 	width: 205px;
 	padding: 3px 0 0 0;
 	font-size: 23px;
-	color: #478d8c;
+	color: #00AAAE;
 	float: left;
 }
 .footer_tel span {
@@ -3179,7 +3179,7 @@ div#menu ul li ul li {
 	width: 100%;
 	padding: 0;
 	margin: 0;
-	color: #478d8c;
+	color: #00AAAE;
 	font-size: 16px;
 	text-transform: uppercase;
 }
@@ -3192,7 +3192,7 @@ div#menu ul li ul li {
 	width: 100%;
 	padding: 20px 0 20px 0;
 	margin: 0 0 15px 0;
-	background: url(../images/col_blue.gif) no-repeat #478d8c top right;
+	background: url(../images/col_blue.gif) no-repeat #00AAAE top right;
 	color: #FFF;
 	font-size: 16px;
 	text-transform: uppercase;
@@ -3336,22 +3336,22 @@ a.txt_brochures:active {
 	float: left;
 	width: 100%;
 	padding: 0;
-	color: #478d8c;
+	color: #00AAAE;
 }
 .web_liens a:link {
-	color: #478d8c;
+	color: #00AAAE;
 	text-decoration: none;
 }
 .web_liens a:visited {
-	color: #478d8c;
+	color: #00AAAE;
 	text-decoration: none;
 }
 .web_liens a:hover {
-	color: #478d8c;
+	color: #00AAAE;
 	text-decoration: underline;
 }
 .web_liens a:active {
-	color: #478d8c;
+	color: #00AAAE;
 	text-decoration: none;
 }
 .right_col_table, .table_gal {
@@ -4384,7 +4384,7 @@ a.mosaique .btn_mosaique:active { color: #FFFFFF; text-decoration: none; }
 }
 
 .header_secteur a:hover {
-	color: #478d8c;
+	color: #00AAAE;
 	text-decoration: none;
 }
 
@@ -5474,7 +5474,7 @@ img.logo_contact{width: 160px;margin-top: 0;}
 
 .fichetitlebloc h1{
     text-transform: uppercase;
-    color: #478d8c;
+    color: #00AAAE;
     font-weight: 600;
     font-size: 20px;
     flex-grow: 1;
@@ -5504,7 +5504,7 @@ img.logo_contact{width: 160px;margin-top: 0;}
 
 p.visitelibre{
     margin-left: 20px;
-    background-color: #478d8c;
+    background-color: #00AAAE;
     color: #fff;
     padding: 20px 30px;
     text-transform: uppercase;
@@ -5611,7 +5611,7 @@ p.visitelibre{
 }
 .descriptionbloc aside p span {
 	font-weight: bold;
-    color: #478d8c;
+    color: #00AAAE;
     display: block;
     padding: 0 0 5px 0;
 }
@@ -5648,11 +5648,11 @@ p.visitelibre{
     display: block;
 	text-transform: uppercase;
 	position: relative;
-	color: #478d8c !important;
+	color: #00AAAE !important;
 	line-height: 1.2;
 	height: auto;
 	padding: 25px;
-	border:3px solid #478d8c;
+	border:3px solid #00AAAE;
 	font-size: 14px;
 	font-weight: 600;
     box-sizing: border-box;
@@ -5674,7 +5674,7 @@ p.visitelibre{
 	height: 0%;
 	left: 0;
 	bottom: 0;
-	background: #478d8c;
+	background: #00AAAE;
 	z-index: -1;
 	transition: all .4s;
 }
@@ -5696,7 +5696,7 @@ a.btnside{
 	color: #fff !important;
     padding: 25px;
     box-sizing: border-box;
-    border:3px solid #478d8c;
+    border:3px solid #00AAAE;
     font-size: 14px;
 	font-weight: 600;
 	z-index: 2;
@@ -5705,7 +5705,7 @@ a.btnside{
 }
 
 a.btnside:hover{
-    color: #478d8c !important;
+    color: #00AAAE !important;
 	text-decoration: none;
 }
 
@@ -5717,7 +5717,7 @@ a.btnside:after{
 	height: 100%;
 	left: 0;
 	top: 0;
-	background: #478d8c;
+	background: #00AAAE;
 	z-index: -1;
 	transition: all .4s;
 }
@@ -5792,7 +5792,7 @@ a.openfiche{
     width: 100%;
     text-align: center;
     text-transform: uppercase;
-    color: #478d8c !important;
+    color: #00AAAE !important;
     text-decoration: none !important;
     font-size: 16px;
     position: relative;
@@ -5843,7 +5843,7 @@ p.fullfichep{display: none;}
     width: 100%;
     display: block;
     background-color: #f3f3f3;
-    color: #478d8c !important;
+    color: #00AAAE !important;
     text-decoration: none !important;
     text-align: center;
     padding: 15px 0;
@@ -5853,7 +5853,7 @@ p.fullfichep{display: none;}
 
 .navcalculateurs a.active{
     color: #fff !important;
-    background-color: #478d8c;
+    background-color: #00AAAE;
 }
 
 .navcalculateurs a:not(.active):hover{
@@ -5981,8 +5981,8 @@ p.introfiche{font-size: 18px;line-height: 1.5;margin-top: 0;}
     text-transform: uppercase;
     font-weight: normal;
     font-size: 16px;
-    background-color: #478d8c;
-    border:2px solid #478d8c;
+    background-color: #00AAAE;
+    border:2px solid #00AAAE;
     margin-top: 20px;
     display: inline-block;
     transition: all .4s;
@@ -5990,7 +5990,7 @@ p.introfiche{font-size: 18px;line-height: 1.5;margin-top: 0;}
 }
 .popeval input[type=submit]:hover,
 .popfiche input[type=submit]:hover {
-    background-color: #fff;color: #478d8c;
+    background-color: #fff;color: #00AAAE;
 }
 
 a.btnside.btnfixedfiche{display: none;}
@@ -6340,7 +6340,7 @@ img.mfp-img{
 	display: flex;
 	justify-content: flex-start;
 	align-items: flex-end;
-	border-bottom: 4px solid #478d8c;
+	border-bottom: 4px solid #00AAAE;
 }
 
 .navmedia a{
@@ -6354,7 +6354,7 @@ img.mfp-img{
 
 .navmedia a.selected{
 	color: #fff !important;
-	background-color: #478d8c;
+	background-color: #00AAAE;
 }
 /* ******* FIN Nouvelle fiche ****** */
 
@@ -6367,8 +6367,8 @@ img.mfp-img{
 .teal_btn,
 button[type=submit], .popnews article input[type=submit], .popwwu  article input[type=submit] {
 	color: #fff !important;
-    border: 1px solid #478d8c;
-    background-color: #478d8c;
+    border: 1px solid #00AAAE;
+    background-color: #00AAAE;
     padding: 10px 30px;
     border-radius: 0;
     display: inline-block;
@@ -6381,7 +6381,7 @@ button[type=submit], .popnews article input[type=submit], .popwwu  article input
 }
 .teal_btn:hover,
 button[type=submit]:hover, .popnews article input[type=submit]:hover, .popwwu  article input[type=submit]:hover {
-    color: #478d8c !important;
+    color: #00AAAE !important;
     background-color: #fff;
 }
 .teal_btn:hover {
@@ -6401,5 +6401,4 @@ body .ui-autocomplete  {
 body .ui-autocomplete .ui-menu-item {
 	cursor: pointer;
 }
-
 

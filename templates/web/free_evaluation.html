@@ -1,0 +1,174 @@
+
+<section class="popeval">
+	<article>
+		<div id="confirm_message_form" class="confirm_message"></div>
+		<form method="post" id="formeval" name="formeval" action="{% url 'web:contact_messages' %}">
+            {% csrf_token %}
+			<h2>{% if language == "en" %}Free evaluation of your property{% else %}Estimation gratuite de la valeur de votre propriété{% endif %}</h2>
+			<input type="hidden" id="g-recaptcha-response-eval" name="g-recaptcha-response-eval" value="">
+            <input type="hidden" id="sujet" name="sujet" value="Evaluation">
+			<input type="text" name="prenom" placeholder="Full name" required="required">
+			<input type="tel" name="tel" placeholder="Phone" required="required">
+			<input type="email" name="email" placeholder="E-mail" required="required">
+			<input type="text" name="adresse" placeholder="Address" required="required">
+			<div id="errEval"></div>
+			<input type="submit" value="{% if language == 'en' %}Send{% else %}Envoyer{% endif %}">
+		</form>
+	</article>
+	<div class="close">+</div>
+</section>	
+
+
+<section class="popfiche">
+	<article>
+		<div id="confirm_message" class="confirm_message"></div>
+		<form method="post" id="formfiche" name="formfiche" action="/contact_messages/">
+            {% csrf_token %}
+			<h2></h2>
+			<input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" value="">
+            <input type="hidden" id="sujet-2" name="sujet" value="">
+			<input type="text" name="prenom" placeholder="Full name" required="required">
+			<input type="tel" name="tel" placeholder="Phone" required="required">
+			<input type="email" name="email" placeholder="E-mail" required="required">
+			<textarea name="comment" placeholder="Your message" required="required"></textarea>
+			<input type="hidden" name="adresse" value="1160, Rue MacKay, apt. 2303, Montréal (Ville-Marie)">
+			<input type="hidden" name="maison" value="27135293">
+			<input type="hidden" name="objet" value="">
+			<div id="err"></div>
+			<input id="submitFiche" type="submit" value="">
+		</form>
+	</article>
+	<div class="close">+</div>
+</section>
+<script type="text/javascript">
+    var language = "{{ language }}";
+    $(function () {
+        $('#reset').click(function(){
+            var st= $('input[name="status"]:checked').val();
+            // alert("Entro"+st);
+            // location.href = '?page='+st
+        });
+
+        $(window).click(function() {
+            $("#fserach").val('')
+        });
+        $("#fserach").autocomplete({
+            minLength: 3,
+            autoFocus: true,
+            source: function (request, response) {
+                var status = $('input[name=status]:checked'). val();
+                $.ajax({
+                    type: 'GET',
+                    url: "{% url 'web:searchpropriete' %}",
+                    dataType: "json",
+                    data: {
+                        term: request.term,
+                        status: status,
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
+            select: function (event, data) {
+                if (data.item.categorie == 2) {
+                $('#freeform-filters ul').prepend('<li><a>' + data.item.value + '</a><input type="hidden" name="adress[mun][]" value="' + data.item.id + '" ></li>');
+            }
+            if (data.item.categorie == 3) {
+                $('#freeform-filters ul').prepend('<li><a>' + data.item.value + '</a><input type="hidden" name="adress[ville][]" value="' + data.item.id + '" ></li>');
+            }
+            if (data.item.categorie == 1) {
+                $('#freeform-filters ul').prepend('<li><a>' + data.item.value + '</a><input type="hidden" name="adress[region][]" value="' + data.item.id + '" ></li>');
+            }
+            if (data.item.categorie == 4) {
+                if (language == "en") {
+                    location.href = "/en/propriete/" + data.item.id + "/";
+                } else {
+                    location.href = "/fr/propriete/" + data.item.id + "/";
+                }
+            }
+                $('#freeform-filters ul li').click(function (e) {
+                    e.preventDefault();
+                    $(this).remove();
+                });
+                event.target.value = '';
+                // stop la propagation de l'évènement
+                return false;
+            }
+        });
+        $('#freeform-filters ul li').click(function (e) {
+            e.preventDefault();
+            $(this).remove();
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $("#formeval").on('submit', function (e) {
+            e.preventDefault();
+            var form = $("#formeval");
+            $.ajax({
+                type: "POST",
+                url: form.attr("action"),
+                data: form.serialize(),
+                success: function (response) {
+                    if (response.response == 1) {
+                        var language = "{{ language }}";
+                        if (language === "en") {
+                            var message = "Thank you, your message has been sent";
+                        } else {
+                            var message = "Merci, votre message a bien été envoyé";
+                        }
+                        $("#confirm_message_form").html("<p>" + message + "</p>");
+                        $('#formeval').hide();
+                        $('#formeval')[0].reset();					
+                    }
+                    else {
+                        var language = "{{ language }}";
+                        if (language === "en") {
+                            var message = "Required fields";
+                        } else {
+                            var message = "Champs obligatoires";
+                        }
+                        $("#errEval").html(message);
+                    }
+                }
+            });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $("#formfiche").on('submit', function (e) {
+            e.preventDefault();
+            var form = $("#formfiche");
+            $.ajax({
+                type: "POST",
+                url: form.attr("action"),
+                data: form.serialize(),
+                success: function (response) {
+                    if (response.response == 1) {
+                        var language = "en";
+                        if (language === "en") {
+                            var message = "Thank you, your message has been sent";
+                        } else {
+                            var message = "Merci, votre message a bien été envoyé";
+                        }
+                        $("#confirm_message").html("<p>" + message + "</p>");
+                        $('#formfiche').hide();
+                        $('#formfiche')[0].reset();
+                    }
+                    else {
+                        var language = "en";
+                        if (language === "en") {
+                            var message = "Required fields";
+                        } else {
+                            var message = "Champs obligatoires";
+                        }
+                        $("#err").html(message);
+                    }
+                }
+            });
+        });
+    });
+</script>
