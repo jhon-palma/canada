@@ -2008,3 +2008,19 @@ h1.h1styled{
 .realestatebroker_content a:link {
 	text-decoration: underline !important;
 }
+
+.content_search {
+    width: 100%; /* Opcional: asegura que el contenedor ocupe el ancho completo de su contenedor padre */
+    max-width: 1200px; /* Ancho máximo del contenedor */
+    margin: 0 auto; /* Centra el contenedor horizontalmente */
+    padding: 0 20px; /* Relleno interno para asegurar que el contenido no esté pegado a los bordes */
+    box-sizing: border-box; /* Incluye el padding y border dentro del ancho total */
+}
+
+/* Ejemplo de cómo puedes ajustar el tamaño máximo en pantallas más pequeñas */
+@media (max-width: 768px) {
+    .content_search {
+        max-width: 100%; /* En pantallas pequeñas, ocupar el ancho completo */
+        padding: 0 10px; /* Reducir el padding interno */
+    }
+}

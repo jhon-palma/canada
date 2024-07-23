@@ -138,8 +138,9 @@ DICT_LABELS = {
             },
             'team':{
                 'title':{
-                    'one':'Meet Our',
-                    'two':'Real Estate Team',
+                    'one':'Your Trusted',
+                    'two':'Real Estate Brokers',
+                    'three':'Meet Our Team',
                 },
                 'button':{
                     'one':'Read Bio',
@@ -321,8 +322,9 @@ DICT_LABELS = {
             },
             'team':{
                 'title':{
-                    'one':'Rencontrez Notre',
-                    'two':'Équipe Immobilière',
+                    'one':'Votre Confiance',
+                    'two':'Courtiers en immobilier',
+                    'three': 'Rencontrer notre équipe',
                 },
                 'button':{
                     'one':'Lire la Bio',
