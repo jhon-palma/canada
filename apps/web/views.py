@@ -508,16 +508,26 @@ def contact_messages(request):
         return JsonResponse({'response': 0})
 
 def searchMember(request):
+    print("##############################################")
+    print("##############################################")
+    print("##############################################")
+    print("##############################################")
+    print("##############################################")
+    print("##############################################")
     query = request.GET.get('term')
     language = request.GET.get('Codelang', 'en')
     if query:
         profiles = Profile.objects.filter(
-                Q(membre__prenom__icontains=query) |
-                Q(membre__nom__icontains=query) |
-                Q(membre__bur_code__code__icontains=query)
-            )
+            Q(membre__prenom__icontains=query) |
+            Q(membre__nom__icontains=query) |
+            Q(membre__bur_code__code__icontains=query)
+        ).filter(
+            user__is_active=True
+        ).exclude(
+            order__isnull=True
+        ).order_by('order')
     else:
-        profiles = Profile.objects.all()
+        profiles = Profile.objects.filter(user__is_active=True).exclude(order__isnull=True).order_by('order')
 
     results = []
     for profile in profiles:

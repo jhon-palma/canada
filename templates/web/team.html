@@ -22,7 +22,7 @@
                         <input type="hidden" name="Codelang" value="{{ language }}" />
                         <label for="forwhat1" class="tablabel">{{ labels.team.text.eight }}</label>
                         <div class="searchbarcont">
-                            <input type="search" placeholder="{{ labels.team.text.eight }}" class="mainsearch" id="fserach" name="fserach" />
+                            <input type="search" placeholder="{{ labels.team.text.eight }}" class="mainsearch" id="wsearch" name="wsearch" />
                         </div>
                     </form>
                 </div>
@@ -74,7 +74,7 @@
 
 <script>
     $(document).ready(function(){
-        $('#fserach').on('input', function() {
+        $('#wsearch').on('input', function() {
             var query = $(this).val();
             var language = "{{ language }}";
 
