@@ -19,7 +19,7 @@ from django.shortcuts import get_object_or_404
 # from dateutil.relativedelta import *
 from datetime import *
 from apps.users.models import Profile
-from apps.web.models import Formulaire_contact, Statistics
+from apps.web.models import Formulaire_contact, ImagesWeb, Statistics
 from immobilier.local_settings import CHANNEL_ID, KEY_API_YB
 from ..properties.models import Addenda, Caracteristiques, GenresProprietes, Inscriptions, Membres, Municipalites, Propertie, Regions, SousTypeCaracteristiques
 from ..labels import DICT_LABELS
@@ -89,6 +89,8 @@ class WebIndex(View):
         api_key = KEY_API_YB
         channel_id = CHANNEL_ID
         max_results = 3
+        images = ImagesWeb.objects.filter(location="index.html")
+        print(images)
         try:
             sold_price = Statistics.objects.get(name = "sold_price")
         except Statistics.DoesNotExist:
@@ -124,7 +126,7 @@ class WebIndex(View):
         # video_urls = sorted(video_urls, key=lambda x: x['publishedAt'], reverse=True)
         # video_urls = video_urls[:3]
 
-        try: videos = get_youtube_videos(api_key, channel_id, max_results=3)
+        try: videos = get_youtube_videos(api_keys, channel_id, max_results=3)
         except: videos = []
 
         # print(videos)
@@ -138,6 +140,7 @@ class WebIndex(View):
             'video_urls':videos,
             'sold_price':sold_price,
             'days':days,
+            'images':images,
             'number_transactions':number_transactions,
         }
         return render(request, self.template_name, context)

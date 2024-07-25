@@ -14,13 +14,13 @@ from django.core import serializers
 from django.contrib.auth.mixins import LoginRequiredMixin
 from apps.accounts.models import CustomUser
 from apps.properties.models import Membres, MembresMediasSociaux
-from apps.users.form import ProfileEditForm, UserEditForm, CustomUserCreationForm
+from apps.users.form import ImageEditForm, ProfileEditForm, UserEditForm, CustomUserCreationForm
 from apps.users.models import Profile
 from apps.vars import *
 from django.contrib.auth.forms import SetPasswordForm, PasswordChangeForm
 from django.contrib.auth.hashers import make_password
 
-from apps.web.models import Formulaire_contact
+from apps.web.models import Formulaire_contact, ImagesWeb
 
 def updateProfile(request):
     existing_orders = Profile.objects.exclude(order__isnull=True).values_list('order', flat=True)
@@ -139,6 +139,8 @@ def change_password_user(request, user_id):
 
 def profile_list(request):
     usuarios = CustomUser.objects.all().order_by('first_name')
+    for x in usuarios:
+        print(x.url)
     return render(request, 'users/list_users.html',{'usuarios':usuarios})
 
 def create_user(request):
@@ -209,3 +211,18 @@ def detail_message(request, id):
         return redirect('users:list_messages')
 
     return render(request, 'users/detail_message.html',{'message_detail':message_detail})
+
+def list_images(request):
+    images_list = ImagesWeb.objects.all()
+    return render(request, 'users/list_images.html',{'images_list':images_list})
+
+def update_image(request, image_id):
+    image = get_object_or_404(ImagesWeb, id=image_id)
+    if request.method == 'POST':
+        image_form = ImageEditForm(request.POST, request.FILES, instance=image)
+        if image_form.is_valid():
+            image_form.save()
+            messages.success(request, 'Imagen Actualizada', 'succesful')
+            return redirect('users:list_images') 
+
+    return render(request, 'users/update_image.html',{'image':image})

@@ -1,4 +1,12 @@
-{% load static %}{% load tags %}{% include 'web/header_web.html' %}
+{% load static %}{% load tags %}
+{% block header_page %}
+<style>
+    .ctawide {
+        background-image: url("/static/web/images2/workwithus-page.jpg");
+    }
+</style>
+{% endblock %}
+{% include 'web/header_web.html' %}
 
 <section class="banner nothome">
 	<img src="{% static 'web/images2/banner-team4.jpg' %}" alt="Photo - LJ Realties, Agence immobilière" class="bannerimg" />

@@ -29,3 +29,12 @@ class Statistics(models.Model):
     final_year = models.CharField(max_length=4, blank=True, null=True)
     initial_value = models.CharField(max_length=50, blank=True, null=True)
     final_value = models.CharField(max_length=50, blank=True, null=True)
+
+class ImagesWeb(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
+    name = models.CharField(max_length=100)
+    url = models.ImageField(upload_to='static/web/images/web_imgs/')
+    location = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name

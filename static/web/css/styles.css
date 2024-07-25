@@ -577,7 +577,7 @@ position: relative;color: #fff !important;}
 }
 
 .profilhome{
-	background-image: url("../images/index/2.png");
+	/* background-image: url("../images/index/2.png"); */
 	background-attachment: fixed;
 	background-size: cover;
 	color: #fff;
@@ -586,9 +586,9 @@ position: relative;color: #fff !important;}
 	background-repeat: no-repeat;
 }
 
-.profilhome.wwuhome{
+/* .profilhome.wwuhome{
 	background-image: url("../images/index/3.png");
-}
+} */
 
 
 .h2def-white {
@@ -694,7 +694,7 @@ position: relative;color: #fff !important;}
 .aviscont{margin-bottom: 30px;}
 
 .videoshome{
-	background-image: url("../images2/video-bg-2.png");
+	/* background-image: url("../images2/video-bg-2.png"); */
 	background-attachment: fixed;
 	background-size: cover;
 	background-repeat: no-repeat;

@@ -4,7 +4,7 @@ from django.urls import path, re_path
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
-from .views import change_password, create_user, detail_message, list_messages, password_change_done, profile_list, updateProfile, updateProfileUsers, change_password_user
+from .views import change_password, create_user, detail_message, list_images, list_messages, password_change_done, profile_list, updateProfile, updateProfileUsers, change_password_user, update_image
 
 urlpatterns = [
     path('profileList/', profile_list, name='profile_list'),
@@ -15,5 +15,7 @@ urlpatterns = [
     re_path('password_change_user/(?P<user_id>[\w-]+)/$', login_required(change_password_user), name='password_change_user'),
     path('create_user/',login_required(create_user), name='create_user'),
     path('list_messages/',login_required(list_messages), name='list_messages'),
+    path('list_images/',login_required(list_images), name='list_images'),
+    re_path('update_image/(?P<image_id>[\w-]+)/$',login_required(update_image), name='update_image'),
     re_path('detail_message/(?P<id>[\w-]+)/$', login_required(detail_message), name='detail_message'),
 ]

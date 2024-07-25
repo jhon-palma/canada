@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 from django.forms.widgets import SelectMultiple
 
 from apps.accounts.models import CustomUser
+from apps.web.models import ImagesWeb
 from .models import Profile
 
 class UserEditForm(forms.ModelForm):
@@ -32,3 +33,8 @@ class CustomUserCreationForm(UserCreationForm):
     #     if commit:
     #         user.save()
     #     return user
+
+class ImageEditForm(forms.ModelForm):
+    class Meta:
+        model = ImagesWeb
+        fields = ['url']
