@@ -1296,7 +1296,7 @@ form.propsearch{padding: 60px 0px 40px;}
 
 .ctawide{
 	width: 100%;
-	background-image: url("../images2/workwithus-page.jpg");
+	/* background-image: url("../images2/workwithus-page.jpg"); */
 	background-attachment: fixed;
 	-webkit-background-size: cover;
 	background-size: cover;

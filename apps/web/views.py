@@ -90,7 +90,6 @@ class WebIndex(View):
         channel_id = CHANNEL_ID
         max_results = 3
         images = ImagesWeb.objects.filter(location="index.html")
-        print(images)
         try:
             sold_price = Statistics.objects.get(name = "sold_price")
         except Statistics.DoesNotExist:
@@ -126,7 +125,7 @@ class WebIndex(View):
         # video_urls = sorted(video_urls, key=lambda x: x['publishedAt'], reverse=True)
         # video_urls = video_urls[:3]
 
-        try: videos = get_youtube_videos(api_keys, channel_id, max_results=3)
+        try: videos = get_youtube_videos(api_key, channel_id, max_results=3)
         except: videos = []
 
         # print(videos)
@@ -151,22 +150,23 @@ class WebProperties(View):
     def get(self, request, *args, **kwargs):
         language = kwargs.get('language', 'fr')
         option = kwargs.get('option', 'proprietes')
-        print(option)
         labels = DICT_LABELS.get(language).get('web')
         if option == "properties-for-sale" or option == "proprietes-a-vendre":
-            inscriptions_all = Inscriptions.objects.filter(prix_demande__isnull=False)
+            inscriptions_all = Inscriptions.objects.filter(prix_demande__isnull=False).order_by('id')
         elif option == "properties-for-rent" or option == "proprietes-a-louer":
-            inscriptions_all = Inscriptions.objects.filter(prix_location_demande__isnull=False)
+            inscriptions_all = Inscriptions.objects.filter(prix_location_demande__isnull=False).order_by('id')
         else:
-            inscriptions_all = Inscriptions.objects.all()
+            inscriptions_all = Inscriptions.objects.all().order_by('id')
         paginator = Paginator(inscriptions_all, 36)
         page_number = request.GET.get('page')
         inscriptions = paginator.get_page(page_number)
+        images = ImagesWeb.objects.filter(location="list.html")
         context = {
             'language':language,
             'option':option,
             'labels':labels,
             'inscriptions':inscriptions,
+            'images':images,
         }
         return render(request, self.template_name, context)
 
@@ -394,11 +394,13 @@ class WebVideos(View):
 
         try: videos = get_youtube_videos(api_key, channel_id, max_results=50)
         except: videos = []
-
+        
+        images = ImagesWeb.objects.filter(location="videos.html")
         context = {
             'language':language,
             'labels':labels,
             'videos':videos,
+            'images':images,
         }
         return render(request, self.template_name, context)
 
@@ -409,10 +411,12 @@ class WebContact(View):
         language = kwargs.get('language', 'fr')
         labels = DICT_LABELS.get(language).get('web')
         option = kwargs.get('option', 'contact-courtier-immobilier')
+        images = ImagesWeb.objects.filter(location="contact.html")
         context = {
             'language':language,
             'option':option,
             'labels':labels,
+            'images':images,
         }
         return render(request, self.template_name, context)
 
@@ -437,11 +441,13 @@ class WebTeam(View):
         language = kwargs.get('language', 'fr')
         labels = DICT_LABELS.get(language).get('web')
         option = kwargs.get('option', 'courtier-immobilier')
+        images = ImagesWeb.objects.filter(location="team.html")
         context = {
             'language':language,
             'option':option,
             'labels':labels,
             'team': team,
+            'images': images,
         }
         return render(request, self.template_name, context)
 
@@ -468,10 +474,12 @@ class WebWork(View):
         language = kwargs.get('language', 'fr')
         labels = DICT_LABELS.get(language).get('web')
         option = kwargs.get('option', 'travailler-avec-nous')
+        images = ImagesWeb.objects.filter(location="work.html")
         context = {
             'language':language,
             'option':option,
             'labels':labels,
+            'images':images,
         }
         return render(request, self.template_name, context)
 
@@ -511,12 +519,6 @@ def contact_messages(request):
         return JsonResponse({'response': 0})
 
 def searchMember(request):
-    print("##############################################")
-    print("##############################################")
-    print("##############################################")
-    print("##############################################")
-    print("##############################################")
-    print("##############################################")
     query = request.GET.get('term')
     language = request.GET.get('Codelang', 'en')
     if query:

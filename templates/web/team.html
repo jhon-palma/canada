@@ -1,7 +1,7 @@
 {% load static %}{% load tags %}{% include 'web/header_web.html' %}
 
 <section class="banner nothome">
-	<img src="{% static 'web/images2/banner-team.jpg' %}" alt="Photo - LJ Realties, Agence immobilière" class="bannerimg" />
+	<img src="{% for image in images %}{% if image.name == 'Team_Banner' %}/{{image.url}}{% endif %}{% endfor %}" alt="Photo - LJ Realties, Agence immobilière" class="bannerimg" />
     <div class="baninfo">
         <h2>{{ labels.team.title.one }} <span>{{ labels.team.title.two }}</span></h2>
         <h1>{{ labels.team.title.three }}</h1>

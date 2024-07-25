@@ -121,7 +121,7 @@
             
             
             <section class="banner nothome">
-                <img src="{%  static 'web/images2/banner-prop.jpg' %}" alt="Photo - LJ Realties, Real estate agency" class="bannerimg" />
+                <img src="{% for image in images %}{% if image.name == 'Properties_Banner' %}/{{image.url}}{% endif %}{% endfor %}" alt="Photo - LJ Realties, Real estate agency" class="bannerimg" />
                 <div class="baninfo">
                     <h2>{{ labels.index.title.one }}<span> {{ labels.index.title.two }}</span></h2>
                     <h1>{{ labels.index.title.three }}</h1><br>

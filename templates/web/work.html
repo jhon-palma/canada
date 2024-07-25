@@ -1,15 +1,19 @@
 {% load static %}{% load tags %}
 {% block header_page %}
-<style>
-    .ctawide {
-        background-image: url("/static/web/images2/workwithus-page.jpg");
-    }
-</style>
+    {% for image in images %}
+        {% if image.name == "Work_Contact" %}
+            <style>
+                .ctawide {
+                    background-image: url("/{{ image.url }}");
+                }
+            </style>
+        {% endif %}
+    {% endfor %}
 {% endblock %}
 {% include 'web/header_web.html' %}
 
 <section class="banner nothome">
-	<img src="{% static 'web/images2/banner-team4.jpg' %}" alt="Photo - LJ Realties, Agence immobilière" class="bannerimg" />
+	<img src="{% for image in images %}{% if image.name == 'Work_Banner' %}/{{image.url}}{% endif %}{% endfor %}" alt="Photo - LJ Realties, Agence immobilière" class="bannerimg" />
 	<h1>{{ labels.work.title.one }} <span>{{ labels.work.title.two }}</span></h1>
 </section>
 

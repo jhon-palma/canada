@@ -2,7 +2,7 @@
 {% include 'web/header_web.html' %}
 
 <section class="banner nothome">
-	<img src="{% static 'web/images2/banner-contact.jpg' %}" alt="Photo - LJ Realties, Agence immobilière" class="bannerimg" />
+	<img src="{% for image in images %}{% if image.name == 'Contact_Banner' %}/{{image.url}}{% endif %}{% endfor %}" alt="Photo - LJ Realties, Agence immobilière" class="bannerimg" />
 	<h1>{{ labels.contact.title.one }}<span>{{ labels.contact.title.two }}</span></h1>
 </section>
 
