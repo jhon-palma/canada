@@ -126,9 +126,9 @@ class WebIndex(View):
         # video_urls = sorted(video_urls, key=lambda x: x['publishedAt'], reverse=True)
         # video_urls = video_urls[:3]
 
-        try: videos = get_youtube_videos(api_key, channel_id, max_results=3)
-        except: videos = []
-
+        # try: videos = get_youtube_videos(api_key, channel_id, max_results=3)
+        # except: videos = []
+        videos = VideosWeb.objects.filter(is_short=False).order_by('-publishedAt')[:3]
         # print(videos)
         context = {
             'language':language,
