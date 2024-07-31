@@ -1,3 +1,4 @@
+from datetime import datetime
 import pdb
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout as auth_logout, update_session_auth_hash
@@ -14,12 +15,13 @@ from django.core import serializers
 from django.contrib.auth.mixins import LoginRequiredMixin
 from apps.accounts.models import CustomUser
 from apps.properties.models import Membres, MembresMediasSociaux
+from apps.properties.uploadData import get_id_bureau, get_id_valeurs
 from apps.users.form import ImageEditForm, ProfileEditForm, UserEditForm, CustomUserCreationForm
 from apps.users.models import Profile
 from apps.vars import *
 from django.contrib.auth.forms import SetPasswordForm, PasswordChangeForm
 from django.contrib.auth.hashers import make_password
-
+from django.db import transaction
 from apps.web.models import Formulaire_contact, ImagesWeb
 
 def updateProfile(request):
@@ -139,8 +141,6 @@ def change_password_user(request, user_id):
 
 def profile_list(request):
     usuarios = CustomUser.objects.all().order_by('first_name')
-    for x in usuarios:
-        print(x.url)
     return render(request, 'users/list_users.html',{'usuarios':usuarios})
 
 def create_user(request):
@@ -148,15 +148,34 @@ def create_user(request):
         user_form = CustomUserCreationForm(request.POST)
         profile_form = ProfileEditForm(request.POST, request.FILES)
         if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save(commit=False)
-            user.username = user.email  
-            user.save()
-            profile = profile_form.save(commit=False)
-            profile.user = user
-            profile.order = CustomUser.objects.count()
-            profile.save()
-            messages.success(request, '¡Usuario creado Correctamente!')
-            return redirect('users:profile_list')
+            with transaction.atomic():
+                user = user_form.save(commit=False)
+                user.username = user.email  
+                user.save()
+                membre = Membres()
+                membre.nom = user.first_name
+                membre.prenom = user.last_name
+                bur_code = get_id_bureau('JLI001')
+                membre.bur_code = bur_code
+                code_langue = get_id_valeurs("A",'CODE_LANGUE')
+                membre.code_langue = code_langue
+                type_certificat = get_id_valeurs("CRES",'TYPE_CERTIFICAT_MEMBRE')
+                membre.type_certificat = type_certificat
+                now = datetime.now()
+                timestamp = int(now.timestamp())
+                code = timestamp % 1_000_000
+                membre.code = code
+                membre.origin = "Local"
+                membre.save()
+                profile = profile_form.save(commit=False)
+                profile.user = user
+                if membre:
+                    profile.membre = membre
+                # profile.order = CustomUser.objects.count()
+                profile.save()
+
+                messages.success(request, '¡Usuario creado Correctamente!')
+                return redirect('users:profile_list')
         else:
             messages.error(request, 'Por favor corriga los errores listados')
     else:

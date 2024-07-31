@@ -166,7 +166,6 @@ def download_files(request):
                 carpeta_destino = 'data'
                 try:
                     for archivo in os.listdir(carpeta_origen):
-                        print(archivo)
                         ruta_archivo_origen = os.path.join(carpeta_origen, archivo)
                         ruta_archivo_destino = os.path.join(carpeta_destino, archivo)
                         shutil.copy(ruta_archivo_origen, ruta_archivo_destino)

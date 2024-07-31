@@ -8,19 +8,19 @@
 <section class="capsules">
 	<div class="wrap">
         {% for video in videos %}
-            <div href="https://www.youtube.com/watch?v={{ video.video_id }}" class="capsule msrItem">
-                <a href="https://www.youtube.com/watch?v={{ video.video_id }}" class="img"> <img src="https://img.youtube.com/vi/{{ video.video_id }}/hqdefault.jpg" alt="{{ video.title }}t" /></a>
+            <div href="https://www.youtube.com/watch?v={{ video.videoId }}" class="capsule msrItem">
+                <a href="https://www.youtube.com/watch?v={{ video.videoId }}" class="img"> <img src="https://img.youtube.com/vi/{{ video.videoId }}/hqdefault.jpg" alt="{{ video.title }}t" /></a>
 
-                <h3>{{ video.title }}</h3>
+                <h3>{{ video.tittle }}</h3>
                 <p class="sm">{{ video.publishedAt|date:"d/m/Y" }}</p>
                 <p>
-                    {{ video.description }}<br />
+                    {{ video.description|slice:":200" }}{% if video.description|length > 200 %}...{% endif %}<br />
                     <a>{% if language == "en" %}Read more{% else %}Lire plus{% endif %}</a>
                 </p>
                 <p class="hiddendesc">
                     {{ video.description }}
                 </p>
-                <a href="https://www.youtube.com/watch?v={{ video.video_id }}" class="bouton">{{ labels.videos.button.one }}</a>
+                <a href="https://www.youtube.com/watch?v={{ video.videoId }}" class="bouton">{{ labels.videos.button.one }}</a>
             </div>
         {% endfor %}
 	</div>

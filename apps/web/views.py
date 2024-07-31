@@ -19,7 +19,7 @@ from django.shortcuts import get_object_or_404
 # from dateutil.relativedelta import *
 from datetime import *
 from apps.users.models import Profile
-from apps.web.models import Formulaire_contact, ImagesWeb, Statistics
+from apps.web.models import Formulaire_contact, ImagesWeb, Statistics, VideosWeb
 from immobilier.local_settings import CHANNEL_ID, KEY_API_YB
 from ..properties.models import Addenda, Caracteristiques, GenresProprietes, Inscriptions, Membres, Municipalites, Propertie, Regions, SousTypeCaracteristiques
 from ..labels import DICT_LABELS
@@ -27,6 +27,7 @@ from ..labels import DICT_LABELS
 import requests
 from googleapiclient.discovery import build
 import isodate
+from django.utils.dateparse import parse_datetime
 
 def get_youtube_videos(api_key, channel_id, max_results):
     youtube = build('youtube', 'v3', developerKey=api_key)
@@ -40,7 +41,7 @@ def get_youtube_videos(api_key, channel_id, max_results):
         type='video',
     )
     videos_response = videos_request.execute()
-    # print(videos_response)
+    print(videos_response)
     videos = []
 
     # Obtener información de duración para cada video
@@ -392,9 +393,12 @@ class WebVideos(View):
         api_key = KEY_API_YB
         channel_id = CHANNEL_ID
 
-        try: videos = get_youtube_videos(api_key, channel_id, max_results=50)
-        except: videos = []
-        
+        # # try: videos = get_youtube_videos(api_key, channel_id, max_results=50)
+        # # except: videos = []
+        # videos = fetch_videos_from_channel(CHANNEL_ID)
+        # save_videos_to_db(videos)
+        videos = VideosWeb.objects.filter(is_short=False).order_by('-publishedAt')
+
         images = ImagesWeb.objects.filter(location="videos.html")
         context = {
             'language':language,
@@ -442,6 +446,8 @@ class WebTeam(View):
         labels = DICT_LABELS.get(language).get('web')
         option = kwargs.get('option', 'courtier-immobilier')
         images = ImagesWeb.objects.filter(location="team.html")
+        for x in team:
+            print(x.membre.id)
         context = {
             'language':language,
             'option':option,
@@ -599,3 +605,95 @@ def statistics(request):
         'number_transactions':number_transactions,
     }
     return render(request, 'statistics.html', context)
+
+FRAGMENTOS_A_ELIMINAR = [
+    'https://www.ljrealties.com - Find your future dream home',
+    'https://www.ljrealties.com - Trouvez votre future maison de rêve',
+    'https://www.ljrealties.com - Trouvez la maison de vos rêves'
+]
+
+PALABRA_CLAVE_ELIMINAR = 'LJ Aguinaga'
+
+def clean_description(description):
+    # Eliminar fragmentos predefinidos
+    for fragmento in FRAGMENTOS_A_ELIMINAR:
+        if description.startswith(fragmento):
+            description = description[len(fragmento):].strip()
+
+    # Eliminar todo a partir de la palabra clave
+    if PALABRA_CLAVE_ELIMINAR in description:
+        description = description.split(PALABRA_CLAVE_ELIMINAR, 1)[0].strip()
+
+    return description
+
+def fetch_videos_from_channel(channel_id):
+    youtube = build('youtube', 'v3', developerKey=KEY_API_YB)
+    request = youtube.channels().list(
+        part='contentDetails',
+        id=channel_id
+    )
+    response = request.execute()
+
+    upload_playlist_id = response['items'][0]['contentDetails']['relatedPlaylists']['uploads']
+
+    videos = []
+    next_page_token = None
+
+    while True:
+        request = youtube.playlistItems().list(
+            part='snippet',
+            playlistId=upload_playlist_id,
+            maxResults=50,
+            pageToken=next_page_token
+        )
+        response = request.execute()
+
+        for item in response['items']:
+            video_id = item['snippet']['resourceId']['videoId']
+            title = item['snippet']['title']
+            description = item['snippet']['description']
+            published_at = parse_datetime(item['snippet']['publishedAt'])
+
+            # Solicita detalles del video para obtener la duración
+            video_details = youtube.videos().list(
+                part='contentDetails',
+                id=video_id
+            ).execute()
+
+            duration_iso = video_details['items'][0]['contentDetails']['duration']
+            duration = isodate.parse_duration(duration_iso)
+            is_short = duration.total_seconds() <= 100
+
+            # Limpia la descripción
+            description = clean_description(description)
+
+            videos.append({
+                'videoId': video_id,
+                'tittle': title,
+                'description': description,
+                'publishedAt': published_at,
+                'is_short': is_short
+            })
+
+        next_page_token = response.get('nextPageToken')
+        if not next_page_token:
+            break
+
+    return videos
+
+def save_videos_to_db(videos):
+    for video in videos:
+        # Verifica si el video ya existe en la base de datos
+        obj, created = VideosWeb.objects.update_or_create(
+            videoId=video['videoId'],
+            defaults={
+                'tittle': video['tittle'],
+                'description': video['description'],
+                'publishedAt': video['publishedAt'],
+                'is_short': video['is_short']
+            }
+        )
+        if created:
+            print(f"Video '{video['tittle']}' guardado con ID {obj.id}.")
+        else:
+            print(f"Video '{video['tittle']}' ya existe y fue actualizado.")

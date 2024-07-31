@@ -414,7 +414,8 @@ def uploadMembres(data):
         presentation_f = row[22] if row[22] else None
         presentation_a = row[23] if row[23] else None
         try:
-            membres = Membres.objects.get(code=code)
+            # membres = Membres.objects.get(code=code)
+            membres = Membres.objects.get(code=code, origin="Centris")
             cambios = []
 
             if membres.bur_code != bur_code:

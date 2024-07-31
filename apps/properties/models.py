@@ -138,7 +138,8 @@ class Membres(models.Model):
     lien_video_f = models.CharField(db_column='LIEN_VIDEO_F', max_length=255, blank=True, null=True)  
     lien_video_a = models.CharField(db_column='LIEN_VIDEO_A', max_length=255, blank=True, null=True)  
     presentation_f = models.CharField(db_column='PRESENTATION_F', max_length=2000, blank=True, null=True)  
-    presentation_a = models.CharField(db_column='PRESENTATION_A', max_length=2000, blank=True, null=True)  
+    presentation_a = models.CharField(db_column='PRESENTATION_A', max_length=2000, blank=True, null=True)
+    origin = models.CharField(max_length=10,default="Centris")
 
     class Meta:
         db_table = 'MEMBRES'

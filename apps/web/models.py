@@ -38,3 +38,14 @@ class ImagesWeb(models.Model):
 
     def __str__(self):
         return self.name
+
+class VideosWeb(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
+    tittle = models.CharField(max_length=120)
+    description = models.TextField()
+    videoId = models.CharField(max_length=100)
+    publishedAt = models.DateTimeField()
+    is_short = models.BooleanField(default=False)
+    
+    def __str__(self):
+        return self.tittle
