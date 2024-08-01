@@ -41,31 +41,25 @@ def get_youtube_videos(api_key, channel_id, max_results):
         type='video',
     )
     videos_response = videos_request.execute()
-    print(videos_response)
     videos = []
 
-    # Obtener información de duración para cada video
     for item in videos_response['items']:
         video_id = item['id']['videoId']
         video_title = item['snippet']['title']
         publishedAt = item['snippet']['publishedAt']
         description = item['snippet']['description']
 
-        # Obtener detalles del video incluyendo duración
         video_details_request = youtube.videos().list(
             part='contentDetails',
             id=video_id
         )
         video_details_response = video_details_request.execute()
 
-        # Obtener duración del video en formato ISO 8601
         duration = video_details_response['items'][0]['contentDetails']['duration']
 
-        # Convertir la duración a segundos
         duration_seconds = isodate.parse_duration(duration).total_seconds()
         published_datetime = datetime.fromisoformat(publishedAt.replace('Z', '+00:00'))
-        # Excluir videos con duración mayor a 1 minuto (60 segundos)
-        if duration_seconds > 61:
+        if duration_seconds > 91:
             videos.append({
                 'title': video_title,
                 'video_id': video_id,
@@ -103,29 +97,6 @@ class WebIndex(View):
             number_transactions = Statistics.objects.get(name="number_transactions")
         except Statistics.DoesNotExist:
             number_transactions = None
-        # url = f'https://www.googleapis.com/youtube/v3/search?key={api_key}&channelId={channel_id}&part=snippet,id&order=date&maxResults={max_results}&type=video'
-        # response = requests.get(url)
-        # url = f'https://www.googleapis.com/youtube/v3/search?key={api_key}&channelId={channel_id}&order=date&part=snippet,id&maxResults={max_results}'
-        # url = f'https://www.googleapis.com/youtube/v3/search?key={api_key}&channelId={channel_id}&order=date&part=snippet,id&maxResults={max_results}'
-        # response = requests.get(url)
-
-        # data = response.json()
-        # print(data)
-        # video_urls = []
-        # for video in data['items']:
-        #     if video['id']['kind'] == 'youtube#video':
-        #         video_url = f"https://www.youtube.com/shorts/{video['id']['videoId']}"
-        #         head_response = requests.head(video_url)
-        #         if head_response.status_code != 200:
-        #             video_urls.append({
-        #                 'title': video['snippet']['title'],
-        #                 'url': video['id']['videoId'],
-        #                 'publishedAt': video['snippet']['publishedAt']
-        #             })
-
-        # video_urls = sorted(video_urls, key=lambda x: x['publishedAt'], reverse=True)
-        # video_urls = video_urls[:3]
-
         # try: videos = get_youtube_videos(api_key, channel_id, max_results=3)
         # except: videos = []
         videos = VideosWeb.objects.filter(is_short=False).order_by('-publishedAt')[:3]
@@ -136,7 +107,6 @@ class WebIndex(View):
             'labels':labels,
             'inscriptions':inscriptions,
             'inscriptions_vendu':inscriptions_vendu,
-            # 'video_urls':video_urls,
             'video_urls':videos,
             'sold_price':sold_price,
             'days':days,
@@ -280,11 +250,9 @@ class SearchView(View):
                 query &= (inscriptions_location_max | inscriptions_demande_max)
 
         if adress_mun:
-            # inscriptions_mun = Inscriptions.objects.filter(query & Q(mun_code__code__in=adress_mun))
             query &= Q(mun_code__code__in=adress_mun)
 
         if adress_region:
-            # inscriptions_region = Inscriptions.objects.filter(query & Q(mun_code__region_code__in=adress_region))
             query &= Q(mun_code__region_code__in=adress_region)
 
         inscriptions_all = Inscriptions.objects.filter(query)
@@ -323,18 +291,6 @@ class WebDetailProperty(View):
         option = kwargs.get('option', 'detail-propertie')
         mun_code = propertie.mun_code
         same_district = Inscriptions.objects.filter(mun_code=mun_code).exclude(id=propertie.id)[:4]
-        # caracteristicas_filtradas = Caracteristiques.objects.filter(no_inscription=propertie_id)
-        # caracteristicas_con_descripcion = []
-        # for caracteristica in caracteristicas_filtradas:
-        #     sous_type = SousTypeCaracteristiques.objects.get(
-        #         tcar_code=caracteristica.tcar_code,
-        #         code=caracteristica.scarac_code.code
-        #     )
-        #     caracteristica.description_francaise = sous_type.description_francaise
-        #     caracteristica.description_anglaise = sous_type.description_anglaise
-        #     caracteristica.tcar_code_value = sous_type.tcar_code.code
-        #     caracteristica.scarac_code_value = sous_type.code
-        #     caracteristicas_con_descripcion.append(caracteristica)
 
         taxsco = propertie.depenses.filter(tdep_code__valeur='TAXSCO').first()
         taxmun = propertie.depenses.filter(tdep_code__valeur='TAXMUN').first()
@@ -357,7 +313,6 @@ class WebDetailProperty(View):
                     else:
                         addenda_f_texts.append(addenda.texte)
         addenda_f = ' '.join(addenda_f_texts)
-        # addenda_f = ' '.join([addenda.texte for addenda in addenda_f_list if addenda.texte])
         addenda_a_list = addenda_list.filter(code_langue__valeur="A")
         addenda_a_texts = []
         for addenda in addenda_a_list:
@@ -371,7 +326,6 @@ class WebDetailProperty(View):
                     else:
                         addenda_a_texts.append(addenda.texte)
         addenda_a = ' '.join(addenda_a_texts)
-        # addenda_a = ' '.join([addenda.texte for addenda in addenda_a_list if addenda.texte])
         context = {
             'language':language,
             'option':option,
@@ -605,95 +559,3 @@ def statistics(request):
         'number_transactions':number_transactions,
     }
     return render(request, 'statistics.html', context)
-
-FRAGMENTOS_A_ELIMINAR = [
-    'https://www.ljrealties.com - Find your future dream home',
-    'https://www.ljrealties.com - Trouvez votre future maison de rêve',
-    'https://www.ljrealties.com - Trouvez la maison de vos rêves'
-]
-
-PALABRA_CLAVE_ELIMINAR = 'LJ Aguinaga'
-
-def clean_description(description):
-    # Eliminar fragmentos predefinidos
-    for fragmento in FRAGMENTOS_A_ELIMINAR:
-        if description.startswith(fragmento):
-            description = description[len(fragmento):].strip()
-
-    # Eliminar todo a partir de la palabra clave
-    if PALABRA_CLAVE_ELIMINAR in description:
-        description = description.split(PALABRA_CLAVE_ELIMINAR, 1)[0].strip()
-
-    return description
-
-def fetch_videos_from_channel(channel_id):
-    youtube = build('youtube', 'v3', developerKey=KEY_API_YB)
-    request = youtube.channels().list(
-        part='contentDetails',
-        id=channel_id
-    )
-    response = request.execute()
-
-    upload_playlist_id = response['items'][0]['contentDetails']['relatedPlaylists']['uploads']
-
-    videos = []
-    next_page_token = None
-
-    while True:
-        request = youtube.playlistItems().list(
-            part='snippet',
-            playlistId=upload_playlist_id,
-            maxResults=50,
-            pageToken=next_page_token
-        )
-        response = request.execute()
-
-        for item in response['items']:
-            video_id = item['snippet']['resourceId']['videoId']
-            title = item['snippet']['title']
-            description = item['snippet']['description']
-            published_at = parse_datetime(item['snippet']['publishedAt'])
-
-            # Solicita detalles del video para obtener la duración
-            video_details = youtube.videos().list(
-                part='contentDetails',
-                id=video_id
-            ).execute()
-
-            duration_iso = video_details['items'][0]['contentDetails']['duration']
-            duration = isodate.parse_duration(duration_iso)
-            is_short = duration.total_seconds() <= 100
-
-            # Limpia la descripción
-            description = clean_description(description)
-
-            videos.append({
-                'videoId': video_id,
-                'tittle': title,
-                'description': description,
-                'publishedAt': published_at,
-                'is_short': is_short
-            })
-
-        next_page_token = response.get('nextPageToken')
-        if not next_page_token:
-            break
-
-    return videos
-
-def save_videos_to_db(videos):
-    for video in videos:
-        # Verifica si el video ya existe en la base de datos
-        obj, created = VideosWeb.objects.update_or_create(
-            videoId=video['videoId'],
-            defaults={
-                'tittle': video['tittle'],
-                'description': video['description'],
-                'publishedAt': video['publishedAt'],
-                'is_short': video['is_short']
-            }
-        )
-        if created:
-            print(f"Video '{video['tittle']}' guardado con ID {obj.id}.")
-        else:
-            print(f"Video '{video['tittle']}' ya existe y fue actualizado.")
