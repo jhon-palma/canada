@@ -24,21 +24,6 @@
     </div>
 </div>
 
-<section class="popnews">
-    <span class="close">+</span>
-    <article>
-        <div id="confirm_message" class="confirm_message"></div>
-        <form id="formNewsFooter" method="post" action="{% url 'web:contact_messages' %}">
-            {% csrf_token %}
-            <input type="hidden" id="sujet" name="sujet" value="Newsletter">
-            <p class="h2def">{{ labels.index.button.eight }}</p>
-            <input type="email" name="email" id="emailnews" class="champs_tem" required="required" placeholder="{{ labels.index.placeholder.five }} *" />
-            <div id="errNews"></div>
-            <input type="submit" value="{{ labels.index.button.nine }}">
-        </form>
-    </article>
-</section>
-
 <footer>
     <div class="wrap wrap_contact">
         <div class="fcontact_col1">
@@ -66,53 +51,53 @@
                     <img src="{% static 'web/images2/tiktok.png' %}" alt="Tik tok">
                 </a>
             </div>
-            <a class="bouton openNewletter">{{ labels.index.button.eight }}</a>
+            <a class="bouton button btnpopfiche pointer">{{ labels.index.button.eight }}</a>
         </div>
         <div class="fcontact_col3">
             <form id="formContactFooter" method="post" action="{% url 'web:contact_messages' %}">
                 {% csrf_token %}
                 <input type="hidden" id="g-recaptcha-response-footer" name="g-recaptcha-response-footer" value="">
-                <input type="hidden" id="sujet" name="sujet" value="Contact">
+                <input type="hidden" id="sujet" name="sujet" value="Footer Web">
                 <input type="text" name="prenom" id="prenom" class="champs_tem" required="required" placeholder="{{ labels.index.placeholder.two }} *" />
                 <input type="email" name="email" id="email" class="champs_tem" required="required" placeholder="{{ labels.index.placeholder.three }} *" />
                 <input type="text" name="tel" id="tel" class="champs_tem" onKeyPress="return scanTouche(event)" required="required" placeholder="{{ labels.index.placeholder.four }} *" />
                 <div id="errFooter"></div>
                 <div class="ligne_oublig"><span class="red">*</span> {{ labels.index.text.twenty_four }}</div>
-                <button type="submit" class="float_right">{{ labels.index.button.three }}</button>
+                <button type="submit" class="float_right pointer">{{ labels.index.button.three }}</button>
             </form>
         </div>
     </div>
     <div class="wrap">
         <p class="quartiers">				
-			<a href=""> Montréal (Lachine)</a> |
-			<a href=""> Montréal (Ville-Marie)</a> |
-			<a href=""> Montréal (Le Sud-Ouest)</a> |
-			<a href=""> La Prairie</a> |
-			<a href=""> Saint-Jérôme</a> |
-			<a href=""> Dollard-des-Ormeaux</a> |
-			<a href=""> Montréal (Verdun/Île-des-Soeurs)</a> |
-			<a href=""> Brossard</a> |
-			<a href=""> Montréal (Côte-des-Neiges/Notre-Dame-de-Grâce)</a> |
-			<a href=""> Montréal (Montréal-Nord)</a> |
-			<a href=""> Montréal-Ouest</a> |
-			<a href=""> Montréal (Le Plateau-Mont-Royal)</a> |
-			<a href=""> Montréal (Rosemont/La Petite-Patrie)</a> |
-			<a href=""> Montréal (Outremont)</a> |
-			<a href=""> Beaconsfield</a> |
-			<a href=""> Dorval</a> |
-			<a href="">Two or more storey</a> |
-			<a href="">Condo</a> |
-			<a href="">Bungalow</a> |
-			<a href="">Duplex</a> |
-			<a href="">Commercial condo</a> |
-			<a href="">Split-level</a> |
-			<a href="">Triplex</a> |
-			<a href="">Loft / Studio</a> |
-			<a href="">Revenue property</a> |
-			<a href="">Quadruplex</a> |
-			<a href="">Revenue property</a> |
-			<a href="">Revenue property</a> |
-			<a href="">Quintuplex</a>
+			<a href="{% url 'web:search' language %}">Montréal (Lachine)</a> |
+			<a href="{% url 'web:search' language %}"> Montréal (Ville-Marie)</a> |
+			<a href="{% url 'web:search' language %}"> Montréal (Le Sud-Ouest)</a> |
+			<a href="{% url 'web:search' language %}"> La Prairie</a> |
+			<a href="{% url 'web:search' language %}"> Saint-Jérôme</a> |
+			<a href="{% url 'web:search' language %}"> Dollard-des-Ormeaux</a> |
+			<a href="{% url 'web:search' language %}"> Montréal (Verdun/Île-des-Soeurs)</a> |
+			<a href="{% url 'web:search' language %}"> Brossard</a> |
+			<a href="{% url 'web:search' language %}"> Montréal (Côte-des-Neiges/Notre-Dame-de-Grâce)</a> |
+			<a href="{% url 'web:search' language %}"> Montréal (Montréal-Nord)</a> |
+			<a href="{% url 'web:search' language %}"> Montréal-Ouest</a> |
+			<a href="{% url 'web:search' language %}"> Montréal (Le Plateau-Mont-Royal)</a> |
+			<a href="{% url 'web:search' language %}"> Montréal (Rosemont/La Petite-Patrie)</a> |
+			<a href="{% url 'web:search' language %}"> Montréal (Outremont)</a> |
+			<a href="{% url 'web:search' language %}"> Beaconsfield</a> |
+			<a href="{% url 'web:search' language %}"> Dorval</a> |
+			<a href="{% url 'web:search' language %}">Two or more storey</a> |
+			<a href="{% url 'web:search' language %}">Condo</a> |
+			<a href="{% url 'web:search' language %}">Bungalow</a> |
+			<a href="{% url 'web:search' language %}">Duplex</a> |
+			<a href="{% url 'web:search' language %}">Commercial condo</a> |
+			<a href="{% url 'web:search' language %}">Split-level</a> |
+			<a href="{% url 'web:search' language %}">Triplex</a> |
+			<a href="{% url 'web:search' language %}">Loft / Studio</a> |
+			<a href="{% url 'web:search' language %}">Revenue property</a> |
+			<a href="{% url 'web:search' language %}">Quadruplex</a> |
+			<a href="{% url 'web:search' language %}">Revenue property</a> |
+			<a href="{% url 'web:search' language %}">Revenue property</a> |
+			<a href="{% url 'web:search' language %}">Quintuplex</a>
 		</p>	
 
 		<script>
@@ -167,9 +152,12 @@
                                     } else {
                                         var message = "Merci, votre message a bien été envoyé";
                                     }
-                                    $("#confirm_message").html("<p>"+ message +"</p>");						
+                                    $("#confirm_message_newsteller").html("<p>"+ message +"</p>");						
                                     $('#formNewsFooter')[0].reset();						
                                     $('#formNewsFooter').hide();                    
+                                    setTimeout(() => {
+                                        $('#newsteller').fadeOut();
+                                    }, 2000);
                                     }                   
                                 else {
                                     var language = "{{ language }}";
@@ -186,6 +174,20 @@
                     });  
                 });
 		</script>
+
+        <section class="popnews" id="newsteller">
+            <article>
+                <div id="confirm_message_newsteller" class="confirm_message"></div>
+                <form id="formNewsFooter" method="post" action="{% url 'web:contact_messages' %}">{% csrf_token %}
+                    <input type="hidden" id="sujet" name="sujet" value="Newsletter">
+                    <p class="h2def"><strong>{{ labels.index.button.eight }}</strong></p>
+                    <input type="email" name="email" id="emailnews" class="champs_tem" required="required" placeholder="{{ labels.index.placeholder.five }} *" />
+                    <div id="errNews"></div>
+                    <input type="submit" style="margin-top: 20px; margin-bottom: 20px;" class="bouton pointer" value="{{ labels.index.button.eight }}" data-field="newsletter"></a>
+                </form>
+                <span class="close">+</span>
+            </article>
+        </section>
 
         <div class="footer_copy">
             <span class="link_poli">

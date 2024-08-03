@@ -8,8 +8,6 @@
 {% endblock %}
 {% block content %}
     
-
-
     <div class="page-header">
         <div class="page-header-content">
         <div class="page-title">
@@ -61,20 +59,20 @@
                     <form method="POST" enctype="multipart/form-data">{% csrf_token %}
                         <fieldset class="content-group">
                             <div class="col-lg-12">
-                                <legend class="text-bold"><i class="icon-user position-left"></i>Actualizar imagen - {{ image.location }} - {{ image.url }}</legend>
+                                <legend class="text-bold"><i class="icon-user position-left"></i>Actualizar imagen - {{ image.get_reference_display }}</legend>
                                 <div class="text-center mb-3">
                                     <div class="form-group">
-                                        <img src="/{{ image.url }}" class="mx-auto d-block" style="width: 100%; ">
+                                        <img src="{{ image.image.url }}" class="mx-auto d-block" style="width: 100%; ">
                                     </div>
                                 </div>
                                 <div class="form-group ">
                                     <label for="id_image">Cambiar Imagen:</label>
-                                    <input type="file" class="form-control-file" accept="image/*" id="id_url" name="url" required>
+                                    <input type="file" class="form-control-file" accept="image/*" id="id_image" name="image" required>
                                 </div>
                             </div>
                             <div class="form-group">
-                                    <a href="{% url 'users:list_images' %}" class="btn bg-orange-600 btn-labeled btn-xlg"  style="width: auto;"><b><i class="icon-undo2"></i></b><span class="margin-left-20">VOLVER</span></a>
-                                    <button type="submit" class="btn bg-primary-800 btn-labeled btn-xlg"  style="width: auto;"><b><i class="icon-floppy-disk"></i></b><span class="margin-left-20">ACTUALIZAR</span></button>
+                                <a href="{% url 'users:list_images' %}" class="btn bg-orange-600 btn-labeled btn-xlg"  style="width: auto;"><b><i class="icon-undo2"></i></b><span class="margin-left-20">VOLVER</span></a>
+                                <button type="submit" class="btn bg-primary-800 btn-labeled btn-xlg"  style="width: auto;"><b><i class="icon-floppy-disk"></i></b><span class="margin-left-20">ACTUALIZAR</span></button>
                             </div>
                         </fieldset>
                     </form>

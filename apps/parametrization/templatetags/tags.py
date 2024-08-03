@@ -10,26 +10,16 @@ register = template.Library()
 def define(val=None):
   return val
 
-  
+
 @register.filter
 def get_item(dictionary, key):
     dict = json.loads(dictionary)
     return dict.get(key)
 
 
-# @register.filter
-# def static_files(static):
-#     return STATIC_URL
-
-
 @register.filter
 def server_url(server):
     return SERVER
-
-
-# @register.filter
-# def media_files(server):
-#     return MEDIA_URL
 
 
 @register.filter

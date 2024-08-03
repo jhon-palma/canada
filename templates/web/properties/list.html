@@ -110,27 +110,30 @@
         });
     </script>
 
-
 		<!-- Google Tag Manager (noscript) -->
 		<noscript>
             <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5VZG49W" height="0" width="0" style="display:none;visibility:hidden"></iframe>
         </noscript>
 		<!-- End Google Tag Manager (noscript) -->
 
+        <style>
+            .banner{
+                background-image: url("{{ images.properties_banner.image.url }}");
+            }
+        </style>
+        
 		<div class="content_maisons2" id="content_maisons">
             
-            
             <section class="banner nothome">
-                <img src="{% for image in images %}{% if image.name == 'Properties_Banner' %}/{{image.url}}{% endif %}{% endfor %}" alt="Photo - LJ Realties, Real estate agency" class="bannerimg" />
                 <div class="baninfo">
                     <h2>{{ labels.index.title.one }}<span> {{ labels.index.title.two }}</span></h2>
                     <h1>{{ labels.index.title.three }}</h1><br>
-                    <a class="bouton boutonnre2">{{ labels.index.button.eleven }}</a>
+                    <a class="bouton boutonnre2 boutonnre2gra"  href="{{ labels.menu.url.eight }}">{{ labels.index.button.eleven }}</a>
                 </div>
             </section>
 
 			<div class="prop-bg">
-				
+                
 				{% include 'web/properties/search/'|add:language|add:'.html' %}
 
 				<div class="content_center">
@@ -171,7 +174,7 @@
                                                 <a href="{% url 'web:detail-propertie' language=language option=url_propertie propertie_id=inscription.id %}">
                                                     {% for photo in inscription.photos.all %}
                                                         {% if photo.seq == 1 %}
-                                                            <img src="{{ photo.photourl }}" alt="{% if language == 'en' %}{{ inscription.genre_propriete.description_anglaise }}{% else %}{{ inscription.genre_propriete.description_francaise }}{% endif %}
+                                                            <img src="{{ photo.photourl }}" loading="lazy" decoding="async" alt="{% if language == 'en' %}{{ inscription.genre_propriete.description_anglaise }}{% else %}{{ inscription.genre_propriete.description_francaise }}{% endif %}
                                                             {% if inscription.prix_demande %}{% if language == 'en' %} for sale{% else %}à vendre {% endif %}{% endif %}{% if inscription.prix_location_demande %}
                                                             {% if language == 'en' %}for rent{% else %}à louer{% endif %}{% endif %} {{inscription.mun_code.description}}" title="{% if language == 'en' %}{{ inscription.genre_propriete.description_anglaise }}{% else %}{{ inscription.genre_propriete.description_francaise }}{% endif %}{% if inscription.prix_demande %}{% if language == 'en' %} for sale{% else %}à vendre{% endif %}{% endif %}{% if inscription.prix_location_demande %}{% if language == 'en' %} for rent{% else %}à louer{% endif %}{% endif %} {{inscription.mun_code.description}}" />
                                                             {% for visite in inscription.no_inscription_visites_libres.all %}

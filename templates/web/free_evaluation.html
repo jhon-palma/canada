@@ -14,39 +14,34 @@
 			<div id="errEval"></div>
 			<input type="submit" value="{% if language == 'en' %}Send{% else %}Envoyer{% endif %}">
 		</form>
+        <div class="close closetow">+</div>
 	</article>
-	<div class="close">+</div>
 </section>	
 
-
-<section class="popfiche">
+<section class="popfiche" id="offer">
 	<article>
-		<div id="confirm_message" class="confirm_message"></div>
+		<div id="confirm_message_offer" class="confirm_message"></div>
 		<form method="post" id="formfiche" name="formfiche" action="/contact_messages/">
             {% csrf_token %}
-			<h2></h2>
-			<input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" value="">
-            <input type="hidden" id="sujet-2" name="sujet" value="">
+            <strong><p class="h2def" id="text_offer"></p></strong>
 			<input type="text" name="prenom" placeholder="Full name" required="required">
 			<input type="tel" name="tel" placeholder="Phone" required="required">
 			<input type="email" name="email" placeholder="E-mail" required="required">
 			<textarea name="comment" placeholder="Your message" required="required"></textarea>
-			<input type="hidden" name="adresse" value="1160, Rue MacKay, apt. 2303, Montréal (Ville-Marie)">
-			<input type="hidden" name="maison" value="27135293">
-			<input type="hidden" name="objet" value="">
+			<input type="hidden" name="sujet" value="Banner Get Offer">
 			<div id="err"></div>
 			<input id="submitFiche" type="submit" value="">
 		</form>
+        <div class="close closetow">+</div>
 	</article>
-	<div class="close">+</div>
 </section>
+
+
 <script type="text/javascript">
     var language = "{{ language }}";
     $(function () {
         $('#reset').click(function(){
             var st= $('input[name="status"]:checked').val();
-            // alert("Entro"+st);
-            // location.href = '?page='+st
         });
 
         $(window).click(function() {
@@ -121,7 +116,10 @@
                         }
                         $("#confirm_message_form").html("<p>" + message + "</p>");
                         $('#formeval').hide();
-                        $('#formeval')[0].reset();					
+                        $('#formeval')[0].reset();	
+                        setTimeout(() => {
+                            $('#offer').fadeOut();
+                        }, 2000);				
                     }
                     else {
                         var language = "{{ language }}";
@@ -154,9 +152,12 @@
                         } else {
                             var message = "Merci, votre message a bien été envoyé";
                         }
-                        $("#confirm_message").html("<p>" + message + "</p>");
+                        $("#confirm_message_offer").html("<p>" + message + "</p>");
                         $('#formfiche').hide();
                         $('#formfiche')[0].reset();
+                        setTimeout(() => {
+                            $('#offer').fadeOut();
+                        }, 2000);		
                     }
                     else {
                         var language = "en";

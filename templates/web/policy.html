@@ -1,10 +1,16 @@
 {% load static %}{% load tags %}{% include 'web/header_web.html' %}
 
-<section class="banner nothome">
-	<img src="{% static 'web/images2/small-banner.jpg' %}" alt="Photo - LJ Realties, Agence immobilière" class="bannerimg" />
-	<h1>{{ labels.privacy.title.one }} <span>{{ labels.privacy.title.two }}</span></h1>
-</section>
+<style>
+	.banner{
+		background-image: url("{{ images.privacy_banner.image.url }}");
+	}
+</style>
 
+<section class="banner nothome">
+    <div class="baninfo">
+        <h2>{{ labels.privacy.title.one }} <span> {{ labels.privacy.title.two }}</span></h2>
+    </div>
+</section>
 
 <section class="pol">
 	<div class="wrap">

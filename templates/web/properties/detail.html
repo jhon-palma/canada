@@ -9,12 +9,17 @@
 <script type="text/javascript" src="{% static 'web/js/calcul.js' %}"></script>
 <script type="text/javascript" src="{% static 'web/js/calcul2.js' %}"></script>
 
+<style>
+	.banner{
+		background-image: url("{{ images.properties_banner.image.url }}");
+	}
+</style>
+
 <section class="banner nothome">
-    <img src="{%  static 'web/images2/banner-prop.jpg' %}" alt="Photo - LJ Realties, Real estate agency" class="bannerimg" />
     <div class="baninfo">
         <h2>{{ labels.index.title.one }}<span> {{ labels.index.title.two }}</span></h2>
         <h1>{{ labels.index.title.three }}</h1><br>
-        <a class="bouton boutonnre2">{{ labels.index.button.eleven }}</a>
+        <a class="bouton boutonnre2 boutonnre2gra" href="{{ labels.menu.url.eight }}">{{ labels.index.button.eleven }}</a>
     </div>
 </section>
 

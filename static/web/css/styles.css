@@ -416,7 +416,7 @@ a.bouton, .submitclearcont input[type=button], .propsearch input[type=submit], .
 	font-family: 'Roboto Condensed', sans-serif;
 	display: inline-block;
 	text-transform: uppercase;
-	color: #fff !important;
+	/* color: #fff !important; */
 	background-color: #00AAAE;
 	border:1px solid #00AAAE;
 	text-decoration: none !important;
@@ -479,7 +479,7 @@ p.quartiers a, .footer_copy a{color: #fff !important;}
 	text-align: center;
 	text-transform: uppercase;
 	margin-top: 0;
-	margin-bottom: 20px;
+	margin-bottom: 24px;
     color: #00AAAE;
     /* border-bottom: 1px solid #00AAAE; */
 }
@@ -500,6 +500,12 @@ p.quartiers a, .footer_copy a{color: #fff !important;}
 
 .horizontal-line-white{
 	border-top: 2px solid #ffffff;
+	width: 50%;
+	margin: 20px auto;
+}
+
+.horizontal-line-verde{
+	border-top: 2px solid #1194A1;
 	width: 50%;
 	margin: 20px auto;
 }
@@ -844,7 +850,7 @@ position: relative;color: #fff !important;}
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background: rgba(0,0,0,.9);
+	background: rgba(0,0,0,.5);
 	z-index: 99999;
 	display: none;
 }
@@ -894,8 +900,8 @@ position: relative;color: #fff !important;}
 	transform: rotate(45deg);
 	line-height: 1;
 	position: absolute;
-	top: 50px;
-	right: 60px;
+	top: -50px;
+	right: -39px;
 	display: block;
 	cursor: pointer;
 	font-family: Arial;
@@ -977,7 +983,7 @@ a.logocontact img{display: block;width: 100%;}
 }
 
 .pagecontact .champs_tem, .pagecontact .box_ctem{
-	width: 100%;
+	width: 100% !important
 }
 
 .pagecontact .champs_tem{
@@ -1315,8 +1321,13 @@ form.propsearch{padding: 60px 0px 40px;}
 
 
 
+.btnpopfiche{
+	cursor: pointer
+}
 
-
+.pointer{
+	cursor: pointer
+}
 
 
 
@@ -1863,7 +1874,7 @@ h1.h1styled{
 	.banner h1, .banner>p{font-size: 30px;}
 	.banner>.baninfo h1{margin-bottom: 15px;text-align: center;}
 
-	img.bannerimg{min-height: 250px;object-fit: cover;}
+	img.bannerimg{min-height: 400px;object-fit: cover;}
 	.selectcont{width: 100%;margin-bottom: 10px;}
 	.cbgrid{display: block;}
 	.cbgrid>div{width: 100%;display: block;}

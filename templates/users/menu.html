@@ -12,6 +12,8 @@
             </div>
         </div>
         <div class="sidebar-category sidebar-category-visible">
+
+
             <div class="category-content no-padding">
                 <ul class="navigation navigation-main navigation-accordion">
                     <!--
@@ -19,26 +21,22 @@
                         <a href="{% url 'users:profile' %}"> <i class="icon-user position-left"></i>Perfil</a>
                     </li>
                     -->
-                    <li>
-                        <a href="{% url 'web:statistics' %}"> <i class="icon-graph position-left"></i>Estadisticas</a>
+                    <li class="nav-item nav-item-submenu">
+                        <a href="{% url 'web:index' 'fr' %}" id="item_users" class="nav-link"><i class="icon-chrome"></i> Web Lj Realties</a>
+                        <ul class="nav nav-group-sub">
+                            <li class="nav-item"><a href="{% url 'web:statistics' %}"> <i class="icon-graph position-left"></i>Actualizar Estadisticas</a></li>
+                            <li class="nav-item"><a href="{% url 'users:list_images' %}"> <i class="icon-file-picture position-left"></i>Actualizar Imagenes</a>
+                            <li class="nav-item"><a href="{% url 'users:list_messages' %}"> <i class="icon-mail5 position-left"></i>Listado de Solicitudes</a></li>
+                        </ul>
                     </li>
                     <li>
                         <a href="{% url 'users:profile_list' %}"> <i class="icon-users4 position-left"></i>Usuarios</a>
                     </li>
-                    <li>
-                        <a href="{% url 'users:list_messages' %}"> <i class="icon-mail5 position-left"></i>Solicitudes</a>
-                    </li>
-                    <li>
-                        <a href="{% url 'users:list_images' %}"> <i class="icon-file-picture position-left"></i>Actualizar Imagenes</a>
-                    </li>
-                    <li>
-                        <a href="/"> <i class="icon-chrome position-left"></i>Web Lj Realties</a>
-                    </li>
-                    <!--
-                    <li>
-                        <a href="{% url 'properties:drop_database' %}"> <i class="icon-eraser2 position-left"></i>1. Borrar base de datos (Local)</a>
-                    </li>
-                    -->
+                    {% if request.user.email == 'admin@columbatechnology.com' %}
+                        <li>
+                            <a href="{% url 'properties:drop_database' %}"> <i class="icon-eraser2 position-left"></i>0. Borrar base de datos (Local)</a>
+                        </li>
+                    {% endif %}
                     <li>
                         <a href="{% url 'properties:download_files' %}"> <i class="icon-download position-left"></i>1. Descargar Data (Centris)</a>
                     </li>

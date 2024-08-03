@@ -1,8 +1,15 @@
 {% load static %}{% load tags %}{% include 'web/header_web.html' %}
 
+<style>
+    .banner{
+        background-image: url("{{ images.team_banner.image.url }}");
+    }
+</style>
+
 <section class="banner nothome">
-	<img src="{% static 'web/images2/banner-team.jpg' %}" alt="Photo - LJ Realties, Agence immobilière" class="bannerimg" />
-	<h1>{{ labels.team.title.one }} <span>{{ labels.team.title.two }}</span></h1>
+	<div class="baninfo">
+        <h2>{{ labels.team.title.one }} <span>{{ labels.team.title.two }}</span></h2>
+    </div>
 </section>
 
 <section class="teamsingle">
@@ -55,7 +62,7 @@
 			</div>
 			<hr>
 		</div>
-		<div class="fullbtn"><a href="{{ server|server_url }}/{{ language }}/{{ labels.menu.url.two }}/" class="bouton bouton3">{% if language == "en" %}Back to all team members{% else %}Retour aux membres de l'équipe{% endif %}</a></div>
+		<div class="fullbtn "><a href="{{ server|server_url }}/{{ language }}/{{ labels.menu.url.two }}/" class="bouton bouton3">{% if language == "en" %}Back to all team members{% else %}Retour aux membres de l'équipe{% endif %}</a></div>
 	</div>
 </section>
 

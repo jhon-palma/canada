@@ -2267,7 +2267,7 @@ ul.souslist {
 }
 
 .box_ctem {
-	width: 384px;
+	width: 100%;
 	padding: 0 0 0 0;
 	float: left;
 }
@@ -2288,13 +2288,14 @@ ul.souslist {
 }
 
 .champs_tem {
-	width: 384px;
+	width: 100%;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	font-size: 16px;
-	padding: 6px 5px;
-	border: 1px solid #7b7c7e;
+	padding: 12px 9px;
+	border: 0px solid #7b7c7e;
+	border-radius: 5px;
 }
 
 .btn_envoyer_temoin {
@@ -2959,6 +2960,7 @@ h3.active {
 	padding: 0 0 5px 0;
 	font-weight: bold;
 	float: left;
+	text-align: left;
 }
 .box_calcul3 {
 	width: 100%;
@@ -4277,7 +4279,7 @@ a.mosaique .btn_mosaique:active { color: #FFFFFF; text-decoration: none; }
 }
 
 .mosaique .ligne_maison {
-	display: table;
+	display: flex;
 	float: none;
 }
 

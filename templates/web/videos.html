@@ -1,8 +1,20 @@
 {% load static %}{% load tags %}{% include 'web/header_web.html' %}
 
+<style>
+	.banner{
+		background-image: url("{{ images.videos_banner.image.url }}");
+	}
+</style>
+
 <section class="banner nothome">
-	<img src="{% for image in images %}{% if image.name == 'Videos_Banner' %}/{{image.url}}{% endif %}{% endfor %}" alt="Photo - LJ Realties, Agence immobilière" class="bannerimg" />
-	<h1>{{ labels.videos.title.one }} <span>{{ labels.videos.title.two }}</span></h1>
+	<div class="baninfo">
+        <h2>{{ labels.videos.title.one }}<span> {{ labels.videos.title.two }}</span></h2>
+    </div>	
+</section>
+
+<section class="poppod">
+	<article></article>
+	<span class="close">+</span>
 </section>
 
 <section class="capsules">
@@ -10,7 +22,6 @@
         {% for video in videos %}
             <div href="https://www.youtube.com/watch?v={{ video.videoId }}" class="capsule msrItem">
                 <a href="https://www.youtube.com/watch?v={{ video.videoId }}" class="img"> <img src="https://img.youtube.com/vi/{{ video.videoId }}/hqdefault.jpg" alt="{{ video.title }}t" /></a>
-
                 <h3>{{ video.tittle }}</h3>
                 <p class="sm">{{ video.publishedAt|date:"d/m/Y" }}</p>
                 <p>
@@ -28,10 +39,15 @@
 
 <script>
 	var time = undefined;
-	$(window).load(function(){			//init
-	     $('.capsule').each(function(){
-	        $(this).height($(this).height());
-	    });
+
+	$(window).load(function(){
+		$('.capsule').each(function(){
+		$(this).height($(this).height());
+	});
+
+	
+
+	 /*		
 	if($(window).width() > 800){
 	    $('.capsules .wrap').msrItems({
 	        'colums': 3, //columns number
@@ -43,6 +59,7 @@
 	        'margin': 15 //right and bottom margin
 	     });
 	 }
+
 	 $( window ).on('resize', function(e) {
 	    clearTimeout(time);
 	    time = setTimeout(function(){
@@ -75,6 +92,7 @@
 	             }
 	        }, 300);
 	    })
+		*/
 	});
 </script>
 <div style="clear:both;"></div>

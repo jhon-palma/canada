@@ -24,6 +24,9 @@ from django.contrib.auth.hashers import make_password
 from django.db import transaction
 from apps.web.models import Formulaire_contact, ImagesWeb
 
+
+
+
 def updateProfile(request):
     existing_orders = Profile.objects.exclude(order__isnull=True).values_list('order', flat=True)
     if request.user and request.user.profile.order:
@@ -61,6 +64,9 @@ def updateProfile(request):
         'cantidad_usuarios':available_orders,
         'membres': membres,
     })
+
+
+
 
 def updateProfileUsers(request, user_id):
     user = get_object_or_404(CustomUser, id=user_id)
@@ -101,6 +107,8 @@ def updateProfileUsers(request, user_id):
         'membres': membres,
     })
 
+
+
 def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
@@ -118,8 +126,13 @@ def change_password(request):
         'form': form
     })
 
+
+
 def password_change_done(request):
     return render(request, 'users/password_change_done.html')
+
+
+
 
 def change_password_user(request, user_id):
     user = get_object_or_404(CustomUser, id=user_id)
@@ -139,9 +152,15 @@ def change_password_user(request, user_id):
         'user':user
     })
 
+
+
+
 def profile_list(request):
     usuarios = CustomUser.objects.all().order_by('first_name')
     return render(request, 'users/list_users.html',{'usuarios':usuarios})
+
+
+
 
 def create_user(request):
     if request.method == 'POST':
@@ -183,7 +202,9 @@ def create_user(request):
         profile_form = ProfileEditForm()
     return render(request, 'users/register.html', {'user_form': user_form, 'profile_form': profile_form})
 
-#
+
+
+
 def user_verification():
     try:
         membres = Membres.objects.all()
@@ -195,7 +216,7 @@ def user_verification():
                     username=membre.courriel,
                     first_name = membre.prenom,
                     last_name = membre.nom,
-                    password=make_password("Operaciones123")
+                    password=make_password("ljrealties2024@")
                 )
             else:
                 user = CustomUser.objects.get(email=membre.courriel)
@@ -206,7 +227,6 @@ def user_verification():
                     image='static/media/default.png',
                     membre = membre,
                     order= order,
-                    type_user="operador",
                 )
             else:
                 profile = Profile.objects.get(user=user)
@@ -217,9 +237,13 @@ def user_verification():
 
     return "Usuarios y perfiles verificados y/o creados correctamente"
 
+
+
 def list_messages(request):
-    messages_list = Formulaire_contact.objects.all()
+    messages_list = Formulaire_contact.objects.order_by('date_creation')
     return render(request, 'users/list_messages.html',{'messages_list':messages_list})
+
+
 
 def detail_message(request, id):
     message_detail = get_object_or_404(Formulaire_contact, id=id)
@@ -231,15 +255,22 @@ def detail_message(request, id):
 
     return render(request, 'users/detail_message.html',{'message_detail':message_detail})
 
+
+
 def list_images(request):
-    images_list = ImagesWeb.objects.all()
-    return render(request, 'users/list_images.html',{'images_list':images_list})
+    images = ImagesWeb.objects.order_by('order')
+    return render(request, 'users/list_images.html',{'images':images})
+
+
 
 def update_image(request, image_id):
     image = get_object_or_404(ImagesWeb, id=image_id)
     if request.method == 'POST':
         image_form = ImageEditForm(request.POST, request.FILES, instance=image)
         if image_form.is_valid():
+            print(request.FILES)
+            #if 'image' in request.FILES:  
+            #    image_form.image = request.FILES['image'] 
             image_form.save()
             messages.success(request, 'Imagen Actualizada', 'succesful')
             return redirect('users:list_images') 

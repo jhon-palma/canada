@@ -29,6 +29,8 @@ from googleapiclient.discovery import build
 import isodate
 from django.utils.dateparse import parse_datetime
 
+
+
 def get_youtube_videos(api_key, channel_id, max_results):
     youtube = build('youtube', 'v3', developerKey=api_key)
 
@@ -81,26 +83,14 @@ class WebIndex(View):
         labels = DICT_LABELS.get(language).get('web')
         inscriptions = Inscriptions.objects.all().order_by('-id')[:3]
         inscriptions_vendu = Inscriptions.objects.select_related('code_statut').filter(code_statut__valeur="VE")
-        api_key = KEY_API_YB
-        channel_id = CHANNEL_ID
-        max_results = 3
-        images = ImagesWeb.objects.filter(location="index.html")
-        try:
-            sold_price = Statistics.objects.get(name = "sold_price")
-        except Statistics.DoesNotExist:
-            sold_price = None
-        try:
-            days = Statistics.objects.get(name="days")
-        except Statistics.DoesNotExist:
-            days = None
-        try:
-            number_transactions = Statistics.objects.get(name="number_transactions")
-        except Statistics.DoesNotExist:
-            number_transactions = None
-        # try: videos = get_youtube_videos(api_key, channel_id, max_results=3)
-        # except: videos = []
+        staticts_query = Statistics.objects.all()
+        images_query = ImagesWeb.objects.filter(reference__in=[
+            'index_banner','index_team_background','index_donate_background',
+            'index_donate_image','index_video_background']
+        )
+        images_dict = {image.reference: image for image in images_query}
+        staticts_dict = {statics.name: statics for statics in staticts_query}
         videos = VideosWeb.objects.filter(is_short=False).order_by('-publishedAt')[:3]
-        # print(videos)
         context = {
             'language':language,
             'option':option,
@@ -108,12 +98,12 @@ class WebIndex(View):
             'inscriptions':inscriptions,
             'inscriptions_vendu':inscriptions_vendu,
             'video_urls':videos,
-            'sold_price':sold_price,
-            'days':days,
-            'images':images,
-            'number_transactions':number_transactions,
+            'images':images_dict,
+            'staticts':staticts_dict,
         }
         return render(request, self.template_name, context)
+
+
 
 class WebProperties(View):
     template_name = 'web/properties/list.html'
@@ -131,15 +121,18 @@ class WebProperties(View):
         paginator = Paginator(inscriptions_all, 36)
         page_number = request.GET.get('page')
         inscriptions = paginator.get_page(page_number)
-        images = ImagesWeb.objects.filter(location="list.html")
+        images_query = ImagesWeb.objects.filter(reference__in=['properties_banner'])
+        images_dict = {image.reference: image for image in images_query}
         context = {
             'language':language,
             'option':option,
             'labels':labels,
             'inscriptions':inscriptions,
-            'images':images,
+            'images':images_dict,
         }
         return render(request, self.template_name, context)
+
+
 
 def searchpropriete(request):
     term = request.GET.get('term')
@@ -186,6 +179,8 @@ def searchpropriete(request):
 
     json_data = {str(i + 1): val for i, val in enumerate(list(filtered_data["regions"].values()) + list(filtered_data["municipalites"].values()) + list(filtered_data["inscriptions"].values()))}
     return JsonResponse(json_data, safe=False)
+
+
 
 class SearchView(View):
     template_name = 'web/properties/list.html'
@@ -264,6 +259,8 @@ class SearchView(View):
         paginator = Paginator(inscriptions_all, 36)
         page_number = request.GET.get('page')
         inscriptions = paginator.get_page(page_number)
+        images_query = ImagesWeb.objects.filter(reference__in=['properties_banner'])
+        images_dict = {image.reference: image for image in images_query}
 
         context = {
             'language':language,
@@ -277,9 +274,12 @@ class SearchView(View):
             'maxamount': maxamount,
             'propriete':propriete,
             'inscriptions':inscriptions,
+            'images':images_dict,
         }
 
         return render(request, self.template_name, context)
+
+
 
 class WebDetailProperty(View):
     template_name = 'web/properties/detail.html'
@@ -326,6 +326,10 @@ class WebDetailProperty(View):
                     else:
                         addenda_a_texts.append(addenda.texte)
         addenda_a = ' '.join(addenda_a_texts)
+
+        images_query = ImagesWeb.objects.filter(reference__in=['properties_banner'])
+        images_dict = {image.reference: image for image in images_query}
+
         context = {
             'language':language,
             'option':option,
@@ -335,8 +339,11 @@ class WebDetailProperty(View):
             'total_fees':total_fees,
             'addenda_f':addenda_f,
             'addenda_a':addenda_a,
+            'images':images_dict,
         }
         return render(request, self.template_name, context)
+
+
 
 class WebVideos(View):
     template_name = 'web/videos.html'
@@ -344,23 +351,18 @@ class WebVideos(View):
     def get(self, request, *args, **kwargs):
         language = kwargs.get('language', 'fr')
         labels = DICT_LABELS.get(language).get('web')
-        api_key = KEY_API_YB
-        channel_id = CHANNEL_ID
-
-        # # try: videos = get_youtube_videos(api_key, channel_id, max_results=50)
-        # # except: videos = []
-        # videos = fetch_videos_from_channel(CHANNEL_ID)
-        # save_videos_to_db(videos)
         videos = VideosWeb.objects.filter(is_short=False).order_by('-publishedAt')
-
-        images = ImagesWeb.objects.filter(location="videos.html")
+        images_query = ImagesWeb.objects.filter(reference__in=['videos_banner'])
+        images_dict = {image.reference: image for image in images_query}
         context = {
             'language':language,
             'labels':labels,
             'videos':videos,
-            'images':images,
+            'images':images_dict,
         }
         return render(request, self.template_name, context)
+
+
 
 class WebContact(View):
     template_name = 'web/contact.html'
@@ -369,14 +371,17 @@ class WebContact(View):
         language = kwargs.get('language', 'fr')
         labels = DICT_LABELS.get(language).get('web')
         option = kwargs.get('option', 'contact-courtier-immobilier')
-        images = ImagesWeb.objects.filter(location="contact.html")
+        images_query = ImagesWeb.objects.filter(reference__in=['contact_banner','contact_team_background','contact_team'])
+        images_dict = {image.reference: image for image in images_query}
         context = {
             'language':language,
             'option':option,
             'labels':labels,
-            'images':images,
+            'images':images_dict,
         }
         return render(request, self.template_name, context)
+
+
 
 class WebPolicy(View):
     template_name = 'web/policy.html'
@@ -384,13 +389,18 @@ class WebPolicy(View):
     def get(self, request, *args, **kwargs):
         language = kwargs.get('language', 'fr')
         labels = DICT_LABELS.get(language).get('web')
+        images_query = ImagesWeb.objects.filter(reference__in=['privacy_banner'])
+        images_dict = {image.reference: image for image in images_query}
         option = kwargs.get('option', 'politique-confidentialite')
         context = {
             'language':language,
             'option':option,
             'labels':labels,
+            'images':images_dict,
         }
         return render(request, self.template_name, context)
+
+
 
 class WebTeam(View):
     template_name = 'web/team.html'
@@ -399,17 +409,18 @@ class WebTeam(View):
         language = kwargs.get('language', 'fr')
         labels = DICT_LABELS.get(language).get('web')
         option = kwargs.get('option', 'courtier-immobilier')
-        images = ImagesWeb.objects.filter(location="team.html")
-        for x in team:
-            print(x.membre.id)
+        images_query = ImagesWeb.objects.filter(reference__in=['team_banner'])
+        images_dict = {image.reference: image for image in images_query}
         context = {
             'language':language,
             'option':option,
             'labels':labels,
-            'team': team,
-            'images': images,
+            'team':team,
+            'images':images_dict,
         }
         return render(request, self.template_name, context)
+
+
 
 class WebMemberDetail(View):
     template_name = 'web/member.html'
@@ -418,14 +429,19 @@ class WebMemberDetail(View):
         member = get_object_or_404(Profile, membre_id=member_id)
         language = kwargs.get('language', 'fr')
         labels = DICT_LABELS.get(language).get('web')
+        images_query = ImagesWeb.objects.filter(reference__in=['team_banner'])
+        images_dict = {image.reference: image for image in images_query}
         option = kwargs.get('option', 'courtier-immobilier')
         context = {
             'language':language,
             'option':option,
             'labels':labels,
             'member': member,
+            'images':images_dict,
         }
         return render(request, self.template_name, context)
+
+
 
 class WebWork(View):
     template_name = 'web/work.html'
@@ -434,14 +450,17 @@ class WebWork(View):
         language = kwargs.get('language', 'fr')
         labels = DICT_LABELS.get(language).get('web')
         option = kwargs.get('option', 'travailler-avec-nous')
-        images = ImagesWeb.objects.filter(location="work.html")
+        images_query = ImagesWeb.objects.filter(reference__in=['work_banner','work_buy','work_sell','work_next_steps'])
+        images_dict = {image.reference: image for image in images_query}
         context = {
             'language':language,
             'option':option,
             'labels':labels,
-            'images':images,
+            'images':images_dict,
         }
         return render(request, self.template_name, context)
+
+
 
 def calc_monthly_payment_view(request):
     if request.method == 'GET':
@@ -457,6 +476,8 @@ def calc_monthly_payment_view(request):
 
         return JsonResponse(response_data)
     return JsonResponse({'error': 'Invalid request method'})
+
+
 
 def calc_monthly_payment(P, r_anual, n_anos):
     r_mensual = r_anual / 12 / 100

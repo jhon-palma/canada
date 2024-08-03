@@ -1,5 +1,10 @@
 import uuid
 from django.db import models
+from apps.web.files_path import web_images_path
+from apps.web.choices import *
+from PIL import Image
+
+
 
 class Formulaire_contact(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
@@ -23,21 +28,45 @@ class Formulaire_contact(models.Model):
                 self.no_formulaire = 1
         super(Formulaire_contact, self).save(*args, **kwargs)
 
+
+
 class Statistics(models.Model):
-    name = models.CharField(max_length=50, blank=True, null=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
+    name = models.CharField(choices=WEB_STATICTS_CHOICES, max_length=20, null=False, blank=False)
     initial_year = models.CharField(max_length=4, blank=True, null=True)
     final_year = models.CharField(max_length=4, blank=True, null=True)
     initial_value = models.CharField(max_length=50, blank=True, null=True)
     final_value = models.CharField(max_length=50, blank=True, null=True)
 
+    class Meta:
+        db_table = 'web_statistics'
+        verbose_name = 'web_statistics'
+    
+
+
 class ImagesWeb(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
-    name = models.CharField(max_length=100)
-    url = models.ImageField(upload_to='static/web/images/web_imgs/')
-    location = models.CharField(max_length=100)
+    reference = models.CharField(choices=WEB_IMAGES_CHOICES, max_length=30, null=False, blank=False)
+    image = models.ImageField(upload_to=web_images_path, null=False, blank=False)
+    order = models.SmallIntegerField(blank=True, null=True)
 
+    class Meta:
+        db_table = 'web_images'
+        verbose_name = 'web_images'
+    
     def __str__(self):
-        return self.name
+        return self.reference
+    
+    @property
+    def get_info(self):
+        with Image.open(self.image) as img:
+            data = {
+                'format':img.format,
+                'size':img.size
+            }
+        return data
+    
+
 
 class VideosWeb(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)

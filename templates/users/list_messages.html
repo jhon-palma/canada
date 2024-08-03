@@ -1,5 +1,5 @@
 {% extends 'users/base.html' %}
-{% block title %}Mensajes{% endblock %}
+{% block title %}Solicitudes WEB{% endblock %}
 {% block head_page %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'app/css/datatables/dataTables.css' %}"/>
@@ -11,27 +11,25 @@
 {% endblock %}
     
 {% block content %}
-    
-    
-        <div class="page-header">
-            <div class="page-header-content">
-              <div class="page-title">
-                <ul class="breadcrumb">
-                    <li>
-                      <h4><span class="no-margin text-bold">Mensajes</span></h4>
-                    </li>
-                    <div class="heading-elements">
-                    </div>
-                </ul>
-              </div>
-            </div>
-            <div class="breadcrumb-line">
-              <ul class="breadcrumb">
-                    <li><a>Mensajes</a></li>
-                  <li class="active">Listado</li>
-              </ul>
+    <div class="page-header">
+        <div class="page-header-content">
+            <div class="page-title">
+            <ul class="breadcrumb">
+                <li>
+                    <h4><span class="no-margin text-bold">Listado de Solicitudes</span></h4>
+                </li>
+                <div class="heading-elements">
+                </div>
+            </ul>
             </div>
         </div>
+        <div class="breadcrumb-line">
+            <ul class="breadcrumb">
+                <li>Web</li>
+                <li class="active">Solicitudes</li>
+            </ul>
+        </div>
+    </div>
         <div class="content">
             {% if messages %}
                 {% for message in messages %}
@@ -58,33 +56,33 @@
                         <table id="table_users" class="display" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>Formulario</th>
-                                    <th>Nombre</th>
+                                    <th>Fecha</th>
+                                    <th>Nombres</th>
                                     <th>Correo</th>
                                     <th>Teléfono</th>
-                                    <th>Asunto</th>
+                                    <th>Origen</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for message in messages_list %}
                                     <tr>
-                                        <td class="{% if not message.read %}fw-bold{% endif %}">{{ message.no_formulaire }}</td>
-                                        <td class="text-capitalize {% if not message.read %}fw-bold{% endif %}">{{ message.nom|default_if_none:'' }}</td>
-                                        <td class="text-lowercase {% if not message.read %}fw-bold{% endif %}">{{ message.courriel }}</td>
-                                        <td class="{% if not message.read %}fw-bold{% endif %}">{{ message.telephone|default_if_none:'' }}</td>
-                                        <td class="{% if not message.read %}fw-bold{% endif %}">{{ message.sujet }}</td>
-                                        <td class="{% if not message.read %}fw-bold{% endif %}"><a href="{% url 'users:detail_message' message.id %}"><i class="icon-new-tab"></i> Ver</a></td>
+                                        <td>{{ message.date_creation }}</td>
+                                        <td class="text-capitalize">{{ message.nom|default_if_none:'' }}</td>
+                                        <td class="text-lowercase">{{ message.courriel }}</td>
+                                        <td >{{ message.telephone|default_if_none:'' }}</td>
+                                        <td >{{ message.sujet }}</td>
+                                        <td><a href="{% url 'users:detail_message' message.id %}"><i class="icon-new-tab"></i> Ver</a></td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th>Formulario</th>
-                                    <th>Nombre</th>
+                                    <th>Fecha</th>
+                                    <th>Nombres</th>
                                     <th>Correo</th>
                                     <th>Teléfono</th>
-                                    <th>Asunto</th>
+                                    <th>Origen</th>
                                     <th>Acciones</th>
                                 </tr>
                             </tfoot>

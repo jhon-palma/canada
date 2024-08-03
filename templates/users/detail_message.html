@@ -9,24 +9,23 @@
 {% block content %}
     
 
-
     <div class="page-header">
         <div class="page-header-content">
-        <div class="page-title">
+            <div class="page-title">
             <ul class="breadcrumb">
                 <li>
-                <h4><span class="no-margin text-bold">Mensaje</span></h4>
+                    <h4><span class="no-margin text-bold">Detalle de la Solicitud</span></h4>
                 </li>
                 <div class="heading-elements">
                 </div>
             </ul>
-        </div>
+            </div>
         </div>
         <div class="breadcrumb-line">
-        <ul class="breadcrumb">
-            <li><a>Mensajes</a></li>
-            <li class="active">Detalle</li>
-        </ul>
+            <ul class="breadcrumb">
+                <li>Web</li>
+                <li class="active">Detalle Solicitud</li>
+            </ul>
         </div>
     </div>
     <div class="content">
@@ -65,36 +64,36 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="row">
-                                            <div class="col-md-4">
+                                            <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label for="id_first_name">Nombres:</label>
-                                                    <input type="text" class="form-control" id="id_first_name" name="first_name" value="{{message_detail.nom }}" readonly>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="id_last_name">Email:</label>
-                                                    <input type="text" class="form-control" id="id_last_name" name="last_name" value="{{message_detail.courriel }}" readonly>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="id_email">Teléfono:</label>
-                                                    <input type="email" class="form-control" id="id_email" name="email" value="{{message_detail.telephone }}" readonly>
+                                                    <label for="id_type_user">Fecha:</label>
+                                                    <input type="email" class="form-control" id="id_email" name="email" value="{{message_detail.date_creation }}" readonly>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="id_first_name">Nombres:</label>
+                                                    <input type="text" class="form-control" id="id_first_name" name="first_name" value="{{ message_detail.nom|default_if_none:'' }}" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="id_last_name">Email:</label>
+                                                    <input type="text" class="form-control" id="id_last_name" name="last_name" value="{{ message_detail.courriel|default_if_none:'' }}" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="id_email">Teléfono:</label>
+                                                    <input type="email" class="form-control" id="id_email" name="email" value="{{ message_detail.telephone|default_if_none:'' }}" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
                                                 <div class="form-group">
                                                     <label for="id_type_user">Dirección:</label>
                                                     <input type="email" class="form-control" id="id_email" name="email" value="{{message_detail.adresse|default_if_none:'' }}" readonly>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="id_type_user">Fecha Radicado:</label>
-                                                    <input type="email" class="form-control" id="id_email" name="email" value="{{message_detail.date_creation }}" readonly>
                                                 </div>
                                             </div>
                                         </div>
@@ -102,7 +101,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <label for="id_password1">Mensaje:</label>
-                                                    <textarea class="form-control"  name="" id="" readonly>{{message_detail.message|default_if_none:'' }}</textarea>
+                                                    <textarea class="form-control"  name="" id="" readonly>{{ message_detail.message|default_if_none:'' }}</textarea>
                                                 </div>
                                             </div>
                                         </div>

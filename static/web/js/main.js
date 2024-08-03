@@ -75,15 +75,10 @@ $(document).ready(function(){
     
 
     $('a.openfiche.openfiche2.close').click(function(e){
-
         e.preventDefault();
-
         $(this).prev('a').prev("p.fullfichep").slideUp();
-
         $(this).prev('a').prev("p.fullfichep").prev("p").slideDown();
-
         $(this).hide();
-
         $(this).prev('a').css('display', 'block');
 
     });
@@ -91,84 +86,45 @@ $(document).ready(function(){
     
 
     $('.navcalculateurs a').click(function(e){
-
         e.preventDefault();
-
         $('.navcalculateurs a.active').removeClass('active');
-
         $('.pannelcalcul.active').removeClass('active');
-
         $(this).addClass('active');
-
         var href = $(this).attr('href');
-
         $('.'+href).addClass('active');
 
     });
 
-    
 
     $('a.btnpopfiche').click(function(e){
-
         e.preventDefault();
 
-        var title = $(this).text();
-
+		var title = $(this).text();
 		var buttonTxt = $(this).attr("name");
 
-		$('#submitFiche').val(buttonTxt);
-
-		
-
-        $('.popfiche h2').text(title);
-
-		$("[name=objet]").val(title);
-        $('#sujet-2').val(title);
-		
-
-		$("#formfiche").show();
-
-        $('.popfiche').fadeIn();
+		switch (title) {
+			case "Subscribe to our Newsletter":
+			case "S'abonner À Notre Infolettre":
+				$('#newsteller').fadeIn()
+				break;
+			case "OBTENIR UNE OFFRE":
+			case "GET OFFER":
+				$('#offer').fadeIn()
+				$('#submitFiche').val(buttonTxt);
+				$('#text_offer').text(title);
+			default:
+				break;
+		}
 
     });
-
+	
     $('.popfiche .close').click(function(e){
-
         e.preventDefault();
-
         $('.popfiche').fadeOut();
-
 		$("#formfiche").trigger("reset");
-
 		$("#confirm_message").html("");
-
     });
 
-	
-
-	$('a.btnpopeval').click(function(e){
-
-        e.preventDefault();
-
-		$('#formeval').show();
-
-        $('.popeval').fadeIn();
-
-    });
-
-	$('.popeval .close').click(function(e){
-
-        e.preventDefault();
-
-        $('.popeval').fadeOut();
-
-		$("#confirm_message_form").html("");
-
-		$("#formeval").trigger("reset");
-
-    });
-
-	
 
 	if($('.fullscreenfiche').length){
 
@@ -435,7 +391,7 @@ $(document).ready(function(){
 	
 
 	$('.openNewletter').click(function(e){
-
+		alert()
 		e.preventDefault();
 
 		$('.popnews').fadeIn();

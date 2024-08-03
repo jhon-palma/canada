@@ -1,47 +1,38 @@
 {% load static %}{% load tags %}{% load humanize %}
-{% block header_page %}
-{% for image in images %}
-    {% if image.name == "Index_Team" %}
-        <style>
-            .profilhome {
-                background-image: url("/{{ image.url }}");
-            }
-        </style>
-     {% endif %}
-{% endfor %}
-{% for image in images %}
-    {% if image.name == "Index_Donate_Banner" %}
-        <style>
-            .profilhome.wwuhome {
-                background-image: url("/{{ image.url }}");
-            }
-        </style>
-    {% endif %}
-{% endfor %}
-{% for image in images %}
-    {% if image.name == "Index_Videos" %}
-        <style>
-            .videoshome {
-                background-image: url("/{{ image.url }}");
-            }
-        </style>
-    {% endif %}
-{% endfor %}
-{% endblock %}
 {% include 'web/header_web.html' %}
+
 {% if language == 'fr' %}
 	{% define 'propriete' as url_propertie %}
 {% else %}
 	{% define 'propertie' as url_propertie %}
 {% endif %}
 
+<style>
+    .banner{
+		background-image: url("{{ images.index_banner.image.url }}");
+	}
+    .profilhome {
+        background-image: url("{{ images.index_team_background.image.url }}");
+    }
+    .profilhome.wwuhome{
+        background-image: url('{{ images.index_donate_background.image.url }}');
+    }
+    .videoshome {
+        background-image: url("{{ images.index_video_background.image.url }}");
+    }
+</style>
+
+
+<style>
+	
+</style>
+
 <section class="banner">
 	<div class="baninfo">
 		<h1>{{ labels.index.title.four }}</h1>
         <h2>{{ labels.index.title.five }}<span> {{ labels.index.title.six }}</span></h2>
-        <a class="bouton boutonnre2">{{ labels.index.button.ten }}</a>
+        <a class="bouton boutonnre2 boutonnre2gra" href="{{ labels.menu.url.eight }}">{{ labels.index.button.ten }}</a>
 	</div>
-	<img src="{% for image in images %}{% if image.name == 'Index_Banner' %}/{{image.url}}{% endif %}{% endfor %}" alt="View of Montreal" class="bannerimg">
 </section>
 
 <section class="statshome">
@@ -49,14 +40,9 @@
 		<h2 class="h2def" style="font-size: 30px;"><span class="text-span">{{ labels.index.text.one }}</span> <strong>{{ labels.index.text.two }}</strong></h2>
         <div class="horizontal-line"></div>
         <div class="__cnt">
-            <div class="lineal"></div>
             <div class="contsjks">
-                <h3>
-                    {{ labels.index.button.twelve }}
-                </h3>
-                <p>
-                    {{ labels.index.button.twelve_b }}
-                </p>
+                <h3> {{ labels.index.text.thirty_two }}</h3>
+                <p>{{ labels.index.text.thirty_three }}<br>{{ labels.index.text.thirty_four }}</p>
             </div>
         </div>
 		<div class="statscont">
@@ -66,48 +52,42 @@
                 </div>
 				<h3 class="h2def">{{ labels.index.text.three }} <span>{{ labels.index.text.four }}</span></h3>
 				<div class="statels">
-                    {% if sold_price %}
-                        <div class="statel">
-                            <p>{{ sold_price.initial_year|default_if_none:'' }}</p>
-                            <p><span class="num counting">{{ sold_price.initial_value|default_if_none:'' }}</span>%</p>
-                        </div>
-                        <div class="statel">
-                            <p>{{ sold_price.final_year|default_if_none:'' }}</p>
-                            <p><span class="num counting">{{ sold_price.final_value|default_if_none:'' }}</span>%</p>
-                        </div>
-                    {% endif %}
-				</div>
+                    <div class="statel">
+                        <p>{{ staticts.sold_price.initial_year|default_if_none:'' }}</p>
+                        <p><span class="num counting">{{ staticts.sold_price.initial_value|default_if_none:'' }}</span>%</p>
+                    </div>
+                    <div class="statel">
+                        <p>{{ staticts.sold_price.final_year|default_if_none:'' }}</p>
+                        <p><span class="num counting">{{ staticts.sold_price.final_value|default_if_none:'' }}</span>%</p>
+                    </div>
+                </div>
 			</div>
 			<div class="statblock">
 				<div class="img"><img src="{% static 'web/images2/2.svg' %}" alt="Icon" /></div>
 				<h3 class="h2def">{{ labels.index.text.five }} <span>{{ labels.index.text.six }}</span></h3>
 				<div class="statels">
-                        {% if days %}
-                            <div class="statel">
-                                <p>{{ days.initial_year|default_if_none:'' }}</p>
-                                <p><span class="num counting">{{ days.initial_value|default_if_none:'' }}</span> {{ labels.index.text.nine }}</p>
-                            </div>
-                            <div class="statel">
-                                <p>{{ days.final_year|default_if_none:'' }}</p>
-                                <p><span class="num counting">{{ days.final_value|default_if_none:'' }}</span> {{ labels.index.text.nine }}</p>
-                            </div>
-                        {% endif %}
+                    <div class="statel">
+                        <p>{{ staticts.days.initial_year|default_if_none:'' }}</p>
+                        <p><span class="num counting">{{ staticts.days.initial_value|default_if_none:'' }}</span> {{ labels.index.text.nine }}</p>
+                    </div>
+                    <div class="statel">
+                        <p>{{ staticts.days.final_year|default_if_none:'' }}</p>
+                        <p><span class="num counting">{{ staticts.days.final_value|default_if_none:'' }}</span> {{ labels.index.text.nine }}</p>
+                    </div>
 				</div>
 			</div>
 			<div class="statblock">
 				<div class="img"><img src="{% static 'web/images2/3.svg' %}" alt="Icon" /></div>
 				<h3 class="h2def">{{ labels.index.text.seven }} <span>{{ labels.index.text.eight }}</span></h3>
 				<div class="statels">
-                        {% if number_transactions %}
-                            <div class="statel">
-                                <p>{{ number_transactions.initial_year|default_if_none:'' }}</p>
-                                <p><span class="num counting">{{ number_transactions.initial_value|default_if_none:'' }}</span></p>
-                            </div>
-                            <div class="statel">
-                                <p>{{ number_transactions.final_year|default_if_none:'' }}</p>
-                                <p><span class="num counting">{{ number_transactions.final_value|default_if_none:'' }}</span></p>
-                            </div>
-                        {% endif %}
+                    <div class="statel">
+                        <p>{{ staticts.number_transactions.initial_year|default_if_none:'' }}</p>
+                        <p><span class="num counting">{{ staticts.number_transactions.initial_value|default_if_none:'' }}</span></p>
+                    </div>
+                    <div class="statel">
+                        <p>{{ staticts.number_transactions.final_year|default_if_none:'' }}</p>
+                        <p><span class="num counting">{{ staticts.number_transactions.final_value|default_if_none:'' }}</span></p>
+                    </div>
 				</div>
 			</div>
 		</div>
@@ -127,7 +107,7 @@
             <p>{{ labels.index.text.twelve_b }}</p>
             <br>
             <a href="{{ server|server_url }}/{{ language }}/real-estate-broker/" class="bouton">{{ labels.index.button.two }}</a>
-            <a href="{{ server|server_url }}/{{ language }}/contact-realestate-broker/" class="bouton bouton2">{{ labels.index.button.three }}</a>
+            <a name="Send" class="bouton bouton2 button btnpopfiche pointer">{{ labels.index.button.three.upper }}</a>
             </div>
         </div>
     </div>
@@ -140,35 +120,35 @@
             <h2 class="h2def"><span class="text-span">{{ labels.index.text.one }}</span> <strong>{{ labels.index.text.thirteen }}</strong></h2>
             <div class="propcont">
                 {% for inscription in inscriptions %}
-                    <a href="{% url 'web:detail-propertie' language=language option=url_propertie propertie_id=inscription.id %}" class="propa">
+                    <a href="{% url 'web:detail-propertie' language=language option=url_propertie propertie_id=inscription.id %}" loading="lazy" decoding="async" class="propa">
                         <span class="img">
                             {% for photo in inscription.photos.all %}
                                 {% if photo.seq == 1 %}
                                     <img src="{{ photo.photourl }}" alt="{% if language == 'en' %}{{ inscription.genre_propriete.description_anglaise }}{% else %}{{ inscription.genre_propriete.description_francaise }}{% endif %}
-{% if inscription.prix_demande %}{% if language == 'en' %} for sale{% else %}à vendre {% endif %}{% endif %}{% if inscription.prix_location_demande %}
-{% if language == 'en' %}for rent{% else %}à louer{% endif %}{% endif %} {{inscription.mun_code.description}}" title="{% if language == 'en' %}{{ inscription.genre_propriete.description_anglaise }}{% else %}{{ inscription.genre_propriete.description_francaise }}{% endif %}{% if inscription.prix_demande %}{% if language == 'en' %} for sale{% else %}à vendre{% endif %}{% endif %}{% if inscription.prix_location_demande %}{% if language == 'en' %} for rent{% else %}à louer{% endif %}{% endif %} {{inscription.mun_code.description}}" class="propimg" />
-{%endif%}
+                                    {% if inscription.prix_demande %}{% if language == 'en' %} for sale{% else %}à vendre {% endif %}{% endif %}{% if inscription.prix_location_demande %}
+                                    {% if language == 'en' %}for rent{% else %}à louer{% endif %}{% endif %} {{inscription.mun_code.description}}" title="{% if language == 'en' %}{{ inscription.genre_propriete.description_anglaise }}{% else %}{{ inscription.genre_propriete.description_francaise }}{% endif %}{% if inscription.prix_demande %}{% if language == 'en' %} for sale{% else %}à vendre{% endif %}{% endif %}{% if inscription.prix_location_demande %}{% if language == 'en' %} for rent{% else %}à louer{% endif %}{% endif %} {{inscription.mun_code.description}}" class="propimg" />
+                                {%endif%}
                             {% endfor %}
                             <p> 
                                 {% if inscription.code_statut.valeur == "VE" %}
-                                                        <span class="prix_maison_hid">{% if language == "en" %}Sold{% else %}Vendu{% endif%}</span>
-                                                    {% else %}
-                                                        {% if inscription.prix_demande and language == "en" %}
-                                                            ${{inscription.prix_demande|floatformat:0|intcomma}} {% if inscription.ind_taxes_prix_demande %}<span> +GST/QST{% endif %}</span>
-                                                        {% elif inscription.prix_demande and language == "fr" %}
-                                                            {{inscription.prix_demande|floatformat:0|intcomma}}$ {% if inscription.ind_taxes_prix_demande %}<span> +GST/QST{% endif %}</span>
-                                                        {%endif%}
-                                                        {% if inscription.prix_location_demande and language == "en" %}
-                                                            ${{inscription.prix_location_demande|floatformat:0|intcomma}}
-                                                        {% elif inscription.prix_location_demande and language == "fr" %}
-                                                            {{inscription.prix_location_demande|floatformat:0|intcomma}}$
-                                                        {%endif%}
-                                                        {% if inscription.frequence_prix_location and language == "en" %}
-                                                            / <span class="text-lowercase">{{ inscription.frequence_prix_location.description_anglaise }}</span>
-                                                        {% elif inscription.frequence_prix_location and language == "fr"  %}
-                                                            / <span class="text-lowercase">{{ inscription.frequence_prix_location.description_francaise }}</span>
-                                                        {% endif %}
-                                                    {% endif %}
+                                    <span class="prix_maison_hid">{% if language == "en" %}Sold{% else %}Vendu{% endif%}</span>
+                                {% else %}
+                                    {% if inscription.prix_demande and language == "en" %}
+                                        ${{inscription.prix_demande|floatformat:0|intcomma}} {% if inscription.ind_taxes_prix_demande %}<span> +GST/QST{% endif %}</span>
+                                    {% elif inscription.prix_demande and language == "fr" %}
+                                        {{inscription.prix_demande|floatformat:0|intcomma}}$ {% if inscription.ind_taxes_prix_demande %}<span> +GST/QST{% endif %}</span>
+                                    {%endif%}
+                                    {% if inscription.prix_location_demande and language == "en" %}
+                                        ${{inscription.prix_location_demande|floatformat:0|intcomma}}
+                                    {% elif inscription.prix_location_demande and language == "fr" %}
+                                        {{inscription.prix_location_demande|floatformat:0|intcomma}}$
+                                    {%endif%}
+                                    {% if inscription.frequence_prix_location and language == "en" %}
+                                        / <span class="text-lowercase">{{ inscription.frequence_prix_location.description_anglaise }}</span>
+                                    {% elif inscription.frequence_prix_location and language == "fr"  %}
+                                        / <span class="text-lowercase">{{ inscription.frequence_prix_location.description_francaise }}</span>
+                                    {% endif %}
+                                {% endif %}
                             </p>
                         </span>
                         <div class="rollprop">
@@ -216,7 +196,7 @@
             <a target="_blank" href="https://autisme-montreal.com/en/" class="bouton boutonnre3">{{ labels.index.button.five }}</a>
         </div>
         <div class="img">
-            <img src="{% for image in images %}{% if image.name == 'Index_Donate' %}/{{image.url}}{% endif %}{% endfor %}" alt="LJ Immobilier">
+            <img src="{{ images.index_donate_image.image.url }}" alt="LJ Immobilier">
         </div>
     </div>
 </section>
@@ -231,6 +211,7 @@
         <!-- <a href="https://www.google.com/search?q=lj+realties&rlz=1C5CHFA_enCA932CA932&oq=lj&aqs=chrome.1.69i57j69i59j46i175i199i512j46i131i433i512j0i512j69i60j69i61l2.3691j0j7&sourceid=chrome&ie=UTF-8#lrd=0x4cc93c824dc00621:0xb6aa87687fd1e9eb,3,,," target="_blank" class="bouton">{{ labels.index.button.six }}</a> -->
     </div>
 </div>
+
 <section class="videoshome">
     <div class="wrap">
         <h2 class="h3def"><span class="text-span">{{ labels.index.text.twenty_one }}</span> {{ labels.index.text.twenty_two }}</h2>
@@ -245,21 +226,32 @@
     </div>
 </section>
 
+
+<!--
 <section class="soldprop">
-    <h2 class="h2def"><span class="text-span">{{ labels.index.text.one }}</span><strong>{{ labels.index.text.twenty_three }}</strong></h2>
 	<div class="soldmap">
+        <div class="__topmap">
+            <h2 class="h2def h2defb"><span class="text-span">{{ labels.index.text.one }}</span><strong>{{ labels.index.text.twenty_three }}</strong></h2>
+        </div>
 		<div id="map-container">
 			<div id="map" style="height: 450px; width: 100%"></div>
 		</div>
 	</div>
+-->
 
+<section class="soldprop">
+    <h2 class="h2def"><span class="text-span">{{ labels.index.text.one }}</span><strong>{{ labels.index.text.twenty_three }}</strong></h2>
+	<div class="soldmap">
+		<div id="map-container">
+			<div id="map" style="height: 450px; width: 100%; margin-top: 30px;"></div>
+		</div>
+	</div>
 	<link rel="stylesheet" href="https://macleweb.com/mapLeaflet/leaflet.css" />
 	<link rel="stylesheet" href="https://macleweb.com/mapLeaflet/markercluster/screen.css" />
 	<link rel="stylesheet" href="https://macleweb.com/mapLeaflet/markercluster/dist/MarkerCluster.css" />
 	<link rel="stylesheet" href="https://macleweb.com/mapLeaflet/markercluster/dist/MarkerCluster.Default.css" />
     <script src="https://macleweb.com/mapLeaflet/leaflet-src.js"></script>
 	<script src="https://macleweb.com/mapLeaflet/markercluster/dist/leaflet.markercluster-src.js"></script>
-
 	<script type="text/javascript">
 
 		var point = new Array();
@@ -267,34 +259,485 @@
         {% for inscription in inscriptions_vendu %}
             point.push(new Array("{{ inscription.latitude|stringformat:'s'|cut:',' }}", "{{ inscription.longitude|stringformat:'s'|cut:',' }}"));
         {% endfor %}
-		// point.push(new Array("46.0326814","-74.2823293"));
-		// point.push(new Array("45.533176","-73.558621"));
-		// point.push(new Array("45.5167303","-73.5762313"));
-		// point.push(new Array("45.4662312","-73.8767149"));
-		// point.push(new Array("45.526807","-73.7658951"));
-		// point.push(new Array("45.6466628","-73.8200708"));
-		// point.push(new Array("45.4713503","-73.87773"));
-		// point.push(new Array("45.4969829","-73.8210685"));
-		// point.push(new Array("45.665656","-73.585932"));
-		// point.push(new Array("45.3891747","-73.9693649"));
-		// point.push(new Array("45.5643616","-73.5969474"));
-		// point.push(new Array("45.4901901","-73.5588512"));
-		// point.push(new Array("45.6530933","-73.5684936"));
-		// point.push(new Array("45.392236","-73.5250011"));
-		// point.push(new Array("45.6679287","-73.5715094"));
-		// point.push(new Array("45.768077","-73.4791027"));
-		// point.push(new Array("45.51587800","-73.43196600"));
-		// point.push(new Array("45.69069601","-73.49262242"));
-		// point.push(new Array("45.33914950","-73.29794714"));
-		// point.push(new Array("45.23825900","-74.11898600"));
-		// point.push(new Array("45.24622400","-74.15329000"));
-		// point.push(new Array("45.67248700","-73.49573900"));
-		// point.push(new Array("45.35252400","-73.30334100"));
-		// point.push(new Array("45.45685300","-73.78268900"));
 
-		point.forEach(function(pont) {
-            console.log("Latitude: " + pont[0] + ", Longitude: " + pont[1]);
-        });
+        // old properties
+        point.push(new Array("46.0326814","-74.2823293"));
+        point.push(new Array("45.533176","-73.558621"));
+        point.push(new Array("45.5167303","-73.5762313"));
+        point.push(new Array("45.4711147","-73.6555247"));
+        point.push(new Array("45.496727","-73.5705672"));
+        point.push(new Array("45.4879571","-73.5686516"));
+        point.push(new Array("45.4923192","-73.5836781"));
+        point.push(new Array("45.5139588","-73.5710805"));
+        point.push(new Array("45.5856727","-73.5536575"));
+        point.push(new Array("45.4569029","-73.5960638"));
+        point.push(new Array("45.5168408","-73.583079"));
+        point.push(new Array("45.4319052","-73.8420552"));
+        point.push(new Array("45.5320984","-73.5954358"));
+        point.push(new Array("45.4374797","-73.684495"));
+        point.push(new Array("45.4886939","-73.5722613"));
+        point.push(new Array("45.4918076","-73.5783759"));
+        point.push(new Array("45.4605409","-73.9141442"));
+        point.push(new Array("45.491092","-73.5607251"));
+        point.push(new Array("45.4663289","-73.5712005"));
+        point.push(new Array("45.5176741","-73.6300499"));
+        point.push(new Array("45.5176741","-73.6300499"));
+        point.push(new Array("45.5123405","-73.4801101"));
+        point.push(new Array("45.5259411","-73.7672293"));
+        point.push(new Array("45.440843","-73.2996525"));
+        point.push(new Array("45.4958634","-73.5677439"));
+        point.push(new Array("45.3661926","-73.9778866"));
+        point.push(new Array("45.3995599","-74.1596246"));
+        point.push(new Array("45.4163518","-74.1362379"));
+        point.push(new Array("45.3851313","-74.1615609"));
+        point.push(new Array("45.3866361","-73.9432947"));
+        point.push(new Array("45.4098336","-74.1416197"));
+        point.push(new Array("45.5035778","-73.5635115"));
+        point.push(new Array("45.491782","-73.5655699"));
+        point.push(new Array("45.409675","-74.1634065"));
+        point.push(new Array("45.417312","-74.0513689"));
+        point.push(new Array("45.4337995","-74.1565809"));
+        point.push(new Array("45.3761432","-73.7327092"));
+        point.push(new Array("45.3803859","-73.9875933"));
+        point.push(new Array("45.4951226","-73.800287"));
+        point.push(new Array("45.5336789","-73.563812"));
+        point.push(new Array("45.4347048","-73.8187001"));
+        point.push(new Array("45.4729823","-73.3843987"));
+        point.push(new Array("45.4433147","-73.6528494"));
+        point.push(new Array("45.4958634","-73.5677439"));
+        point.push(new Array("45.4455623","-73.7246348"));
+        point.push(new Array("45.5595953","-73.7239025"));
+        point.push(new Array("45.5273724","-73.3355047"));
+        point.push(new Array("45.4958634","-73.5677439"));
+        point.push(new Array("45.4395371","-73.6643601"));
+        point.push(new Array("45.4187194","-73.9133475"));
+        point.push(new Array("45.4396605","-73.6866332"));
+        point.push(new Array("45.4969387","-73.5531023"));
+        point.push(new Array("45.4810972","-73.5833486"));
+        point.push(new Array("45.5162822","-73.3265509"));
+        point.push(new Array("45.538927","-73.583487"));
+        point.push(new Array("45.4950926","-73.5687661"));
+        point.push(new Array("45.4415804","-74.3454986"));
+        point.push(new Array("45.4810972","-73.5833486"));
+        point.push(new Array("45.4032776","-74.0422999"));
+        point.push(new Array("45.4530307","-73.5816844"));
+        point.push(new Array("45.4845198","-73.5819087"));
+        point.push(new Array("45.4945502","-73.5823504"));
+        point.push(new Array("45.4945502","-73.5823504"));
+        point.push(new Array("45.4945502","-73.5823504"));
+        point.push(new Array("45.4945502","-73.5823504"));
+        point.push(new Array("45.4945502","-73.5823504"));
+        point.push(new Array("45.5162174","-73.5764396"));
+        point.push(new Array("45.5162174","-73.5764396"));
+        point.push(new Array("45.5162174","-73.5764396"));
+        point.push(new Array("45.4943557","-73.5826133"));
+        point.push(new Array("45.5086806","-73.5759558"));
+        point.push(new Array("45.4923192","-73.5836781"));
+        point.push(new Array("45.4877656","-73.6206264"));
+        point.push(new Array("45.4959487","-73.5748407"));
+        point.push(new Array("45.4924659","-73.5785172"));
+        point.push(new Array("45.501167","-73.5790779"));
+        point.push(new Array("45.500994","-73.578678"));
+        point.push(new Array("45.500994","-73.578678"));
+        point.push(new Array("45.500994","-73.578678"));
+        point.push(new Array("45.4610075","-73.5717118"));
+        point.push(new Array("45.4735296","-73.6097544"));
+        point.push(new Array("45.4746197","-73.561462"));
+        point.push(new Array("45.449199","-73.5599533"));
+        point.push(new Array("45.5169629","-73.5591479"));
+        point.push(new Array("45.4852179","-73.5624912"));
+        point.push(new Array("45.501167","-73.5790779"));
+        point.push(new Array("45.485693","-73.58016"));
+        point.push(new Array("45.4461587","-73.7265588"));
+        point.push(new Array("45.4745617","-73.5947254"));
+        point.push(new Array("45.51468486","-73.43230805"));
+        point.push(new Array("45.34964500","-73.74094000"));
+        point.push(new Array("45.66791100","-73.57147400"));
+        point.push(new Array("45.58533000","-73.70781800"));
+        point.push(new Array("45.76867100","-73.47627100"));
+        point.push(new Array("45.6443088","-73.5118075"));
+        point.push(new Array("45.5306263","-73.5598224"));
+        point.push(new Array("45.3536642","-73.4815857"));
+        point.push(new Array("45.5143728","-73.5688389"));
+        point.push(new Array("45.393529","-73.5535394"));
+        point.push(new Array("45.4612871","-73.4447079"));
+        point.push(new Array("45.5367235","-73.5833824"));
+        point.push(new Array("45.4853092","-73.7121118"));
+        point.push(new Array("45.4939371","-73.5662163"));
+        point.push(new Array("45.5186339","-73.5134313"));
+        point.push(new Array("45.598465","-73.7982169"));
+        point.push(new Array("45.4419984","-73.8231687"));
+        point.push(new Array("45.5069019","-73.5689657"));
+        point.push(new Array("45.4620695","-73.4351868"));
+        point.push(new Array("45.6066487","-73.712409"));
+        point.push(new Array("45.5173949","-73.5719874"));
+        point.push(new Array("45.520489","-73.588652"));
+        point.push(new Array("45.4602815","-73.5968506"));
+        point.push(new Array("45.4456477","-73.6427971"));
+        point.push(new Array("45.4835162","-73.5839436"));
+        point.push(new Array("45.4808092","-73.5686194"));
+        point.push(new Array("45.4808685","-73.5685733"));
+        point.push(new Array("45.4456066","-73.6428548"));
+        point.push(new Array("45.4456477","-73.6427971"));
+        point.push(new Array("45.5080853","-73.5717527"));
+        point.push(new Array("45.5698047","-73.7769717"));
+        point.push(new Array("45.5162076","-73.5799177"));
+        point.push(new Array("45.4748178","-73.5940421"));
+        point.push(new Array("45.4996238","-73.6486372"));
+        point.push(new Array("45.5173949","-73.5719874"));
+        point.push(new Array("45.4967138","-73.5619455"));
+        point.push(new Array("45.4678466","-73.6092555"));
+        point.push(new Array("45.779143","-73.406679"));
+        point.push(new Array("45.4404208","-73.8457754"));
+        point.push(new Array("45.5139503","-73.5713859"));
+        point.push(new Array("45.5140061","-73.5715031"));
+        point.push(new Array("45.4331947","-73.5904432"));
+        point.push(new Array("45.544855","-73.7728336"));
+        point.push(new Array("45.5111447","-73.6222937"));
+        point.push(new Array("45.6050856","-73.624119"));
+        point.push(new Array("45.479536","-73.8373639"));
+        point.push(new Array("45.4456066","-73.6428548"));
+        point.push(new Array("45.3538888","-73.7021857"));
+        point.push(new Array("45.519964","-73.4908814"));
+        point.push(new Array("45.6048555","-73.6244248"));
+        point.push(new Array("45.4999231","-73.8233731"));
+        point.push(new Array("45.4876911","-73.8544002"));
+        point.push(new Array("45.517935","-73.56472"));
+        point.push(new Array("45.4472542","-73.7711006"));
+        point.push(new Array("45.5698047","-73.7769717"));
+        point.push(new Array("45.48437","-73.582037"));
+        point.push(new Array("45.6001473","-73.710922"));
+        point.push(new Array("45.5104941","-73.5713447"));
+        point.push(new Array("45.505946","-73.5686201"));
+        point.push(new Array("45.7730496","-73.700389"));
+        point.push(new Array("45.5698047","-73.7769717"));
+        point.push(new Array("45.4771593","-73.590676"));
+        point.push(new Array("45.4815888","-73.5852077"));
+        point.push(new Array("45.4782453","-73.821788"));
+        point.push(new Array("45.4844165","-73.5821136"));
+        point.push(new Array("45.3348253","-73.7611572"));
+        point.push(new Array("45.4774356","-73.5985013"));
+        point.push(new Array("45.4784","-73.5799"));
+        point.push(new Array("45.437549","-73.84464"));
+        point.push(new Array("45.509943","-73.7192306"));
+        point.push(new Array("45.4844116","-73.5820678"));
+        point.push(new Array("45.4965706","-73.6522128"));
+        point.push(new Array("45.5071547","-73.8393888"));
+        point.push(new Array("45.514773","-73.570849"));
+        point.push(new Array("45.484329","-73.582106"));
+        point.push(new Array("45.4843791","-73.5821215"));
+        point.push(new Array("45.518427","-73.565025"));
+        point.push(new Array("45.4379559","-73.7062672"));
+        point.push(new Array("45.5788351","-73.63576"));
+        point.push(new Array("45.5303978","-73.7969699"));
+        point.push(new Array("45.457836","-73.601349"));
+        point.push(new Array("45.5719598","-73.6926479"));
+        point.push(new Array("45.5107098","-73.5667686"));
+        point.push(new Array("45.4736345","-73.5818985"));
+        point.push(new Array("45.4779446","-73.5637759"));
+        point.push(new Array("45.477785","-73.5612728"));
+        point.push(new Array("45.5319165","-73.5521583"));
+        point.push(new Array("45.531812","-73.552019"));
+        point.push(new Array("45.4721296","-73.6316277"));
+        point.push(new Array("45.457836","-73.601349"));
+        point.push(new Array("45.5340548","-73.7617988"));
+        point.push(new Array("45.4940958","-73.5591529"));
+        point.push(new Array("45.4828054","-73.8281657"));
+        point.push(new Array("45.477553","-73.589894"));
+        point.push(new Array("45.4697463","-73.8472726"));
+        point.push(new Array("45.449496","-73.54857"));
+        point.push(new Array("45.4851518","-73.5624183"));
+        point.push(new Array("45.505946","-73.5686201"));
+        point.push(new Array("45.4962955","-73.5609175"));
+        point.push(new Array("45.5035778","-73.5635115"));
+        point.push(new Array("45.4665346","-73.6184221"));
+        point.push(new Array("45.5035778","-73.5635115"));
+        point.push(new Array("45.6273658","-73.7475893"));
+        point.push(new Array("45.4808685","-73.5685733"));
+        point.push(new Array("45.4717764","-73.5854864"));
+        point.push(new Array("45.4747019","-73.5932939"));
+        point.push(new Array("45.4981661","-73.6198832"));
+        point.push(new Array("45.532161","-73.759981"));
+        point.push(new Array("45.513072","-73.549306"));
+        point.push(new Array("45.4708126","-73.5944963"));
+        point.push(new Array("45.5197075","-73.5876232"));
+        point.push(new Array("45.4960488","-73.5705126"));
+        point.push(new Array("45.477785","-73.5612728"));
+        point.push(new Array("45.4942751","-73.56674"));
+        point.push(new Array("45.504947","-73.5557628"));
+        point.push(new Array("45.5107098","-73.5667686"));
+        point.push(new Array("45.5069019","-73.5689657"));
+        point.push(new Array("45.537068","-73.5724329"));
+        point.push(new Array("45.5420471","-73.1797751"));
+        point.push(new Array("45.5155868","-73.5696036"));
+        point.push(new Array("45.4695338","-73.6122817"));
+        point.push(new Array("45.464374","-73.5430054"));
+        point.push(new Array("45.5098092","-73.5610897"));
+        point.push(new Array("45.4589154","-73.5413922"));
+        point.push(new Array("45.6145421","-73.6117115"));
+        point.push(new Array("45.4926477","-73.5566698"));
+        point.push(new Array("45.5524988","-73.6317241"));
+        point.push(new Array("45.4967138","-73.5619455"));
+        point.push(new Array("45.5265622","-73.5494339"));
+        point.push(new Array("45.4763106","-73.5642912"));
+        point.push(new Array("45.5407823","-73.5409939"));
+        point.push(new Array("45.5127225","-73.568694"));
+        point.push(new Array("45.4968589","-73.5716452"));
+        point.push(new Array("45.4919635","-73.5588719"));
+        point.push(new Array("45.5107098","-73.5667686"));
+        point.push(new Array("45.5266686","-73.5824404"));
+        point.push(new Array("45.4763093","-73.494865"));
+        point.push(new Array("45.5563065","-73.8483361"));
+        point.push(new Array("45.4998997","-73.558694"));
+        point.push(new Array("45.658734","-73.8277719"));
+        point.push(new Array("45.5173949","-73.5719874"));
+        point.push(new Array("45.4989058","-73.8283386"));
+        point.push(new Array("45.514159","-73.7719658"));
+        point.push(new Array("45.498193","-73.6530502"));
+        point.push(new Array("45.460183","-73.584628"));
+        point.push(new Array("45.4906195","-73.560243"));
+        point.push(new Array("45.4655883","-73.5746974"));
+        point.push(new Array("45.5148212","-73.5682441"));
+        point.push(new Array("45.485693","-73.58016"));
+        point.push(new Array("45.499806","-73.7002389"));
+        point.push(new Array("45.477803","-73.5613867"));
+        point.push(new Array("45.4662312","-73.8767149"));
+        point.push(new Array("45.3671656","-73.8717492"));
+        point.push(new Array("45.4962955","-73.5609175"));
+        point.push(new Array("45.4387738","-73.7006106"));
+        point.push(new Array("45.5197662","-73.5702179"));
+        point.push(new Array("45.5197873","-73.5702597"));
+        point.push(new Array("45.5169629","-73.5591479"));
+        point.push(new Array("45.4862003","-73.5666476"));
+        point.push(new Array("45.4851518","-73.5624183"));
+        point.push(new Array("45.483446","-73.571394"));
+        point.push(new Array("45.4859191","-73.6182942"));
+        point.push(new Array("45.4835073","-73.5790136"));
+        point.push(new Array("45.483446","-73.571394"));
+        point.push(new Array("45.6530933","-73.5684936"));
+        point.push(new Array("45.4747019","-73.5932939"));
+        point.push(new Array("45.5270041","-73.6084889"));
+        point.push(new Array("45.4444601","-73.7627887"));
+        point.push(new Array("45.4947499","-73.5654231"));
+        point.push(new Array("45.4938198","-73.8182686"));
+        point.push(new Array("45.52408","-73.581763"));
+        point.push(new Array("45.4967138","-73.5619455"));
+        point.push(new Array("45.4789753","-73.5730018"));
+        point.push(new Array("45.4591466","-73.5998194"));
+        point.push(new Array("45.4371025","-73.6298025"));
+        point.push(new Array("45.5161609","-73.581818"));
+        point.push(new Array("45.504947","-73.5557628"));
+        point.push(new Array("45.4601303","-73.5845138"));
+        point.push(new Array("45.4601831","-73.5846304"));
+        point.push(new Array("45.460183","-73.584628"));
+        point.push(new Array("45.4600742","-73.5844487"));
+        point.push(new Array("45.496727","-73.5705672"));
+        point.push(new Array("45.5214176","-73.5673674"));
+        point.push(new Array("45.4763112","-73.5642953"));
+        point.push(new Array("45.5031449","-73.5548138"));
+        point.push(new Array("45.498193","-73.6530502"));
+        point.push(new Array("45.5460127","-73.5666133"));
+        point.push(new Array("45.5289813","-73.5466638"));
+        point.push(new Array("45.496727","-73.5705672"));
+        point.push(new Array("45.4652826","-73.5373019"));
+        point.push(new Array("45.4615233","-73.5463761"));
+        point.push(new Array("45.4835982","-73.5910189"));
+        point.push(new Array("45.4874034","-73.5680066"));
+        point.push(new Array("45.4748178","-73.5940421"));
+        point.push(new Array("45.4591466","-73.5998194"));
+        point.push(new Array("45.5220503","-73.6069288"));
+        point.push(new Array("45.4967138","-73.5619455"));
+        point.push(new Array("45.4964715","-73.5554763"));
+        point.push(new Array("45.4960488","-73.5705126"));
+        point.push(new Array("45.4851518","-73.5624183"));
+        point.push(new Array("45.4433322","-73.6528503"));
+        point.push(new Array("45.4700816","-73.5917987"));
+        point.push(new Array("45.5022354","-73.5632279"));
+        point.push(new Array("45.4890065","-73.6532187"));
+        point.push(new Array("45.4370531","-73.6809458"));
+        point.push(new Array("45.4842367","-73.6184064"));
+        point.push(new Array("45.4761304","-73.5879858"));
+        point.push(new Array("45.5062226","-73.5562407"));
+        point.push(new Array("45.4682141","-73.6164844"));
+        point.push(new Array("45.4877455","-73.8516118"));
+        point.push(new Array("45.5035778","-73.5635115"));
+        point.push(new Array("45.5044131","-73.5632557"));
+        point.push(new Array("45.498193","-73.6530502"));
+        point.push(new Array("45.4591466","-73.5998194"));
+        point.push(new Array("45.5270041","-73.6084889"));
+        point.push(new Array("45.4789753","-73.5730018"));
+        point.push(new Array("45.4763112","-73.5642953"));
+        point.push(new Array("45.478141","-73.566933"));
+        point.push(new Array("45.4860315","-73.5675913"));
+        point.push(new Array("45.5031157","-73.5634414"));
+        point.push(new Array("45.4654041","-73.6432476"));
+        point.push(new Array("45.500456","-73.559638"));
+        point.push(new Array("45.525613","-73.57736"));
+        point.push(new Array("45.4936254","-73.5580319"));
+        point.push(new Array("45.5027219","-73.5685777"));
+        point.push(new Array("45.5201481","-73.5749223"));
+        point.push(new Array("45.5214176","-73.5673674"));
+        point.push(new Array("45.4817237","-73.5571772"));
+        point.push(new Array("45.4079044","-74.0306201"));
+        point.push(new Array("45.4591466","-73.5998194"));
+        point.push(new Array("45.5044131","-73.5632557"));
+        point.push(new Array("45.48437","-73.582037"));
+        point.push(new Array("45.5425092","-73.5576003"));
+        point.push(new Array("45.5237694","-73.5765901"));
+        point.push(new Array("45.4591466","-73.5998194"));
+        point.push(new Array("45.460183","-73.584628"));
+        point.push(new Array("45.4600742","-73.5844487"));
+        point.push(new Array("45.4971608","-73.8799485"));
+        point.push(new Array("45.4923192","-73.5836781"));
+        point.push(new Array("45.4923192","-73.5836781"));
+        point.push(new Array("45.4923192","-73.5836781"));
+        point.push(new Array("45.4923192","-73.5836781"));
+        point.push(new Array("45.4923192","-73.5836781"));
+        point.push(new Array("45.4471014","-73.7274923"));
+        point.push(new Array("45.4618037","-73.5841954"));
+        point.push(new Array("45.5179841","-73.7135581"));
+        point.push(new Array("45.4835162","-73.5839436"));
+        point.push(new Array("45.5185373","-73.5881645"));
+        point.push(new Array("45.5197793","-73.5702312"));
+        point.push(new Array("45.4519453","-73.5864826"));
+        point.push(new Array("45.4762778","-73.5643264"));
+        point.push(new Array("45.5087216","-73.5759603"));
+        point.push(new Array("45.4662961","-73.806539"));
+        point.push(new Array("45.4469889","-73.6089335"));
+        point.push(new Array("45.4906195","-73.560243"));
+        point.push(new Array("45.472039","-73.590928"));
+        point.push(new Array("45.4829312","-73.563951"));
+        point.push(new Array("45.5486726","-73.7536309"));
+        point.push(new Array("45.496727","-73.5705672"));
+        point.push(new Array("45.4615233","-73.5463761"));
+        point.push(new Array("45.3494346","-73.7410041"));
+        point.push(new Array("45.5889944","-75.6326756"));
+        point.push(new Array("45.476276","-73.5643169"));
+        point.push(new Array("45.4564634","-73.8250049"));
+        point.push(new Array("45.546199","-73.73427"));
+        point.push(new Array("45.442712","-73.8570019"));
+        point.push(new Array("45.4824163","-73.8437518"));
+        point.push(new Array("45.3761774","-74.0383773"));
+        point.push(new Array("45.5161533","-73.8291438"));
+        point.push(new Array("45.4322109","-73.8436452"));
+        point.push(new Array("45.4908675","-73.5768142"));
+        point.push(new Array("45.486158","-73.7885199"));
+        point.push(new Array("45.4964715","-73.5554763"));
+        point.push(new Array("45.4579721","-73.8801384"));
+        point.push(new Array("45.3792733","-74.0441387"));
+        point.push(new Array("45.4747019","-73.5932939"));
+        point.push(new Array("45.4818925","-73.572315"));
+        point.push(new Array("45.4923192","-73.5836781"));
+        point.push(new Array("45.4923192","-73.5836781"));
+        point.push(new Array("45.4923192","-73.5836781"));
+        point.push(new Array("45.4923192","-73.5836781"));
+        point.push(new Array("45.4923192","-73.5836781"));
+        point.push(new Array("45.4923192","-73.5836781"));
+        point.push(new Array("45.4923192","-73.5836781"));
+        point.push(new Array("45.4923192","-73.5836781"));
+        point.push(new Array("45.4923192","-73.5836781"));
+        point.push(new Array("45.4923192","-73.5836781"));
+        point.push(new Array("45.4923192","-73.5836781"));
+        point.push(new Array("45.4923192","-73.5836781"));
+        point.push(new Array("45.4923192","-73.5836781"));
+        point.push(new Array("45.4923192","-73.5836781"));
+        point.push(new Array("45.4923192","-73.5836781"));
+        point.push(new Array("45.4910106","-73.5831333"));
+        point.push(new Array("45.4957104","-73.5682759"));
+        point.push(new Array("45.4957104","-73.5682759"));
+        point.push(new Array("45.4957104","-73.5682759"));
+        point.push(new Array("45.472039","-73.590928"));
+        point.push(new Array("45.5641047","-73.6119831"));
+        point.push(new Array("45.5014527","-73.7768102"));
+        point.push(new Array("42.5733231","-72.0156344"));
+        point.push(new Array("45.4818","-73.8408089"));
+        point.push(new Array("45.4777119","-73.832972"));
+        point.push(new Array("45.5853371","-73.7077983"));
+        point.push(new Array("45.5016889","-73.567256"));
+        point.push(new Array("45.4559723","-73.892675"));
+        point.push(new Array("45.5754734","-73.9017482"));
+        point.push(new Array("45.4575601","-73.8919137"));
+        point.push(new Array("45.8573438","-72.4963251"));
+        point.push(new Array("45.3778171","-71.9538788"));
+        point.push(new Array("45.6487899","-73.8180938"));
+        point.push(new Array("45.560595","-73.606634"));
+        point.push(new Array("45.525608","-73.670105"));
+        point.push(new Array("45.5399805","-73.7758381"));
+        point.push(new Array("45.5844276","-73.3490445"));
+        point.push(new Array("45.4094717","-73.4638578"));
+        point.push(new Array("45.7687313","-73.4763094"));
+        point.push(new Array("45.4948893","-73.8907556"));
+        point.push(new Array("45.4901901","-73.5588512"));
+        point.push(new Array("45.4441913","-75.7330797"));
+        point.push(new Array("45.6455955","-73.4939741"));
+        point.push(new Array("45.5056438","-73.7005856"));
+        point.push(new Array("45.5363863","-73.7361042"));
+        point.push(new Array("45.4784235","-73.8456793"));
+        point.push(new Array("45.56363","-73.615475"));
+        point.push(new Array("45.5299082","-73.4698599"));
+        point.push(new Array("45.4456477","-73.6427971"));
+        point.push(new Array("45.470616","-73.4894673"));
+        point.push(new Array("45.6226215","-73.6217421"));
+        point.push(new Array("45.6759967","-73.8763614"));
+        point.push(new Array("45.66104","-73.5837618"));
+        point.push(new Array("45.7487","-73.4751"));
+        point.push(new Array("45.7634791","-73.4816148"));
+        point.push(new Array("45.568177","-73.640181"));
+        point.push(new Array("45.5810026","-73.6396097"));
+        point.push(new Array("45.5767002","-73.8310065"));
+        point.push(new Array("45.7776655","-73.4101256"));
+        point.push(new Array("45.6685692","-73.5893889"));
+        point.push(new Array("45.3840069","-74.0448734"));
+        point.push(new Array("45.4767693","-73.86241"));
+        point.push(new Array("45.570889","-73.5225901"));
+        point.push(new Array("45.6064114","-73.6717392"));
+        point.push(new Array("45.2756813","-74.0731931"));
+        point.push(new Array("45.5257328","-73.5567883"));
+        point.push(new Array("45.501653","-73.4334102"));
+        point.push(new Array("45.4703052","-73.8763443"));
+        point.push(new Array("45.361179","-73.3131595"));
+        point.push(new Array("45.3853038","-73.9390746"));
+        point.push(new Array("45.6198796","-73.7431206"));
+        point.push(new Array("45.5024767","-73.434652"));
+        point.push(new Array("45.3538652","-73.7252313"));
+        point.push(new Array("45.622764","-73.8213252"));
+        point.push(new Array("45.4456477","-73.6427971"));
+        point.push(new Array("46.1677447","-71.88304"));
+        point.push(new Array("45.5778098","-73.3545866"));
+        point.push(new Array("45.672886","-73.4952252"));
+        point.push(new Array("45.6630881","-73.8671328"));
+        point.push(new Array("45.5335219","-73.6788882"));
+        point.push(new Array("45.6606304","-73.5512687"));
+        point.push(new Array("45.6374663","-73.5942541"));
+        point.push(new Array("45.6458843","-73.5804907"));
+        point.push(new Array("45.4629354","-73.4335871"));
+        point.push(new Array("45.5410168","-73.5496524"));
+        point.push(new Array("45.479293","-73.838054"));
+        point.push(new Array("45.4196593","-74.0179867"));
+        point.push(new Array("45.6466628","-73.8200708"));
+        point.push(new Array("45.4662312","-73.8767149"));
+        point.push(new Array("45.526807","-73.7658951"));
+        point.push(new Array("45.6466628","-73.8200708"));
+        point.push(new Array("45.4713503","-73.87773"));
+        point.push(new Array("45.4969829","-73.8210685"));
+        point.push(new Array("45.665656","-73.585932"));
+        point.push(new Array("45.3891747","-73.9693649"));
+        point.push(new Array("45.5643616","-73.5969474"));
+        point.push(new Array("45.4901901","-73.5588512"));
+        point.push(new Array("45.6530933","-73.5684936"));
+        point.push(new Array("45.392236","-73.5250011"));
+        point.push(new Array("45.6679287","-73.5715094"));
+        point.push(new Array("45.768077","-73.4791027"));
+        point.push(new Array("45.51587800","-73.43196600"));
+        point.push(new Array("45.69069601","-73.49262242"));
+        point.push(new Array("45.33914950","-73.29794714"));
+        point.push(new Array("45.23825900","-74.11898600"));
+        point.push(new Array("45.24622400","-74.15329000"));
+        point.push(new Array("45.67248700","-73.49573900"));
+        point.push(new Array("45.35252400","-73.30334100"));
+        point.push(new Array("45.45685300","-73.78268900"));
+        point.push(new Array("45.52895500","-73.43909656"));
+
 		var tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {});
 		latlng = L.latLng(45.503121, -73.589550);
 		var map = L.map('map', {center: latlng, zoom: 11, layers: [tiles],dragging: !L.Browser.mobile, tap: !L.Browser.mobile});
@@ -309,9 +752,7 @@
 		map.addLayer(markers);
 
 	</script>
-
 </section>
-
 
 {% load static %}{% include 'web/footer_web.html' %}
 

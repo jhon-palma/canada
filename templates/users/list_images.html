@@ -1,5 +1,5 @@
 {% extends 'users/base.html' %}
-{% block title %}Imagenes{% endblock %}
+{% block title %}Actualizar Imagenes WEB{% endblock %}
 {% block head_page %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'app/css/datatables/dataTables.css' %}"/>
@@ -11,86 +11,83 @@
 {% endblock %}
     
 {% block content %}
-    
-    
-        <div class="page-header">
-            <div class="page-header-content">
-              <div class="page-title">
-                <ul class="breadcrumb">
-                    <li>
-                      <h4><span class="no-margin text-bold">Imagenes</span></h4>
-                    </li>
-                    <div class="heading-elements">
-                    </div>
-                </ul>
-              </div>
-            </div>
-            <div class="breadcrumb-line">
-              <ul class="breadcrumb">
-                    <li><a>Imagenes</a></li>
-                  <li class="active">Listado</li>
-              </ul>
+    <div class="page-header">
+        <div class="page-header-content">
+            <div class="page-title">
+            <ul class="breadcrumb">
+                <li>
+                    <h4><span class="no-margin text-bold">Actualizar Imagenes</span></h4>
+                </li>
+                <div class="heading-elements">
+                </div>
+            </ul>
             </div>
         </div>
-        <div class="content">
-            {% if messages %}
-                {% for message in messages %}
-                    {% if message.tags == "error"%}
-                        <div class="alert alert-danger">
-                            {{ message }}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    {% else %}
-                        <div class="alert alert-success">
-                            {{ message }}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    {% endif %}
-                {% endfor %}
-            {% endif %}   
-            <div class="panel panel-flat">
-                <div class="panel-heading">
-                    <div class="panel-body">
-                        <table id="table_users" class="display" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>Template</th>
-                                    <th>Imagen</th>
-                                    <th>Acción</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for image in images_list %}
-                                    <tr>
-                                        <td class="text-capitalize">{{ image.name|default_if_none:'' }}</td>
-                                        <td class="text-lowercase">{{ image.location }}</td>
-                                        <td><img width='80' src='/{{ image.url }}'></td>
-                                        <td><a href="{% url 'users:update_image' image_id=image.id %}"><i class="icon-pencil7"></i> Editar</a></td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>Template</th>
-                                    <th>Imagen</th>
-                                    <th>Acción</th>
-                                </tr>
-                            </tfoot>
-                        </table>
+        <div class="breadcrumb-line">
+            <ul class="breadcrumb">
+                <li>Web</li>
+                <li class="active">Imagenes</li>
+            </ul>
+        </div>
+    </div>
+    <div class="content">
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == "error"%}
+                    <div class="alert alert-danger">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
+                {% else %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}   
+        <div class="panel panel-flat">
+            <div class="panel-heading">
+                <div class="panel-body">
+                    <table id="table_users" class="display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Referencia</th>
+                                <th>Tamaño</th>
+                                <th>Imagen</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for image in images %}
+                                <tr>
+                                    <td class="text-capitalize">{{ image.get_reference_display }}</td>
+                                    <td class="text-lowercase">{{ image.get_info.size }}</td>
+                                    <td><a title="CLICK PARA VER" href="{{ image.image.url }}" target="_blank"><img width="80" height="70" src="{{ image.image.url }}"></a></td>
+                                    <td><a href="{% url 'users:update_image' image_id=image.id %}"><i class="icon-pencil7"></i> Editar</a></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Referencia</th>
+                                <th>Tamaño</th>
+                                <th>Imagen</th>
+                                <th>Acción</th>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
             </div>
         </div>
-        <div>
-
-        </div>
+    </div>
+    <div>
 {% endblock %}
+
 {% block javascript %}
     <script type="text/javascript" src="{% static 'app/js/pages/form_validation.js' %}"></script>
     <script type="text/javascript" src="{% static 'app/js/plugins/forms/tags/tokenfield.min.js' %}"></script>
@@ -99,10 +96,8 @@
     <script type="text/javascript" src="{% static 'app/js/plugins/forms/selects/select2.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'app/js/pages/form_select2.js' %}"></script>
     <script>
-        $(document).ready( function () {
-            new DataTable('#table_users');
-            
-        } );
+        $('#table_users').DataTable({
+            ordering: false
+        });
     </script>
-
 {% endblock %}

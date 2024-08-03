@@ -8,15 +8,19 @@ from apps.accounts.models import CustomUser
 from apps.web.models import ImagesWeb
 from .models import Profile
 
+
+
 class UserEditForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = ['first_name', 'last_name', 'email', 'is_active']
 
+
 class ProfileEditForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['image', 'order', 'type_user', 'membre','occupation', 'occupation_anglaise', 'facebook', 'instagram', 'linkedin', 'twitter', 'tiktok', 'presentation_f', 'presentation_a']
+        fields = ['image', 'order', 'type', 'membre','occupation', 'occupation_anglaise', 'facebook', 'instagram', 'linkedin', 'twitter', 'tiktok', 'presentation_f', 'presentation_a']
+
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(max_length=254, help_text='Required. Inform a valid email address.')
@@ -27,14 +31,8 @@ class CustomUserCreationForm(UserCreationForm):
         model = CustomUser
         fields = ('email', 'password1', 'password2','first_name', 'last_name' )
     
-    # def save(self, commit=True):
-    #     user = super(CustomUserCreationForm, self).save(commit=False)
-    #     user.username = self.cleaned_data["email"] 
-    #     if commit:
-    #         user.save()
-    #     return user
-
+    
 class ImageEditForm(forms.ModelForm):
     class Meta:
         model = ImagesWeb
-        fields = ['url']
+        fields = ['image']

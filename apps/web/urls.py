@@ -5,7 +5,6 @@ urlpatterns = [
     path('', views.WebIndex.as_view()),
     re_path(r'^(?P<language>fr|en)/$', views.WebIndex.as_view(), name='index'),
     re_path(r'^(?P<language>fr|en)/(?P<option>properties|properties-for-sale|properties-for-rent|proprietes|proprietes-a-vendre|proprietes-a-louer)/$', views.WebProperties.as_view(), name='properties'),
-    # re_path(r'^(?P<language>fr|en)/(?P<option>properties|proprietes)/(?P<slug>[-\w]+)/$', views.WebDetailProperty.as_view(), name='detail-propertie'),
     re_path(r'^(?P<language>fr|en)/(?P<option>propertie|propriete)/(?P<propertie_id>[-\w]+)/$', views.WebDetailProperty.as_view(), name='detail-propertie'),
     re_path(r'^(?P<language>fr|en)/media/$', views.WebVideos.as_view(), name='videos'),
     re_path(r'^(?P<language>fr|en)/(?P<option>contact-realestate-broker|contact-courtier-immobilier)/$', views.WebContact.as_view(), name='contact'),
