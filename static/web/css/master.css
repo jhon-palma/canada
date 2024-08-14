@@ -317,5 +317,13 @@
   .closetow {
     top: -68px !important;
     right: 12px !important; } }
+.mosaique .ligne_maison {
+  display: flex !important;
+  float: none; }
+
+@media (max-width: 767px) {
+  .mosaique .ligne_maison {
+    display: block !important;
+    float: none; } }
 
 /*# sourceMappingURL=master.css.map */
