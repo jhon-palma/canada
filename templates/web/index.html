@@ -2,11 +2,13 @@
 {% include 'web/header_web.html' %}
 
 {% if language == 'fr' %}
-	{% define 'proprietes' as url_propertie %}
+	{% define 'propriete' as url_propertie %}
+    {% define 'proprietes' as url_properties %}
     {% define 'contact-courtier-immobilier' as url_contact %}
     {% define 'courtier-immobilier' as url_team %}
 {% else %}
-	{% define 'properties' as url_propertie %}
+	{% define 'propertie' as url_propertie %}
+    {% define 'properties' as url_properties %}
     {% define 'contact-realestate-broker' as url_contact %}
     {% define 'real-estate-broker' as url_team %}
 {% endif %}
@@ -179,7 +181,7 @@
                     </a>
                 {% endfor %}
             </div>
-            <a href="{{ server|server_url }}/{{ language }}/{{ url_propertie }}/" class="bouton">{{ labels.index.button.four }}</a>
+            <a href="{{ server|server_url }}/{{ language }}/{{ url_properties }}/" class="bouton">{{ labels.index.button.four }}</a>
         </div>
     </section>
 {% else %}
