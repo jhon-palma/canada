@@ -113,11 +113,11 @@ class WebProperties(View):
         option = kwargs.get('option', 'proprietes')
         labels = DICT_LABELS.get(language).get('web')
         if option == "properties-for-sale" or option == "proprietes-a-vendre":
-            inscriptions_all = Inscriptions.objects.filter(prix_demande__isnull=False).order_by('id')
+            inscriptions_all = Inscriptions.objects.filter(prix_demande__isnull=False)
         elif option == "properties-for-rent" or option == "proprietes-a-louer":
-            inscriptions_all = Inscriptions.objects.filter(prix_location_demande__isnull=False).order_by('id')
+            inscriptions_all = Inscriptions.objects.filter(prix_location_demande__isnull=False)
         else:
-            inscriptions_all = Inscriptions.objects.all().order_by('id')
+            inscriptions_all = Inscriptions.objects.all()
         paginator = Paginator(inscriptions_all, 36)
         page_number = request.GET.get('page')
         inscriptions = paginator.get_page(page_number)
@@ -141,7 +141,6 @@ def searchpropriete(request):
     municipalites = Municipalites.objects.all()
     if status == '2':
         inscriptions = Inscriptions.objects.filter(prix_location_demande__isnull=False)
-    else:
         inscriptions = Inscriptions.objects.filter(prix_demande__isnull=False)
 
     data_dict = {
@@ -250,13 +249,13 @@ class SearchView(View):
         if adress_region:
             query &= Q(mun_code__region_code__in=adress_region)
 
-        inscriptions_all = Inscriptions.objects.filter(query).order_by('devise_prix_demande','-prix_demande','-prix_location_demande')
+        inscriptions_all = Inscriptions.objects.filter(query)
         paginator = Paginator(inscriptions_all, 36)
         page_number = request.GET.get('page')
         inscriptions = paginator.get_page(page_number)
         images_query = ImagesWeb.objects.filter(reference__in=['properties_banner'])
         images_dict = {image.reference: image for image in images_query}
-
+        
         context = {
             'language':language,
             'option':option,
