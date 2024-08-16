@@ -309,6 +309,7 @@ class Inscriptions(models.Model):
 
     class Meta:
         db_table = 'INSCRIPTIONS'
+        ordering = ['devise_prix_demande','-prix_demande','-prix_location_demande']
     
     def __str__(self):
         return self.no_inscription

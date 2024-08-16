@@ -411,8 +411,8 @@
     </script>
     <script>
         $(document).ready(function() {
-            var nbchambre = {{ nbchambre|default_if_none:""  }};
-            var nbbain = {{ nbbain|default_if_none:"0"  }};
+            var nbchambre = "{{ nbchambre|default_if_none:"" }}";
+            var nbbain = "{{ nbbain|default_if_none:"0" }}";
             var minamount = parseFloat("{{ minamount|default_if_none:"0"  }}".replace(',', '.'));
             var maxamount = parseFloat("{{ maxamount|default_if_none:"0"  }}".replace(',', '.'));
             var propiete = "{{ propriete|default_if_none:"" }}";
@@ -432,9 +432,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('reset').addEventListener('click', function() {
-
                 var form = document.getElementById('seach_form');
-
                 form.reset();
             });
         });

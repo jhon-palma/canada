@@ -12,8 +12,8 @@
 
 <section class="banner nothome">
     <div class="baninfo">
-        <h2>REACH OUT <span> TODAY</span></h2>
-        <h1>LET'S MAKE YOUR REAL ESTATE DREAMS A REALITY!</h1><br>
+        <h2>{{ labels.contact.title.one }}<span> {{ labels.contact.title.two }}</span></h2>
+        <h1>{{ labels.contact.title.three }}</h1><br>
     </div>
 </section>
 
@@ -24,51 +24,36 @@
 
 			<form id="formContact" method="post" action="{% url 'web:contact_messages' %}">
 				{% csrf_token %}
-				<p class="__txoform">PLEASE FILL OUT THIS FORM AND <br><span> WE WILL CONTACT YOU AS SOON AS POSSIBLE</span></p>
+				<p class="__txoform"><span style="font-weight: 200; color: black;">{{ labels.contact.text.one.upper }}</span><br><span> {{ labels.contact.text.two.upper }}</span></p>
 				<input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" value="" />
 				<input type="hidden" id="sujet" name="sujet" value="Contact">
 				<div class="ligne_calcul half">
-					<div class="txt_calcul3">
-						<label for="prenom">{{ labels.contact.text.two }}<span class="red">*</span></label>
-					</div>
 					<div class="box_ctem">
-						<input type="text" name="prenom" id="prenom" class="champs_tem" required="required" />
+						<input type="text" name="prenom" id="prenom" class="champs_tem" required="required" placeholder="*{{ labels.contact.text.three }}"/>
 					</div>
 				</div>
 				<div class="ligne_calcul half">
-					<div class="txt_calcul3">
-						<label for="prenom">{{ labels.contact.text.two }}<span class="red">*</span></label>
-					</div>
 					<div class="box_ctem">
-						<input type="text" name="prenom" id="prenom" class="champs_tem" required="required" />
+						<input type="text" name="prenom" id="prenom" class="champs_tem" required="required"/ placeholder="*{{ labels.contact.text.four }}">
 					</div>
 				</div>
 				<div class="ligne_calcul half">
-					<div class="txt_calcul3">
-						<label for="email">{{ labels.contact.text.three }} <span class="red">*</span></label>
-					</div>
 					<div class="box_ctem">
-						<input type="email" name="email" id="email" class="champs_tem" required="required" />
+						<input type="email" name="email" id="email" class="champs_tem" required="required"/ placeholder="*{{ labels.contact.text.five }}">
 					</div>
 				</div>
 				<div class="ligne_calcul half">
-					<div class="txt_calcul3">
-						<label for="tel">{{ labels.contact.text.four }} <span class="red">*</span></label>
-					</div>
 					<div class="box_ctem">
-						<input type="text" name="tel" id="tel" class="champs_tem" onKeyPress="return scanTouche(event)" required="required" />
+						<input type="text" name="tel" id="tel" class="champs_tem" onKeyPress="return scanTouche(event)" required="required" placeholder="*{{ labels.contact.text.six }}">
 					</div>
 				</div>
 				<div class="ligne_calcul">
-					<div class="txt_calcul3">
-						<label for="comment">{{ labels.contact.text.five }} <span class="red">*</span></label>
-					</div>
 					<div class="box_ctem">
-						<textarea name="comment" rows="5" class="champs_tem" id="comment" required="required"></textarea>
+						<textarea name="comment" rows="5" class="champs_tem" id="comment" required="required" placeholder="*{{ labels.contact.text.seven }}"></textarea>
 					</div>
 				</div>
 				<div id="err"></div>
-				<div class="ligne_oublig"><span class="red">*</span> {{ labels.contact.text.six }}</div>
+				<!--<div class="ligne_oublig"><span class="red">*</span> {{ labels.contact.text.eight }}</div>-->
 				<button type="submit" class="float_right pointer">{{ labels.contact.button.one }}</button>
 			</form>
             
@@ -76,27 +61,23 @@
 
 		<div class="img">
             <div class="contactinfo">
-				<p class="__txoform"><span>CONTACT INFO.</span></p>
-			
+				<p class="__txoform"><span>{{ labels.contact.text.nine.upper }}</span></p>
 				<p>
-					
 					<a
 						href="https://www.google.com/maps/place/LJ+Realties+-+LJ+Immobilier/@45.496386,-73.5727791,17z/data=!3m2!4b1!5s0x4cc91b14f987b8d5:0x3c14fc52240354fb!4m5!3m4!1s0x4cc93c824dc00621:0xb6aa87687fd1e9eb!8m2!3d45.496386!4d-73.5705904"
 						target="_blank"
 					>
 						1275 Av. des Canadiens-de-Montréal <br >
 						5th floor, Montreal, Quebec H3B 0G4 <br> <br>
-						
-						
 					</a>
 				</p>
 				<p>
-					<strong>Call us:</strong> 514-500-4040 <br><br>
+					<strong>{{ labels.contact.text.ten }}:&nbsp;&nbsp;</strong> 514-500-4040 <br><br>
 						
 				</p>
-				<p>We are open from Monday to Friday<br>
+				<p>{{ labels.contact.text.eleven }}<br>
 					9:00 am - 17:00 pm</p>
-					<p class="__txoform"><span>FOLLOW US</span></p>
+					<p class="__txoform"><span>{{ labels.contact.text.twelve.upper }}</span></p>
 				<div class="socf">
 					<a target="_blank" href="https://www.facebook.com/LJRealties/?ref=br_rs" class="btnsoc"><img src="{% static 'web/images2/facebook.png' %}" alt="Facebook" class="invert" /></a>
 					<a target="_blank" href="https://www.instagram.com/ljrealties/" class="btnsoc"><img src="{% static 'web/images2/instagram.png' %}" alt="Instagram" class="invert" /></a>
@@ -118,12 +99,12 @@
 		<div class="profilhome3">
         
 			<div class="img">
-				<h2>NEXT<span> STEPS</span></h2>
+				<h2>{{ labels.contact.text.thirteen.upper }}<span> {{ labels.contact.text.fourteen.upper }}</span></h2>
 				<!-- <h1>OUR EXPERIENCE ENSURES YOUR SUCCESS</h1><br> -->
-				<h3>Buying or selling a home in a challenging market isn't easy, but with the right team you will save yourself time and money.</h3>
-				<p>If you would like to go over specific opportunities, put together your game plan, and/or get answers to your questions. </p>
-				<h3><strong>The next step would be to set up a short buyer strategy call.</strong></h3>
-				<a class="bouton boutonnre2 btn-wwu pointer" data-pop="popcontact">BOOK A CALL WITH US</a>
+				<h3>{{ labels.contact.text.fifteen }}</h3>
+				<p>{{ labels.contact.text.sixteen }}</p>
+				<h3><strong>{{ labels.contact.text.seventeen }}</strong></h3>
+				<a class="bouton boutonnre2 btn-wwu pointer" data-pop="popcontact">{{ labels.contact.button.two.upper }}</a>
 				</div>
 	
 				<div class="txt">

@@ -17,7 +17,19 @@
 		<div class="img"><img src="{{ member.image.url }}" alt="{{ member.membre.prenom }} {{ member.membre.nom }}"></div>
 		<div class="singleinfo">
 			<h1 class="h2def"><span>{% if language == 'en' %}Meet{% else %}Rencontrez{% endif %}</span> {{ member.membre.prenom }} {{ member.membre.nom }}</h1>
-			<p>{% if language == 'en' %}{% if member.occupation %}{{ member.occupation }} & {% endif %}{{ member.membre.type_certificat.description_anglaise }}{% else %}{% if member.occupation_anglaise %}{{ member.occupation_anglaise }} et {% endif %}{{ member.membre.type_certificat.description_francaise }}{% endif %}</p>
+			<p>
+                {% if language == 'fr' %}
+                    {% if member.occupation %}
+                        {{ member.occupation }} & 
+                    {% endif %}
+                    {{ member.membre.type_certificat.description_francaise }}
+                {% else %}
+                    {% if member.occupation_anglaise %}
+                        {{ member.occupation_anglaise }} et 
+                    {% endif %}
+                    {{ member.membre.type_certificat.description_anglaise }}
+                {% endif %}
+            </p>
 			<div class="socmember">
                 <a class="btnsoc" href="tel:+1{{ member.membre.telephone_1 }}"><i class="fa fa-phone"></i></a>
                 <a class="btnsoc" href="mailto:{{ member.membre.courriel }}"><i class="fa fa-envelope"></i></a>
@@ -54,7 +66,7 @@
 			<hr>
 			<div class="minibionew">
 				<div class="minibiotxt">
-					<p>{% autoescape off %}{% if language == "en" %}{{ member.presentation_a|default_if_none:''  }}{% else %}{{ member.presentation_f|default_if_none:''  }}{% endif %}{% endautoescape %}</p>
+					<p style="white-space: break-spaces;">{% autoescape off %}{% if language == "en" %}{{ member.presentation_a|default_if_none:''  }}{% else %}{{ member.presentation_f|default_if_none:''  }}{% endif %}{% endautoescape %}</p>
 				</div>
 				<div class="minibiocontact">
 					<a href="mailto:{{ member.membre.courriel }}" class="bouton">Contact</a>

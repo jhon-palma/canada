@@ -3,8 +3,12 @@
 
 {% if language == 'fr' %}
 	{% define 'propriete' as url_propertie %}
+    {% define 'contact-courtier-immobilier' as url_contact %}
+    {% define 'courtier-immobilier' as url_team %}
 {% else %}
 	{% define 'propertie' as url_propertie %}
+    {% define 'contact-realestate-broker' as url_contact %}
+    {% define 'real-estate-broker' as url_team %}
 {% endif %}
 
 <style>
@@ -103,16 +107,15 @@
         <div class="horizontal-line"></div>
         <div class="__cnt">
             <div class="contsjks">
-            <h3>{{ labels.index.text.twelve }}</h3>
-            <p>{{ labels.index.text.twelve_b }}</p>
-            <br>
-            <a href="{{ server|server_url }}/{{ language }}/real-estate-broker/" class="bouton">{{ labels.index.button.two }}</a>
-            <a name="Send" class="bouton bouton2 button btnpopfiche pointer">{{ labels.index.button.three.upper }}</a>
+                <h3>{{ labels.index.text.twelve }}</h3>
+                <p>{{ labels.index.text.twelve_b }}</p>
+                <br>
+                <a href="{{ server|server_url }}/{{ language }}/{{ url_team }}/" class="bouton">{{ labels.index.button.two }}</a>
+                <a href="{{ server|server_url }}/{{ language }}/{{ url_contact }}/" name="Send" class="bouton bouton2 button btnpopfiche pointer">{{ labels.index.button.twelve.upper }}</a>
             </div>
         </div>
     </div>
 </section>
-
 
 {% if inscriptions %}
     <section class="prophome">
@@ -176,7 +179,7 @@
                     </a>
                 {% endfor %}
             </div>
-            <a href="{{ server|server_url }}/{{ language }}/properties/" class="bouton">{{ labels.index.button.four }}</a>
+            <a href="{{ server|server_url }}/{{ language }}/{{ url_propertie }}/" class="bouton">{{ labels.index.button.four }}</a>
         </div>
     </section>
 {% else %}

@@ -199,9 +199,9 @@ class SearchView(View):
         maxamount = request.GET.get('maxamount', '')
         propriete = request.GET.getlist('propriete[]')
         query = Q()
+
         if propriete:
             proprietes = [item.split('-')[1] for item in propriete]
-
             try:
                 query &= Q(genre_propriete__in=proprietes)
             except Http404:
@@ -250,12 +250,7 @@ class SearchView(View):
         if adress_region:
             query &= Q(mun_code__region_code__in=adress_region)
 
-        inscriptions_all = Inscriptions.objects.filter(query)
-
-        num_results = len(inscriptions_all)
-        # if num_results == 0:
-        #     inscriptions_all = Inscriptions.objects.filter(query)
-
+        inscriptions_all = Inscriptions.objects.filter(query).order_by('devise_prix_demande','-prix_demande','-prix_location_demande')
         paginator = Paginator(inscriptions_all, 36)
         page_number = request.GET.get('page')
         inscriptions = paginator.get_page(page_number)
