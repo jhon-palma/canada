@@ -112,6 +112,9 @@ DICT_LABELS = {
                 'title':{
                     'one':'Our',
                     'two':'Videos',
+                    'three':'All',
+                    'four':'Shorts',
+                    'five':'Videos',
                 },
                 'button':{
                     'one':'Watch Video',
@@ -314,6 +317,9 @@ DICT_LABELS = {
                 'title':{
                     'one':'Nos',
                     'two':'Vidéos',
+                    'three':'Toutes',
+                    'four':'Shorts',
+                    'five':'Vidéos',
                 },
                 'button':{
                     'one':'Visionner',

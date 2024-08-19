@@ -45,20 +45,18 @@
 	<!-- Portfolio items -->
 
 	<div class="wrap centrar">
-		<div class="__cnt ">
-			
-			<a  class=" filter-btn bouton" data-filter="all">Todos</a>
-			<a  class=" filter-btn bouton" data-filter="reel">Reels</a>
-			<a  class=" filter-btn bouton" data-filter="youtube">Youtube</a>
+		<div class="__cnt pointer">
+			<a  class="filter-btn bouton" data-filter="all">{{ labels.videos.title.three }}</a>
+			<a  class="filter-btn bouton" data-filter="short">{{ labels.videos.title.four }}</a>
+			<a  class="filter-btn bouton" data-filter="video">{{ labels.videos.title.five }}</a>
 		</div>
-		
 	</div>
 	
 	<div class="wrap">
 		
         {% for video in videos %}
 		
-            <div href="https://www.youtube.com/watch?v={{ video.videoId }}" class="capsule msrItem portfolio-item reel">
+            <div href="https://www.youtube.com/watch?v={{ video.videoId }}" class="capsule msrItem portfolio-item {% if video.is_short %}short{% else %}video{% endif %}">
                 <a href="https://www.youtube.com/watch?v={{ video.videoId }}" class="img"> <img src="https://img.youtube.com/vi/{{ video.videoId }}/hqdefault.jpg" alt="{{ video.title }}t" /></a>
                 <h3>{{ video.tittle }}</h3>
                 <p class="sm">{{ video.publishedAt|date:"d/m/Y" }}</p>
@@ -71,15 +69,11 @@
                 </p>
                 <a href="https://www.youtube.com/watch?v={{ video.videoId }}" class="bouton">{{ labels.videos.button.one }}</a>
             </div>
-		
+
         {% endfor %}
 	
-		</div>
-
-		
-
-
 	</div>
+
 </section>
 
 

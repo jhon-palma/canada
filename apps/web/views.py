@@ -345,7 +345,8 @@ class WebVideos(View):
     def get(self, request, *args, **kwargs):
         language = kwargs.get('language', 'fr')
         labels = DICT_LABELS.get(language).get('web')
-        videos = VideosWeb.objects.filter(is_short=False).order_by('-publishedAt')
+        videos = VideosWeb.objects.all().order_by('-publishedAt')
+        #videos = VideosWeb.objects.filter(is_short=False).order_by('-publishedAt')
         images_query = ImagesWeb.objects.filter(reference__in=['videos_banner'])
         images_dict = {image.reference: image for image in images_query}
         context = {
