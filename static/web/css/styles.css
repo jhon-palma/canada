@@ -164,6 +164,9 @@ header nav .wsub:hover .sub{
 .wrapper_sub {
 	background-color: #00AAAE;
 	padding: 10px 0;
+	-webkit-box-shadow: -1px -1px 22px -4px rgba(0,0,0,0.75);
+-moz-box-shadow: -1px -1px 22px -4px rgba(0,0,0,0.75);
+box-shadow: -1px -1px 22px -4px rgba(0,0,0,0.75);
 }
 header nav .sub a {
 	padding: 7px 40px;
@@ -418,7 +421,7 @@ a.bouton, .submitclearcont input[type=button], .propsearch input[type=submit], .
 	text-transform: uppercase;
 	/* color: #fff !important; */
 	background-color: #00AAAE;
-	border:1px solid #00AAAE;
+	border:0px solid #00AAAE;
 	text-decoration: none !important;
 	padding: 7px 40px;
 	font-size: 15px;
@@ -749,7 +752,7 @@ position: relative;color: #fff !important;}
 }
 
 .capsules .capsule{
-    display: block;
+    /* display: block; */
     background: #fff;
     width: calc((100% - 60px) / 3);
     text-align: center;
@@ -1946,7 +1949,7 @@ h1.h1styled{
    transition: all .4s;
 }
 
-.photo_vendu{background: #000 !important;overflow: hidden;}
+.photo_vendu{background: #000 !important;overflow: hidden; height: 19vh;}
 
 .photo_vendu:hover img:not(.marq_vendu){transform: scale(1.1);opacity: .7;}
 .prophome a:not(.btn) img.marq_vendu{

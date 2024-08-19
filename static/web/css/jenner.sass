@@ -322,7 +322,8 @@
     align-items: flex-end
     margin-top: 0
     margin-bottom: 0px
-    height: 500px
+    padding-top: 50px
+    height: 450px
     width: 100%
     img
         width: 100%
@@ -346,3 +347,23 @@
         .baninfo
             height: 100%
             padding-top: 0px
+
+.closetow
+    top: -50px !important
+    right: -50px !important
+
+@media (max-width: 767px)
+    .closetow
+        top: -68px !important
+        right: 12px !important
+    
+.mosaique
+    .ligne_maison
+        display: flex !important
+        float: none
+
+@media (max-width: 767px)
+    .mosaique
+        .ligne_maison
+            display: block !important
+            float: none

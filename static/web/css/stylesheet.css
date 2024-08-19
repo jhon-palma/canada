@@ -9,13 +9,15 @@ body {
 }
 
 body a:link {
-	color: #1e1e1e;
+	color: #ffffff;
 	text-decoration: none;
+	font-weight: bold;
 }
 
 body a:visited {
-	color: #1e1e1e;
+	color: #ffffff;
 	text-decoration: none;
+	
 }
 
 body a:hover {
@@ -5689,6 +5691,7 @@ p.visitelibre{
 .descriptionbloc aside a.teal_btn {
     display: block;
 	text-align: center;
+	border-radius: 4px;
 }
 
 a.btnside{
@@ -6370,9 +6373,10 @@ img.mfp-img{
 button[type=submit], .popnews article input[type=submit], .popwwu  article input[type=submit] {
 	color: #fff !important;
     border: 1px solid #00AAAE;
+	
     background-color: #00AAAE;
     padding: 10px 30px;
-    border-radius: 0;
+    border-radius: 4px;
     display: inline-block;
     font-size: 16px;
     margin-top: 20px;

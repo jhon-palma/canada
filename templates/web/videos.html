@@ -6,6 +6,26 @@
 	}
 </style>
 
+<style>
+	.portfolio-item {
+		display: none;
+	}
+
+	.portfolio-item.show {
+		display: block;
+	}
+	.centrar {
+		text-align: center !important;
+		align-items: center !important;
+		width: 100%;
+		justify-content: center !important;
+	}
+	.bouton{
+		color: white !important;
+		cursor: pointer;
+	}
+</style>
+
 <section class="banner nothome">
 	<div class="baninfo">
         <h2>{{ labels.videos.title.one }}<span> {{ labels.videos.title.two }}</span></h2>
@@ -18,9 +38,27 @@
 </section>
 
 <section class="capsules">
+	<!-- Filter buttons -->
+	<div class="text-center my-3">
+		
+	</div>
+	<!-- Portfolio items -->
+
+	<div class="wrap centrar">
+		<div class="__cnt ">
+			
+			<a  class=" filter-btn bouton" data-filter="all">Todos</a>
+			<a  class=" filter-btn bouton" data-filter="reel">Reels</a>
+			<a  class=" filter-btn bouton" data-filter="youtube">Youtube</a>
+		</div>
+		
+	</div>
+	
 	<div class="wrap">
+		
         {% for video in videos %}
-            <div href="https://www.youtube.com/watch?v={{ video.videoId }}" class="capsule msrItem">
+		
+            <div href="https://www.youtube.com/watch?v={{ video.videoId }}" class="capsule msrItem portfolio-item reel">
                 <a href="https://www.youtube.com/watch?v={{ video.videoId }}" class="img"> <img src="https://img.youtube.com/vi/{{ video.videoId }}/hqdefault.jpg" alt="{{ video.title }}t" /></a>
                 <h3>{{ video.tittle }}</h3>
                 <p class="sm">{{ video.publishedAt|date:"d/m/Y" }}</p>
@@ -33,9 +71,17 @@
                 </p>
                 <a href="https://www.youtube.com/watch?v={{ video.videoId }}" class="bouton">{{ labels.videos.button.one }}</a>
             </div>
+		
         {% endfor %}
+	
+		</div>
+
+		
+
+
 	</div>
 </section>
+
 
 <script>
 	var time = undefined;
@@ -93,6 +139,25 @@
 	        }, 300);
 	    })
 		*/
+	});
+</script>
+
+<script>
+	$(document).ready(function() {
+		$(".filter-btn").click(function() {
+			var filter = $(this).attr("data-filter");
+
+			$(".portfolio-item").each(function() {
+				if (filter === "all" || $(this).hasClass(filter)) {
+					$(this).addClass("show");
+				} else {
+					$(this).removeClass("show");
+				}
+			});
+		});
+
+		// Show all items by default
+		$(".filter-btn[data-filter='all']").click();
 	});
 </script>
 <div style="clear:both;"></div>
