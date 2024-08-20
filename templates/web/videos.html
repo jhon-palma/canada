@@ -46,9 +46,9 @@
 
 	<div class="wrap centrar">
 		<div class="__cnt pointer">
-			<a  class="filter-btn bouton" data-filter="all">{{ labels.videos.title.three }}</a>
-			<a  class="filter-btn bouton" data-filter="short">{{ labels.videos.title.four }}</a>
 			<a  class="filter-btn bouton" data-filter="video">{{ labels.videos.title.five }}</a>
+			<a  class="filter-btn bouton" data-filter="short">{{ labels.videos.title.four }}</a>
+			<a  class="filter-btn bouton" data-filter="all">{{ labels.videos.title.three }}</a>
 		</div>
 	</div>
 	
@@ -83,6 +83,8 @@
 	$(window).load(function(){
 		$('.capsule').each(function(){
 		$(this).height($(this).height());
+
+		document.querySelector("#index > section.capsules > div.wrap.centrar > div > a:nth-child(1)").click()
 	});
 
 	

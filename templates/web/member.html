@@ -19,15 +19,9 @@
 			<h1 class="h2def"><span>{% if language == 'en' %}Meet{% else %}Rencontrez{% endif %}</span> {{ member.membre.prenom }} {{ member.membre.nom }}</h1>
 			<p>
                 {% if language == 'fr' %}
-                    {% if member.occupation %}
-                        {{ member.occupation }} & 
-                    {% endif %}
-                    {{ member.membre.type_certificat.description_francaise }}
+                    {{ member.occupation }} 
                 {% else %}
-                    {% if member.occupation_anglaise %}
-                        {{ member.occupation_anglaise }} et 
-                    {% endif %}
-                    {{ member.membre.type_certificat.description_anglaise }}
+                    {{ member.occupation_anglaise }} 
                 {% endif %}
             </p>
 			<div class="socmember">
