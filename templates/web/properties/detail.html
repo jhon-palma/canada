@@ -2745,7 +2745,7 @@
             <a id="requestVisit" name="{% if language == 'en' %}Request a visit{% else %}Demander une visite{% endif %}" class="teal_btn btnpopfiche">{% if language == "en" %}Schedule a visit{% else %}Planifiez une visite{% endif %}</a>
             <a id="$requestInfo" name="{% if language == 'en' %}Send{% else %}Envoyer{% endif %}" class="teal_btn btnpopfiche">{% if language == "en" %}Ask more information{% else %}Demandez plus d'information{% endif %}</a>
             <a href="javascript:print()" class="teal_btn">{% if language == "en" %}Print this page{% else %}Imprimez cette fiche{% endif %}</a>
-            <a class="teal_btn btnpopeval">{% if language == "en" %}Free evaluation of your property{% else %}Estimation gratuite de la valeur de votre propriété{% endif %}</a>
+            <a href="{{ labels.menu.url.eight }}" class="teal_btn btnpopeval">{% if language == "en" %}Free evaluation of your property{% else %}Estimation gratuite de la valeur de votre propriété{% endif %}</a>
             <div class="socfiche">
                 <a href="https://www.facebook.com/sharer/sharer.php?u={{ server|server_url }}/{{ language }}properties/{{ propertie.id }}" target="_blank" class="btn_social">
                     <i class="fa fa-facebook"></i>

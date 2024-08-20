@@ -391,9 +391,7 @@ $(document).ready(function(){
 	
 
 	$('.openNewletter').click(function(e){
-		alert()
 		e.preventDefault();
-
 		$('.popnews').fadeIn();
 
 	});

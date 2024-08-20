@@ -177,7 +177,7 @@
 
         <section class="popnews" id="newsteller">
             <article>
-                <div id="confirm_message_newsteller" class="confirm_message"></div>
+                <div id="confirm_message_newsteller" class="confirm_message" style="color: black;"></div>
                 <form id="formNewsFooter" method="post" action="{% url 'web:contact_messages' %}">{% csrf_token %}
                     <input type="hidden" id="sujet" name="sujet" value="Newsletter">
                     <p class="h2def"><strong>{{ labels.index.button.eight }}</strong></p>

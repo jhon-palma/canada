@@ -19,9 +19,7 @@
 
 <section class="profilhome wwuhome ww_buyint2 profilhome2">
     <div class="wrap">
-        
         <div class="txt">
-
 			<form id="formContact" method="post" action="{% url 'web:contact_messages' %}">
 				{% csrf_token %}
 				<p class="__txoform"><span style="font-weight: 200; color: black;">{{ labels.contact.text.one.upper }}</span><br><span> {{ labels.contact.text.two.upper }}</span></p>
@@ -53,7 +51,6 @@
 					</div>
 				</div>
 				<div id="err"></div>
-				<!--<div class="ligne_oublig"><span class="red">*</span> {{ labels.contact.text.eight }}</div>-->
 				<button type="submit" class="float_right pointer">{{ labels.contact.button.one }}</button>
 			</form>
             
@@ -93,27 +90,21 @@
 </section>
 
 <section class="banner nothome __fijocont">
-	
     <div class="baninfo2">
-		
 		<div class="profilhome3">
-        
 			<div class="img">
 				<h2>{{ labels.contact.text.thirteen.upper }}<span> {{ labels.contact.text.fourteen.upper }}</span></h2>
-				<!-- <h1>OUR EXPERIENCE ENSURES YOUR SUCCESS</h1><br> -->
 				<h3>{{ labels.contact.text.fifteen }}</h3>
 				<p>{{ labels.contact.text.sixteen }}</p>
 				<h3><strong>{{ labels.contact.text.seventeen }}</strong></h3>
 				<a class="bouton boutonnre2 btn-wwu pointer" data-pop="popcontact">{{ labels.contact.button.two.upper }}</a>
-				</div>
-	
-				<div class="txt">
-					<div class="__imgteam">
-						<img  src="{{ images.contact_team.image.url }}">
-					</div>
-					
+			</div>
+			<div class="txt">
+				<div class="__imgteam">
+					<img  src="{{ images.contact_team.image.url }}">
 				</div>
 			</div>
+		</div>
     </div>
 </section>
 
@@ -121,8 +112,8 @@
 <section class="popwwu popcontact">
 	<article>
         <span class="close">+</span>
-		<div class="confirmation" id="confirmationContact"></div>
 		<form id="formContact" method="post" action="{% url 'web:contact_messages' %}">
+			<div class="confirmation" id="confirmationContact"></div>
             {% csrf_token %}
 			<p class="h2def">{{ labels.work.button.three }}</p>
 			<input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" value="" />
@@ -161,8 +152,6 @@
                 url: form.attr("action"),
                 data: form.serialize(),
                 success: function (response) {
-
-					alert(response.response)
                     if (response.response == 1) {
                         var language = "{{ language }}";
                         if (language === "en") {
