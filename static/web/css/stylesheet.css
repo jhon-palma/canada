@@ -4123,7 +4123,7 @@ a.mosaique .btn_mosaique:active { color: #FFFFFF; text-decoration: none; }
 
 .mosaique .box_maison_img img {
 	width: 100%;
-	height: auto;
+	height: 290px;
 }
 .samesect .box_maison_img img.marq_vendu,
 .liste .box_maison_img img.marq_vendu, .mosaique .box_maison_img img.marq_vendu {
@@ -4287,8 +4287,8 @@ a.mosaique .btn_mosaique:active { color: #FFFFFF; text-decoration: none; }
 
 .box_maison {
 	width: 25%;
-	height: 380px;
-	max-height: 380px;
+	height: 490px;
+	max-height: 490px;
 	margin: 0;
 	overflow: hidden;
 	font-size: 14px;

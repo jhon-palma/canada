@@ -125,11 +125,11 @@
             <h2 class="h2def"><span class="text-span">{{ labels.index.text.one }}</span> <strong>{{ labels.index.text.thirteen }}</strong></h2>
             <div class="propcont">
                 {% for inscription in inscriptions %}
-                    <a href="{% url 'web:detail-propertie' language=language option=url_propertie propertie_id=inscription.id %}" loading="lazy" decoding="async" class="propa">
+                    <a href="{% url 'web:detail-propertie' language=language option=url_propertie propertie_id=inscription.id %}" class="propa">
                         <span class="img">
                             {% for photo in inscription.photos.all %}
                                 {% if photo.seq == 1 %}
-                                    <img style="height: 250px;" src="{{ photo.photourl }}" alt="{% if language == 'en' %}{{ inscription.genre_propriete.description_anglaise }}{% else %}{{ inscription.genre_propriete.description_francaise }}{% endif %}
+                                    <img style="height: 250px;" loading="lazy" decoding="async" src="{{ photo.photourl }}" alt="{% if language == 'en' %}{{ inscription.genre_propriete.description_anglaise }}{% else %}{{ inscription.genre_propriete.description_francaise }}{% endif %}
                                     {% if inscription.prix_demande %}{% if language == 'en' %} for sale{% else %}à vendre {% endif %}{% endif %}{% if inscription.prix_location_demande %}
                                     {% if language == 'en' %}for rent{% else %}à louer{% endif %}{% endif %} {{inscription.mun_code.description}}" title="{% if language == 'en' %}{{ inscription.genre_propriete.description_anglaise }}{% else %}{{ inscription.genre_propriete.description_francaise }}{% endif %}{% if inscription.prix_demande %}{% if language == 'en' %} for sale{% else %}à vendre{% endif %}{% endif %}{% if inscription.prix_location_demande %}{% if language == 'en' %} for rent{% else %}à louer{% endif %}{% endif %} {{inscription.mun_code.description}}" class="propimg" />
                                 {%endif%}

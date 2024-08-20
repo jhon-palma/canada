@@ -65,7 +65,7 @@
 
 
 <section class="showprint courtierprint">
-	<img src="https://mediaserver.centris.ca/media.ashx?id=ADD2256DDD1C269DDD108C0DDE&t=c&f=I" alt="LJ Immobilier">
+	<img loading="lazy" decoding="async" src="https://mediaserver.centris.ca/media.ashx?id=ADD2256DDD1C269DDD108C0DDE&t=c&f=I" alt="LJ Immobilier">
 	<p>LJ Immobilier<br>Real estate broker<br><br>Cellular :
 	<br>Office : 514-500-4040<br>Fax : </p>
 </section>
@@ -117,7 +117,7 @@
 			</h1>
 		</div>
         {% if inscription.code_statut.valeur == "VE" %}<div class="box_vendu">{% if language == "en" %}Sold{% else %}Vendu{% endif %}</div>{% endif %}
-		<img src="https://www.macleweb.com/immobilier/photo/271352931.jpg" alt="Living room" class="showprint imgprint" />
+		<img loading="lazy" decoding="async" src="https://www.macleweb.com/immobilier/photo/271352931.jpg" alt="Living room" class="showprint imgprint" />
 		<div class="mediabloccont">
 			<div class="navmedia">
 				<a data-bloc="slider" class="selected">Photos</a>
@@ -129,7 +129,7 @@
                         {% for photo in inscription.photos.all %}
                         <div class="ficheslide">
                             <div data-mfp-src="{{ photo.photourl }}" class="fullscreenfiche"><i class="fa fa-expand"></i></div>
-                            <img src="{{ photo.photourl }}" alt="{% if photo.code_description_photo %}{% if language == 'en' %}{{ photo.code_description_photo.description_anglaise }}{% else %}{{ photo.code_description_photo.description_francaise }}{% endif %}{% endif %}" />
+                            <img loading="lazy" decoding="async" src="{{ photo.photourl }}" alt="{% if photo.code_description_photo %}{% if language == 'en' %}{{ photo.code_description_photo.description_anglaise }}{% else %}{{ photo.code_description_photo.description_francaise }}{% endif %}{% endif %}" />
                             <div class="phototitle">{{ forloop.counter }}/{{ inscription.photos.all|length }} {% if photo.code_description_photo %}{% if language == 'en' %}{{ photo.code_description_photo.description_anglaise }}{% else %}{{ photo.code_description_photo.description_francaise }}{% endif %}{% endif %}</div>
                         </div>
                         {% endfor %}
@@ -2728,7 +2728,7 @@
         <aside class="fixedaside">
             {% if inscription.courtier_inscripteur_1 %}
                 <div class="courtaside">
-                    <img src="{{ inscription.courtier_inscripteur_1.photo_url }}" alt="{{ inscription.courtier_inscripteur_1.prenom }} {{ inscription.courtier_inscripteur_1.nom }}" />
+                    <img loading="lazy" decoding="async" src="{{ inscription.courtier_inscripteur_1.photo_url }}" alt="{{ inscription.courtier_inscripteur_1.prenom }} {{ inscription.courtier_inscripteur_1.nom }}" />
                     <p>
                         <span>{{ inscription.courtier_inscripteur_1.prenom }} {{ inscription.courtier_inscripteur_1.nom }}</span> {% if language == 'en' %}{{ inscription.courtier_inscripteur_1.type_certificat.description_anglaise }}{% else %}{% if inscription.courtier_inscripteur_1.occupation_anglaise %}{{ inscription.courtier_inscripteur_1.occupation_anglaise }} et {% endif %}{{ inscription.courtier_inscripteur_1.type_certificat.description_francaise }}{% endif %}
                     </p>
@@ -2736,7 +2736,7 @@
             {% endif %}
             {% if inscription.courtier_inscripteur_2 %}
                 <div class="courtaside">
-                    <img src="{{ inscription.courtier_inscripteur_2.photo_url }}" alt="{{ inscription.courtier_inscripteur_2.prenom }} {{ inscription.courtier_inscripteur_2.nom }}" />
+                    <img loading="lazy" decoding="async" src="{{ inscription.courtier_inscripteur_2.photo_url }}" alt="{{ inscription.courtier_inscripteur_2.prenom }} {{ inscription.courtier_inscripteur_2.nom }}" />
                     <p>
                         <span>{{ inscription.courtier_inscripteur_2.prenom }} {{ inscription.courtier_inscripteur_2.nom }}</span> {% if language == 'en' %}{{ inscription.courtier_inscripteur_2.type_certificat.description_anglaise }}{% else %}{% if inscription.courtier_inscripteur_2.occupation_anglaise %}{{ inscription.courtier_inscripteur_2.occupation_anglaise }} et {% endif %}{{ inscription.courtier_inscripteur_2.type_certificat.description_francaise }}{% endif %}
                     </p>
