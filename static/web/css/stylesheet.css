@@ -9,7 +9,7 @@ body {
 }
 
 body a:link {
-	color: #ffffff;
+	color: #1e1e1e;
 	text-decoration: none;
 	font-weight: bold;
 }
@@ -6027,6 +6027,7 @@ hr.hbig{display: none;}
 	padding-left: 10px;
 	padding-right: 10px;
 	position: relative;
+    background-color: white;
 }
 
 .thumslist img{
