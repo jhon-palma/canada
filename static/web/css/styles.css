@@ -1949,7 +1949,11 @@ h1.h1styled{
    transition: all .4s;
 }
 
-.photo_vendu{background: #000 !important;overflow: hidden; height: 19vh;}
+.photo_vendu{
+	background: #000 !important;
+	overflow: hidden; 
+	/*(height: 19vh;*/
+
 
 .photo_vendu:hover img:not(.marq_vendu){transform: scale(1.1);opacity: .7;}
 .prophome a:not(.btn) img.marq_vendu{
