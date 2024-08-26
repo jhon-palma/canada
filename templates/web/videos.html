@@ -33,8 +33,8 @@
 </section>
 
 <section class="poppod">
-	<article></article>
 	<span class="close">+</span>
+	<article></article>
 </section>
 
 <section class="capsules">
@@ -82,6 +82,10 @@
 
 	$(window).load(function(){
 		$('.capsule').each(function(){
+<<<<<<< HEAD
+			$(this).height($(this).height());
+		});
+=======
 		$(this).height($(this).height());
 
 		document.querySelector("#index > section.capsules > div.wrap.centrar > div > a:nth-child(1)").click()
@@ -135,14 +139,12 @@
 	        }, 300);
 	    })
 		*/
+>>>>>>> 63f172084fe44c2dfddef8d2545f2ca64a34f58a
 	});
-</script>
 
-<script>
 	$(document).ready(function() {
 		$(".filter-btn").click(function() {
 			var filter = $(this).attr("data-filter");
-
 			$(".portfolio-item").each(function() {
 				if (filter === "all" || $(this).hasClass(filter)) {
 					$(this).addClass("show");
@@ -152,8 +154,8 @@
 			});
 		});
 
-		// Show all items by default
-		$(".filter-btn[data-filter='all']").click();
+		$(".filter-btn[data-filter='video']").click();
+		
 	});
 </script>
 <div style="clear:both;"></div>

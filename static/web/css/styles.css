@@ -308,6 +308,19 @@ input:checked + .tablabel{
 	width: 100%;
 }
 
+@media (max-width: 767px) {
+	.searchbarcont{
+		display: flex;
+    justify-content: space-evenly;
+    align-items: stretch;
+    width: 100%;
+    align-content: stretch;
+    flex-wrap: wrap;
+    flex-direction: row;
+	}
+	
+}
+
 .searchbarcont .submitcont{
 	background-color: #fff;
 	display: flex;
@@ -316,10 +329,44 @@ input:checked + .tablabel{
 	padding-inline:10px;
 }
 
+.borderselect{
+	border:1px solid #e0e0e0 !important;
+	border-radius: 5px;
+}
+.mraginlef{
+	margin-right: 10px;
+}
+
+/* .propsearch input[type=submit]{
+	margin-left: 10px;
+} */
+
+.btnjiji{
+	font-family: 'Roboto Condensed', sans-serif;
+    display: inline-block;
+    text-transform: uppercase;
+    color: #ffffff !important;
+    background-color: #00AAAE;
+    border: 0px solid #00AAAE;
+    text-decoration: none !important;
+    padding: 15px 40px;
+    font-size: 15px;
+    letter-spacing: 1px;
+    text-shadow: none;
+    transition: all .4s;
+	margin: 0px 0px;
+	margin-right: 10px;
+    border-radius: 5px;
+	cursor: pointer;
+}
+
+.selectcont2{
+	width: 100% !important;
+}
 .banner form input[type=search], .propsearch input[type=search]{
-	border-radius: 0;
+	border-radius: 5px;
 	appearance:none;
-	border:0 !important;
+	border:1px solid #e0e0e0 !important;
 	background-color: #fff;
 	color: #00AAAE;
 	box-sizing: border-box;
@@ -419,7 +466,7 @@ a.bouton, .submitclearcont input[type=button], .propsearch input[type=submit], .
 	font-family: 'Roboto Condensed', sans-serif;
 	display: inline-block;
 	text-transform: uppercase;
-	/* color: #fff !important; */
+	color: #fff ;
 	background-color: #00AAAE;
 	border:0px solid #00AAAE;
 	text-decoration: none !important;
@@ -878,7 +925,7 @@ position: relative;color: #fff !important;}
 }
 
 .fcontact_col3 input:not([type=submit]),
-.popnews article input[type=email], .popwwu input:not([type=submit]){
+.popwwu input:not([type=submit]){
 	appearance:none;
 	display: block;
 	width: 100%;
@@ -1173,7 +1220,7 @@ a.logocontact img{display: block;width: 100%;}
 }
 
 .prop-bg .searchbarcont{
-	border:1px solid #e0e0e0;
+	/* border:1px solid #e0e0e0; */
 }
 
 .prop-bg .tablabel{
@@ -1249,10 +1296,10 @@ a.logocontact img{display: block;width: 100%;}
 
 a.avanceea{
 	text-transform: uppercase;
-	text-decoration: none !important;
+	/* text-decoration: none !important;
 	color:#00AAAE !important;
 	margin: 10px 0;
-	align-self: center;
+	align-self: center; */
 }
 
 a.avanceea i{font-size: 12px;display: inline-block;vertical-align: middle;margin-top: -4px;}

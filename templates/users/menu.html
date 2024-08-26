@@ -36,15 +36,16 @@
                         <li>
                             <a href="{% url 'properties:drop_database' %}"> <i class="icon-eraser2 position-left"></i>0. Borrar base de datos (Local)</a>
                         </li>
+                        <li>
+                            <a href="{% url 'properties:download_files' %}"> <i class="icon-download position-left"></i>1. Descargar Data (Centris)</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'properties:upload_data_auto' %}"> <i class="icon-database-upload position-left"></i>2. Cargar Data (Web)</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'properties:update_video_list' %}"> <i class="icon-database-upload position-left"></i>3. Actualizar Listado Videos</a>
+                        </li>
                     {% endif %}
-                    <li>
-                        <a href="{% url 'properties:download_files' %}"> <i class="icon-download position-left"></i>1. Descargar Data (Centris)</a>
-                    </li>
-                    <li>
-                        <a href="{% url 'properties:upload_data_auto' %}"> <i class="icon-database-upload position-left"></i>2. Cargar Data (Web)</a>
-                    </li>
-                    
-                    
                 </ul>
             </div>
         </div>

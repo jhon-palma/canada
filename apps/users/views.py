@@ -1,5 +1,5 @@
-from datetime import datetime
 import pdb
+from datetime import datetime
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout as auth_logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
@@ -15,7 +15,7 @@ from django.core import serializers
 from django.contrib.auth.mixins import LoginRequiredMixin
 from apps.accounts.models import CustomUser
 from apps.properties.models import Membres, MembresMediasSociaux
-from apps.properties.uploadData import get_id_bureau, get_id_valeurs
+from scripts.upload_data import get_id_bureau, get_id_valeurs
 from apps.users.form import ImageEditForm, ProfileEditForm, UserEditForm, CustomUserCreationForm
 from apps.users.models import Profile
 from apps.vars import *

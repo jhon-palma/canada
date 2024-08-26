@@ -15,29 +15,31 @@ from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from django.contrib import messages
 from django.db import transaction
 
-from apps.properties.uploadData import create_objects, process_txt_data
+from scripts.upload_data import create_objects, process_txt_data
 from apps.users.views import user_verification
 from .forms import UploadFileForm
 from .models import *
 from datetime import datetime
 from apps.users.models import Log
-from immobilier.local_settings import PYTHON, PATH_BACKUP, PATH_BASE
+from immobilier.local_settings import PYTHON, PATH_BASE
 
 import subprocess
 
+
 def upload_file(request):
+    print('upload_file')
     mensaje = ''
     if request.method == 'POST':
-     
+        pdb.set_trace()
         form = UploadFileForm(request.POST, request.FILES)
         txt_file = request.FILES['file']
+        file_name = txt_file.name
+        name_without_extension = file_name.split('.')[0]
         if not txt_file.name.lower().endswith('.txt'):
             messages.error(request, 'Invalid file type. Please upload a TXT file.')
             return  redirect('properties:upload_file')
         try:
             data = process_txt_data(txt_file)
-            file_name = txt_file.name
-            name_without_extension = file_name.split('.')[0]
             mensaje = create_objects(data, name_without_extension)
             messages.success(request, mensaje)
             Log.objects.create(
@@ -61,7 +63,10 @@ def upload_file(request):
         form = UploadFileForm()
     return render(request, 'upload.html',{'form': form})
 
+
+
 def upload_data_auto(request):
+    print('upload_data_auto')
     mensaje = ''
     if request.method == 'POST':
         modelos = [
@@ -146,9 +151,12 @@ def upload_data_auto(request):
         return redirect('properties:upload_data_auto')
     return render(request, 'upload_auto.html')
 
+
+
 def download_files(request):
     if request.method == 'POST':
         try:
+            print('download_files')
             resultado = subprocess.run([PYTHON, "scripts/download_data.py"], capture_output=True, text=True, check=True)
             salida_del_script = resultado.stderr
             if salida_del_script:
@@ -199,6 +207,70 @@ def download_files(request):
             )
             return redirect('properties:download_files')
     return render(request, 'download.html')
+
+
+
+def update_video_list(request):
+    if request.method == 'POST':
+        # pdb.set_trace()
+        try:
+            #venv_path = PATH_VENV
+            #script_path = 'scripts/download_videos.py'
+            #venv_path_str = str(venv_path)
+            #script_path_str = str(script_path)
+            #print(venv_path_str)
+            #print(script_path_str)
+            #command = f"{venv_path_str} && python {script_path_str}"
+            #print(command)
+            resultado = subprocess.run([PYTHON, "scripts/download_videos.py"], capture_output=True, text=True, check=True)
+            #resultado = subprocess.run(command, shell=True, capture_output=True, text=True, check=True)
+            salida_del_script = resultado.stderr
+            print("==================================")
+            print(salida_del_script)
+            print("==================================")
+            if salida_del_script:
+                mensaje = f"Error al ejecutar el script: {salida_del_script}"
+                messages.error(request, mensaje )
+                Log.objects.create(
+                    usuario=request.user,
+                    modelo=" ",
+                    movimiento="DOWNLOAD",
+                    mensaje=mensaje
+                )
+                return redirect('properties:update_video_list')
+            else:
+                try:
+                    mensaje = "El script se ejecutó correctamente."
+                    messages.success(request, mensaje)
+                    Log.objects.create(
+                        usuario=request.user,
+                        modelo=" ",
+                        movimiento="DOWNLOAD",
+                        mensaje=mensaje
+                    )
+                    return redirect('properties:update_video_list')
+                except Exception as e:
+                    mensaje_error = "Error al descargar los videos: {}".format(str(e))
+                    messages.error(request, mensaje_error)
+                    Log.objects.create(
+                        usuario=request.user,
+                        modelo= e ,
+                        movimiento="UPDATE",
+                        mensaje=mensaje_error
+                    )
+                    return redirect('properties:update_video_list')
+        except subprocess.CalledProcessError as e:
+            mensaje =  f"Error al ejecutar el script: {e.stderr}"
+            messages.error(request, mensaje )
+            Log.objects.create(
+                usuario=request.user,
+                modelo=" ",
+                movimiento="UPDATE",
+                mensaje=mensaje
+            )
+            return redirect('properties:update_video_list')
+    return render(request, 'downloadVideos.html')
+
 
 def drop_database(request):
     if request.method == 'POST':

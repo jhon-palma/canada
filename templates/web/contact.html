@@ -32,12 +32,12 @@
 				</div>
 				<div class="ligne_calcul half">
 					<div class="box_ctem">
-						<input type="text" name="prenom" id="prenom" class="champs_tem" required="required"/ placeholder="*{{ labels.contact.text.four }}">
+						<input type="text" name="prenom" id="prenom" class="champs_tem" required="required" placeholder="*{{ labels.contact.text.four }}">
 					</div>
 				</div>
 				<div class="ligne_calcul half">
 					<div class="box_ctem">
-						<input type="email" name="email" id="email" class="champs_tem" required="required"/ placeholder="*{{ labels.contact.text.five }}">
+						<input type="email" name="email" id="email" class="champs_tem" required="required" placeholder="*{{ labels.contact.text.five }}">
 					</div>
 				</div>
 				<div class="ligne_calcul half">
@@ -53,6 +53,7 @@
 				<div id="err"></div>
 				<button type="submit" class="float_right pointer">{{ labels.contact.button.one }}</button>
 			</form>
+            <div class="confirmation" id="confirmationContact"></div>
             
         </div>
 
@@ -112,17 +113,15 @@
 <section class="popwwu popcontact">
 	<article>
         <span class="close">+</span>
-		<form id="formContact" method="post" action="{% url 'web:contact_messages' %}">
-			<div class="confirmation" id="confirmationContact"></div>
-            {% csrf_token %}
-			<p class="h2def">{{ labels.work.button.three }}</p>
+		<form id="formContactBook" method="post" action="{% url 'web:contact_messages' %}">{% csrf_token %}
+			<p class="h2def"><strong>{{ labels.work.button.three }}</strong></p>
 			<input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" value="" />
             <input type="hidden" id="sujet" name="sujet" value="Book a Call with Us">
-			<input type="text" name="prenom" id="prenom" placeholder="{{ labels.work.placeholder.one }} *" required="required" />
-			<input type="email" name="email" id="email" placeholder="{{ labels.work.placeholder.two }} *" required="required" />
-			<input type="tel" name="tel" id="tel" placeholder="{{ labels.work.placeholder.three }} *" onKeyPress="return scanTouche(event)" required="required" />
+			<input type="text" name="prenom" id="prenom" class="champs_tem" placeholder="{{ labels.work.placeholder.one }} *" required="required" />
+			<input type="email" name="email" id="email" class="champs_tem"  placeholder="{{ labels.work.placeholder.two }} *" required="required" />
+			<input type="tel" name="tel" id="tel" class="champs_tem" placeholder="{{ labels.work.placeholder.three }} *" onKeyPress="return scanTouche(event)" required="required" />
 			<div id="err"></div>
-			<input type="submit" value="{{ labels.contact.button.one }}" />
+			<input type="submit" style="margin-top: 20px; margin-bottom: 20px;" class="bouton pointer" value="{{ labels.contact.button.one }}" />
 		</form>
 	</article>
 </section>
@@ -152,6 +151,7 @@
                 url: form.attr("action"),
                 data: form.serialize(),
                 success: function (response) {
+                    console.log(response);
                     if (response.response == 1) {
                         var language = "{{ language }}";
                         if (language === "en") {
@@ -162,6 +162,42 @@
                         $("#confirmationContact").html("<p>" + message + "</p>");
 						$('#formContact')[0].reset();
 						$('#formContact').hide();
+                    }
+                    else {
+                        var language = "{{ language }}";
+                        if (language === "en") {
+                            var message = "Required fields";
+                        } else {
+                            var message = "Champs obligatoires";
+                        }
+                        $("#err").html(message);
+                    }
+                }
+            });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+		$("#formContactBook").on('submit', function (e) {
+            e.preventDefault();
+            var form = $("#formContactBook");
+            $.ajax({
+                type: "POST",
+                url: form.attr("action"),
+                data: form.serialize(),
+                success: function (response) {
+                    console.log(response);
+                    if (response.response == 1) {
+                        var language = "{{ language }}";
+                        if (language === "en") {
+                            var message = "A specialist will contact you in 24 hrs";
+                        } else {
+                            var message = "Un spécialiste vous contactera dans les 24 heures";
+                        }
+                        $("#formContactBook").html(message);
+						// $('#formContactBook')[0].reset();
+						// $('#formContactBook').hide();
                     }
                     else {
                         var language = "{{ language }}";

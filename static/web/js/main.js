@@ -97,32 +97,39 @@ $(document).ready(function(){
 
 
     $('a.btnpopfiche').click(function(e){
+
         e.preventDefault();
 
-		var title = $(this).text();
+        var title = $(this).text();
+
 		var buttonTxt = $(this).attr("name");
 
-		switch (title) {
-			case "Subscribe to our Newsletter":
-			case "S'abonner À Notre Infolettre":
-				$('#newsteller').fadeIn()
-				break;
-			case "OBTENIR UNE OFFRE":
-			case "GET OFFER":
-				$('#offer').fadeIn()
-				$('#submitFiche').val(buttonTxt);
-				$('#text_offer').text(title);
-			default:
-				break;
-		}
+		$('#submitFiche').val(buttonTxt);
+
+		
+
+        $('.popfiche h2').text(title);
+
+		$("[name=objet]").val(title);
+        $('#sujet-2').val(title);
+		
+
+		$("#formfiche").show();
+
+        $('.popfiche').fadeIn();
 
     });
-	
+
     $('.popfiche .close').click(function(e){
+
         e.preventDefault();
+
         $('.popfiche').fadeOut();
+
 		$("#formfiche").trigger("reset");
+
 		$("#confirm_message").html("");
+
     });
 
 
@@ -392,12 +399,11 @@ $(document).ready(function(){
 
 	$('.openNewletter').click(function(e){
 		e.preventDefault();
-		$('.popnews').fadeIn();
+		$('#newsteller').fadeIn();
 
 	});
 
 	
-
 	$('a.btn-wwu').click(function(e){
 
 		e.preventDefault();

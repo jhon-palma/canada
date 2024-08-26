@@ -1,6 +1,6 @@
 {% load tags %}{% load static %}
 
-{% include 'web/free_evaluation.html' %}
+<!-- {% include 'web/free_evaluation.html' %} -->
 
 <script type="text/javascript" src="https://use.fontawesome.com/e686055a0b.js"></script>
 <script type="text/javascript" src="{% static 'web/js/cookies.js' %}"></script>
@@ -51,7 +51,7 @@
                     <img src="{% static 'web/images2/tiktok.png' %}" alt="Tik tok">
                 </a>
             </div>
-            <a class="bouton button btnpopfiche pointer">{{ labels.index.button.eight }}</a>
+            <a class="bouton openNewletter pointer">{{ labels.index.button.eight }}</a>
         </div>
         <div class="fcontact_col3">
             <form id="formContactFooter" method="post" action="{% url 'web:contact_messages' %}">
@@ -68,36 +68,26 @@
         </div>
     </div>
     <div class="wrap">
-        <p class="quartiers">				
-			<a href="{% url 'web:search' language %}">Montréal (Lachine)</a> |
-			<a href="{% url 'web:search' language %}"> Montréal (Ville-Marie)</a> |
-			<a href="{% url 'web:search' language %}"> Montréal (Le Sud-Ouest)</a> |
-			<a href="{% url 'web:search' language %}"> La Prairie</a> |
-			<a href="{% url 'web:search' language %}"> Saint-Jérôme</a> |
-			<a href="{% url 'web:search' language %}"> Dollard-des-Ormeaux</a> |
-			<a href="{% url 'web:search' language %}"> Montréal (Verdun/Île-des-Soeurs)</a> |
-			<a href="{% url 'web:search' language %}"> Brossard</a> |
-			<a href="{% url 'web:search' language %}"> Montréal (Côte-des-Neiges/Notre-Dame-de-Grâce)</a> |
-			<a href="{% url 'web:search' language %}"> Montréal (Montréal-Nord)</a> |
-			<a href="{% url 'web:search' language %}"> Montréal-Ouest</a> |
-			<a href="{% url 'web:search' language %}"> Montréal (Le Plateau-Mont-Royal)</a> |
-			<a href="{% url 'web:search' language %}"> Montréal (Rosemont/La Petite-Patrie)</a> |
-			<a href="{% url 'web:search' language %}"> Montréal (Outremont)</a> |
-			<a href="{% url 'web:search' language %}"> Beaconsfield</a> |
-			<a href="{% url 'web:search' language %}"> Dorval</a> |
-			<a href="{% url 'web:search' language %}">Two or more storey</a> |
-			<a href="{% url 'web:search' language %}">Condo</a> |
-			<a href="{% url 'web:search' language %}">Bungalow</a> |
-			<a href="{% url 'web:search' language %}">Duplex</a> |
-			<a href="{% url 'web:search' language %}">Commercial condo</a> |
-			<a href="{% url 'web:search' language %}">Split-level</a> |
-			<a href="{% url 'web:search' language %}">Triplex</a> |
-			<a href="{% url 'web:search' language %}">Loft / Studio</a> |
-			<a href="{% url 'web:search' language %}">Revenue property</a> |
-			<a href="{% url 'web:search' language %}">Quadruplex</a> |
-			<a href="{% url 'web:search' language %}">Revenue property</a> |
-			<a href="{% url 'web:search' language %}">Revenue property</a> |
-			<a href="{% url 'web:search' language %}">Quintuplex</a>
+        <p class="quartiers">
+            {% for municipalite in municipalites %}
+                {% if language == 'en' %}
+                    <a href="{% url 'web:search_properties' language='en' option=municipalite.slug_anglaise %}">
+                {% else %}
+                    <a href="{% url 'web:search_properties' language='fr' option=municipalite.slug_francaise %}">
+                {% endif %}
+                       {{ municipalite.description }} |
+                    </a>
+            {% endfor %}
+            {% for genre in genres %}
+                {% if language == 'en' %}
+                    <a href="{% url 'web:search_properties' language='en' option=genre.slug_anglaise %}">
+                    {{ genre.description_anglaise }} {% if not forloop.last %}|{% endif %}
+                {% else %}
+                    <a href="{% url 'web:search_properties' language='fr' option=genre.slug_francaise %}">
+                    {{ genre.description_francaise }} {% if not forloop.last %}|{% endif %}
+                {% endif %}
+                </a>
+            {% endfor %}
 		</p>	
 
 		<script>
@@ -105,8 +95,8 @@
             $(document).ready(function () {		
                 $('.popnews span.close').click(function(){			
                     $('#confirm_message').html("");			
-                    $('#formNewsFooter')[0].reset();			
-                    $('#formNewsFooter').show();		});        
+                    $('#mc-embedded-subscribe-form')[0].reset();			
+                    $('#mc-embedded-subscribe-form').show();		});        
                     $("#formContactFooter").on('submit', function (e) {            
                         e.preventDefault();            
                         var form = $("#formContactFooter");            
@@ -137,9 +127,9 @@
                                 }            
                             });        
                         });		
-                    $("#formNewsFooter").on('submit', function (e) {            
+                    $("#mc-embedded-subscribe-form").on('submit', function (e) {            
                         e.preventDefault();            
-                        var form = $("#formNewsFooter");            
+                        var form = $("#mc-embedded-subscribe-form");            
                         $.ajax({                
                             type: "POST",                
                             url: form.attr("action"),                
@@ -153,8 +143,8 @@
                                         var message = "Merci, votre message a bien été envoyé";
                                     }
                                     $("#confirm_message_newsteller").html("<p>"+ message +"</p>");						
-                                    $('#formNewsFooter')[0].reset();						
-                                    $('#formNewsFooter').hide();                    
+                                    $('#mc-embedded-subscribe-form')[0].reset();						
+                                    $('#mc-embedded-subscribe-form').hide();                    
                                     setTimeout(() => {
                                         $('#newsteller').fadeOut();
                                     }, 2000);
@@ -178,12 +168,20 @@
         <section class="popnews" id="newsteller">
             <article>
                 <div id="confirm_message_newsteller" class="confirm_message" style="color: black;"></div>
-                <form id="formNewsFooter" method="post" action="{% url 'web:contact_messages' %}">{% csrf_token %}
-                    <input type="hidden" id="sujet" name="sujet" value="Newsletter">
+                <form action="https://ljrealties.us20.list-manage.com/subscribe/post?u=cae8a392e5c10d2e79b4d6635&amp;id=c5c07613d4&amp;f_id=00f7ccedf0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank">
                     <p class="h2def"><strong>{{ labels.index.button.eight }}</strong></p>
-                    <input type="email" name="email" id="emailnews" class="champs_tem" required="required" placeholder="{{ labels.index.placeholder.five }} *" />
-                    <div id="errNews"></div>
-                    <input type="submit" style="margin-top: 20px; margin-bottom: 20px;" class="bouton pointer" value="{{ labels.index.button.eight }}" data-field="newsletter"></a>
+                    <input type="email" name="EMAIL" id="mce-EMAIL" class="champs_tem" required="required" placeholder="{{ labels.index.placeholder.five }} *"/>
+                    <input type="text" name="FNAME" id="mce-FNAME" class="champs_tem" required="required" placeholder="{{ labels.index.placeholder.six }} *"/>
+                    <input type="text" name="LNAME" id="mce-LNAME" class="champs_tem" required="required" placeholder="{{ labels.index.placeholder.seven }} *"/>
+                    <div hidden=""><input type="hidden" name="tags" value="1114108"></div>
+                    <div id="mce-responses" class="clear">
+                        <div class="response" id="mce-error-response" style="display:none; color: #000000; padding: 14px;"></div>
+                        <div class="response" id="mce-success-response" style="display:none; color: #000000; padding: 14px;"></div>
+                    </div>
+                    <div aria-hidden="true" style="position:absolute; left:-5000px;">
+                        <input type="text" name="b_cae8a392e5c10d2e79b4d6635_c5c07613d4" tabindex="-1" value="">
+                    </div>
+                    <input type="submit" style="margin-top: 20px; margin-bottom: 20px;" name="subscribe" id="mc-embedded-subscribe" class="bouton pointer" value="{{ labels.index.button.eight }}" data-field="newsletter">
                 </form>
                 <span class="close">+</span>
             </article>
@@ -200,5 +198,18 @@
 </footer>
 
 </body>
+
+<script type="text/javascript" src="//s3.amazonaws.com/downloads.mailchimp.com/js/mc-validate.js"></script>
+<script type="text/javascript">
+    (function($) {
+        window.fnames = new Array();
+        window.ftypes = new Array();
+        fnames[0]='EMAIL'; ftypes[0]='email';
+        fnames[1]='FNAME'; ftypes[1]='text';
+        fnames[2]='LNAME'; ftypes[2]='text';
+        // Puedes agregar más campos si es necesario
+    }(jQuery));
+    var $mcj = jQuery.noConflict(true);
+</script>
 
 </html>

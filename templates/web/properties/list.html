@@ -127,8 +127,8 @@
             <section class="banner nothome">
                 <div class="baninfo">
                     <h2>{{ labels.index.title.one }}<span> {{ labels.index.title.two }}</span></h2>
-                    <h1>{{ labels.index.title.three }}</h1><br>
-                    <a class="bouton boutonnre2 boutonnre2gra"  href="{{ labels.menu.url.eight }}">{{ labels.index.button.eleven }}</a>
+                    <h1>{{ labels.index.title.three }}</h1><br>---
+                    <a class="bouton boutonnre2 boutonnre2gra pointer" onclick="$('#free_evaluation').fadeIn();">{{ labels.index.button.eleven }}</a>
                 </div>
             </section>
 
@@ -349,11 +349,11 @@
     <script type="text/javascript">
         var language = "{{ language }}";
         $(function () {
-            $('#reset').click(function(){
-                var st= $('input[name="status"]:checked').val();
-                // alert("Entro"+st);
-                // location.href = '?page='+st
-            });
+            // $('#reset').click(function(){
+            //     var st= $('input[name="status"]:checked').val();
+            //     // alert("Entro"+st);
+            //     // location.href = '?page='+st
+            // });
     
             $(window).click(function() {
                 $("#fserach").val('')
@@ -411,7 +411,7 @@
     </script>
     <script>
         $(document).ready(function() {
-            var nbchambre = "{{ nbchambre|default_if_none:"" }}";
+            var nbchambre = "{{ nbchambre|default_if_none:'' }}";
             var nbbain = "{{ nbbain|default_if_none:"0" }}";
             var minamount = parseFloat("{{ minamount|default_if_none:"0"  }}".replace(',', '.'));
             var maxamount = parseFloat("{{ maxamount|default_if_none:"0"  }}".replace(',', '.'));
@@ -423,17 +423,23 @@
                 }
             }
             verificarCondiciones();
-            $("a.avanceea").click(function(e) {
-                e.preventDefault();
+            $("#avanceeas").click(function(){
+                // e.preventDefault();
                 $('.avanceediv').slideToggle();
             });
         });
     </script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('reset').addEventListener('click', function() {
-                var form = document.getElementById('seach_form');
-                form.reset();
+        $(document).ready(function(){
+            var language = "{{ language }}";
+            $("#resetButton").click(function(){
+                // document.getElementById('seach_form').reset();
+                if (language == "en") {
+                    location.href = "/en/properties/";
+                } else {
+                    location.href = "/fr/properties/";
+                }
             });
         });
+
     </script>

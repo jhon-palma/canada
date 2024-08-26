@@ -15,69 +15,22 @@ from django.views.decorators.csrf import *
 from django.views.generic import *
 from django.shortcuts import get_object_or_404
 # from googleapiclient.discovery import build
-# from googleapiclient.errors import HttpError
-# from dateutil.relativedelta import *
+
 from datetime import *
 from apps.users.models import Profile
 from apps.web.models import Formulaire_contact, ImagesWeb, Statistics, VideosWeb
-from immobilier.local_settings import CHANNEL_ID, KEY_API_YB
-from ..properties.models import Addenda, Caracteristiques, GenresProprietes, Inscriptions, Membres, Municipalites, Propertie, Regions, SousTypeCaracteristiques
+from ..properties.models import Addenda, Caracteristiques, GenresProprietes, Inscriptions, Membres, Municipalites, Propertie, Quartiers, Regions, SousTypeCaracteristiques
 from ..labels import DICT_LABELS
-# import os, time, json, httplib2, requests
-import requests
 from googleapiclient.discovery import build
-import isodate
 from django.utils.dateparse import parse_datetime
-
-
-
-def get_youtube_videos(api_key, channel_id, max_results):
-    youtube = build('youtube', 'v3', developerKey=api_key)
-
-    # Obtener lista de videos del canal
-    videos_request = youtube.search().list(
-        part='snippet',
-        channelId=channel_id,
-        maxResults=30,
-        order='date',
-        type='video',
-    )
-    videos_response = videos_request.execute()
-    videos = []
-
-    for item in videos_response['items']:
-        video_id = item['id']['videoId']
-        video_title = item['snippet']['title']
-        publishedAt = item['snippet']['publishedAt']
-        description = item['snippet']['description']
-
-        video_details_request = youtube.videos().list(
-            part='contentDetails',
-            id=video_id
-        )
-        video_details_response = video_details_request.execute()
-
-        duration = video_details_response['items'][0]['contentDetails']['duration']
-
-        duration_seconds = isodate.parse_duration(duration).total_seconds()
-        published_datetime = datetime.fromisoformat(publishedAt.replace('Z', '+00:00'))
-        if duration_seconds > 91:
-            videos.append({
-                'title': video_title,
-                'video_id': video_id,
-                'publishedAt': published_datetime,
-                'description': description,
-            })
-        if len(videos) >= max_results:
-            break
-
-    return videos
+from immobilier.local_settings import CHANNEL_ID, KEY_API_YB
 
 
 class WebIndex(View):
     template_name = 'web/index.html'
-
     def get(self, request, *args, **kwargs):
+        municipalites = Municipalites.objects.filter(municipalite_code__isnull=False).distinct()
+        genres = GenresProprietes.objects.filter(genre_proprietes__isnull=False).distinct()
         language = kwargs.get('language', 'fr')
         option = kwargs.get('option', 'proprietes')
         labels = DICT_LABELS.get(language).get('web')
@@ -92,6 +45,8 @@ class WebIndex(View):
         staticts_dict = {statics.name: statics for statics in staticts_query}
         videos = VideosWeb.objects.filter(is_short=False).order_by('-publishedAt')[:3]
         context = {
+            'municipalites':municipalites,
+            'genres':genres,
             'language':language,
             'option':option,
             'labels':labels,
@@ -103,12 +58,12 @@ class WebIndex(View):
         }
         return render(request, self.template_name, context)
 
-
-
 class WebProperties(View):
     template_name = 'web/properties/list.html'
 
     def get(self, request, *args, **kwargs):
+        municipalites = Municipalites.objects.filter(municipalite_code__isnull=False).distinct()
+        genres = GenresProprietes.objects.filter(genre_proprietes__isnull=False).distinct()
         language = kwargs.get('language', 'fr')
         option = kwargs.get('option', 'proprietes')
         labels = DICT_LABELS.get(language).get('web')
@@ -124,6 +79,8 @@ class WebProperties(View):
         images_query = ImagesWeb.objects.filter(reference__in=['properties_banner'])
         images_dict = {image.reference: image for image in images_query}
         context = {
+            'municipalites':municipalites,
+            'genres':genres,
             'language':language,
             'option':option,
             'labels':labels,
@@ -132,8 +89,6 @@ class WebProperties(View):
         }
         return render(request, self.template_name, context)
 
-
-
 def searchpropriete(request):
     term = request.GET.get('term')
     status = request.GET.get('status')
@@ -141,6 +96,7 @@ def searchpropriete(request):
     municipalites = Municipalites.objects.all()
     if status == '2':
         inscriptions = Inscriptions.objects.filter(prix_location_demande__isnull=False)
+    else:
         inscriptions = Inscriptions.objects.filter(prix_demande__isnull=False)
 
     data_dict = {
@@ -178,8 +134,6 @@ def searchpropriete(request):
 
     json_data = {str(i + 1): val for i, val in enumerate(list(filtered_data["regions"].values()) + list(filtered_data["municipalites"].values()) + list(filtered_data["inscriptions"].values()))}
     return JsonResponse(json_data, safe=False)
-
-
 
 class SearchView(View):
     template_name = 'web/properties/list.html'
@@ -273,11 +227,11 @@ class SearchView(View):
 
         return render(request, self.template_name, context)
 
-
-
 class WebDetailProperty(View):
     template_name = 'web/properties/detail.html'
     def get(self, request, *args, **kwargs):
+        municipalites = Municipalites.objects.filter(municipalite_code__isnull=False).distinct()
+        genres = GenresProprietes.objects.filter(genre_proprietes__isnull=False).distinct()
         propertie_id = kwargs.get('propertie_id')
         propertie = get_object_or_404(Inscriptions, id=propertie_id)
         language = kwargs.get('language', 'fr')
@@ -325,6 +279,8 @@ class WebDetailProperty(View):
         images_dict = {image.reference: image for image in images_query}
 
         context = {
+            'municipalites':municipalites,
+            'genres':genres,
             'language':language,
             'option':option,
             'labels':labels,
@@ -337,12 +293,12 @@ class WebDetailProperty(View):
         }
         return render(request, self.template_name, context)
 
-
-
 class WebVideos(View):
     template_name = 'web/videos.html'
 
     def get(self, request, *args, **kwargs):
+        municipalites = Municipalites.objects.filter(municipalite_code__isnull=False).distinct()
+        genres = GenresProprietes.objects.filter(genre_proprietes__isnull=False).distinct()
         language = kwargs.get('language', 'fr')
         labels = DICT_LABELS.get(language).get('web')
         videos = VideosWeb.objects.all().order_by('-publishedAt')
@@ -350,6 +306,8 @@ class WebVideos(View):
         images_query = ImagesWeb.objects.filter(reference__in=['videos_banner'])
         images_dict = {image.reference: image for image in images_query}
         context = {
+            'municipalites':municipalites,
+            'genres':genres,
             'language':language,
             'labels':labels,
             'videos':videos,
@@ -357,18 +315,20 @@ class WebVideos(View):
         }
         return render(request, self.template_name, context)
 
-
-
 class WebContact(View):
     template_name = 'web/contact.html'
 
     def get(self, request, *args, **kwargs):
+        municipalites = Municipalites.objects.filter(municipalite_code__isnull=False).distinct()
+        genres = GenresProprietes.objects.filter(genre_proprietes__isnull=False).distinct()
         language = kwargs.get('language', 'fr')
         labels = DICT_LABELS.get(language).get('web')
         option = kwargs.get('option', 'contact-courtier-immobilier')
         images_query = ImagesWeb.objects.filter(reference__in=['contact_banner','contact_team_background','contact_team'])
         images_dict = {image.reference: image for image in images_query}
         context = {
+            'municipalites':municipalites,
+            'genres':genres,
             'language':language,
             'option':option,
             'labels':labels,
@@ -376,18 +336,20 @@ class WebContact(View):
         }
         return render(request, self.template_name, context)
 
-
-
 class WebPolicy(View):
     template_name = 'web/policy.html'
 
     def get(self, request, *args, **kwargs):
+        municipalites = Municipalites.objects.filter(municipalite_code__isnull=False).distinct()
+        genres = GenresProprietes.objects.filter(genre_proprietes__isnull=False).distinct()
         language = kwargs.get('language', 'fr')
         labels = DICT_LABELS.get(language).get('web')
         images_query = ImagesWeb.objects.filter(reference__in=['privacy_banner'])
         images_dict = {image.reference: image for image in images_query}
         option = kwargs.get('option', 'politique-confidentialite')
         context = {
+            'municipalites':municipalites,
+            'genres':genres,
             'language':language,
             'option':option,
             'labels':labels,
@@ -395,11 +357,11 @@ class WebPolicy(View):
         }
         return render(request, self.template_name, context)
 
-
-
 class WebTeam(View):
     template_name = 'web/team.html'
     def get(self, request, *args, **kwargs):
+        municipalites = Municipalites.objects.filter(municipalite_code__isnull=False).distinct()
+        genres = GenresProprietes.objects.filter(genre_proprietes__isnull=False).distinct()
         team = Profile.objects.filter(user__is_active=True).exclude(order__isnull=True).order_by('order')
         language = kwargs.get('language', 'fr')
         labels = DICT_LABELS.get(language).get('web')
@@ -407,6 +369,8 @@ class WebTeam(View):
         images_query = ImagesWeb.objects.filter(reference__in=['team_banner'])
         images_dict = {image.reference: image for image in images_query}
         context = {
+            'municipalites':municipalites,
+            'genres':genres,
             'language':language,
             'option':option,
             'labels':labels,
@@ -415,11 +379,11 @@ class WebTeam(View):
         }
         return render(request, self.template_name, context)
 
-
-
 class WebMemberDetail(View):
     template_name = 'web/member.html'
     def get(self, request, *args, **kwargs):
+        municipalites = Municipalites.objects.filter(municipalite_code__isnull=False).distinct()
+        genres = GenresProprietes.objects.filter(genre_proprietes__isnull=False).distinct()
         member_id = kwargs.get('member_id')
         member = get_object_or_404(Profile, membre_id=member_id)
         language = kwargs.get('language', 'fr')
@@ -428,6 +392,8 @@ class WebMemberDetail(View):
         images_dict = {image.reference: image for image in images_query}
         option = kwargs.get('option', 'courtier-immobilier')
         context = {
+            'municipalites':municipalites,
+            'genres':genres,
             'language':language,
             'option':option,
             'labels':labels,
@@ -436,26 +402,26 @@ class WebMemberDetail(View):
         }
         return render(request, self.template_name, context)
 
-
-
 class WebWork(View):
     template_name = 'web/work.html'
 
     def get(self, request, *args, **kwargs):
+        municipalites = Municipalites.objects.filter(municipalite_code__isnull=False).distinct()
+        genres = GenresProprietes.objects.filter(genre_proprietes__isnull=False).distinct()
         language = kwargs.get('language', 'fr')
         labels = DICT_LABELS.get(language).get('web')
         option = kwargs.get('option', 'travailler-avec-nous')
         images_query = ImagesWeb.objects.filter(reference__in=['work_banner','work_buy','work_sell','work_next_steps'])
         images_dict = {image.reference: image for image in images_query}
         context = {
+            'municipalites':municipalites,
+            'genres':genres,
             'language':language,
             'option':option,
             'labels':labels,
             'images':images_dict,
         }
         return render(request, self.template_name, context)
-
-
 
 def calc_monthly_payment_view(request):
     if request.method == 'GET':
@@ -471,8 +437,6 @@ def calc_monthly_payment_view(request):
 
         return JsonResponse(response_data)
     return JsonResponse({'error': 'Invalid request method'})
-
-
 
 def calc_monthly_payment(P, r_anual, n_anos):
     r_mensual = r_anual / 12 / 100
@@ -575,3 +539,41 @@ def statistics(request):
         'number_transactions':number_transactions,
     }
     return render(request, 'statistics.html', context)
+
+class SearchProperties(ListView):
+    template_name = 'web/properties/list.html'
+    
+    def get(self, request, *args, **kwargs):
+        municipalites = Municipalites.objects.filter(municipalite_code__isnull=False).distinct()
+        genres = GenresProprietes.objects.filter(genre_proprietes__isnull=False).distinct()
+        language = self.kwargs.get('language', 'fr')
+        option = self.kwargs.get('option', 'proprietes')
+        parts = option.split('-')
+        filter = parts[-1]
+        code = parts[-2]
+        if filter== "quartier":
+            inscriptions_all = Inscriptions.objects.filter(mun_code=code)
+        if filter== "categorie":
+            code = code.upper()
+            inscriptions_all = Inscriptions.objects.filter(genre_propriete=code)
+
+        labels = DICT_LABELS.get(language).get('web')
+        
+        paginator = Paginator(inscriptions_all, 36)
+        page_number = request.GET.get('page')
+        inscriptions = paginator.get_page(page_number)
+        images_query = ImagesWeb.objects.filter(reference__in=['properties_banner'])
+        images_dict = {image.reference: image for image in images_query}
+        
+        context = {
+            'municipalites':municipalites,
+            'genres':genres,
+            'language':language,
+            'option':option,
+            'labels':labels,
+            'inscriptions':inscriptions,
+            'images':images_dict,
+        }
+
+        return render(request, self.template_name, context)
+

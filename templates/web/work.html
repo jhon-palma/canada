@@ -1,6 +1,8 @@
 {% load static %}{% load tags %}
 {% include 'web/header_web.html' %}
-
+{% block header_page %}
+<link rel="stylesheet" href="{% static 'web/css/ratehub.css' %}">
+{% endblock %}
 <style>
     .banner{
 		background-image: url("{{ images.work_banner.image.url }}");
@@ -14,8 +16,8 @@
 <section class="banner nothome">
 	<!-- <h1>{{ labels.work.title.one }} <span>{{ labels.work.title.two }}</span></h1> -->
     <div class="baninfo">
-        <h2>BUYING OR<span> SELLING?</span></h2>
-        <h1>OUR EXPERIENCE ENSURES YOUR SUCCESS</h1><br>
+        <h2>{{ labels.work.title.three }} <span>{{ labels.work.title.four }} ?</span></h2>
+        <h1>{{ labels.work.text.ten }}</h1><br>
         <!-- <a class="bouton boutonnre2">{{ labels.index.button.eleven }}</a> -->
     </div>
 </section>
@@ -23,41 +25,41 @@
 <section class="profilhome wwuhome ww_buyint profilhome2">
     <div class="wrap">
         <div class="txt">
-            <h2 class="h2def-white"><strong>I WANT <span style="color: #333333;">TO BUY</span></strong></h2>
+            <h2 class="h2def-white"><strong>{{ labels.work.text.one }} <span style="color: #333333;">{{ labels.work.text.two }}</span></strong></h2>
             <div class="horizontal-line-white"></div>
-            <p>There are many steps involved in getting you from where you are to owning a new home. <br><strong>That's where khowledge and experiencie come into play.</strong><br><br>Don't worry, we will be there to guide you throughout the entire process and help find a property that meets your needs</p>
+            <p>{{ labels.work.text.five }} <br><strong>{{ labels.work.text.eleven }}</strong><br><br>{{ labels.work.text.twelve }}</p>
             <table class="responsive-table">
                 <tr>
-                  <td><img src="../..//static/web/images2/icotba1.svg" alt=""></td>
-                  <td><strong> ACCOMPANIED VISITS:</strong> </td>
-                  <td>We will be present at all visits, ensuring you have expert guidance every step of the way.</td>
+                  <td><img src="{% static 'web/images2/icotba1.svg' %}" alt=""></td>
+                  <td style="text-transform: uppercase;"><strong>{{ labels.work.text.fourteen }}:</strong> </td>
+                  <td>{{ labels.work.text.fifteen }}</td>
                 </tr>
                 <tr>
-                    <td><img src="../..//static/web/images2/icotba1.svg" alt=""></td>
-                  <td><strong> NEGOTIATION SUPPORT:</strong> </td>
-                  <td>Our team will advise you through the purchase negotiations, helping you secure the best deal.</td>
+                    <td><img src="{% static 'web/images2/icotba1.svg' %}" alt=""></td>
+                  <td style="text-transform: uppercase;"><strong>{{ labels.work.text.sixteen }}:</strong> </td>
+                  <td>{{ labels.work.text.seventeen }}</td>
                 </tr>
                 <tr>
-                    <td><img src="../..//static/web/images2/icotba1.svg" alt=""></td>
-                  <td><strong> PRE-PURCHASE INSPECTION:</strong> </td>
-                  <td>We’ll assist you during the pre-purchase inspection to ensure your prospective home meets all your expectations.</td>
+                    <td><img src="{% static 'web/images2/icotba1.svg' %}" alt=""></td>
+                  <td style="text-transform: uppercase;"><strong>{{ labels.work.text.eighteen }}:</strong> </td>
+                  <td>{{ labels.work.text.nineteen }}</td>
                 </tr>
                 <tr>
-                    <td><img src="../..//static/web/images2/icotba1.svg" alt=""></td>
-                  <td><strong> FINANCING ASSISTANCE:</strong> </td>
-                  <td>We provide support in securing financing, guiding you to the best options for your needs.</td>
+                    <td><img src="{% static 'web/images2/icotba1.svg' %}" alt=""></td>
+                  <td style="text-transform: uppercase;"><strong>{{ labels.work.text.twenty }}:</strong> </td>
+                  <td>{{ labels.work.text.twenty_one }}</td>
                 </tr>
                 <tr>
-                    <td><img src="../..//static/web/images2/icotba1.svg" alt=""></td>
-                  <td><strong> COMPLETION OF PURCHASE:</strong> </td>
-                  <td>Finally, we’ll be with you through the completion of the purchase, making sure everything goes smoothly.</td>
+                    <td><img src="{% static 'web/images2/icotba1.svg' %}" alt=""></td>
+                  <td style="text-transform: uppercase;"><strong>{{ labels.work.text.twenty_two }}:</strong> </td>
+                  <td>{{ labels.work.text.twenty_three }}</td>
                 </tr>
                
               </table>
               
             <div class="__diplex">
-                <a target="_blank" href="" class="bouton boutonnre5">BOOK A BUYERS CONSULTATION</a>
-                <a  data-pop="buyers" class="bouton btn-wwu boutonnre4 pointer">DOWNLOAD OUR BUYERS GUIDE</a>
+                <a data-pop="popcontactBook" class="bouton btn-wwu boutonnre5 pointer">{{ labels.work.button.six }}</a>
+                <a data-pop="buyers" class="bouton btn-wwu boutonnre4 pointer">{{ labels.work.button.seven }}</a>
             </div>
             
         </div>
@@ -75,55 +77,47 @@
         </div>
 
         <div class="txt">
-            <h2 class="h2def-white cgris"><strong>I WANT <span style="color: #1194A1;">TO SELL</span></strong></h2>
+            <h2 class="h2def-white cgris"><strong>{{ labels.work.text.three }} <span style="color: #1194A1;">{{ labels.work.text.four }}</span></strong></h2>
             <div class="horizontal-line-verde"></div>
-            <p>Selling your home may seem like a daunting endeavor, but we are here to help you through the process. Count on our team’s extensive knowledge of real estate and finance to ensure a smooth and successful sale.</p>
+            <p>{{ labels.work.text.six}}</p>
             <table class="responsive-table2">
-                
-                <!-- <thead>
-                  <tr>
-                    <th>País</th>
-                    <th>Capital</th>
-                    <th>Moneda</th>
-                  </tr>
-                </thead> -->
                 <tr>
-                  <td><img src="../..//static/web/images2/icotba2.svg" alt=""></td>
-                  <td><strong> Initial Consultation:</strong> Discuss your goals and assess your home's value.</td>
+                  <td><img src="{% static 'web/images2/icotba2.svg' %}" alt=""></td>
+                  <td><strong>{{ labels.work.text.twenty_five }}:</strong> {{ labels.work.text.twenty_six }}</td>
       
                 </tr>
                 <tr>
-                    <td><img src="../..//static/web/images2/icotba2.svg" alt=""></td>
-                  <td><strong> Verification & Evaluation: </strong>Leverage our expertise for thorough verifications and accurate evaluations.</td>
+                    <td><img src="{% static 'web/images2/icotba2.svg' %}" alt=""></td>
+                  <td><strong>{{ labels.work.text.twenty_seven}}:</strong> {{ labels.work.text.twenty_eight }}</td>
                  
                 </tr>
                 <tr>
-                    <td><img src="../..//static/web/images2/icotba2.svg" alt=""></td>
-                  <td><strong> Marketing Strategy:</strong> Develop and implement an effective marketing plan.</td>
+                    <td><img src="{% static 'web/images2/icotba2.svg' %}" alt=""></td>
+                  <td><strong>{{ labels.work.text.twenty_nine }}:</strong> {{ labels.work.text.thirty }}</td>
                  
                 </tr>
                 <tr>
-                    <td><img src="../..//static/web/images2/icotba2.svg" alt=""></td>
-                  <td><strong> Showings & Open Houses:</strong> Organize and manage property viewings.</td>
+                    <td><img src="{% static 'web/images2/icotba2.svg' %}" alt=""></td>
+                  <td><strong>{{ labels.work.text.thirty_one }}:</strong> {{ labels.work.text.thirty_two }}</td>
                   
                 </tr>
                 <tr>
-                    <td><img src="../..//static/web/images2/icotba2.svg" alt=""></td>
-                  <td><strong> Negotiations:</strong> Guide you through offers and negotiations.</td>
+                    <td><img src="{% static 'web/images2/icotba2.svg' %}" alt=""></td>
+                  <td><strong>{{ labels.work.text.thirty_three }}:</strong> {{ labels.work.text.thirty_four }}</td>
          
                 </tr>
                 <tr>
-                    <td><img src="../..//static/web/images2/icotba2.svg" alt=""></td>
-                  <td><strong> Closing: </strong> Assist with the final steps to complete the sale.</td>
+                    <td><img src="{% static 'web/images2/icotba2.svg' %}" alt=""></td>
+                  <td><strong>{{ labels.work.text.thirty_five }}:</strong> {{ labels.work.text.thirty_six }}</td>
          
                 </tr>
                
               </table>
               
             <div class="__diplex">
-                <a target="_blank" href="{{ labels.menu.url.eight }}" class="bouton boutonnre5">GET A FREE HOME EVALUATION</a>
+                <a target="_blank" href="{{ labels.menu.url.eight }}" class="bouton boutonnre5">{{ labels.work.button.eight }}</a>
                 
-                <a  data-pop="listing" class="bouton btn-wwu boutonnre4 pointer">DOWNLOAD OUR SELLERS GUIDE</a>
+                <a  data-pop="listing" class="bouton btn-wwu boutonnre4 pointer">{{ labels.work.button.nine }}</a>
             </div>
             
         </div>
@@ -134,11 +128,11 @@
 <section class="banner nothome bannertwo">
 	<!-- <h1>{{ labels.work.title.one }} <span>{{ labels.work.title.two }}</span></h1> -->
     <div class="baninfo">
-        <h2>NEXT<span> STEPS</span></h2>
+        <h2>{{ labels.work.text.thirty_seven }}<span> {{ labels.work.text.thirty_eight }}</span></h2>
         <!-- <h1>OUR EXPERIENCE ENSURES YOUR SUCCESS</h1><br> -->
-        <h3>Buying or selling a home in a challenging market isn't easy, <br> but with the right team you will save yourself time and money.</h3>
-        <p>If you would like to go over specific opportunities, put together your game plan, and/or get <br> answers to your questions - the next step would be to set up a short buyer strategy call.</p>
-        <a class="bouton boutonnre2 btn-wwu pointer" data-pop="popcontact">BOOK A CALL WITH US</a>
+        <h3>{{ labels.work.text.thirty_nine }}<br>{{ labels.work.text.forty }}</h3>
+        <p>{{ labels.work.text.forty_one }}<br>{{ labels.work.text.forty_two }}</p>
+        <a class="bouton boutonnre2 btn-wwu pointer" data-pop="popcontact">{{ labels.work.button.ten }}</a>
     </div>
 </section>
 
@@ -148,13 +142,13 @@
 		<div class="confirmation" id="confirmationBuyers"></div>
 		<form id="formBuyers" method="post" action="{% url 'web:contact_messages' %}">
             {% csrf_token %}
-			<p class="h2def">{{ labels.work.button.one }}</p>
+			<p class="h2def"><strong>{{ labels.work.button.one }}</strong></p>
 			<p class="link_download">{{ labels.work.text.nine }}</p>
 			<input type="hidden" id="g-recaptcha-response-buyers" name="g-recaptcha-response-buyers" value="" />
             <input type="hidden" id="sujet" name="sujet" value="I Want to Buy">
-			<input type="text" name="prenom" id="prenom-buyers" placeholder="{{ labels.work.placeholder.one }} *" required="required" />
-			<input type="email" name="email" id="email-buyers" placeholder="{{ labels.work.placeholder.two }} *" required="required" />
-			<input type="tel" name="tel" id="tel-buyers" placeholder="{{ labels.work.placeholder.three }} *" onKeyPress="return scanTouche(event)" required="required" />
+			<input type="text" name="prenom" id="prenom-buyers" class="champs_tem" placeholder="{{ labels.work.placeholder.one }} *" required="required" />
+			<input type="email" name="email" id="email-buyers" class="champs_tem" placeholder="{{ labels.work.placeholder.two }} *" required="required" />
+			<input type="tel" name="tel" id="tel-buyers" class="champs_tem" placeholder="{{ labels.work.placeholder.three }} *" onKeyPress="return scanTouche(event)" required="required" />
 			<div id="errBuyers"></div>
 			<input type="submit" value="{{ labels.work.button.four }}" />
 		</form>
@@ -167,13 +161,13 @@
 		<div class="confirmation" id="confirmationListing"></div>
 		<form id="formListing" method="post" action="{% url 'web:contact_messages' %}">
             {% csrf_token %}
-			<p class="h2def">{{ labels.work.button.two }}</p>
+			<p class="h2def"><strong>{{ labels.work.button.two }}</strong></p>
 			<p class="link_download">{{ labels.work.text.nine }}</p>
 			<input type="hidden" id="g-recaptcha-response-listing" name="g-recaptcha-response-listing" value="" />
             <input type="hidden" id="sujet" name="sujet" value="I Want to Sell">
-			<input type="text" name="prenom" id="prenom-listing" placeholder="{{ labels.work.placeholder.one }} *" required="required" />
-			<input type="email" name="email" id="email-listing" placeholder="{{ labels.work.placeholder.two }} *" required="required" />
-			<input type="tel" name="tel" id="tel-listing" placeholder="{{ labels.work.placeholder.three }} *" onKeyPress="return scanTouche(event)" required="required" />
+			<input type="text" name="prenom" id="prenom-listing" class="champs_tem" placeholder="{{ labels.work.placeholder.one }} *" required="required" />
+			<input type="email" name="email" id="email-listing" class="champs_tem" placeholder="{{ labels.work.placeholder.two }} *" required="required" />
+			<input type="tel" name="tel" id="tel-listing" class="champs_tem" placeholder="{{ labels.work.placeholder.three }} *" onKeyPress="return scanTouche(event)" required="required" />
 			<div id="errListing"></div>
 			<input type="submit" value="{{ labels.work.button.four }}"/>
 		</form>
@@ -182,23 +176,42 @@
 
 <section class="popwwu popcontact">
 	<article>
-        <span class="close">+</span>
 		<div class="confirmation" id="confirmationContact"></div>
-		<form id="formContact" method="post" action="{% url 'web:contact_messages' %}">
-            {% csrf_token %}
-			<p class="h2def">{{ labels.work.button.three }}</p>
+		<form id="formContact" method="post" action="{% url 'web:contact_messages' %}">{% csrf_token %}
+			<p class="h2def"><strong>{{ labels.work.button.three }}</strong></p>
 			<input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" value="" />
             <input type="hidden" id="sujet" name="sujet" value="Book a Call with Us">
-			<input type="text" name="prenom" id="prenom" placeholder="{{ labels.work.placeholder.one }} *" required="required" />
-			<input type="email" name="email" id="email" placeholder="{{ labels.work.placeholder.two }} *" required="required" />
-			<input type="tel" name="tel" id="tel" placeholder="{{ labels.work.placeholder.three }} *" onKeyPress="return scanTouche(event)" required="required" />
+			<input type="text" name="prenom" id="prenom" class="champs_tem" placeholder="{{ labels.work.placeholder.one }} *" required="required" />
+			<input type="email" name="email" id="email" class="champs_tem" placeholder="{{ labels.work.placeholder.two }} *" required="required" />
+			<input type="tel" name="tel" id="tel" class="champs_tem" placeholder="{{ labels.work.placeholder.three }} *" onKeyPress="return scanTouche(event)" required="required" />
 			<div id="err"></div>
 			<input type="submit" value="{{ labels.work.button.five }}" />
 		</form>
+        <span class="close">+</span>
 	</article>
 </section>
 
-
+<section class="popwwu popcontactBook">
+	<article>
+		<form id="formContactBook" method="post" action="{% url 'web:contact_messages' %}">{% csrf_token %}
+			<p class="h2def"><strong>{{ labels.work.button.three }}</strong></p>
+			<input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" value="" />
+            <input type="hidden" id="sujet" name="sujet" value="Book a Call with Us">
+			<input type="text" name="prenom" id="prenom" class="champs_tem" placeholder="{{ labels.work.placeholder.one }} *" required="required" />
+			<input type="email" name="email" id="email" class="champs_tem" placeholder="{{ labels.work.placeholder.two }} *" required="required" />
+			<input type="tel" name="tel" id="tel" class="champs_tem" placeholder="{{ labels.work.placeholder.three }} *" onKeyPress="return scanTouche(event)" required="required" />
+			<div id="err"></div>
+			<input type="submit" value="{{ labels.contact.button.one }}" />
+		</form>
+        <span class="close">+</span>
+	</article>
+</section>
+<section class="toolsect">
+	<div class="wrap">
+		<h2 class="h2def">{% if language == 'en' %}<span>Tools</span> Mortgage calculator{% else %}<span>Outils</span> Calculatrice hypothécaire{% endif %}</h2>
+		<div><div class="widget" data-widget="calc-payment" data-province="QC" data-lang="{% if language == 'en' %}en{% else %}fr{% endif %}"></div><div style="text-align:right;">  <a href="https://www.ratehub.ca/" style="display:inline-block;width:80px;margin-top:.5em;"><img src="https://www.ratehub.ca/assets/images/widget-logo.png" style="width:100%;" alt="Ratehub.ca logo"></a></div><script type="text/javascript" src="https://www.ratehub.ca/assets/js/widget-loader.js"></script></div>
+	</div>
+</section>
 <script>
 
     $(document).ready(function () {
@@ -242,6 +255,7 @@
                 url: form.attr("action"),
                 data: form.serialize(),
                 success: function (response) {
+                    console.log(response);
                     if (response.response == 1) {
                         var language = "{{ language }}";
                         if (language === "en") {
@@ -250,7 +264,7 @@
                             var link = '<a target="_blank" href="{% static "web/pdf/Buyers booklet FR - LJ Immobilier - ORIENTATION EN MATIERE ACHAT IMMOBILIER 2024.pdf" %}" download>Cliquez ici pour télécharger la brochure de l\'acheteur</a>';
                         }
                         $("#confirmationBuyers").html("<p><p>" + link + "</p></p>");
-						$('#formBuyers')[0].reset();
+						// $('#formBuyers')[0].reset();
 						$('#formBuyers').hide();
                     }
                     else {
@@ -299,6 +313,42 @@
         });
     });
 
+</script>
+<script>
+    $(document).ready(function () {
+		$("#formContactBook").on('submit', function (e) {
+            e.preventDefault();
+            var form = $("#formContactBook");
+            $.ajax({
+                type: "POST",
+                url: form.attr("action"),
+                data: form.serialize(),
+                success: function (response) {
+                    console.log(response);
+                    if (response.response == 1) {
+                        var language = "{{ language }}";
+                        if (language === "en") {
+                            var message = "A specialist will contact you in 24 hrs";
+                        } else {
+                            var message = "Un spécialiste vous contactera dans les 24 heures";
+                        }
+                        $("#formContactBook").html(message);
+						// $('#formContactBook')[0].reset();
+						// $('#formContactBook').hide();
+                    }
+                    else {
+                        var language = "{{ language }}";
+                        if (language === "en") {
+                            var message = "Required fields";
+                        } else {
+                            var message = "Champs obligatoires";
+                        }
+                        $("#err").html(message);
+                    }
+                }
+            });
+        });
+    });
 </script>
 
 <!--

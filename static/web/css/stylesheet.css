@@ -4076,6 +4076,7 @@ div.col.special-img {
 	box-sizing: border-box;
 	margin:0 3px;
 	border: 1px solid #626262;
+	text-transform: uppercase;
 }
 
 a.btn_liste:link { color: #1e1e1e; text-decoration: none; }
@@ -4086,6 +4087,7 @@ a.btn_liste:active { color: #1e1e1e; text-decoration: none; }
 .liste .btn_liste {
 	color: #1e1e1e;
 	background: #939292;
+	
 }
 
 a.liste .btn_liste:link { color: #FFFFFF; text-decoration: none; }
@@ -4103,6 +4105,7 @@ a.liste .btn_liste :active  { color: #FFFFFF; text-decoration: none; }
 	box-sizing: border-box;
 	margin:0 3px;
 	border: 1px solid #626262;
+	text-transform: uppercase;
 }
 
 a.btn_mosaique:link { color: #1e1e1e; text-decoration: none; }
@@ -6408,4 +6411,3 @@ body .ui-autocomplete  {
 body .ui-autocomplete .ui-menu-item {
 	cursor: pointer;
 }
-

@@ -1,5 +1,6 @@
 from django.db import models
 import uuid
+from django.utils.text import slugify
 
 class Propertie(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
@@ -49,9 +50,24 @@ class Municipalites(models.Model):
     code = models.CharField(db_column='CODE', max_length=6, unique=True)  
     description = models.CharField(db_column='DESCRIPTION', max_length=60, blank=True, null=True)  
     region_code = models.ForeignKey(Regions, on_delete=models.CASCADE, to_field='code', db_column='REGION_CODE')   
+    slug_francaise = models.SlugField(max_length=150, unique=True, blank=True, null=True)
+    slug_anglaise = models.SlugField(max_length=150, unique=True, blank=True, null=True)
 
     class Meta:
         db_table = 'MUNICIPALITES'
+    
+    def save(self, *args, **kwargs):
+        if not self.slug_francaise:
+            description_fr = slugify(self.description) if self.description else ''
+            code = slugify(self.code) if self.code else ''
+            self.slug_francaise = f"maisons-a-vendre-{description_fr}-{code}-quartier"
+
+        if not self.slug_anglaise:
+            description_en = slugify(self.description) if self.description else ''
+            code = slugify(self.code) if self.code else ''
+            self.slug_anglaise = f"homes-for-sale-{description_en}-{code}-quartier"
+
+        super().save(*args, **kwargs)
 
 class Quartiers(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
@@ -59,10 +75,18 @@ class Quartiers(models.Model):
     code = models.CharField(db_column='CODE', max_length=4, blank=True, null=True)  
     description_francaise = models.CharField(db_column='DESCRIPTION_FRANCAISE', max_length=60, blank=True, null=True)  
     description_anglaise = models.CharField(db_column='DESCRIPTION_ANGLAISE', max_length=60, blank=True, null=True)  
-
+    slug = models.SlugField(unique=True, blank=True, null=True)
+    
     class Meta:
         db_table = 'QUARTIERS'
         unique_together = ['mun_code', 'code']
+    
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            description = slugify(self.description_francaise) if self.description_francaise else ''
+            code = slugify(self.mun_code.code) if self.mun_code.code else ''
+            self.slug = f"{description}-{code}"
+        super().save(*args, **kwargs)
 
 class Firmes(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
@@ -108,10 +132,25 @@ class GenresProprietes(models.Model):
     description_abregee_francaise = models.CharField(db_column='DESCRIPTION_ABREGEE_FRANCAISE', max_length=15, blank=True, null=True)  
     description_francaise = models.CharField(db_column='DESCRIPTION_FRANCAISE', max_length=60, blank=True, null=True)  
     description_abregee_anglaise = models.CharField(db_column='DESCRIPTION_ABREGEE_ANGLAISE', max_length=15, blank=True, null=True)  
-    description_anglaise = models.CharField(db_column='DESCRIPTION_ANGLAISE', max_length=60, blank=True, null=True)  
+    description_anglaise = models.CharField(db_column='DESCRIPTION_ANGLAISE', max_length=60, blank=True, null=True)
+    slug_francaise = models.SlugField(max_length=150, unique=True, blank=True, null=True)
+    slug_anglaise = models.SlugField(max_length=150, unique=True, blank=True, null=True)
 
     class Meta:
         db_table = 'GENRES_PROPRIETES'
+    
+    def save(self, *args, **kwargs):
+        if not self.slug_francaise:
+            description_fr = slugify(self.description_francaise) if self.description_francaise else ''
+            code = slugify(self.genre_propriete) if self.genre_propriete else ''
+            self.slug_francaise = f"{description_fr}-a-vendre-{code}-categorie"
+
+        if not self.slug_anglaise:
+            description_en = slugify(self.description_anglaise) if self.description_anglaise else ''
+            code = slugify(self.genre_propriete) if self.genre_propriete else ''
+            self.slug_anglaise = f"{description_en}-for-sale-{code}-categorie"
+
+        super().save(*args, **kwargs)
 
 class Membres(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
@@ -168,7 +207,7 @@ class Inscriptions(models.Model):
     champ_inutilise_4 = models.CharField(db_column='CHAMP_INUTILISE_4', max_length=30, blank=True, null=True)  
     date_mise_en_vigueur = models.DateField(db_column='DATE_MISE_EN_VIGUEUR', blank=True, null=True)  
     champ_inutilise_38 = models.CharField(db_column='CHAMP_INUTILISE_38', max_length=30, blank=True, null=True)  
-    mun_code = models.ForeignKey(Municipalites, on_delete=models.CASCADE, to_field='code', db_column='MUN_CODE')  
+    mun_code = models.ForeignKey(Municipalites, on_delete=models.CASCADE, related_name='municipalite_code',to_field='code', db_column='MUN_CODE')  
     quartr_code = models.ForeignKey(Quartiers, on_delete=models.CASCADE, related_name='quartiers_code', db_column='QUARTR_CODE', blank=True, null=True)  
     pres_de = models.CharField(db_column='PRES_DE', max_length=60, blank=True, null=True)  
     no_civique_debut = models.CharField(db_column='NO_CIVIQUE_DEBUT', max_length=10, blank=True, null=True)  
@@ -200,7 +239,7 @@ class Inscriptions(models.Model):
     champ_inutilise_15 = models.CharField(db_column='CHAMP_INUTILISE_15', max_length=30, blank=True, null=True)  
     champ_inutilise_45 = models.CharField(db_column='CHAMP_INUTILISE_45', max_length=30, blank=True, null=True)  
     categorie_propriete = models.ForeignKey(ValeursFixes, on_delete=models.CASCADE, related_name='CATEGORIE_PROPRIETE', db_column='CATEGORIE_PROPRIETE',blank=True, null=True)  
-    genre_propriete = models.ForeignKey(GenresProprietes, on_delete=models.CASCADE, to_field='genre_propriete' ,db_column='GENRE_PROPRIETE',blank=True, null=True)  
+    genre_propriete = models.ForeignKey(GenresProprietes, on_delete=models.CASCADE, related_name='genre_proprietes', to_field='genre_propriete',db_column='GENRE_PROPRIETE',blank=True, null=True)  
     type_batiment = models.ForeignKey(ValeursFixes, on_delete=models.CASCADE, related_name='TYPE_BATIMENT',db_column='TYPE_BATIMENT', blank=True, null=True)  
     type_copropriete = models.ForeignKey(ValeursFixes, on_delete=models.CASCADE, related_name='TYPE_COPROPRIETE', db_column='TYPE_COPROPRIETE', blank=True, null=True)  
     niveau = models.ForeignKey(ValeursFixes, on_delete=models.CASCADE, related_name='NIVEAU', db_column='NIVEAU', max_length=10, blank=True, null=True)  
