@@ -38,12 +38,8 @@
 </section>
 
 <section class="capsules">
-	<!-- Filter buttons -->
 	<div class="text-center my-3">
-		
 	</div>
-	<!-- Portfolio items -->
-
 	<div class="wrap centrar">
 		<div class="__cnt pointer">
 			<a  class="filter-btn bouton" data-filter="video">{{ labels.videos.title.five }}</a>
@@ -51,11 +47,8 @@
 			<a  class="filter-btn bouton" data-filter="all">{{ labels.videos.title.three }}</a>
 		</div>
 	</div>
-	
 	<div class="wrap">
-		
         {% for video in videos %}
-		
             <div href="https://www.youtube.com/watch?v={{ video.videoId }}" class="capsule msrItem portfolio-item {% if video.is_short %}short{% else %}video{% endif %}">
                 <a href="https://www.youtube.com/watch?v={{ video.videoId }}" class="img"> <img src="https://img.youtube.com/vi/{{ video.videoId }}/hqdefault.jpg" alt="{{ video.title }}t" /></a>
                 <h3>{{ video.tittle }}</h3>
@@ -69,77 +62,19 @@
                 </p>
                 <a href="https://www.youtube.com/watch?v={{ video.videoId }}" class="bouton">{{ labels.videos.button.one }}</a>
             </div>
-
         {% endfor %}
-	
 	</div>
-
 </section>
 
+<div style="clear:both;"></div>
 
 <script>
 	var time = undefined;
 
 	$(window).load(function(){
 		$('.capsule').each(function(){
-<<<<<<< HEAD
 			$(this).height($(this).height());
 		});
-=======
-		$(this).height($(this).height());
-
-		document.querySelector("#index > section.capsules > div.wrap.centrar > div > a:nth-child(1)").click()
-	});
-
-	
-
-	 /*		
-	if($(window).width() > 800){
-	    $('.capsules .wrap').msrItems({
-	        'colums': 3, //columns number
-	        'margin': 30 //right and bottom margin
-	    });
-	}else{
-	    $('.capsules .wrap').msrItems({
-	        'colums': 2, //columns number
-	        'margin': 15 //right and bottom margin
-	     });
-	 }
-
-	 $( window ).on('resize', function(e) {
-	    clearTimeout(time);
-	    time = setTimeout(function(){
-	         //$('.capsules .wrap').msrItems('refresh');
-	          if($(window).width() > 800){
-	            $('.capsules .wrap').msrItems({
-	                'colums': 3, //columns number
-	                'margin': 30 //right and bottom margin
-	             });
-	            }else{
-	                $('.capsules .wrap').msrItems({
-	                    'colums': 2, //columns number
-	                    'margin': 15 //right and bottom margin
-	                });
-	            }
-	             $('.capsule').each(function(){
-	                $(this).css('height','auto');
-	                $(this).height($(this).height());
-	            });
-	            if($(window).width() > 800){
-	                $('.capsules .wrap').msrItems({
-	                    'colums': 3, //columns number
-	                     'margin': 30 //right and bottom margin
-	                     });
-	            }else{
-	            $('.capsules .wrap').msrItems({
-	                'colums': 2, //columns number
-	                'margin': 15 //right and bottom margin
-	            });
-	             }
-	        }, 300);
-	    })
-		*/
->>>>>>> 63f172084fe44c2dfddef8d2545f2ca64a34f58a
 	});
 
 	$(document).ready(function() {
@@ -157,7 +92,8 @@
 		$(".filter-btn[data-filter='video']").click();
 		
 	});
+
 </script>
-<div style="clear:both;"></div>
+
 
 {% load static %}{% include 'web/footer_web.html' %}

@@ -21,6 +21,7 @@ DICT_LABELS = {
                 },
                 'sale':'For Sale',
                 'rent':'For Rent',
+                'all':'All',
                 'button':{
                     'one':'Search',
                     'two':'Find a Broker',
@@ -34,6 +35,7 @@ DICT_LABELS = {
                     'ten':'Free evaluation',
                     'eleven':'Free consultation',
                     'twelve':'Contact Us',
+                    'thirteen':'Price',
                 },
                 'placeholder':{
                     'one':'Search by city, neighbourhood, region, address or Centris No.',
@@ -268,6 +270,7 @@ DICT_LABELS = {
                 },
                 'sale':'À Vendre',
                 'rent':'À Louer',
+                'all':'Toutes',
                 'button':{
                     'one':'Rechercher',
                     'two':'Trouvez un Courtier',
@@ -281,6 +284,7 @@ DICT_LABELS = {
                     'ten':"évaluation gratuite",
                     'eleven':"Consultation gratuite",
                     'twelve':'Contactez-nous',
+                    'thirteen':'Prix',
                 },
                 'placeholder':{
                     'one':'Recherche par ville, quartier, région, adresse ou No Centris.',

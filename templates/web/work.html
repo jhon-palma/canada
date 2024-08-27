@@ -14,11 +14,9 @@
 </style>
 
 <section class="banner nothome">
-	<!-- <h1>{{ labels.work.title.one }} <span>{{ labels.work.title.two }}</span></h1> -->
     <div class="baninfo">
         <h2>{{ labels.work.title.three }} <span>{{ labels.work.title.four }} ?</span></h2>
         <h1>{{ labels.work.text.ten }}</h1><br>
-        <!-- <a class="bouton boutonnre2">{{ labels.index.button.eleven }}</a> -->
     </div>
 </section>
 
@@ -58,7 +56,7 @@
               </table>
               
             <div class="__diplex">
-                <a data-pop="popcontactBook" class="bouton btn-wwu boutonnre5 pointer">{{ labels.work.button.six }}</a>
+                <a data-pop="popcontactBook" style="margin-bottom: 10px !important; color: #00AAAE !important; font-weight: 600;" class="bouton btn-wwu boutonnre5 pointer">{{ labels.work.button.six }}</a>
                 <a data-pop="buyers" class="bouton btn-wwu boutonnre4 pointer">{{ labels.work.button.seven }}</a>
             </div>
             
@@ -115,9 +113,8 @@
               </table>
               
             <div class="__diplex">
-                <a target="_blank" href="{{ labels.menu.url.eight }}" class="bouton boutonnre5">{{ labels.work.button.eight }}</a>
-                
-                <a  data-pop="listing" class="bouton btn-wwu boutonnre4 pointer">{{ labels.work.button.nine }}</a>
+                <a target="_blank" style="margin-bottom: 10px !important; color: #00AAAE !important; font-weight: 600;" onclick="$('#free_evaluation').fadeIn();" class="bouton boutonnre5 pointer">{{ labels.work.button.eight }}</a>
+                <a data-pop="listing" class="bouton btn-wwu boutonnre4 pointer">{{ labels.work.button.nine }}</a>
             </div>
             
         </div>
@@ -126,10 +123,8 @@
 </section>
 
 <section class="banner nothome bannertwo">
-	<!-- <h1>{{ labels.work.title.one }} <span>{{ labels.work.title.two }}</span></h1> -->
-    <div class="baninfo">
+    <div class="baninfo" style="padding-top: 0px !important; margin-top: -10px !important;">
         <h2>{{ labels.work.text.thirty_seven }}<span> {{ labels.work.text.thirty_eight }}</span></h2>
-        <!-- <h1>OUR EXPERIENCE ENSURES YOUR SUCCESS</h1><br> -->
         <h3>{{ labels.work.text.thirty_nine }}<br>{{ labels.work.text.forty }}</h3>
         <p>{{ labels.work.text.forty_one }}<br>{{ labels.work.text.forty_two }}</p>
         <a class="bouton boutonnre2 btn-wwu pointer" data-pop="popcontact">{{ labels.work.button.ten }}</a>
@@ -206,12 +201,14 @@
         <span class="close">+</span>
 	</article>
 </section>
+
 <section class="toolsect">
 	<div class="wrap">
 		<h2 class="h2def">{% if language == 'en' %}<span>Tools</span> Mortgage calculator{% else %}<span>Outils</span> Calculatrice hypothécaire{% endif %}</h2>
 		<div><div class="widget" data-widget="calc-payment" data-province="QC" data-lang="{% if language == 'en' %}en{% else %}fr{% endif %}"></div><div style="text-align:right;">  <a href="https://www.ratehub.ca/" style="display:inline-block;width:80px;margin-top:.5em;"><img src="https://www.ratehub.ca/assets/images/widget-logo.png" style="width:100%;" alt="Ratehub.ca logo"></a></div><script type="text/javascript" src="https://www.ratehub.ca/assets/js/widget-loader.js"></script></div>
 	</div>
 </section>
+
 <script>
 
     $(document).ready(function () {
