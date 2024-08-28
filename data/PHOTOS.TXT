@@ -214,6 +214,18 @@
 "10892490",27,,"BALCON",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4D4122DD8A2C7819C&t=pi&f=I",377723168,2024/08/12 11:58:23
 "10892490",28,,"EXTE",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4D412CDD8A2C7817A&t=pi&f=I",377723169,2024/08/12 11:58:23
 "10892490",29,,"AU","Plan d'étage","Floor plan","https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4D4225DD8A2C7813A&t=pi&f=I",377723170,2024/08/12 11:58:23
+"10916133",1,,"CUI",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4CC2E7DD8AF14ED1A&t=pi&f=I",379523026,2024/08/27 10:53:48
+"10916133",2,,"CUI",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4CC2E8DD8AF14ED4E&t=pi&f=I",379523027,2024/08/27 10:53:48
+"10916133",3,,"CAC",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4CC2E2DD8AF14ED24&t=pi&f=I",379523028,2024/08/27 10:53:48
+"10916133",4,,"HAL",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4CC2EADD8AF14EDCA&t=pi&f=I",379523029,2024/08/27 10:53:48
+"10916133",5,,"CAC",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4CC2EBDD8AF14EDEF&t=pi&f=I",379523030,2024/08/27 10:53:48
+"10916133",6,,"CAC",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4CC2EFDD8AF14EDA1&t=pi&f=I",379523031,2024/08/27 10:53:48
+"10916133",7,,"SAL",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4CC2EEDD8AF14ED0B&t=pi&f=I",379523032,2024/08/27 10:53:48
+"10916133",8,,"HAL",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4CC2E3DD8AF14EDBC&t=pi&f=I",379523033,2024/08/27 10:53:48
+"10916133",9,,"CAC",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4CC2E6DD8AF14EDF0&t=pi&f=I",379523034,2024/08/27 10:53:48
+"10916133",10,,"COUR",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4CC2A4DD8AF14ED8A&t=pi&f=I",379523035,2024/08/27 10:53:48
+"10916133",11,,"COUR",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4CC2A0DD8AF14ED94&t=pi&f=I",379523036,2024/08/27 10:53:48
+"10916133",12,,"EXTE",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4CC2A9DD8AF14ED7C&t=pi&f=I",379523037,2024/08/27 10:53:48
 "11507087",1,,"SAM",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDC6EBB56DD86FEB6D10&t=pi&f=I",361092448,2024/04/17 13:16:00
 "11507087",2,,"SAM",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDC6EBB58DD86FEB6D42&t=pi&f=I",361092449,2024/04/17 13:16:00
 "11507087",3,,"SAL",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDC6EBB59DD86FEB6D2E&t=pi&f=I",361092450,2024/04/17 13:16:00
@@ -239,37 +251,6 @@
 "11507087",23,,"RECP",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDC6EBF40DD86FEB6101&t=pi&f=I",361092470,2024/04/17 13:16:00
 "11507087",24,,"EXTE",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDC6EBF47DD86FEB61BC&t=pi&f=I",361092471,2024/04/17 13:16:00
 "11507087",25,,"AU","Plan d'étage","Floor plan","https://mediaserver.centris.ca/media.ashx?id=ADDEDADDC6FD2E8DD86FEB61FA&t=pi&f=I",361092472,2024/04/17 13:16:00
-"11553142",1,,"SAL",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE15B61DDD9DCF0AD1A&t=pi&f=I",377097076,2024/08/06 14:48:21
-"11553142",2,,"SAL",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE15B611DD9DCF0AD4B&t=pi&f=I",377097077,2024/08/06 14:48:21
-"11553142",3,,"SAM",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE15B614DD9DCF0AD2D&t=pi&f=I",377097078,2024/08/06 14:48:21
-"11553142",4,,"SAL",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE15B612DD9DCF0ADC4&t=pi&f=I",377097079,2024/08/06 14:48:21
-"11553142",5,,"SAL",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE15B61CDD9DCF0ADEC&t=pi&f=I",377097080,2024/08/06 14:48:21
-"11553142",6,,"SAM",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE15B61EDD9DCF0ADAA&t=pi&f=I",377097081,2024/08/06 14:48:21
-"11553142",7,,"CUI",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE15B61ADD9DCF0AD0B&t=pi&f=I",377097082,2024/08/06 14:48:21
-"11553142",8,,"CUI",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE15B610DD9DCF0ADBD&t=pi&f=I",377097083,2024/08/06 14:48:21
-"11553142",9,,"CUI",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE15B61BDD9DCF0ADF4&t=pi&f=I",377097084,2024/08/06 14:48:21
-"11553142",10,,"SAM",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE15B61FDD9DCF0AD81&t=pi&f=I",377097085,2024/08/06 14:48:21
-"11553142",11,,"SAM",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE15B618DD9DCF0AD9D&t=pi&f=I",377097086,2024/08/06 14:48:21
-"11553142",12,,"CCP",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE15B619DD9DCF0AD74&t=pi&f=I",377097087,2024/08/06 14:48:21
-"11553142",13,,"CCP",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE15B617DD9DCF0AD3C&t=pi&f=I",377097088,2024/08/06 14:48:21
-"11553142",14,,"BUR",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE15B613DD9DCF0AD5A&t=pi&f=I",377097089,2024/08/06 14:48:21
-"11553142",15,,"SDBCCP",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE15B615DD9DCF0AD6B&t=pi&f=I",377097090,2024/08/06 14:48:21
-"11553142",16,,"SDBCCP",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE15B616DD9DCF0A1DB&t=pi&f=I",377097091,2024/08/06 14:48:21
-"11553142",17,,"CAC",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE15B64DDD9DCF0A11B&t=pi&f=I",377097092,2024/08/06 14:48:21
-"11553142",18,,"CAC",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE15B641DD9DCF0A14D&t=pi&f=I",377097093,2024/08/06 14:48:21
-"11553142",19,,"SDB",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE15B644DD9DCF0A124&t=pi&f=I",377097094,2024/08/06 14:48:21
-"11553142",20,,"SDL",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE15B642DD9DCF0A1CC&t=pi&f=I",377097095,2024/08/06 14:48:21
-"11553142",21,,"HAL",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE15B64CDD9DCF0A1EA&t=pi&f=I",377097096,2024/08/06 14:48:21
-"11553142",22,,"AU","Entrée","Entrance","https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE15B64EDD9DCF0A1AB&t=pi&f=I",377097097,2024/08/06 14:48:21
-"11553142",23,,"EXTE",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE15B64ADD9DCF0A10D&t=pi&f=I",377097098,2024/08/06 14:48:21
-"11553142",24,,"PISC",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE15B640DD9DCF0A1B4&t=pi&f=I",377097099,2024/08/06 14:48:21
-"11553142",25,,"PISC",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE15B64BDD9DCF0A1FC&t=pi&f=I",377097100,2024/08/06 14:48:21
-"11553142",26,,"SPA",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE15B64FDD9DCF0A182&t=pi&f=I",377097101,2024/08/06 14:48:21
-"11553142",27,,"SCOMMUN",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE15B648DD9DCF0A194&t=pi&f=I",377097102,2024/08/06 14:48:21
-"11553142",28,,"SEXERC",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE15B649DD9DCF0A17C&t=pi&f=I",377097103,2024/08/06 14:48:21
-"11553142",29,,"RECP",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE15B647DD9DCF0A13A&t=pi&f=I",377097104,2024/08/06 14:48:21
-"11553142",30,,"SCOMMUN",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE15B643DD9DCF0A15B&t=pi&f=I",377097105,2024/08/06 14:48:21
-"11553142",31,,"EXTE",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE15B645DD9DCF0A16D&t=pi&f=I",377097106,2024/08/06 14:48:21
 "11866558",1,,"EXTE",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4D7BEBDD9E1195D1E&t=pi&f=I",378052806,2024/08/14 15:00:29
 "11866558",2,,"SAL",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE1A4455DD9E1195D40&t=pi&f=I",378052807,2024/08/14 15:00:29
 "11866558",3,,"SAL",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE1A4456DD9E1195D2F&t=pi&f=I",378052808,2024/08/14 15:00:29
@@ -577,6 +558,14 @@
 "16554762",30,,"AU","Plan d'étage - sous-sol","Floor plan - basement","https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE1E7F40DD67F9D815B&t=pi&f=I",377628857,2024/08/10 23:46:10
 "16554762",31,,"AU","Plan d'étage - rez-de-chaussée","Floor plan - ground floor","https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE1E7F4BDD67F9D816D&t=pi&f=I",377628858,2024/08/10 23:46:10
 "16554762",32,,"AU","Plan d'étage - 2e étage","Floor plan - 2nd floor","https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE1E7F49DD67F9D84DF&t=pi&f=I",377628859,2024/08/10 23:46:10
+"16934051",1,,"FACA",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4C4B71D1D4AC82D1B&t=pi&f=I",379490802,2024/08/26 22:34:19
+"16934051",2,,"CUI",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4C4FC1D1D4AC82D4E&t=pi&f=I",379490803,2024/08/26 22:34:19
+"16934051",3,,"HAL",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4C4F27D1D4AC82D22&t=pi&f=I",379490804,2024/08/26 22:34:19
+"16934051",4,,"SAL",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4C4F25D1D4AC82DCA&t=pi&f=I",379490805,2024/08/26 22:34:19
+"16934051",5,,"CUI",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4C4FC4D1D4AC82DEF&t=pi&f=I",379490806,2024/08/26 22:34:19
+"16934051",6,,"SAM",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4C4FCCD1D4AC82DA4&t=pi&f=I",379490807,2024/08/26 22:34:19
+"16934051",7,,"AU",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4C4FCED1D4AC82D0C&t=pi&f=I",379490808,2024/08/26 22:34:19
+"16934051",8,,"CAC",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4C4FC0D1D4AC82DB0&t=pi&f=I",379490809,2024/08/26 22:34:19
 "17067936",1,,"SAL",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE18EDD3D1DCA68DD14&t=pi&f=I",375948035,2024/07/26 11:59:41
 "17067936",2,,"SAL",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE18EDD5D1DCA68DD4C&t=pi&f=I",375948036,2024/07/26 11:59:41
 "17067936",3,,"SAL",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE18EDD6D1DCA68DD2A&t=pi&f=I",375948037,2024/07/26 11:59:41
@@ -858,6 +847,17 @@
 "21759412",26,,"BALCON",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDEDFB551D1C7DE9C180&t=pi&f=I",368397138,2024/05/31 13:50:12
 "21759412",27,,"EXTE",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDEDFB554D1C7DE9C19F&t=pi&f=I",368397139,2024/05/31 13:50:12
 "21759412",28,,"AU","Plan d'étage","Floor plan","https://mediaserver.centris.ca/media.ashx?id=ADDEDADDEDFB552D1C7DE9C171&t=pi&f=I",368397140,2024/05/31 13:50:12
+"21809002",1,,"HAL",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4CEE84D1C770A8D10&t=pi&f=I",379522833,2024/08/27 10:53:23
+"21809002",2,,"SAL",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4CEEBAD1C770A8D42&t=pi&f=I",379522834,2024/08/27 10:53:23
+"21809002",3,,"CAC",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4CEEB4D1C770A8D2D&t=pi&f=I",379522835,2024/08/27 10:53:23
+"21809002",4,,"CAC",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4CEEB5D1C770A8DCD&t=pi&f=I",379522836,2024/08/27 10:53:23
+"21809002",5,,"CAC",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4CEEF2D1C770A8DEC&t=pi&f=I",379522837,2024/08/27 10:53:23
+"21809002",6,,"HAL",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4CEEF6D1C770A8DAC&t=pi&f=I",379522838,2024/08/27 10:53:23
+"21809002",7,,"CUI",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4CEEF7D1C770A8D04&t=pi&f=I",379522839,2024/08/27 10:53:23
+"21809002",8,,"CUI",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4CEEF5D1C770A8DBE&t=pi&f=I",379522840,2024/08/27 10:53:23
+"21809002",9,,"SDB",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4CEEFFD1C770A8DFC&t=pi&f=I",379522841,2024/08/27 10:53:23
+"21809002",10,,"BALCON",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4CEE8CD1C770A8D8E&t=pi&f=I",379522842,2024/08/27 10:53:23
+"21809002",11,,"EXTE",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4CEE8AD1C770A8D9B&t=pi&f=I",379522843,2024/08/27 10:53:23
 "21900681",1,,"EXTE",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE15428DD1C543BFD1B&t=pi&f=I",376880999,2024/08/05 10:29:12
 "21900681",2,,"SAL",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE154281D1C543BFD4D&t=pi&f=I",376881000,2024/08/05 10:29:12
 "21900681",3,,"SAL",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE154284D1C543BFD24&t=pi&f=I",376881001,2024/08/05 10:29:12
@@ -1230,6 +1230,14 @@
 "25528342",31,,"TERA",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE1DA226D1BEBB1A162&t=pi&f=I",376545885,2024/08/01 11:27:38
 "25528342",32,,"AU","Cour","Courtyard","https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE1DA2CDD1BEBB1A4D1&t=pi&f=I",376545886,2024/08/01 11:27:38
 "25528342",33,,"FACA",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE1DA213D1BEBB1A41F&t=pi&f=I",376545887,2024/08/01 11:27:38
+"25854140",1,,"CUI",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4CC613D1B8BD97D12&t=pi&f=I",379523527,2024/08/27 10:56:10
+"25854140",2,,"CAC",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4CC615D1B8BD97D4E&t=pi&f=I",379523528,2024/08/27 10:56:10
+"25854140",3,,"HAL",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4CC61ED1B8BD97D2D&t=pi&f=I",379523529,2024/08/27 10:56:10
+"25854140",4,,"CAC",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4CC61AD1B8BD97DC4&t=pi&f=I",379523530,2024/08/27 10:56:10
+"25854140",5,,"SAL",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4CC618D1B8BD97DEC&t=pi&f=I",379523531,2024/08/27 10:56:10
+"25854140",6,,"CAC",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4CC610D1B8BD97DAE&t=pi&f=I",379523532,2024/08/27 10:56:10
+"25854140",7,,"HAL",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4CC61FD1B8BD97D0B&t=pi&f=I",379523533,2024/08/27 10:56:10
+"25854140",8,,"SDB",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE4CC617D1B8BD97DBF&t=pi&f=I",379523534,2024/08/27 10:56:10
 "26580928",1,,"CUI",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE15B43CD1FEF07DD1E&t=pi&f=I",377095890,2024/08/06 14:43:08
 "26580928",2,,"CUI",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE15B43ED1FEF07DD40&t=pi&f=I",377095891,2024/08/06 14:43:08
 "26580928",3,,"SAL",,,"https://mediaserver.centris.ca/media.ashx?id=ADDEDADDE15B43AD1FEF07DD2F&t=pi&f=I",377095892,2024/08/06 14:43:08

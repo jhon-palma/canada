@@ -404,7 +404,9 @@ def uploadMembres(data):
         presentation_a = row[23] if row[23] else None
         try:
             # membres = Membres.objects.get(code=code)
+            print("data: " ,data)
             membres = Membres.objects.get(code=code, origin="Centris")
+            print(membres)
             cambios = []
 
             if membres.bur_code != bur_code:

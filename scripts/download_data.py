@@ -1,10 +1,10 @@
+import django
+from pathlib import Path
+from ftplib import FTP
 import re, os, zipfile
 import sys 
 import shutil
 import datetime
-import django
-from pathlib import Path
-from ftplib import FTP
 from upload_data import create_objects, process_txt_data
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -17,7 +17,6 @@ from apps.users.views import user_verification
 
 PATH_BASE = Path(__file__).resolve().parent.parent / 'data'
 PATH_BACKUP = PATH_BASE / 'backups'
-
 
 try:
 
@@ -33,14 +32,14 @@ try:
     ftp = FTP(FTP_IP)
     ftp.login(user=FTP_USER, passwd=FTP_PASSWORD)
     archivos = ftp.nlst()
-
+    
     archivos_zip = [nombre for nombre in archivos if re.match(r'^COLUMBIATECHNOLOGY\d{8}\.zip$', nombre)]
 
     if archivos_zip:
         archivos_zip.sort(reverse=True)
         ultimo_archivo_zip = archivos_zip[0]
         print("ultimo archivo zip:", ultimo_archivo_zip)
-
+        
         try: os.rmdir(PATH_BASE)
         except: pass
         
@@ -61,13 +60,12 @@ try:
             shutil.copy(ruta_archivo_origen, ruta_archivo_destino)
 
         shutil.rmtree(nueva_carpeta)
-
+    
     else:
         print("No se encontraron archivos zip en el directorio.")
 
     # Cerrar sesión
     ftp.quit()
-
 
     modelos = [
         'VALEURS_FIXES',

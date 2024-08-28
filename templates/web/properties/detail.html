@@ -23,46 +23,28 @@
     </div>
 </section>
 
-<section class="popfiche">
+<section class="popwwu popfiche">
 	<article>
+        <div class="close">+</div>
 		<div id="confirm_message" class="confirm_message"></div>
 		<form method="post" id="formfiche" name="formfiche" action="{% url 'web:contact_messages' %}">
             {% csrf_token %}
-			<h2></h2>
+			<h2 class="h2def" style="font-weight: 600;"></h2>
 			<input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" value="">
             <input type="hidden" id="sujet-2" name="sujet" value="">
-			<input type="text" name="prenom" placeholder="Full name" required="required">
-			<input type="tel" name="tel" placeholder="Phone" required="required">
-			<input type="email" name="email" placeholder="E-mail" required="required">
-			<textarea name="comment" placeholder="Your message" required="required"></textarea>
+			<input type="text" name="prenom" placeholder="Full name" required="required" class="champs_tem">
+			<input type="tel" name="tel" placeholder="Phone" required="required" class="champs_tem">
+			<input type="email" name="email" placeholder="E-mail" required="required" class="champs_tem">
+			<textarea name="comment" placeholder="Your message" required="required" class="champs_tem"></textarea>
 			<input type="hidden" name="adresse" value="{{inscription.no_civique_debut}}{% if inscription.no_civique_fin %} - {{inscription.no_civique_fin}}{%endif%}, {{inscription.nom_rue_complet}}{% if inscription.appartement %}, apt. {{inscription.appartement}}{%endif%}, {{inscription.mun_code.description}}">
 			<input type="hidden" name="maison" value="27135293">
 			<input type="hidden" name="objet" value="">
 			<div id="err"></div>
-			<input id="submitFiche" type="submit" value="">
+			<input id="submitFiche" type="submit" value="" class="pointer">
 		</form>
 	</article>
-	<div class="close">+</div>
+	
 </section>
-<section class="popeval">
-	<article>
-		<div id="confirm_message_form" class="confirm_message"></div>
-		<form method="post" id="formeval" name="formeval" action="{% url 'web:contact_messages' %}">
-            {% csrf_token %}
-			<h2>{% if language == "en" %}Free evaluation of your property{% else %}Estimation gratuite de la valeur de votre propriété{% endif %}</h2>
-			<input type="hidden" id="g-recaptcha-response-eval" name="g-recaptcha-response-eval" value="">
-            <input type="hidden" id="sujet" name="sujet" value="Evaluation">
-			<input type="text" name="prenom" placeholder="Full name" required="required">
-			<input type="tel" name="tel" placeholder="Phone" required="required">
-			<input type="email" name="email" placeholder="E-mail" required="required">
-			<input type="text" name="adresse" placeholder="Address" required="required">
-			<div id="errEval"></div>
-			<input type="submit" value="{% if language == 'en' %}Send{% else %}Envoyer{% endif %}">
-		</form>
-	</article>
-	<div class="close">+</div>
-</section>
-
 
 <section class="showprint courtierprint">
 	<img loading="lazy" decoding="async" src="https://mediaserver.centris.ca/media.ashx?id=ADD2256DDD1C269DDD108C0DDE&t=c&f=I" alt="LJ Immobilier">
@@ -2325,10 +2307,10 @@
                         {% endif %}
                     {% endfor %}
                 </div>
-                <a class="openfiche">
+                <a class="openfiche pointer pointer">
                     <span>{% if language == "en" %}Read more{% else %}Voir plus{% endif %}</span>
                 </a>
-                <a class="openfiche close">
+                <a class="openfiche close pointer">
                     <span>{% if language == "en" %}Read less{% else %}Voir moins{% endif %}</span>
                 </a>
             </div>
@@ -2363,10 +2345,10 @@
                 {% for supply in inscription.piecesUnites.all %}
                     {% if forloop.counter > 5 and forloop.last %}
                         </div>
-                        <a class="openfiche">
+                        <a class="openfiche pointer">
                             <span>{% if language == "en" %}Read more{% else %}Voir plus{% endif %}</span>
                         </a>
-                        <a class="openfiche close">
+                        <a class="openfiche close pointer">
                             <span>{% if language == "en" %}Read less{% else %}Voir moins{% endif %}</span>
                         </a>
                     {% else %}<br>{% endif %}
@@ -2379,10 +2361,10 @@
                     <p class="hiddenprint">{{ inscription.inclus_anglais|slice:":220" }}{% if inscription.inclus_anglais > 220 %}...{% endif %}</p>
                     <p class="fullfichep">{{ inscription.inclus_anglais }}</p>
                     {% if inscription.inclus_anglais|length > 220  %}
-                        <a class="openfiche openfiche2">
+                        <a class="openfiche openfiche2 pointer">
                             <span>Read more</span>
                         </a>
-                        <a class="openfiche openfiche2 close">
+                        <a class="openfiche openfiche2 close pointer">
                             <span>Read less</span>
                         </a>
                     {% else %}<br>{% endif %}
@@ -2390,10 +2372,10 @@
                     <p class="hiddenprint">{{ inscription.inclus_francais|slice:":220" }}{% if inscription.inclus_francais > 220 %}...{% endif %}</p>
                     <p class="fullfichep">{{ inscription.inclus_francais }}</p>
                     {% if inscription.inclus_francais > 220 %}
-                        <a class="openfiche openfiche2">
+                        <a class="openfiche openfiche2 pointer">
                             <span>Voir plus</span>
                         </a>
-                        <a class="openfiche openfiche2 close">
+                        <a class="openfiche openfiche2 close pointer">
                             <span>Voir moins</span>
                         </a>
                     {% else %}<br>{% endif %}
@@ -2406,10 +2388,10 @@
                     <p class="hiddenprint">{{ inscription.exclus_anglais|slice:":220" }}{% if inscription.exclus_anglais|length > 220 %}...{% endif %}</p>
                     <p class="fullfichep">{{ inscription.exclus_anglais }}</p>
                     {% if inscription.exclus_anglais|length > 220 %}
-                        <a class="openfiche openfiche2">
+                        <a class="openfiche openfiche2 pointer">
                             <span>Read more</span>
                         </a>
-                        <a class="openfiche openfiche2 close">
+                        <a class="openfiche openfiche2 close pointer">
                             <span>Read less</span>
                         </a>
                     {% else %}<br>{% endif %}
@@ -2420,7 +2402,7 @@
                         <a class="openfiche openfiche2">
                             <span>Voir plus</span>
                         </a>
-                        <a class="openfiche openfiche2 close">
+                        <a class="openfiche openfiche2 close pointer">
                             <span>Voir moins</span>
                         </a>
                     {% else %}<br>{% endif %}
@@ -2447,10 +2429,10 @@
                     {% endif %}
                 {% endfor %}<br/>
             </p>
-            <a class="openfiche openfiche2">
+            <a class="openfiche openfiche2 pointer">
                 <span>{% if language == "en" %}Read more{% else %}Voir plus{% endif %}</span>
             </a>
-            <a class="openfiche openfiche2 close">
+            <a class="openfiche openfiche2 close pointer">
                 <span>{% if language == "en" %}Read less{% else %}Voir moins{% endif %}</span>
             </a>
             {% if not inscription.code_statut.valeur == "VE" %}
@@ -2745,7 +2727,7 @@
             <a id="requestVisit" name="{% if language == 'en' %}Request a visit{% else %}Demander une visite{% endif %}" class="teal_btn btnpopfiche">{% if language == "en" %}Schedule a visit{% else %}Planifiez une visite{% endif %}</a>
             <a id="$requestInfo" name="{% if language == 'en' %}Send{% else %}Envoyer{% endif %}" class="teal_btn btnpopfiche">{% if language == "en" %}Ask more information{% else %}Demandez plus d'information{% endif %}</a>
             <a href="javascript:print()" class="teal_btn">{% if language == "en" %}Print this page{% else %}Imprimez cette fiche{% endif %}</a>
-            <a href="{{ labels.menu.url.eight }}" class="teal_btn btnpopeval">{% if language == "en" %}Free evaluation of your property{% else %}Estimation gratuite de la valeur de votre propriété{% endif %}</a>
+            <a onclick="$('#free_evaluation').fadeIn();" class="teal_btn btnpopeval pointer">{% if language == "en" %}Free evaluation of your property{% else %}Estimation gratuite de la valeur de votre propriété{% endif %}</a>
             <div class="socfiche">
                 <a href="https://www.facebook.com/sharer/sharer.php?u={{ server|server_url }}/{{ language }}properties/{{ propertie.id }}" target="_blank" class="btn_social">
                     <i class="fa fa-facebook"></i>
@@ -2763,6 +2745,7 @@
         </aside>
     </div>
 </section>
+
 {% if same_district %}
     <section class="samesect">
         <div class="wrap fichewrap">
@@ -2863,10 +2846,7 @@
 
 	});
 </script>
-<!-- <script language="javascript">
-    per(document.getElementById('sale_price').value.replace(/[' '|'$']/g, ''), document.getElementById('down_percent').value)
 
-</script> -->
 <script>
     
     function codeTouche(evenement) {

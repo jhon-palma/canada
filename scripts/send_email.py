@@ -11,7 +11,7 @@ def sendEmail(content):
     msg = MIMEText(content)
     msg['Subject'] = 'Reporte LJ Realties'
     msg['From'] = user
-    msg['To'] = 'backups@remaxplatinum.pe'
+    msg['To'] = 'jhon1946@gmail.com'
 
     try:
         with smtplib.SMTP(servidor_smtp, puerto_smtp) as server:

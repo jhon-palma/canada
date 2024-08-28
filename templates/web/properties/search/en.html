@@ -1,6 +1,244 @@
+<style>
+    .custom-select {
+        position: relative;
+        font-family: 'Roboto Condensed', sans-serif;
+        cursor: pointer;
+        width: 290px;
+        margin-left: 10px;
+    }
+    
+    .custom-select select {
+        font-weight: 600;
+        font-family: 'Roboto Condensed', sans-serif;
+        appearance: none;
+        -webkit-appearance: none;
+        width: 100%;
+        font-size: 16px;
+        padding: 12px 12px 12px 15px;
+        background-color: #00AAAE;
+        border: 1px solid #FFFFFF;
+        border-radius: 5px;
+        color: #FFFFFF;
+        cursor: pointer;
+        outline: none;
+    }
+    
+    .custom-select select:focus {
+        background: #00AAAE;
+        border: 1px solid #FFFFFF;
+        border-radius: 5px;
+    }
+    
+    .custom-select::after {
+        content: "";
+        position: absolute;
+        pointer-events: none;
+        top: 50%;
+        right: 10px;
+        transform: translate(0, -50%);
+        width: 12px;
+        height: 12px;
+        background-color: #FFFFFF;
+        clip-path: polygon(50% 80%, 0 20%, 100% 20%);
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-button {
+        padding: 12px;
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #00aaae;
+        width: 180px;
+        border: 1px solid #FFFFFF;
+        border-radius: 5px;
+        color: #FFFFFF;
+        font-weight: 600;
+        margin-left: 10px;
+    }
+    
+
+    .dropdown-button::after {
+        content: "";
+        position: absolute;
+        pointer-events: none;
+        top: 50%;
+        right: 10px;
+        transform: translate(0, -50%);
+        width: 12px;
+        height: 12px;
+        background-color: #FFFFFF;
+        clip-path: polygon(50% 80%, 0 20%, 100% 20%);
+    }
+
+
+    .dropdown-content {
+        display: none;
+        background-color: #efefef;
+        color: #FFFFFF;
+        z-index: 1;
+        padding: 10px;
+        margin-left: 10px;
+        position: absolute;
+    }
+
+    .dropdown-content select {
+        width: 100%;
+    }
+
+    .dropdown.show .dropdown-content {
+        display: flex;
+    }
+
+    .btn_search_properties{
+        cursor: pointer;
+        font-weight: 600;
+        background-color: #000000 !important;
+        margin-left: 10px;
+    }
+    
+    body .ui-autocomplete {
+        background: #efefef;
+        font-family: 'Roboto Condensed', sans-serif;
+    }
+
+    @media screen and (max-width: 680px) {
+        .custom-select {
+            width: 50%;
+            margin-left: 0px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .dropdown{
+            width: 50%;
+        }
+        
+        .dropdown-button {
+            margin-left: 0px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            width: auto;
+        }
+   
+        .dropdown-content {
+            position: absolute;
+        }
+
+        .btn_search_properties{
+            width: 100%;
+            margin-left: 0px;
+        }
+
+        .searchbarcont {
+            justify-content: normal;
+        }
+
+        .option_affiche+.pagination {
+            float: revert-layer;
+        }
+
+    }
+
+   
+</style>
+
+
+
 <div class="wrap">
     <form method="GET" id="seach_form" class="propsearch" action="{% url 'web:search' language=language %}">
-        <input type="hidden" name="Codelang" value="{{ language }}" />
+        
+        <div class="searchbarcont">
+            <input type="search" placeholder="{{ labels.index.placeholder.one }}" class="mainsearch" id="fserach" name="fserach" />
+
+            <div class="custom-select">
+                <select name="status">
+                    <option value=""><strong>{{ labels.index.all.upper }}</strong></option>
+                    <option value="1"><strong>{{ labels.index.sale.upper }}</strong></option>
+                    <option value="2"><strong>{{ labels.index.rent.upper }}</strong></option>
+                </select>
+            </div>
+
+            <div class="dropdown">
+                <div class="dropdown-button" onclick="toggleDropdown()">{{ labels.index.button.thirteen.upper }}</div>
+                <div class="dropdown-content">
+                    <select name="minamount" class="custom-select">
+                        <option value="0">Min</option>
+                        <option value="0" {% if minamount == 0  %}selected{% endif %}> $0</option>
+                        <option value="1000" {% if minamount == 1000  %}selected{% endif %}> $1,000</option>
+                        <option value="1500" {% if minamount == 1500  %}selected{% endif %}> $1,500</option>
+                        <option value="2000" {% if minamount == 2000  %}selected{% endif %}> $2,000</option>
+                        <option value="2500" {% if minamount == 2500  %}selected{% endif %}> $2,500</option>
+                        <option value="3000" {% if minamount == 3000  %}selected{% endif %}> $3,000</option>
+                        <option value="3500" {% if minamount == 3500  %}selected{% endif %}> $3,500</option>
+                        <option value="4000" {% if minamount == 4000  %}selected{% endif %}> $4,000</option>
+                        <option value="4500" {% if minamount == 4500  %}selected{% endif %}> $4,500</option>
+                        <option value="5000" {% if minamount == 5000  %}selected{% endif %}> $5,000</option>
+                        <option value="5500" {% if minamount == 5500  %}selected{% endif %}> $5,500</option>
+                        <option value="6000" {% if minamount == 6000  %}selected{% endif %}> $6,000</option>
+                        <option value="200000" {% if minamount == 200000  %}selected{% endif %}> $200,000</option>
+                        <option value="300000" {% if minamount == 300000  %}selected{% endif %}> $300,000</option>
+                        <option value="400000" {% if minamount == 400000  %}selected{% endif %}> $400,000</option>
+                        <option value="500000" {% if minamount == 500000  %}selected{% endif %}> $500,000</option>
+                        <option value="600000" {% if minamount == 600000  %}selected{% endif %}> $600,000</option>
+                        <option value="700000" {% if minamount == 700000  %}selected{% endif %}> $700,000</option>
+                        <option value="800000" {% if minamount == 800000  %}selected{% endif %}> $800,000</option>
+                        <option value="900000" {% if minamount == 900000  %}selected{% endif %}> $900,000</option>
+                        <option value="1000000" {% if minamount == 1000000  %}selected{% endif %}> $1,000,000</option>
+                        <option value="1250000" {% if minamount == 1250000  %}selected{% endif %}> $1,250,000</option>
+                        <option value="1500000" {% if minamount == 1500000  %}selected{% endif %}> $1,500,000</option>
+                        <option value="2000000" {% if minamount == 2000000  %}selected{% endif %}> $2,000,000</option>
+                        <option value="3000000" {% if minamount == 3000000  %}selected{% endif %}> $3,000,000</option>
+                        <option value="4000000" {% if minamount == 4000000  %}selected{% endif %}> $4,000,000</option>
+                        <option value="5000000" {% if minamount == 5000000  %}selected{% endif %}> $5,000,000</option>
+                    </select>
+                    <select name="maxamount" id="maxamount" class="custom-select">
+                        <option value="">Max</option>
+                        <option value="1000" {% if maxamount == 1000 %}selected{% endif %}> $1,000</option>
+                        <option value="1500" {% if maxamount == 1500 %}selected{% endif %}> $1,500</option>
+                        <option value="2000" {% if maxamount == 2000 %}selected{% endif %}> $2,000</option>
+                        <option value="2500" {% if maxamount == 2500 %}selected{% endif %}> $2,500</option>
+                        <option value="3000" {% if maxamount == 3000 %}selected{% endif %}> $3,000</option>
+                        <option value="3500" {% if maxamount == 3500 %}selected{% endif %}> $3,500</option>
+                        <option value="4000" {% if maxamount == 4000 %}selected{% endif %}> $4,000</option>
+                        <option value="4500" {% if maxamount == 4500 %}selected{% endif %}> $4,500</option>
+                        <option value="5000" {% if maxamount == 5000 %}selected{% endif %}> $5,000</option>
+                        <option value="5500" {% if maxamount == 5500 %}selected{% endif %}> $5,500</option>
+                        <option value="6000" {% if maxamount == 6000 %}selected{% endif %}> $6,000</option>
+                        <option value="200000" {% if maxamount == 200000 %}selected{% endif %}> $200,000</option>
+                        <option value="300000" {% if maxamount == 300000 %}selected{% endif %}> $300,000</option>
+                        <option value="400000" {% if maxamount == 400000 %}selected{% endif %}> $400,000</option>
+                        <option value="500000" {% if maxamount == 500000 %}selected{% endif %}> $500,000</option>
+                        <option value="600000" {% if maxamount == 600000 %}selected{% endif %}> $600,000</option>
+                        <option value="700000" {% if maxamount == 700000 %}selected{% endif %}> $700,000</option>
+                        <option value="800000" {% if maxamount == 800000 %}selected{% endif %}> $800,000</option>
+                        <option value="900000" {% if maxamount == 900000 %}selected{% endif %}> $900,000</option>
+                        <option value="1000000" {% if maxamount == 1000000 %}selected{% endif %}> $1,000,000</option>
+                        <option value="1250000" {% if maxamount == 1250000 %}selected{% endif %}> $1,250,000</option>
+                        <option value="1500000" {% if maxamount == 1500000 %}selected{% endif %}> $1,500,000</option>
+                        <option value="2000000" {% if maxamount == 2000000 %}selected{% endif %}> $2,000,000</option>
+                        <option value="3000000" {% if maxamount == 3000000 %}selected{% endif %}> $3,000,000</option>
+                        <option value="4000000" {% if maxamount == 4000000 %}selected{% endif %}> $4,000,000</option>
+                        <option value="5000000" {% if maxamount == 5000000 %}selected{% endif %}> $5,000,000</option>
+                    </select>
+                </div>
+            </div>
+
+            <input type="hidden" name="Codelang" value="{{ language }}"/>
+            <input type="submit" class="btn_search_properties" value="{{ labels.index.button.one }}"/>
+        </div>
+        <div id="freeform-filters" class="filters-list">
+            <ul></ul>
+        </div>
+
+
+        <!--
+
+        
+       
         <input type="radio" name="status" id="forwhat1" value="1" {% if status == '1' %}checked{% endif %} />
         <label for="forwhat1" class="tablabel">{{ labels.index.sale }}</label>
         <input type="radio" name="status" id="forwhat2" value="2" {% if status == '2' %}checked{% endif %}/>
@@ -12,7 +250,9 @@
             <ul></ul>
         </div>
 
-        <!--
+
+
+
         <a class="avanceea">Advanced search <i class="fa fa-chevron-down"></i></a>
         <div class="avanceediv">
             <div class="selectswrap">
@@ -135,11 +375,11 @@
             </div>
         </div>
        
-        -->
         <div class="submitclearcont">
             <input type="reset" style="cursor: pointer" id="resetButton" value="Clear"/>
             <input type="submit" style="cursor: pointer" value="Search"/>
         </div>
+        -->
     </form>
 </div>
 <script>
@@ -149,4 +389,21 @@
             maxamount.removeAttribute('name');
         }
     });
+
+    function toggleDropdown() {
+        var dropdown = document.querySelector('.dropdown');
+        dropdown.classList.toggle('show');
+    }
+
+    // Cierra el dropdown si se hace clic fuera de él, pero no si se hace clic en el dropdown o en los selects
+    window.onclick = function(event) {
+        if (!event.target.closest('.dropdown')) {
+            var dropdown = document.querySelector('.dropdown');
+            if (dropdown.classList.contains('show')) {
+                dropdown.classList.remove('show');
+            }
+        }
+    }
+
+
 </script>
