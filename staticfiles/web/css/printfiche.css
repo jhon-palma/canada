@@ -1,0 +1,87 @@
+.wrap-locallogic, .maptitle.wrap, header, section.banner, .fichetitlebloc a.btn, .hiddenprint, .btnsmap, .piecesbloc, .descriptionbloc aside, a.openfiche, #calculateurs, .samesect, footer, hr.underh3{
+    display: none;
+}
+
+.showprint{display: block;}
+
+.fichetitlebloc h1{
+    text-align: center;
+    margin-top: 0;
+    font-size: 14px;
+}
+
+.adressebloc p.adresse, .descriptionbloc h3{font-size: 12px;}
+
+.descriptionbloc .wrap{
+    display: block;
+    width: 100%;
+}
+
+.imgprint{
+    display: block;
+    width: 70%;
+    margin-left: auto;margin-right: auto;
+}
+
+.adressebloc{
+    display: block;
+    padding-left: 0;padding-right: 0;
+    text-align: center;
+    padding-top: 0;
+    padding-bottom: 0;
+    page-break-after:always;
+}
+
+p.visitelibre{
+    color: #000;
+    margin-left: 0;
+    padding: 0;
+    line-height: 1;
+    font-size: 10px;
+}
+
+p.fullfichep{display: block;}
+
+.descriptionbloc .wrap>div{width: 100%;padding-left: 0;padding-right: 0;}
+.hiddenfiche, .simultable.charact{display: block !important;}
+
+.simultable.charact .tr{width: 100%;}
+
+body, p.addendap, p.introfiche{font-size: 10px;color: #000;}
+
+.descriptionbloc h2, .samesect h2{font-size: 14px;}
+
+.courtierprint{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.courtierprint img{
+    display: block;
+    width: 20%;
+}
+.courtierprint img+p{
+    width: 50%;
+    margin-left: 5%;
+}
+
+hr.showprint{
+    width: 100%;
+    height: 2px;
+    border:0;
+    border-bottom:2px solid #000;
+}
+body {
+    padding-top: 0 !important;
+}
+.localstat .wrap {
+    padding-left: 0 !important;
+    padding-right: 0 !important; 
+	font-family: Arial, "sans-serif"  !important;
+}
+#chartAge, #chartLanguage {
+    display: none  !important;
+}
+.legend_age_cont, .legend_language_cont {
+    width: 100% !important;
+}
