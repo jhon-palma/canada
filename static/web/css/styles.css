@@ -948,14 +948,27 @@ position: relative;color: #fff !important;}
 	height: 100%;
 }
 
-.poppod .close, .popnews .close, .popwwu .close{
+.poppod .close, .popwwu .close{
 	color: #fff;
 	font-size: 60px;
 	transform: rotate(45deg);
 	line-height: 1;
 	position: absolute;
-	top: -50px;
-	right: -39px;
+	top: 50px;
+	right: 39px;
+	display: block;
+	cursor: pointer;
+	font-family: Arial;
+}
+
+.popnews .close{
+	color: #fff;
+	font-size: 60px;
+	transform: rotate(45deg);
+	line-height: 1;
+	position: absolute;
+	top: -30px;
+	right: -80px;
 	display: block;
 	cursor: pointer;
 	font-family: Arial;

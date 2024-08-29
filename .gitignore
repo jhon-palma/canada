@@ -162,9 +162,11 @@ python
 scripts/
 
 database/
+data/
 data/backups/
 !data/generic/
 
+profile_imgs/
 download_data.py
 
 docs/

@@ -18,7 +18,6 @@ from .scripts.send_email import sendEmail
 PATH_BASE = Path(__file__).resolve().parent.parent / 'data'
 PATH_BACKUP = PATH_BASE / 'backups'
 
-
 try:
 
     fecha_hora_actual = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
