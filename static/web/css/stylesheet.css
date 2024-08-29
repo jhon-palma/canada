@@ -1089,7 +1089,7 @@ div.bloc_title.detail_title.fixed_pos.nav_fixed .content_center2 {
 
 .content_maisons {
 	width: 100%;
-	padding: 0 0 70px 0;
+	padding: 0 0 0 0;
 	float: left;
 }
 
@@ -1222,8 +1222,8 @@ div.bloc_title.detail_title.fixed_pos.nav_fixed .content_center2 {
 	float: left;
 	margin-right: 2px;
 	padding: 3px 6px;
-	background-color: #4b4b4d;
-	border: 1px solid #4b4b4d;
+	background-color: #000000;
+	border: 1px solid #000000;
 }
 .pagination-immo a:link, .pagination-immo a:visited {
 	color: #000000;
@@ -4085,9 +4085,8 @@ a.btn_liste:hover { color: #FFFFFF; text-decoration: none; }
 a.btn_liste:active { color: #1e1e1e; text-decoration: none; }
 
 .liste .btn_liste {
-	color: #1e1e1e;
-	background: #939292;
-	
+	color: #ffffff;
+    background: rgb(0 0 0);
 }
 
 a.liste .btn_liste:link { color: #FFFFFF; text-decoration: none; }
@@ -4113,7 +4112,7 @@ a.btn_mosaique:visited { color: #1e1e1e; text-decoration: none; }
 a.btn_mosaique:hover { color: #FFFFFF; text-decoration: none; }
 a.btn_mosaique:active { color: #1e1e1e; text-decoration: none; }
 
-.mosaique .btn_mosaique { color: #FFFFFF; text-decoration: none;  background:#939292;}
+.mosaique .btn_mosaique { color: #FFFFFF; text-decoration: none;  background:#000000;}
 a.mosaique .btn_mosaique:link { color: #FFFFFF; text-decoration: none; }
 a.mosaique .btn_mosaique:visited { color: #FFFFFF; text-decoration: none; }
 a.mosaique .btn_mosaique:hover { color: #FFFFFF; text-decoration: none; }
@@ -6401,13 +6400,18 @@ body .ui-autocomplete  {
 	background: #FFF;
     list-style: none;
     padding-left: 20px;
-	padding-bottom: 20px;
-    width: 507px;
+    padding-bottom: 20px;
+    padding-top: 20px;
+    width: 508px;
     font-family: 'Roboto Condensed', sans-serif;
     line-height: 23px;
-	overflow-y: auto;
+    overflow-y: auto;
     max-height: 118px;
 }
 body .ui-autocomplete .ui-menu-item {
 	cursor: pointer;
+}
+
+a.bouton{
+    color: #fff !important;
 }

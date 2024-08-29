@@ -26,6 +26,21 @@
     .videoshome {
         background-image: url("{{ images.index_video_background.image.url }}");
     }
+
+    .close_video{
+        position: absolute !important;
+        display: block !important;
+        top: 3% !important;
+        right: 12% !important;
+    }
+    
+    @media screen and (max-width: 680px) {
+        .close_video{
+            top: 32% !important;
+            right: 4% !important;
+        }
+    }
+
 </style>
 
 <section class="banner">
@@ -225,8 +240,6 @@
         <a href="{{ server|server_url }}/{{ language }}/media/" class="bouton">{{ labels.index.button.seven }}</a>
     </div>
 </section>
-
-
 
 <section class="soldprop">
 	<div class="soldmap">
@@ -743,6 +756,12 @@
 		map.addLayer(markers);
 
 	</script>
+</section>
+
+
+<section class="poppod">
+    <span class="close close_video">+</span>
+	<article></article>
 </section>
 
 {% load static %}{% include 'web/footer_web.html' %}

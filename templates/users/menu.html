@@ -32,7 +32,6 @@
                     <li>
                         <a href="{% url 'users:profile_list' %}"> <i class="icon-users4 position-left"></i>Usuarios</a>
                     </li>
-                    {% if request.user.email == 'admin@columbatechnology.com' %}
                         <li>
                             <a href="{% url 'properties:drop_database' %}"> <i class="icon-eraser2 position-left"></i>0. Borrar base de datos (Local)</a>
                         </li>
@@ -45,7 +44,6 @@
                         <li>
                             <a href="{% url 'properties:update_video_list' %}"> <i class="icon-database-upload position-left"></i>3. Actualizar Listado Videos</a>
                         </li>
-                    {% endif %}
                 </ul>
             </div>
         </div>

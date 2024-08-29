@@ -85,8 +85,6 @@
 				</div>
 			</div>
         </div>
-
-        
     </div>
 </section>
 
@@ -98,7 +96,7 @@
 				<h3>{{ labels.contact.text.fifteen }}</h3>
 				<p>{{ labels.contact.text.sixteen }}</p>
 				<h3><strong>{{ labels.contact.text.seventeen }}</strong></h3>
-				<a class="bouton boutonnre2 btn-wwu pointer" data-pop="popcontact">{{ labels.contact.button.two.upper }}</a>
+				<a class="bouton boutonnre2 btn-wwu pointer" style="margin-left: 0px; margin-top: 10px;" data-pop="popcontact">{{ labels.contact.button.two.upper }}</a>
 			</div>
 			<div class="txt">
 				<div class="__imgteam">
@@ -112,7 +110,7 @@
 
 <section class="popwwu popcontact">
 	<article>
-        <span class="close">+</span>
+		<span class="close">+</span>
 		<form id="formContactBook" method="post" action="{% url 'web:contact_messages' %}">{% csrf_token %}
 			<p class="h2def"><strong>{{ labels.work.button.three }}</strong></p>
 			<input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" value="" />
@@ -127,7 +125,6 @@
 </section>
 
 <section class="pagecontact">
-	
 	<div class="map">
 		<iframe
 			src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2796.68011648324!2d-73.5705904!3d45.496386!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4cc93c824dc00621%3A0xb6aa87687fd1e9eb!2sLJ%20Realties%20-%20LJ%20Immobilier!5e0!3m2!1sfr!2sca!4v1665607002641!5m2!1sfr!2sca"
