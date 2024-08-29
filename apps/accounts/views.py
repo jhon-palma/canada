@@ -4,7 +4,6 @@ from django.urls import reverse
 from django.core.cache import cache
 from django.contrib.auth.decorators import login_required
 
-from apps.vars import *
 from apps.accounts.validators import * 
 from apps.parametrization.utils import *
 

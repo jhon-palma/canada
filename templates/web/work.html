@@ -145,7 +145,7 @@
 			<input type="email" name="email" id="email-buyers" class="champs_tem" placeholder="{{ labels.work.placeholder.two }} *" required="required" />
 			<input type="tel" name="tel" id="tel-buyers" class="champs_tem" placeholder="{{ labels.work.placeholder.three }} *" onKeyPress="return scanTouche(event)" required="required" />
 			<div id="errBuyers"></div>
-			<input type="submit" value="{{ labels.work.button.four }}" />
+			<input type="submit" value="{{ labels.work.button.four }}" class="pointer"/>
 		</form>
 	</article>
 </section>
@@ -164,7 +164,7 @@
 			<input type="email" name="email" id="email-listing" class="champs_tem" placeholder="{{ labels.work.placeholder.two }} *" required="required" />
 			<input type="tel" name="tel" id="tel-listing" class="champs_tem" placeholder="{{ labels.work.placeholder.three }} *" onKeyPress="return scanTouche(event)" required="required" />
 			<div id="errListing"></div>
-			<input type="submit" value="{{ labels.work.button.four }}"/>
+			<input type="submit" value="{{ labels.work.button.four }}" class="pointer">
 		</form>
 	</article>
 </section>
@@ -180,7 +180,7 @@
 			<input type="email" name="email" id="email" class="champs_tem" placeholder="{{ labels.work.placeholder.two }} *" required="required" />
 			<input type="tel" name="tel" id="tel" class="champs_tem" placeholder="{{ labels.work.placeholder.three }} *" onKeyPress="return scanTouche(event)" required="required" />
 			<div id="err"></div>
-			<input type="submit" value="{{ labels.work.button.five }}" />
+			<input type="submit" value="{{ labels.work.button.five }}" class="pointer">
 		</form>
         <span class="close">+</span>
 	</article>
@@ -196,7 +196,7 @@
 			<input type="email" name="email" id="email" class="champs_tem" placeholder="{{ labels.work.placeholder.two }} *" required="required" />
 			<input type="tel" name="tel" id="tel" class="champs_tem" placeholder="{{ labels.work.placeholder.three }} *" onKeyPress="return scanTouche(event)" required="required" />
 			<div id="err"></div>
-			<input type="submit" value="{{ labels.contact.button.one }}" />
+			<input type="submit" value="{{ labels.contact.button.one }}" class="pointer">
 		</form>
         <span class="close">+</span>
 	</article>
@@ -205,8 +205,7 @@
 <section class="toolsect">
 	<div class="wrap">
 		<h2 class="h2def">{% if language == 'en' %}<span>Tools</span> Mortgage calculator{% else %}<span>Outils</span> Calculatrice hypothécaire{% endif %}</h2>
-        <script src="https://www.ratehub.ca/scripts/rh-widget-loader.js" rh-title="Mortgage Payment Calculator" rh-frame-title="Ratehub.ca mortgage payment calculator" rh-widget-key="PaymentCalculator"></script>
-        <div style="text-align:right; font-size:0.8em"><span style="font-family:sans-serif; color:#6a787c; display:inline-block;">powered by <a rel="nofollow" href="https://www.ratehub.ca/?offer_id=2 " style="display:inline-block;width:6em;"><img src="https://www.ratehub.ca/static/logo_ratehub_full_dark.svg" style="width:100%;vertical-align:text-top;" alt="Ratehub.ca "></a></span></div>
+        <script src="https://www.ratehub.ca/scripts/rh-widget-loader.js" rh-title="Mortgage Payment Calculator" rh-frame-title="Ratehub.ca mortgage payment calculator" rh-widget-key="PaymentCalculator"></script><div style="text-align:right; font-size:0.8em"><span style="font-family:sans-serif; color:#6a787c; display:inline-block;">powered by <a rel="nofollow" href="https://www.ratehub.ca/?offer_id=2 " style="display:inline-block;width:6em;"><img src="https://www.ratehub.ca/static/logo_ratehub_full_dark.svg" style="width:100%;vertical-align:text-top;" alt="Ratehub.ca "></a></span></div>
 	</div>
 </section>
 
