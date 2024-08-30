@@ -258,6 +258,24 @@
 	<script src="https://macleweb.com/mapLeaflet/markercluster/dist/leaflet.markercluster-src.js"></script>
 	<script type="text/javascript">
 
+        function codeTouche(evenement) {
+            for (prop in evenement) {
+                if (prop == 'which') return (evenement.which);
+            }
+            return (evenement.keyCode);
+        }
+        function scanTouche(evenement) {
+            var reCarValides = '0123456789.,';
+            var codeDecimal = codeTouche(evenement);
+            var car = String.fromCharCode(codeDecimal);
+            var autorisation = reCarValides.indexOf(car);
+            if ((autorisation == -1) && (codeDecimal != 8) && (codeDecimal != 0)) {
+                return false
+            }
+            else
+                return true;
+        }
+
 		var point = new Array();
 
         {% for inscription in inscriptions_vendu %}

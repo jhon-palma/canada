@@ -13,7 +13,7 @@ django.setup()
 
 from immobilier.local_settings import FTP_IP, FTP_USER, FTP_PASSWORD
 from apps.users.views import user_verification
-
+from .scripts.send_email import sendEmail
 
 PATH_BASE = Path(__file__).resolve().parent.parent / 'data'
 PATH_BACKUP = PATH_BASE / 'backups'
@@ -120,7 +120,9 @@ try:
             if modelo == "MEMBRES":
                 user_verification()
                 
-    print("Datos cargados correctamente.")
+    end = "Datos cargados correctamente."
+    print(end)
+    #sendEmail(content, 'icloudcris@gmail.com', 'crisdapu21@gmail.com')
 
 except Exception as e:
     # Imprimir el error en la salida de errores estándar (stderr)

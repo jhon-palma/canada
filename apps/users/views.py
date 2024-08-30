@@ -18,7 +18,6 @@ from apps.properties.models import Membres, MembresMediasSociaux
 from scripts.upload_data import get_id_bureau, get_id_valeurs
 from apps.users.form import ImageEditForm, ProfileEditForm, UserEditForm, CustomUserCreationForm
 from apps.users.models import Profile
-from apps.vars import *
 from django.contrib.auth.forms import SetPasswordForm, PasswordChangeForm
 from django.contrib.auth.hashers import make_password
 from django.db import transaction

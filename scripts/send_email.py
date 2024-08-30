@@ -2,16 +2,21 @@ import smtplib
 from email.mime.text import MIMEText
 
 
-def sendEmail(content):
+def sendEmail(sender, destinatary, subject, content):
     servidor_smtp = 'smtp.gmail.com'
     puerto_smtp = 587
-    user = 'icloudcris@gmail.com'
-    password = 'umqh nftk hhau eofp'
+
+    if sender == 'icloudcris@gmail.com':
+        user = 'icloudcris@gmail.com'
+        password = 'umqh nftk hhau eofp'
+    else:
+        user = 'mar@ljrealties.com'
+        password = 'ndrj mpwg mxfn cnrb'
 
     msg = MIMEText(content)
-    msg['Subject'] = 'Reporte LJ Realties'
+    msg['Subject'] = subject
     msg['From'] = user
-    msg['To'] = 'jhon1946@gmail.com'
+    msg['To'] = destinatary
 
     try:
         with smtplib.SMTP(servidor_smtp, puerto_smtp) as server:
