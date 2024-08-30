@@ -1,0 +1,63 @@
+{% extends './base.html' %}
+{% block title %}{{ post.title }} | {% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-body">
+        <div class="container">
+            <section class="section">
+                {% if post.image %}
+                    <figure class="image mb-6">
+                        <img src="{{ post.image.url }}">
+                    </figure>
+                {% endif %}
+                
+                <div class="columns">
+                    <div class="column is-8 is-offset-2">
+                        <div class="content is-medium">
+                            
+                            <h2 class="subtitle is-4">{{ post.created_at|timesince }} ago</h2>
+                            <h1 class="title">{{ post.title }}</h1>
+                            <p>{{ post.content|safe }}</p>
+
+                            <p><small>Category: <a href="{% url 'blog:category_detail' post.category.slug_francaise %}">{{ post.category }}</a></small></p>
+                            <p>Autor: {{ post.authors.first_name }}</p>
+                            <p>Created: {{ post.created_at|date:"d F Y" }}</p>
+                            <p>- {{ post.get_absolute_url }} -</p>
+                            <a href="https://www.facebook.com/sharer.php?u=https://ljrealties-blog.com/les-criteres-a-prendre-en-compte-lors-de-la-recherche-dune-maison-en-hiver/&amp;t=Les%20crit%C3%A8res%20%C3%A0%20prendre%20en%20compte%20lors%20de%20la%20recherche%20d%E2%80%99une%20maison%20en%20hiver" rel="nofollow noopener" target="_blank" class="bwp-share-link bwp-facebook-share" onclick="window.open('https://www.facebook.com/sharer.php?u=https://ljrealties-blog.com/les-criteres-a-prendre-en-compte-lors-de-la-recherche-dune-maison-en-hiver/&amp;t=Les%20crit%C3%A8res%20%C3%A0%20prendre%20en%20compte%20lors%20de%20la%20recherche%20d%E2%80%99une%20maison%20en%20hiver', 'Facebook', 'width=700,height=500,left='+(screen.availWidth/2-350)+',top='+(screen.availHeight/2-250)+''); return false;">
+                                <i class="fa fa-facebook"></i>
+                            </a>
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ post.get_absolute_url }}" target="_blank">
+                                Partager sur Facebook
+                            </a>
+                            <hr>
+
+                            <h2 class="subtitle is-4">Comments</h2>
+
+                            <form method="post" class="mb-6">
+                                {% csrf_token %}
+
+                                {{ form.as_p }}
+
+                                <div class="field">
+                                    <div class="control">
+                                        <button class="button is-success">Submit comment</button>
+                                    </div>
+                                </div>
+                            </form>
+                            {% for comment in post.comments.all %}
+                                <article class="media box">
+                                    <div class="media-content">
+                                        <strong>{{ comment.name }}</strong> <small>{{ comment.created_at|timesince }} ago</small><br>
+                                        {{ comment.body }}
+                                    </div>
+                                </article>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</section>
+{% endblock %}

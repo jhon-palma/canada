@@ -1,0 +1,20 @@
+.ratehub-calc .go, .ratehub-calc .get-details {
+    background-color: #00AAAE !important;
+}
+.ratehub-calc .go:hover, .ratehub-calc .go:focus, .ratehub-calc .get-details:hover, .ratehub-calc .get-details:focus {
+    background-color: #00AAAE !important;
+}
+
+
+.toolsect #payment-calc .calc-tip-middle {
+    background: url("../images2/calc-tip-middle-smaller.png");
+}
+.toolsect #payment-calc .calc-tip-top {
+    background: url(../images2/calc-tip-top-smaller.png);
+}
+.toolsect #payment-calc .calc-tip-nib {
+    background-image: url(../images2/calc-tip-nib.png);
+}
+.toolsect #payment-calc .calc-tip-bottom {
+    background: url(../images2/calc-tip-bottom-smaller.png);
+}

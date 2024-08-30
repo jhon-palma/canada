@@ -1,0 +1,52 @@
+{% extends './base.html' %}
+
+{% block title %}New Category | {% endblock %}
+
+{% block content %}
+{% if messages %}
+{% for message in messages %}
+    {% if message.tags == "error"%}
+        <div class="alert alert-danger">
+            {{ message }}
+            <ul>
+                {% for error in profile_form.errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% else %}
+        <div class="alert alert-success">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endif %}
+{% endfor %}
+{% endif %} 
+
+    <section class="hero">
+        <div class="hero-body">
+            <div class="container">
+                <section class="section">
+                    <div class="columns">
+                        <div class="column is-8 is-offset-2">
+                            <h1>NEW CATEGORY</h1>
+                            <form method="post">
+                                {% csrf_token %}
+                                {{form.media}}
+                                {{form.as_p}}
+                    
+                                <button type="submit">Crear</button>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
