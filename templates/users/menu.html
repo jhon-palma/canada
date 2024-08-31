@@ -46,6 +46,16 @@
                         <a href="{% url 'properties:update_video_list' %}"> <i class="icon-database-upload position-left"></i>3. Actualizar Listado Videos</a>
                     </li>
                     -->
+                    <li class="nav-item nav-item-submenu">
+                        <a href="{% url 'web:index' 'fr' %}" id="item_users" class="nav-link"><i class="icon-book3"></i>Blog</a>
+                        <ul class="nav nav-group-sub">
+                            <li class="nav-item"><a href="{% url 'blog:new_category' %}"> <i class="icon-graph position-left"></i>Crear Categoria</a></li>
+                            <li class="nav-item"><a href="{% url 'blog:categories' %}"> <i class="icon-graph position-left"></i>Listado de Categorias</a></li>
+                            <li class="nav-item"><a href="{% url 'blog:new_post' %}"> <i class="icon-pencil7 position-left"></i>Crear POST</a></li>
+                            <li class="nav-item"><a href="{% url 'blog:articles' %}"> <i class="icon-list-unordered position-left"></i>Listado POST</a></li>
+                        </ul>
+                    </li>
+                    
                 </ul>
             </div>
         </div>

@@ -22,7 +22,14 @@ class CategoryAdminForm(forms.ModelForm):
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ('name', 'email', 'body')
+        fields = ('name', 'email', 'comment')
+        widgets = {
+            'comment': forms.Textarea(attrs={
+                'class': 'champs_tem',
+                'placeholder':'*Commentaires',
+                'id': 'comment', 
+            }),
+        }
 
 class ArticleForm(forms.ModelForm):
       """Form for comments to the article."""

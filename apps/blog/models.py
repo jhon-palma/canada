@@ -79,11 +79,11 @@ class Article(models.Model):
     def get_absolute_url(self):
         language = get_language()
         if language == 'fr':
-            relative_url = '/%s/%s/' % (self.category.slug_francaise, self.slug_francaise)
+            relative_url = '/blog/%s/%s/' % (self.category.slug_francaise, self.slug_francaise)
         elif language == 'en':  # Ejemplo: idioma inglés
-            relative_url = '/%s/%s/' % (self.category.slug_anglaise, self.slug_anglaise)
+            relative_url = '/blog/%s/%s/' % (self.category.slug_anglaise, self.slug_anglaise)
         else:
-            relative_url = '/%s/%s/' % (self.category.slug_francaise, self.slug_francaise)
+            relative_url = '/blog/%s/%s/' % (self.category.slug_francaise, self.slug_francaise)
         
         # Obtiene el dominio actual del sitio
         current_site = Site.objects.get_current()
@@ -118,7 +118,7 @@ class Comment(models.Model):
     article = models.ForeignKey(Article, related_name='comments', on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     email = models.EmailField()
-    body = models.TextField()
+    comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

@@ -1,63 +1,123 @@
-{% extends './base.html' %}
-{% block title %}{{ post.title }} | {% endblock %}
+{% load static %}{% load tags %}{% include 'web/header_web.html' %}
+{% block header_page %}
+    <link href="{% static 'blog/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'blog/css/styles.css' %}" rel="stylesheet">
+{% endblock %}
+<section class="bwp-single-page-wrap">
+	<div class="container">
+        <div class="bwp-single-page-container mt-4" role="main">
 
-{% block content %}
-<section class="hero">
-    <div class="hero-body">
-        <div class="container">
-            <section class="section">
-                {% if post.image %}
-                    <figure class="image mb-6">
-                        <img src="{{ post.image.url }}">
-                    </figure>
-                {% endif %}
+				
+				
+            <!-- article -->
+            <article id="post-921" class="bwp-single-article bwp-transition-3">
+
                 
-                <div class="columns">
-                    <div class="column is-8 is-offset-2">
-                        <div class="content is-medium">
-                            
-                            <h2 class="subtitle is-4">{{ post.created_at|timesince }} ago</h2>
-                            <h1 class="title">{{ post.title }}</h1>
-                            <p>{{ post.content|safe }}</p>
+                <!-- content container -->
+                <div class="bwp-single-content">
 
-                            <p><small>Category: <a href="{% url 'blog:category_detail' post.category.slug_francaise %}">{{ post.category }}</a></small></p>
-                            <p>Autor: {{ post.authors.first_name }}</p>
-                            <p>Created: {{ post.created_at|date:"d F Y" }}</p>
-                            <p>- {{ post.get_absolute_url }} -</p>
-                            <a href="https://www.facebook.com/sharer.php?u=https://ljrealties-blog.com/les-criteres-a-prendre-en-compte-lors-de-la-recherche-dune-maison-en-hiver/&amp;t=Les%20crit%C3%A8res%20%C3%A0%20prendre%20en%20compte%20lors%20de%20la%20recherche%20d%E2%80%99une%20maison%20en%20hiver" rel="nofollow noopener" target="_blank" class="bwp-share-link bwp-facebook-share" onclick="window.open('https://www.facebook.com/sharer.php?u=https://ljrealties-blog.com/les-criteres-a-prendre-en-compte-lors-de-la-recherche-dune-maison-en-hiver/&amp;t=Les%20crit%C3%A8res%20%C3%A0%20prendre%20en%20compte%20lors%20de%20la%20recherche%20d%E2%80%99une%20maison%20en%20hiver', 'Facebook', 'width=700,height=500,left='+(screen.availWidth/2-350)+',top='+(screen.availHeight/2-250)+''); return false;">
-                                <i class="fa fa-facebook"></i>
-                            </a>
-                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ post.get_absolute_url }}" target="_blank">
-                                Partager sur Facebook
-                            </a>
-                            <hr>
-
-                            <h2 class="subtitle is-4">Comments</h2>
-
-                            <form method="post" class="mb-6">
-                                {% csrf_token %}
-
-                                {{ form.as_p }}
-
-                                <div class="field">
-                                    <div class="control">
-                                        <button class="button is-success">Submit comment</button>
-                                    </div>
+                    <!-- content -->
+                    <div class="bwp-content entry-content clearfix">
+                        <p>
+                            <img class="aligncenter size-full" src="{{ post.image.url }}">
+                        </p>
+                        <p>{{ post.content|safe }}</p>
+                        <div class="row">
+                            <div class="col-md-7">
+                                <div class="bwp-single-share-wrap">
+                                    <span>Share:</span>
+                                    <ul class="bwp-single-share list-unstyled">
+                                        <li>
+                                            <a href="https://www.facebook.com/sharer.php?u={{ post.get_absolute_url }}" rel="nofollow noopener" target="_blank" class="bwp-share-link bwp-facebook-share" onclick="window.open('https://www.facebook.com/sharer.php?u={{ post.get_absolute_url }}', 'Facebook', 'width=700,height=500,left='+(screen.availWidth/2-350)+',top='+(screen.availHeight/2-250)+''); return false;">
+                                                <i class="fa fa-facebook"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="https://twitter.com/share?url=https://ljrealties-blog.com/les-criteres-a-prendre-en-compte-lors-de-la-recherche-dune-maison-en-hiver/&text=Les%20crit%C3%A8res%20%C3%A0%20prendre%20en%20compte%20lors%20de%20la%20recherche%20d%E2%80%99une%20maison%20en%20hiver" rel="nofollow noopener" target="_blank" class="bwp-share-link bwp-twitter-share" onclick="window.open('https://twitter.com/share?url=https://ljrealties-blog.com/les-criteres-a-prendre-en-compte-lors-de-la-recherche-dune-maison-en-hiver/&text=Les%20crit%C3%A8res%20%C3%A0%20prendre%20en%20compte%20lors%20de%20la%20recherche%20d%E2%80%99une%20maison%20en%20hiver', 'Twitter', 'width=700,height=500,left='+(screen.availWidth/2-350)+',top='+(screen.availHeight/2-250)+''); return false;">
+                                                <i class="fa fa-twitter"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="http://vk.com/share.php?url=https://ljrealties-blog.com/les-criteres-a-prendre-en-compte-lors-de-la-recherche-dune-maison-en-hiver/" rel="nofollow noopener" target="_blank" class="bwp-share-link bwp-vk-share" onclick="window.open('http://vk.com/share.php?url=https://ljrealties-blog.com/les-criteres-a-prendre-en-compte-lors-de-la-recherche-dune-maison-en-hiver/', 'VK', 'width=600,height=300,left='+(screen.availWidth/2-300)+',top='+(screen.availHeight/2-150)+''); return false;">
+                                                <i class="fa fa-vk"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="http://pinterest.com/pin/create/button/?url=https://ljrealties-blog.com/les-criteres-a-prendre-en-compte-lors-de-la-recherche-dune-maison-en-hiver/&media=&description=Les%20crit%C3%A8res%20%C3%A0%20prendre%20en%20compte%20lors%20de%20la%20recherche%20d%E2%80%99une%20maison%20en%20hiver" rel="nofollow noopener" target="_blank" class="bwp-share-link bwp-pinterest-share" onclick="window.open('http://pinterest.com/pin/create/button/?url=https://ljrealties-blog.com/les-criteres-a-prendre-en-compte-lors-de-la-recherche-dune-maison-en-hiver/&media=&description=Les%20crit%C3%A8res%20%C3%A0%20prendre%20en%20compte%20lors%20de%20la%20recherche%20d%E2%80%99une%20maison%20en%20hiver', 'Pinterest', 'width=800,height=700,left='+(screen.availWidth/2-400)+',top='+(screen.availHeight/2-350)+''); return false;">
+                                                <i class="fa fa-pinterest-p"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </div>
-                            </form>
-                            {% for comment in post.comments.all %}
-                                <article class="media box">
-                                    <div class="media-content">
-                                        <strong>{{ comment.name }}</strong> <small>{{ comment.created_at|timesince }} ago</small><br>
-                                        {{ comment.body }}
-                                    </div>
-                                </article>
-                            {% endfor %}
+                            </div>
+                            <div class="col-md-5">
+                                <ul class="bwp-single-counters list-unstyled clearfix ">
+                                    <li class="bwp-views-count"><i class="fa fa-eye"></i>323</li>
+                                    <li class="bwp-likes-count"><span class="jm-post-like"><a rel="nofollow" href="#" data-post_id="921"><span class="like"><i class="fa fa-heart-o"></i></span><span class="count">0</span></a></span></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="bwp-single-metadata-wrap">
+                            <ul class="bwp-single-metadata list-unstyled">
+                                <li>
+                                    <span class="vcard author">
+                                        <span class="fn">
+                                            <i class="fa fa-pencil-square-o"></i><a href="https://ljrealties-blog.com/author/admin/" title="Articles par admin" rel="author">{{ post.authors.first_name }}</a>
+                                        </span>
+                                    </span>
+                                    <span class="bwp-metadata-slash">/</span>
+                                </li>
+                                <li>
+                                    <span class="date updated">
+                                        <i class="fa fa-clock-o"></i><a href="https://ljrealties-blog.com/2023/12/28/">{{ post.created_at|date:"d F Y" }}</a>
+                                    </span>
+                                    <span class="bwp-metadata-slash">/</span>
+                                </li>
+                                <li>
+                                    <i class="fa fa-bookmark-o"></i><a href="https://ljrealties-blog.com/category/conseils/" rel="category tag">Conseils</a>
+                                    <span class="bwp-metadata-slash">/</span>
+                                </li>
+                            </ul>
                         </div>
                     </div>
-                </div>
-            </section>
+                    <div>
+                    <hr>
+                    <p class="__txoform"><span>Comments</span></p>
+                    <form method="post" class="mb-6">
+                        {% csrf_token %}
+                        <div class="ligne_calcul">
+                            <div class="box_ctem">
+                                {{ form.comment }}
+                            </div>
+                        </div>
+                        <!-- {{ form.name.label_tag }}
+                        {{ form.name }}
+                        {{ form.email.label_tag }}
+                        {{ form.email }} -->
+                        
+                        <div class="field">
+                            <div class="control">
+                                <button type="submit" class="float_right pointer">Submit comment</button>
+                            </div>
+                        </div>
+                    </form>
+                    {% for comment in post.comments.all %}
+                        <article class="media box">
+                            <div class="media-content">
+                                <strong>{{ comment.name }}</strong> <small>{{ comment.created_at|timesince }} ago</small><br>
+                                {{ comment.body }}
+                            </div>
+                        </article>
+                    {% endfor %}
+                </article>
+            </div>
         </div>
     </div>
 </section>
-{% endblock %}
+
+                
+                            <hr>
+
+
+                    
+{% include 'web/footer_web.html' %}

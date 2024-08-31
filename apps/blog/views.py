@@ -5,6 +5,7 @@ from django.db.models import Q
 from django.views.generic import ListView
 from django.conf import settings
 from django.contrib import messages
+from ..labels import DICT_LABELS
 
 def articles(request):
     articles = Article.objects.all()
@@ -49,11 +50,29 @@ def categories(request):
     return render(request, 'blog/list_category.html',{'categories':categories})
 
 def detail(request, category_slug, slug):
+    language = request.GET.get('language', 'fr')
+    labels = DICT_LABELS.get(language).get('web')
     print('**********************')
     post = get_object_or_404(Article, slug_francaise=slug, status=Article.ACTIVE)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
 
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.save()
 
-    return render(request, 'blog/detail.html', {'post': post})
+            return redirect('post_detail', slug=slug)
+    else:
+        form = CommentForm()
+    context = {
+        'language':language,
+        'labels':labels,
+        'form': form,
+        'post': post,
+    }
+
+    return render(request, 'blog/detail.html', context)
 
 def category(request, slug):
     category = get_object_or_404(Category, slug_francaise=slug)
