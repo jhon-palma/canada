@@ -1,48 +1,106 @@
-{% extends './base.html' %}
-
+{% extends 'users/base.html' %}
 {% block title %}Categories | {% endblock %}
-
+{% block head_page %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'app/css/datatables/dataTables.css' %}"/>
+    <script src="{% static 'app/js/datatables/dataTables.js' %}"></script>
+    <script src="{% static 'app/js/core/libraries/bootstrap.min.js' %}"></script>
+    <style>
+        .fw-bold{font-weight: bold;}
+    </style>
+{% endblock %}
 {% block content %}
-{% if messages %}
-{% for message in messages %}
-    {% if message.tags == "error"%}
-        <div class="alert alert-danger">
-            {{ message }}
-            <ul>
-                {% for error in profile_form.errors %}
-                <li>{{ error }}</li>
-                {% endfor %}
+    <div class="page-header">
+        <div class="page-header-content">
+        <div class="page-title">
+            <ul class="breadcrumb">
+                <li>
+                <h4><span class="no-margin text-bold">ARTICLES</span></h4>
+                </li>
+                <div class="heading-elements">
+                </div>
             </ul>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
         </div>
-    {% else %}
-        <div class="alert alert-success">
-            {{ message }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
         </div>
-    {% endif %}
-{% endfor %}
-{% endif %} 
-
-    <section class="hero">
-        <div class="hero-body">
-            <div class="container">
-                <section class="section">
-                    <div class="columns">
-                        <div class="column is-8 is-offset-2">
-                            <h1>CATEGORYS</h1>
-                            {% for category in categories %}
-                                {{ category.title_anglaise }} - {{ category.title_francaise }} <br>
+        <div class="breadcrumb-line">
+        <ul class="breadcrumb">
+            <li><a>Blog</a></li>
+            <li class="active">Categorías</li>
+        </ul>
+        </div>
+    </div>
+    <div class="content">
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == "error"%}
+                    <div class="alert alert-danger">
+                        {{ message }}
+                        <ul>
+                            {% for error in profile_form.errors %}
+                            <li>{{ error }}</li>
                             {% endfor %}
-                        </div>
+                        </ul>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                </section>
+                {% else %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %} 
+        <div class="panel panel-flat">
+            <div class="panel-heading">
+                <h5 class="panel-title"></h5>
+                <div class="panel-body">
+                    <table id="table_categories" class="display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Categoria Francés</th>
+                                <th>Categoria Inglés</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for category in categories %}
+                            <tr>
+                                <td>{{ category.title_anglaise }}</td>
+                                <td>{{ category.title_francaise }}</td>
+                                <td>
+                                    <a href="{% url 'blog:update_category' category_id=category.id %}"><i class="icon-pencil7"></i> Editar</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Categoria Francés</th>
+                                <th>Categoria Inglés</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
             </div>
         </div>
-    </section>
+    </div>
 
+{% endblock %}
+{% block javascript %}
+    <script type="text/javascript" src="{% static 'app/js/pages/form_validation.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/js/plugins/forms/tags/tokenfield.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/js/pages/form_tags_input.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/js/core/libraries/jquery_ui/interactions.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/js/plugins/forms/selects/select2.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/js/pages/form_select2.js' %}"></script>
+    <script>
+        $('#table_categories').DataTable({
+            ordering: false
+        });
+    </script>
 {% endblock %}

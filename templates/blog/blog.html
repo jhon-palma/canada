@@ -1,0 +1,34 @@
+{% load static %}{% load tags %}{% include 'web/header_web.html' %}
+{% block header_page %}
+    <link href="{% static 'blog/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'blog/css/styles.css' %}" rel="stylesheet">
+    <link href="{% static 'blog/css/styleBlog.css' %}" rel="stylesheet">
+{% endblock %}
+<div class="home blog wp-embed-responsive">
+    <section id="bwp-blog-posts-wrap mt-4">
+        <div class="container">
+            <h2 class="bwp-hidden-section-heading">Blog posts</h2>
+            <div class="bwp-masonry-o-hidden">
+                <div id="bwp-masonry-container" class="masonry" role="main">
+                    <div class="bwp-blog-col-3-default"></div>
+                    {% for article in articles %}
+                        <article id="post-2270" class="bwp-masonry-item bwp-blog-col-3 articleprev post-2270 post type-post status-publish format-standard hentry category-formation-en-immobilier">
+                            <div class="img">
+                                <div class="cattag">{% if language == "en" %}{{ article.category.title_anglaise }}{% else %}{{ article.category.title_francaise }}{% endif %}</div>
+                                <a href="{% url 'blog:post_detail' article.category.slug_francaise article.slug_francaise %}"><img src="{{ article.image.url }}" alt="{{ article.title }}"></a>
+                            </div>
+                            <p class="date">{{ article.formatted_date }}</p>
+                            <h3 class=>
+                                <a href="{% url 'blog:post_detail' article.category.slug_francaise article.slug_francaise %}">{% if language == "en" %}{{ article.title_anglaise }}{% else %}{{ article.title_francaise }}{% endif %}</a>
+                            </h3>
+                            <div class="bwp-post-excerpt entry-content">
+                                <p>{% if language == "en" %}{{ article.content_anglaise|slice:":60" }}{% else %}{{ article.content_anglaise|slice:":60" }}{% endif %}</p>
+                            </div>
+                            <a href="https://ljrealties-blog.com/dernieres-nouvelles-les-hypotheques-fred-et-martin-et-lj-immobilier-presentent-leur-nouveau-programme-radio-sur-cjad-800-am/" class="bouton">Lire</a>
+                        </article>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

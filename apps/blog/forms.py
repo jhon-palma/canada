@@ -3,17 +3,6 @@ from .models import Category, Comment
 from django_ckeditor_5.widgets import CKEditor5Widget
 from .models import Article
 
-class PostAdminForm(forms.ModelForm):
-    class Meta:
-        model = Article
-        fields = ('title','category','content','image')
-        widgets = {
-            "content": CKEditor5Widget(
-                attrs={"class": "django_ckeditor_5"},
-                config_name="post"
-            )
-        }
-
 class CategoryAdminForm(forms.ModelForm):
     class Meta:
         model = Category
@@ -36,13 +25,17 @@ class ArticleForm(forms.ModelForm):
 
       def __init__(self, *args, **kwargs):
           super().__init__(*args, **kwargs)
-          self.fields["content"].required = False
+          self.fields["content_francaise"].required = False
+          self.fields["content_anglaise"].required = False
 
       class Meta:
           model = Article
-          fields = ('title','category','content','image')
+          fields = ('title_francaise','category','content_francaise', 'content_anglaise', 'image')
           widgets = {
-              "content": CKEditor5Widget(
+              "content_francaise": CKEditor5Widget(
                   attrs={"class": "django_ckeditor_5"}, config_name="extends"
-              )
+              ),
+              "content_anglaise": CKEditor5Widget(
+                  attrs={"class": "django_ckeditor_5"}, config_name="extends"
+              ),
           }

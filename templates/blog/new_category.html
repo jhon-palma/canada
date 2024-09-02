@@ -1,52 +1,86 @@
-{% extends './base.html' %}
+{% extends 'users/base.html' %}
 
 {% block title %}New Category | {% endblock %}
 
 {% block content %}
-{% if messages %}
-{% for message in messages %}
-    {% if message.tags == "error"%}
-        <div class="alert alert-danger">
-            {{ message }}
-            <ul>
-                {% for error in profile_form.errors %}
-                <li>{{ error }}</li>
-                {% endfor %}
+    <div class="page-header">
+        <div class="page-header-content">
+        <div class="page-title">
+            <ul class="breadcrumb">
+                <li>
+                <h4><span class="no-margin text-bold">ARTICLES</span></h4>
+                </li>
+                <div class="heading-elements">
+                </div>
             </ul>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
         </div>
-    {% else %}
-        <div class="alert alert-success">
-            {{ message }}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
         </div>
-    {% endif %}
-{% endfor %}
-{% endif %} 
-
-    <section class="hero">
-        <div class="hero-body">
-            <div class="container">
-                <section class="section">
-                    <div class="columns">
-                        <div class="column is-8 is-offset-2">
-                            <h1>NEW CATEGORY</h1>
-                            <form method="post">
-                                {% csrf_token %}
-                                {{form.media}}
-                                {{form.as_p}}
-                    
-                                <button type="submit">Crear</button>
-                            </form>
-                        </div>
+        <div class="breadcrumb-line">
+        <ul class="breadcrumb">
+            <li><a>Blog</a></li>
+            <li class="active">Articulos</li>
+        </ul>
+        </div>
+    </div>
+    <div class="content">
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == "error"%}
+                    <div class="alert alert-danger">
+                        {{ message }}
+                        <ul>
+                            {% for error in profile_form.errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                </section>
+                {% else %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        <div class="panel panel-flat">
+            <div class="panel-heading">
+                <h5 class="panel-title"></h5>
+                <div class="panel-body">
+                    <form method="post" name='update-form'>
+                        {% csrf_token %}
+                        <fieldset class="content-group">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <legend class="text-bold"><i class="icon-spell-check"></i> Categoria POST</legend>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="id_price_initial_year">Title francaise : </label>
+                                                <input type="text" class="form-control" id="id_title_francaise" name="title_francaise" value="{{ category.title_francaise|default_if_none:'' }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="id_price_initial_year">Title anglaise : </label>
+                                                <input type="text" class="form-control" id="id_title_anglaise" name="title_anglaise" value="{{ category.title_anglaise|default_if_none:'' }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <a href="{% url 'users:list_images' %}" class="btn bg-orange-600 btn-labeled btn-xlg"  style="width: auto;"><b><i class="icon-undo2"></i></b><span class="margin-left-20">VOLVER</span></a>
+                                    <button type="submit" class="btn bg-primary-800 btn-labeled btn-xlg"  style="width: auto;"><b><i class="icon-floppy-disk"></i></b><span class="margin-left-20">Crear</span></button>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
             </div>
         </div>
-    </section>
-
+    </div>
 {% endblock %}

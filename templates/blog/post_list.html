@@ -71,12 +71,12 @@
                         <tbody>
                             {% for article in articles %}
                                 <tr>
-                                    <td>{{ article.title }}</td>
+                                    <td>{{ article.title_anglaise }}</td>
                                     <td >{{ article.category }}</td>
                                     <td><a title="CLICK PARA VER" href="{{ article.image.url }}" target="_blank"><img width="80" height="70" src="{{ article.image.url }}"></a></td>
                                     <td>
                                         <a href="{% url 'blog:post_detail' article.category.slug_francaise article.slug_francaise %}"><i class="icon-new-tab"></i> Ver</a> | 
-                                        <a href=""><i class="icon-pencil7"></i> Editar</a>
+                                        <a href="{% url 'blog:update_article' article_id=article.id %}"><i class="icon-pencil7"></i> Editar</a>
                                     </td>
                                 </tr>
                             {% endfor %}

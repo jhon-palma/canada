@@ -1,28 +1,70 @@
-{% extends './base.html' %}
+{% extends 'users/base.html' %}
 
 {% block title %}New post | {% endblock %}
-
+{% block head_page %}
+    {% load static %}
+    <script src="{% static 'app/js/core/libraries/bootstrap.min.js' %}"></script>
+    <style>
+        .fw-bold{font-weight: bold;}
+    </style>
+{% endblock %}
 {% block content %}
-    <section class="hero">
-        <div class="hero-body">
-            <div class="container">
-                <section class="section">
-                    <div class="columns">
-                        <div class="column is-8 is-offset-2">
-                            <h1>new_post</h1>
-                            <form method="post" enctype="multipart/form-data" action="">
-                                {% csrf_token %}
-                                {{form.media}}
-                                {{form.as_p}}
-                    
-                                <button type="submit">Crear</button>
-                            </form>
-                        </div>
+    <div class="page-header">
+        <div class="page-header-content">
+        <div class="page-title">
+            <ul class="breadcrumb">
+                <li>
+                <h4><span class="no-margin text-bold">ARTICLES</span></h4>
+                </li>
+                <div class="heading-elements">
+                </div>
+            </ul>
+        </div>
+        </div>
+        <div class="breadcrumb-line">
+        <ul class="breadcrumb">
+            <li><a>Blog</a></li>
+            <li class="active">Articulos</li>
+        </ul>
+        </div>
+    </div>
+    <div class="content">
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == "error"%}
+                    <div class="alert alert-danger">
+                        {{ message }}
+                        <ul>
+                            {% for error in profile_form.errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                </section>
+                {% else %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        <div class="panel panel-flat">
+            <div class="panel-heading">
+                <h5 class="panel-title"></h5>
+                <div class="panel-body">
+                    <form method="post" enctype="multipart/form-data" action="">
+                        {% csrf_token %}
+                        {{form.media}}
+                        {{form.as_p}}
+                            <button type="submit">Crear</button>
+                    </form>
+                </div>
             </div>
         </div>
-    </section>
-    
-
+    </div>
 {% endblock %}

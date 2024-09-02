@@ -110,6 +110,14 @@
                         </article>
                     {% endfor %}
                 </article>
+                {% with post.category.slug_francaise as category_slug %}
+                {% with post.slug_francaise as post_slug %}
+                {% with category_slug|add:"/"|add:post_slug as url %}
+                    {% include 'blog/comments.html' with url=url %}
+                {% endwith %}
+                {% endwith %}
+                {% endwith %}
+
             </div>
         </div>
     </div>
@@ -117,7 +125,6 @@
 
                 
                             <hr>
-
 
                     
 {% include 'web/footer_web.html' %}

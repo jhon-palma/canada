@@ -40,12 +40,8 @@ class Category(models.Model):
             return '/%s/' % self.slug_francaise
 
     def save(self, *args, **kwargs):
-        translator = Translator()
-        translated_title_fr = translator.translate(self.title_anglaise, dest='fr').text
-        translated_title_en = translator.translate(self.title_francaise, dest='en').text
-
-        self.slug_francaise = slugify(translated_title_fr)
-        self.slug_anglaise = slugify(translated_title_en)
+        self.slug_francaise = slugify(self.title_anglaise)
+        self.slug_anglaise = slugify(self.title_anglaise)
 
         super(Category, self).save(*args, **kwargs)
 
@@ -60,21 +56,20 @@ class Article(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     category = models.ForeignKey(Category, related_name='posts', on_delete=models.CASCADE, blank=False, null=False)
-    title = models.CharField(max_length=255)
+    title_francaise = models.CharField(max_length=255)
+    title_anglaise = models.CharField(max_length=255)
     intro = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=10, choices=CHOICES_STATUS, default=ACTIVE)
     image = models.ImageField(default='blog/images/default.png', upload_to='blog/images/', blank=True, null=True)
-    content = CKEditor5Field('Content', config_name='extends')
+    content_francaise = CKEditor5Field('ContentFrancaise', config_name='extends')
+    content_anglaise = CKEditor5Field('ContentAnglaise', config_name='extends')
     authors = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     slug_francaise = models.SlugField(max_length=150, unique=True, blank=True, null=True)
     slug_anglaise = models.SlugField(max_length=150, unique=True, blank=True, null=True)
 
     class Meta:
         ordering = ('-created_at',)
-
-    def __str__(self):
-        return self.title
 
     def get_absolute_url(self):
         language = get_language()
@@ -123,3 +118,7 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.name
+
+class Like(models.Model):
+    post = models.ForeignKey(Article, related_name='likes', on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
