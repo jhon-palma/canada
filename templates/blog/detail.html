@@ -19,9 +19,9 @@
                     <!-- content -->
                     <div class="bwp-content entry-content clearfix">
                         <p>
-                            <img class="aligncenter size-full" src="{{ post.image.url }}">
+                            <img class="aligncenter size-full" src="{% if language == 'en' %}{{ post.image_anglaise.url }}{% else %}{{ post.image_francaise.url }}{% endif %}">
                         </p>
-                        <p>{{ post.content|safe }}</p>
+                        <p>{% if language == "en" %}{{ post.content_anglaise|safe }}{% else %}{{ post.content_francaise|safe }}{% endif %}</p>
                         <div class="row">
                             <div class="col-md-7">
                                 <div class="bwp-single-share-wrap">
@@ -33,17 +33,17 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="https://twitter.com/share?url=https://ljrealties-blog.com/les-criteres-a-prendre-en-compte-lors-de-la-recherche-dune-maison-en-hiver/&text=Les%20crit%C3%A8res%20%C3%A0%20prendre%20en%20compte%20lors%20de%20la%20recherche%20d%E2%80%99une%20maison%20en%20hiver" rel="nofollow noopener" target="_blank" class="bwp-share-link bwp-twitter-share" onclick="window.open('https://twitter.com/share?url=https://ljrealties-blog.com/les-criteres-a-prendre-en-compte-lors-de-la-recherche-dune-maison-en-hiver/&text=Les%20crit%C3%A8res%20%C3%A0%20prendre%20en%20compte%20lors%20de%20la%20recherche%20d%E2%80%99une%20maison%20en%20hiver', 'Twitter', 'width=700,height=500,left='+(screen.availWidth/2-350)+',top='+(screen.availHeight/2-250)+''); return false;">
+                                            <a href="https://twitter.com/share?url={{ post.get_absolute_url }}" rel="nofollow noopener" target="_blank" class="bwp-share-link bwp-twitter-share" onclick="window.open('https://twitter.com/share?url={{ post.get_absolute_url }}', 'Twitter', 'width=700,height=500,left='+(screen.availWidth/2-350)+',top='+(screen.availHeight/2-250)+''); return false;">
                                                 <i class="fa fa-twitter"></i>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="http://vk.com/share.php?url=https://ljrealties-blog.com/les-criteres-a-prendre-en-compte-lors-de-la-recherche-dune-maison-en-hiver/" rel="nofollow noopener" target="_blank" class="bwp-share-link bwp-vk-share" onclick="window.open('http://vk.com/share.php?url=https://ljrealties-blog.com/les-criteres-a-prendre-en-compte-lors-de-la-recherche-dune-maison-en-hiver/', 'VK', 'width=600,height=300,left='+(screen.availWidth/2-300)+',top='+(screen.availHeight/2-150)+''); return false;">
+                                            <a href="http://vk.com/share.php?url={{ post.get_absolute_url }}" rel="nofollow noopener" target="_blank" class="bwp-share-link bwp-vk-share" onclick="window.open('http://vk.com/share.php?url={{ post.get_absolute_url }}', 'VK', 'width=600,height=300,left='+(screen.availWidth/2-300)+',top='+(screen.availHeight/2-150)+''); return false;">
                                                 <i class="fa fa-vk"></i>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="http://pinterest.com/pin/create/button/?url=https://ljrealties-blog.com/les-criteres-a-prendre-en-compte-lors-de-la-recherche-dune-maison-en-hiver/&media=&description=Les%20crit%C3%A8res%20%C3%A0%20prendre%20en%20compte%20lors%20de%20la%20recherche%20d%E2%80%99une%20maison%20en%20hiver" rel="nofollow noopener" target="_blank" class="bwp-share-link bwp-pinterest-share" onclick="window.open('http://pinterest.com/pin/create/button/?url=https://ljrealties-blog.com/les-criteres-a-prendre-en-compte-lors-de-la-recherche-dune-maison-en-hiver/&media=&description=Les%20crit%C3%A8res%20%C3%A0%20prendre%20en%20compte%20lors%20de%20la%20recherche%20d%E2%80%99une%20maison%20en%20hiver', 'Pinterest', 'width=800,height=700,left='+(screen.availWidth/2-400)+',top='+(screen.availHeight/2-350)+''); return false;">
+                                            <a href="http://pinterest.com/pin/create/button/?url={{ post.get_absolute_url }}&media=&description=Les%20crit%C3%A8res%20%C3%A0%20prendre%20en%20compte%20lors%20de%20la%20recherche%20d%E2%80%99une%20maison%20en%20hiver" rel="nofollow noopener" target="_blank" class="bwp-share-link bwp-pinterest-share" onclick="window.open('http://pinterest.com/pin/create/button/?url={{ post.get_absolute_url }}&media=&description=Les%20crit%C3%A8res%20%C3%A0%20prendre%20en%20compte%20lors%20de%20la%20recherche%20d%E2%80%99une%20maison%20en%20hiver', 'Pinterest', 'width=800,height=700,left='+(screen.availWidth/2-400)+',top='+(screen.availHeight/2-350)+''); return false;">
                                                 <i class="fa fa-pinterest-p"></i>
                                             </a>
                                         </li>
@@ -110,13 +110,13 @@
                         </article>
                     {% endfor %}
                 </article>
-                {% with post.category.slug_francaise as category_slug %}
+                <!-- {% with post.category.slug_francaise as category_slug %}
                 {% with post.slug_francaise as post_slug %}
                 {% with category_slug|add:"/"|add:post_slug as url %}
                     {% include 'blog/comments.html' with url=url %}
                 {% endwith %}
                 {% endwith %}
-                {% endwith %}
+                {% endwith %} -->
 
             </div>
         </div>

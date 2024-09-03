@@ -21,21 +21,26 @@ class CommentForm(forms.ModelForm):
         }
 
 class ArticleForm(forms.ModelForm):
-      """Form for comments to the article."""
 
-      def __init__(self, *args, **kwargs):
-          super().__init__(*args, **kwargs)
-          self.fields["content_francaise"].required = False
-          self.fields["content_anglaise"].required = False
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["content_francaise"].required = False
+        self.fields["content_anglaise"].required = False
 
-      class Meta:
-          model = Article
-          fields = ('title_francaise','category','content_francaise', 'content_anglaise', 'image')
-          widgets = {
-              "content_francaise": CKEditor5Widget(
-                  attrs={"class": "django_ckeditor_5"}, config_name="extends"
-              ),
-              "content_anglaise": CKEditor5Widget(
-                  attrs={"class": "django_ckeditor_5"}, config_name="extends"
-              ),
-          }
+        self.fields["title_francaise"].widget.attrs.update({"class": "form-control"})
+        self.fields["title_anglaise"].widget.attrs.update({"class": "form-control"})
+        self.fields["category"].widget.attrs.update({"class": "form-control"})
+        self.fields["image_francaise"].widget.attrs.update({"class": "form-control-file"})
+        self.fields["image_anglaise"].widget.attrs.update({"class": "form-control-file"})
+
+    class Meta:
+        model = Article
+        fields = ('title_francaise', 'title_anglaise', 'category','content_francaise', 'content_anglaise', 'image_francaise', 'image_anglaise')
+        widgets = {
+            "content_francaise": CKEditor5Widget(
+                attrs={"class": "django_ckeditor_5"}, config_name="extends"
+            ),
+            "content_anglaise": CKEditor5Widget(
+                attrs={"class": "django_ckeditor_5"}, config_name="extends"
+            ),
+        }

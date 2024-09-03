@@ -1,3 +1,5 @@
+import pdb
+from django.db import IntegrityError
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import Article, Category
 from .forms import ArticleForm, CategoryAdminForm, CommentForm
@@ -35,14 +37,28 @@ def articles(request, language='fr'):
 
 def new_post(request):
     form = ArticleForm()
+    language = request.GET.get('language', 'fr')
     if request.method == 'POST':
-        form = ArticleForm(request.POST, request.FILES) 
-        if form.is_valid:
-            post = form.save(commit=False)
-            post.authors = request.user
-            post.save()
-            messages.success(request, 'Post creado correctamente', 'succesful')
-            return redirect('blog:articles')
+        form = ArticleForm(request.POST, request.FILES)
+        if request.POST.get('content_francaise') == '<p>&nbsp;</p>':
+            form.add_error('content_francaise', 'Este campo no puede estar vacío.')
+        if request.POST.get('content_anglaise') == '<p>&nbsp;</p>':
+            form.add_error('content_anglaise', 'Este campo no puede estar vacío.')
+
+        if not form.is_valid():
+            print("Formulario no válido. Errores:", form.errors)
+            for field, errors in form.errors.items():
+                print(f"Errores en el campo {field}: {errors}")
+        else:
+            try:
+                post = form.save(commit=False)
+                post.authors = request.user
+                post.save()
+                messages.success(request, 'Post creado correctamente', 'succesful')
+                return redirect('blog:list_articles')
+            except IntegrityError as e:
+                form.add_error(None, 'Error al guardar el post: ' + str(e))
+                print("Formulario no válido. Errores:", form.errors)
     return render(request, 'blog/new_post.html',{'form':form})
 
 def list_articles(request):
@@ -66,10 +82,12 @@ def categories(request):
     categories = Category.objects.all()
     return render(request, 'blog/list_category.html',{'categories':categories})
 
-def detail(request, category_slug, slug):
-    language = request.GET.get('language', 'fr')
+def detail(request, language, category_slug, slug):
     labels = DICT_LABELS.get(language).get('web')
-    post = get_object_or_404(Article, slug_francaise=slug, status=Article.ACTIVE)
+    if language == 'en':
+        post = get_object_or_404(Article, slug_anglaise=slug, status=Article.ACTIVE)
+    else:
+        post = get_object_or_404(Article, slug_francaise=slug, status=Article.ACTIVE)
     if request.method == 'POST':
         form = CommentForm(request.POST)
 
@@ -97,18 +115,32 @@ def category(request, slug):
     return render(request, 'blog/post_list.html', {'category': category, 'articles': articles})
 
 def update_article(request, article_id):
-    article = get_object_or_404(Article, id=article_id)
-    if request.method == 'POST':
-        form = ArticleForm(request.POST, request.FILES)
-        if form.is_valid():
-            print(request.FILES)
-            #if 'image' in request.FILES:  
-            #    image_form.image = request.FILES['image'] 
-            form.save()
-            messages.success(request, 'Imagen Actualizada', 'succesful')
-            return redirect('users:list_images') 
+    post = get_object_or_404(Article, id=article_id)
+    form = ArticleForm(instance=post)
 
-    return render(request, 'users/update_image.html',{'article':article})
+    if request.method == 'POST':
+        form = ArticleForm(request.POST, request.FILES, instance=post)
+        if request.POST.get('content_francaise') == '<p>&nbsp;</p>':
+            form.add_error('content_francaise', 'Este campo no puede estar vacío.')
+        if request.POST.get('content_anglaise') == '<p>&nbsp;</p>':
+            form.add_error('content_anglaise', 'Este campo no puede estar vacío.')
+
+        if not form.is_valid():
+            print("Formulario no válido. Errores:", form.errors)
+            for field, errors in form.errors.items():
+                print(f"Errores en el campo {field}: {errors}")
+        else:
+            try:
+                post = form.save(commit=False)
+                post.authors = request.user
+                post.save()
+                messages.success(request, 'Post actualizado correctamente', 'success')
+                return redirect('blog:list_articles')
+            except IntegrityError as e:
+                form.add_error(None, 'Error al guardar el post: ' + str(e))
+                print("Formulario no válido. Errores:", form.errors)
+
+    return render(request, 'blog/new_post.html', {'form': form})
 
 def update_category(request, category_id):
     category = get_object_or_404(Category, id=category_id)

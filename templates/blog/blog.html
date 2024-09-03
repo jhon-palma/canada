@@ -15,16 +15,18 @@
                         <article id="post-2270" class="bwp-masonry-item bwp-blog-col-3 articleprev post-2270 post type-post status-publish format-standard hentry category-formation-en-immobilier">
                             <div class="img">
                                 <div class="cattag">{% if language == "en" %}{{ article.category.title_anglaise }}{% else %}{{ article.category.title_francaise }}{% endif %}</div>
-                                <a href="{% url 'blog:post_detail' article.category.slug_francaise article.slug_francaise %}"><img src="{{ article.image.url }}" alt="{{ article.title }}"></a>
+                                {% if language == "en" %}<a href="{% url 'blog:post_detail' language=language category_slug=article.category.slug_anglaise slug=article.slug_anglaise %}">{% else %}<a href="{% url 'blog:post_detail' language=language category_slug=article.category.slug_francaise slug=article.slug_francaise %}">{% endif %}
+                                    {% if language == "en" %}<img src="{{ article.image_anglaise.url }}" alt="{{ article.title_anglaise }}">{% else %}<img src="{{ article.image_francaise.url }}" alt="{{ article.title_francaise }}">{% endif %}
+                                </a>
                             </div>
                             <p class="date">{{ article.formatted_date }}</p>
                             <h3 class=>
-                                <a href="{% url 'blog:post_detail' article.category.slug_francaise article.slug_francaise %}">{% if language == "en" %}{{ article.title_anglaise }}{% else %}{{ article.title_francaise }}{% endif %}</a>
+                                {% if language == "en" %}<a href="{% url 'blog:post_detail' language=language category_slug=article.category.slug_anglaise slug=article.slug_anglaise %}">{{ article.title_anglaise }}{% else %}<a href="{% url 'blog:post_detail' language=language category_slug=article.category.slug_francaise slug=article.slug_francaise %}">{{ article.title_francaise }}{% endif %}</a>
                             </h3>
                             <div class="bwp-post-excerpt entry-content">
-                                <p>{% if language == "en" %}{{ article.content_anglaise|slice:":60" }}{% else %}{{ article.content_anglaise|slice:":60" }}{% endif %}</p>
+                                <p>{% if language == "en" %}{{ article.content_anglaise|slice:":150"|safe }}{% else %}{{ article.content_anglaise|slice:":150"|safe }}{% endif %}...</p>
                             </div>
-                            <a href="https://ljrealties-blog.com/dernieres-nouvelles-les-hypotheques-fred-et-martin-et-lj-immobilier-presentent-leur-nouveau-programme-radio-sur-cjad-800-am/" class="bouton">Lire</a>
+                            {% if language == "en" %}<a href="{% url 'blog:post_detail' language=language category_slug=article.category.slug_anglaise slug=article.slug_anglaise %}" class="bouton">Read{% else %}<a href="{% url 'blog:post_detail' language=language category_slug=article.category.slug_francaise slug=article.slug_francaise %}" class="bouton">Lire{% endif %}</a>
                         </article>
                     {% endfor %}
                 </div>
@@ -32,3 +34,4 @@
         </div>
     </section>
 </div>
+{% include 'web/footer_web.html' %}

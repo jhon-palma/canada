@@ -60,8 +60,101 @@
                     <form method="post" enctype="multipart/form-data" action="">
                         {% csrf_token %}
                         {{form.media}}
-                        {{form.as_p}}
-                            <button type="submit">Crear</button>
+                        <fieldset class="content-group">
+                            <div class="col-lg-12">
+                                <legend class="text-bold"><i class="icon-spell-check"></i> Nuevo POST</legend>
+                                {% if form.errors %}
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            {% for field in form %}
+                                                {% for error in field.errors %}
+                                                    <li>{{ field.label }}: {{ error }}</li>
+                                                {% endfor %}
+                                            {% endfor %}
+                                            {% for error in form.non_field_errors %}
+                                                <li>{{ error }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                {% endif %}
+                                <div role="tabpanel">
+                                    <ul class="nav nav-tabs">
+                                        <li role="presentation" class="active">
+                                            <a href="#francaise" aria-controls="francaise" role="tab" data-toggle="tab">Francaise</a>
+                                        </li>
+                                        <li role="presentation">
+                                            <a href="#anglaise" aria-controls="anglaise" role="tab" data-toggle="tab">Anglaise</a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div role="tabpanel" class="tab-pane active" id="francaise">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label>{{ form.title_francaise.label_tag }}</label>
+                                                        {{ form.title_francaise }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label>{{ form.content_francaise.label_tag }}</label>
+                                                        {{ form.content_francaise }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        <label>{{ form.image_francaise.label_tag }}</label>
+                                                        {{ form.image_francaise }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div role="tabpanel" class="tab-pane" id="anglaise">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label>{{ form.title_anglaise.label_tag }}</label>
+                                                        {{ form.title_anglaise }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="form-group">
+                                                        <label>{{ form.content_anglaise.label_tag }}</label>
+                                                        {{ form.content_anglaise }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        <label>{{ form.image_anglaise.label_tag }}</label>
+                                                        {{ form.image_anglaise }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>{{ form.category.label_tag }}</label>
+                                            {{ form.category }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <a href="{% url 'blog:list_articles' %}" class="btn bg-orange-600 btn-labeled btn-xlg"  style="width: auto;"><b><i class="icon-undo2"></i></b><span class="margin-left-20">VOLVER</span></a>
+                                    <button type="submit" class="btn bg-primary-800 btn-labeled btn-xlg"  style="width: auto;"><b><i class="icon-floppy-disk"></i></b><span class="margin-left-20">Crear</span></button>
+                                </div>
+                            </div>
+                        </fieldset>
                     </form>
                 </div>
             </div>

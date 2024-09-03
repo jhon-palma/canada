@@ -58,12 +58,12 @@ class Article(models.Model):
     category = models.ForeignKey(Category, related_name='posts', on_delete=models.CASCADE, blank=False, null=False)
     title_francaise = models.CharField(max_length=255)
     title_anglaise = models.CharField(max_length=255)
-    intro = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=10, choices=CHOICES_STATUS, default=ACTIVE)
-    image = models.ImageField(default='blog/images/default.png', upload_to='blog/images/', blank=True, null=True)
-    content_francaise = CKEditor5Field('ContentFrancaise', config_name='extends')
-    content_anglaise = CKEditor5Field('ContentAnglaise', config_name='extends')
+    image_francaise = models.ImageField(default='blog/images/default.png', upload_to='blog/images/', blank=True, null=True)
+    image_anglaise = models.ImageField(default='blog/images/default.png', upload_to='blog/images/', blank=True, null=True)
+    content_francaise = CKEditor5Field('ContentFrancaise', config_name='extends', blank=False, null=False)
+    content_anglaise = CKEditor5Field('ContentAnglaise', config_name='extends', blank=False, null=False)
     authors = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     slug_francaise = models.SlugField(max_length=150, unique=True, blank=True, null=True)
     slug_anglaise = models.SlugField(max_length=150, unique=True, blank=True, null=True)
@@ -100,12 +100,10 @@ class Article(models.Model):
     was_published_recently.short_description = "Published recently?"
 
     def save(self, *args, **kwargs):
-        translator = Translator()
-        translated_title_fr = translator.translate(self.title, dest='fr').text
-        translated_title_en = translator.translate(self.title, dest='en').text
+       
 
-        self.slug_francaise = slugify(translated_title_fr)
-        self.slug_anglaise = slugify(translated_title_en)
+        self.slug_francaise = slugify(self.title_francaise)
+        self.slug_anglaise = slugify(self.title_anglaise)
 
         super(Article, self).save(*args, **kwargs)
 
