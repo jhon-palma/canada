@@ -10,21 +10,25 @@ from django.contrib import messages
 from ..labels import DICT_LABELS
 from django.utils.translation import gettext as _
 from babel.dates import format_date
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+from django.template.loader import render_to_string
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def articles(request, language='fr'):
-    articles = Article.objects.all()
+    articles_list  = Article.objects.filter(active=True)
+    paginator = Paginator(articles_list, 12)
+    page_number = request.GET.get('page')
+    try:
+        articles = paginator.page(page_number)
+    except PageNotAnInteger:
+        # Si el número de página no es un entero, muestra la primera página
+        articles = paginator.page(1)
+    except EmptyPage:
+        # Si la página está fuera del rango, muestra la última página de resultados
+        articles = paginator.page(paginator.num_pages)
     labels = DICT_LABELS.get(language, {}).get('web', {})
-    labels = DICT_LABELS.get(language).get('web')
-    # for article in articles:
-    #     print('########################')
-    #     print(language)
-    #     print(article.get_absolute_url)
-    #     print(article.was_published_recently.admin_order_field)
-    #     print(article.was_published_recently.boolean)
-    #     print(article.was_published_recently.short_description)
-    #     print(article.category.slug_francaise)
-    #     print(article.slug_francaise)
-    #     print('########################')
+    # labels = DICT_LABELS.get(language).get('web')
     for article in articles:
         article.formatted_date = format_date(article.created_at, format='d MMMM yyyy', locale=language)
 
@@ -32,6 +36,7 @@ def articles(request, language='fr'):
         'language':language,
         'labels':labels,
         'articles': articles,
+        'paginator': paginator,
     }
     return render(request, 'blog/blog.html',context)
 
@@ -85,9 +90,9 @@ def categories(request):
 def detail(request, language, category_slug, slug):
     labels = DICT_LABELS.get(language).get('web')
     if language == 'en':
-        post = get_object_or_404(Article, slug_anglaise=slug, status=Article.ACTIVE)
+        post = get_object_or_404(Article, slug_anglaise=slug, active=True)
     else:
-        post = get_object_or_404(Article, slug_francaise=slug, status=Article.ACTIVE)
+        post = get_object_or_404(Article, slug_francaise=slug, active=True)
     if request.method == 'POST':
         form = CommentForm(request.POST)
 
@@ -153,3 +158,23 @@ def update_category(request, category_id):
         else:
             messages.error(request, 'Error al actualizar la categoria')
     return render(request, 'blog/new_category.html',{'category':category})
+
+@csrf_exempt
+def update_status_ajax(request):
+    if request.method == 'POST':
+        record_id = request.POST.get('record_id')
+        try:
+            article = Article.objects.get(id=record_id)
+            if article.active:
+                article.active = False
+                status_message = 'activado'
+            else:
+                article.active = True
+                status_message = 'inactivado'
+            article.save()
+            articles = Article.objects.all()
+            articles_html = render_to_string('blog/articles_list.html', {'articles': articles})
+            return JsonResponse({'success': True, 'message': f'Registro {status_message} con éxito.','articles_html': articles_html})
+        except Article.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Registro no encontrado'})
+    return JsonResponse({'success': False, 'message': 'Método no permitido'})

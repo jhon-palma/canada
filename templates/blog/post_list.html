@@ -1,6 +1,6 @@
 {% extends 'users/base.html' %}
 
-{% block title %}Articles | {% endblock %}
+{% block title %}List Articles | Blog {% endblock %}
 {% block head_page %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'app/css/datatables/dataTables.css' %}"/>
@@ -55,49 +55,46 @@
                 {% endif %}
             {% endfor %}
         {% endif %} 
+        <div id="alertMessage" class="alert alert-success" style="display: none;">
+            <button type="button" class="close" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <span id="alertMessageText"></span>
+        </div>
         <div class="panel panel-flat">
             <div class="panel-heading">
                 <h5 class="panel-title"></h5>
                 <div class="panel-body">
-                    <table id="table_users" class="display" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th style="text-align: center;">Title Francaise</th>
-                                <th style="text-align: center;">Category</th>
-                                <th style="text-align: center;">Image Francaise</th>
-                                <th style="text-align: center;">Image Anglaise</th>
-                                <th style="text-align: center;">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for article in articles %}
-                                <tr>
-                                    <td>{{ article.title_anglaise }}</td>
-                                    <td >{{ article.category }}</td>
-                                    <td><a title="CLICK PARA VER" href="{{ article.image_francaise.url }}" target="_blank"><img width="80" height="70" src="{{ article.image_francaise.url }}"></a></td>
-                                    <td><a title="CLICK PARA VER" href="{{ article.image_anglaise.url }}" target="_blank"><img width="80" height="70" src="{{ article.image_anglaise.url }}"></a></td>
-                                    <td>
-                                        <a href="{% url 'blog:post_detail' language='en' category_slug=article.category.slug_anglaise slug=article.slug_anglaise %}"><i class="icon-new-tab"></i> Ver</a> | 
-                                        <a href="{% url 'blog:update_article' article_id=article.id %}"><i class="icon-pencil7"></i> Editar</a>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th style="text-align: center;">Title Francaise</th>
-                                <th style="text-align: center;">Category</th>
-                                <th style="text-align: center;">Image Francaise</th>
-                                <th style="text-align: center;">Image Anglaise</th>
-                                <th style="text-align: center;">Acciones</th>
-                            </tr>
-                        </tfoot>
-                    </table>
+                    <div id="articlesList">
+                        {% include 'blog/articles_list.html' %}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
+    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmModalLabel">Confirmación</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="modalMessage"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <form id="confirmForm">
+                        {% csrf_token %}
+                        <input type="hidden" name="record_id" id="recordId">
+                        <button type="button" class="btn bg-primary-800 btn-xlg" id="confirmButton">Confirmar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 {% block javascript %}
     <script type="text/javascript" src="{% static 'app/js/pages/form_validation.js' %}"></script>
@@ -106,27 +103,92 @@
     <script type="text/javascript" src="{% static 'app/js/core/libraries/jquery_ui/interactions.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'app/js/plugins/forms/selects/select2.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'app/js/pages/form_select2.js' %}"></script>
+    
     <script>
-        new DataTable('#table_users', {
-            columnDefs: [
-                { 
-                    width: 200,
-                    targets: 0,
-                },
-                { 
-                    targets: 2,
-                    className: 'dt-body-center'
-                },
-                { 
-                    targets: 3,
-                    className: 'dt-body-center'
-                },
-            ],
-            fixedColumns: true,
-            scrollCollapse: true,
-            scrollX: true,
-            scrollY: 300,
-            ordering: false
+        $(document).ready(function() {
+            initializeDataTable();
+            var articleId;
+            var actionType;
+            var dataTable;
+            $(document).on('click', '.open-modal', function() {
+                event.preventDefault();
+
+                articleId = $(this).data('id');
+                var title = $(this).data('title');
+                actionType = $(this).data('action');
+
+                $('#modalMessage').html('¿Está seguro de que desea actualizar el registro <strong>' + title + '</strong>?');
+                $('#recordId').val(articleId);
+
+                $('#confirmModal').modal('show');
+            });
+            $('#confirmButton').on('click', function(event) {
+                event.preventDefault();
+                $.ajax({
+                    url: '{% url "blog:update_status_ajax" %}',
+                    type: 'POST',
+                    data: {
+                        'record_id': $('#recordId').val(),
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function(response) {
+                        var alertDiv = $('#alertMessage');
+                        if (response.success) {
+                            alertDiv.removeClass('alert-danger').addClass('alert-success');
+                            $('#alertMessageText').html(response.message);
+                            $('#articlesList').html(response.articles_html);
+                        } else {
+                            $('#alertMessageText').text(response.message);
+                            $('#alertMessage').removeClass('alert-success').addClass('alert-danger');
+                        }
+                        initializeDataTable();
+                        alertDiv.show();
+                        $('#confirmModal').modal('hide'); 
+                    },
+                    error: function(xhr, status, error) {
+                        $('#alertMessage').removeClass('alert-success').addClass('alert-danger');
+                        $('#alertMessageText').text('Error en la solicitud AJAX.');
+                        $('#alertMessage').show();
+                        $('#confirmModal').modal('hide'); 
+                    }
+                });
+            });
+            function initializeDataTable() {
+                if ($.fn.DataTable.isDataTable('#table_users')) {
+                    $('#table_users').DataTable().destroy();
+                }
+
+                dataTable = new DataTable('#table_users', {
+                    columnDefs: [
+                        { 
+                            width: 200,
+                            targets: 0,
+                        },
+                        { 
+                            targets: 2,
+                            className: 'dt-body-center'
+                        },
+                        { 
+                            targets: 3,
+                            className: 'dt-body-center'
+                        },
+                    ],
+                    fixedColumns: true,
+                    scrollCollapse: true,
+                    scrollX: true,
+                    scrollY: 300,
+                    ordering: false
+                });
+            }
+            $('#alertMessage').on('click', '.close', function() {
+                $('#alertMessage').hide(); // Oculta el div con el mensaje
+            });
+
+            
+            $('#confirmModal').on('hidden.bs.modal', function () {
+                $('#modalMessage').empty();
+                $('#recordId').val('');
+            });
         });
     </script>
 {% endblock %}

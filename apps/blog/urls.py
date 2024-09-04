@@ -11,8 +11,8 @@ urlpatterns = [
     re_path('update_category/(?P<category_id>[\w-]+)/$',login_required(views.update_category), name='update_category'),
     path('categories', views.categories, name='categories'),
     # re_path(r'^(?P<language>fr|en)/<slug:category_slug>/<slug:slug>/', views.detail, name='post_detail'),
-    # re_path(r'^(?P<language>fr|en)/<category_slug:category_slug>/<slug:slug>/', views.detail, name='post_detail'),
     re_path(r'^(?P<language>fr|en)/(?P<category_slug>[-\w]+)/(?P<slug>[-\w]+)/$', views.detail, name='post_detail'),
+    path('update_status_ajax/', views.update_status_ajax, name='update_status_ajax'),
 
     path('<slug:slug>/', views.category, name='category_detail'),
 ]

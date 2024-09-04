@@ -724,10 +724,10 @@ position: relative;color: #fff !important;}
 	transform: rotate(45deg);
 	line-height: 1;
 	position: absolute;
-	top: 0;
+	top: 50px;
 	display: block;
 	cursor: pointer;
-	right: 10px;
+	right: 60px;
 	font-family: Arial;
 	opacity: 1;
 }
@@ -1842,3 +1842,46 @@ body a:visited {
     outline: none !important;
     color: #3f434c;
   }
+
+/* Bootstrap 3.4.1 - Estilos de la clase .container */
+.container {
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  /* Contenedores fluidos */
+  .container-fluid {
+    width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  
+  /* Estilos para puntos de interrupción de la clase .container */
+  @media (min-width: 750px) {
+    .container {
+      width: 750px;
+    }
+  }
+  
+  @media (min-width: 970px) {
+    .container {
+      width: 970px;
+    }
+  }
+  
+  @media (min-width: 1170px) {
+    .container {
+      width: 1170px;
+    }
+  }
+  
+.container::after{
+    clear: both;
+}
+
+.container::before, .container::after{
+    display: table;
+    content: " ";
+}

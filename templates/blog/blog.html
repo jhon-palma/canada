@@ -1,6 +1,6 @@
 {% load static %}{% load tags %}{% include 'web/header_web.html' %}
 {% block header_page %}
-    <link href="{% static 'blog/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- <link href="{% static 'blog/css/bootstrap.min.css' %}" rel="stylesheet"> -->
     <link href="{% static 'blog/css/styles.css' %}" rel="stylesheet">
     <link href="{% static 'blog/css/styleBlog.css' %}" rel="stylesheet">
 {% endblock %}
@@ -11,27 +11,84 @@
             <div class="bwp-masonry-o-hidden">
                 <div id="bwp-masonry-container" class="masonry" role="main">
                     <div class="bwp-blog-col-3-default"></div>
-                    {% for article in articles %}
-                        <article id="post-2270" class="bwp-masonry-item bwp-blog-col-3 articleprev post-2270 post type-post status-publish format-standard hentry category-formation-en-immobilier">
-                            <div class="img">
-                                <div class="cattag">{% if language == "en" %}{{ article.category.title_anglaise }}{% else %}{{ article.category.title_francaise }}{% endif %}</div>
-                                {% if language == "en" %}<a href="{% url 'blog:post_detail' language=language category_slug=article.category.slug_anglaise slug=article.slug_anglaise %}">{% else %}<a href="{% url 'blog:post_detail' language=language category_slug=article.category.slug_francaise slug=article.slug_francaise %}">{% endif %}
-                                    {% if language == "en" %}<img src="{{ article.image_anglaise.url }}" alt="{{ article.title_anglaise }}">{% else %}<img src="{{ article.image_francaise.url }}" alt="{{ article.title_francaise }}">{% endif %}
-                                </a>
+                    {% if articles %}
+                        {% for article in articles %}
+                            <article id="post-2270" class="bwp-masonry-item bwp-blog-col-3 articleprev post-2270 post type-post status-publish format-standard hentry category-formation-en-immobilier">
+                                <div class="img">
+                                    <div class="cattag">{% if language == "en" %}{{ article.category.title_anglaise }}{% else %}{{ article.category.title_francaise }}{% endif %}</div>
+                                    {% if language == "en" %}<a href="{% url 'blog:post_detail' language=language category_slug=article.category.slug_anglaise slug=article.slug_anglaise %}">{% else %}<a href="{% url 'blog:post_detail' language=language category_slug=article.category.slug_francaise slug=article.slug_francaise %}">{% endif %}
+                                        {% if language == "en" %}<img src="{{ article.image_anglaise.url }}" alt="{{ article.title_anglaise }}">{% else %}<img src="{{ article.image_francaise.url }}" alt="{{ article.title_francaise }}">{% endif %}
+                                    </a>
+                                </div>
+                                <p class="date">{{ article.formatted_date }}</p>
+                                <h3 class=>
+                                    {% if language == "en" %}<a href="{% url 'blog:post_detail' language=language category_slug=article.category.slug_anglaise slug=article.slug_anglaise %}">{{ article.title_anglaise }}{% else %}<a href="{% url 'blog:post_detail' language=language category_slug=article.category.slug_francaise slug=article.slug_francaise %}">{{ article.title_francaise }}{% endif %}</a>
+                                </h3>
+                                <div class="bwp-post-excerpt entry-content">
+                                    <p>{% if language == "en" %}{{ article.content_anglaise|slice:":150"|safe }}{% else %}{{ article.content_anglaise|slice:":150"|safe }}{% endif %}...</p>
+                                </div>
+                                {% if language == "en" %}<a href="{% url 'blog:post_detail' language=language category_slug=article.category.slug_anglaise slug=article.slug_anglaise %}" class="bouton">Read{% else %}<a href="{% url 'blog:post_detail' language=language category_slug=article.category.slug_francaise slug=article.slug_francaise %}" class="bouton">Lire{% endif %}</a>
+                            </article>
+                        {% endfor %}
+                    {% else %}
+                        <section class="piecesbloc" style="display: flex; justify-content: center; align-items: center;">
+                            <div class="adressebloc">
+                                <div class="box_vendu">{% if language == "fr" %}Aucun document n'existe{% else %}No records exist{% endif %}</div>
                             </div>
-                            <p class="date">{{ article.formatted_date }}</p>
-                            <h3 class=>
-                                {% if language == "en" %}<a href="{% url 'blog:post_detail' language=language category_slug=article.category.slug_anglaise slug=article.slug_anglaise %}">{{ article.title_anglaise }}{% else %}<a href="{% url 'blog:post_detail' language=language category_slug=article.category.slug_francaise slug=article.slug_francaise %}">{{ article.title_francaise }}{% endif %}</a>
-                            </h3>
-                            <div class="bwp-post-excerpt entry-content">
-                                <p>{% if language == "en" %}{{ article.content_anglaise|slice:":150"|safe }}{% else %}{{ article.content_anglaise|slice:":150"|safe }}{% endif %}...</p>
-                            </div>
-                            {% if language == "en" %}<a href="{% url 'blog:post_detail' language=language category_slug=article.category.slug_anglaise slug=article.slug_anglaise %}" class="bouton">Read{% else %}<a href="{% url 'blog:post_detail' language=language category_slug=article.category.slug_francaise slug=article.slug_francaise %}" class="bouton">Lire{% endif %}</a>
-                        </article>
-                    {% endfor %}
+                        </section>
+                    {% endif %}
                 </div>
             </div>
+            <nav class="navigation pagination" aria-label="Publications">
+                <h2 class="screen-reader-text">Navigation des articles</h2>
+                <div class="nav-links">
+                    {% if articles.has_previous %}
+                        {% if articles.paginator.num_pages > 4 %}
+                            {% if articles.number > 2 %}
+                                <a class="prev page-numbers" href="?page=1"><i class="fa fa-angle-double-left"></i></a>
+                            {% endif %}
+                        {% endif %}
+                        <a class="prev page-numbers" href="?page={{ articles.previous_page_number }}"><i class="fa fa-angle-left"></i></a>
+                    {% endif %}
+
+                    {% if articles.paginator.num_pages > 10 %}
+                        {% if articles.number >= 4 %}
+                            <a class="page-numbers" href="?page=1">1</a>
+                            <span class="page-numbers dots">…</span>
+                        {% endif %}
+                        {% for num in articles.paginator.page_range %}
+                            {% if num >= articles.number|add:"-2" and num <= articles.number|add:"2" %}
+                                {% if articles.number == num %}
+                                    <span aria-current="page" class="page-numbers current">{{ num }}</span>
+                                {% else %}
+                                    <a class="page-numbers" href="?page={{ num }}">{{ num }}</a>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                        {% if articles.number < articles.paginator.num_pages|add:"-2" %}
+                            <span class="page-numbers dots">…</span>
+                            <a class="page-numbers" href="?page={{ articles.paginator.num_pages }}">{{ articles.paginator.num_pages }}</a>
+                        {% endif %}
+                    {% else %}
+                        {% for num in articles.paginator.page_range %}
+                            {% if articles.number == num %}
+                                <span aria-current="page" class="page-numbers current">{{ num }}</span>
+                            {% else %}
+                                <a class="page-numbers" href="?page={{ num }}">{{ num }}</a>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    {% if articles.has_next %}
+                        <a class="next page-numbers" href="?page={{ articles.next_page_number }}"><i class="fa fa-angle-right"></i></a>
+                    {% endif %}
+                    {% if articles.has_next %}
+                        {% if articles.paginator.num_pages > 4 %}
+                            <a class="next page-numbers" href="?page={{ articles.paginator.num_pages }}"><i class="fa fa-angle-double-right"></i></a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </nav>
         </div>
     </section>
 </div>
-{% include 'web/footer_web.html' %}
+{% load static %}{% include 'web/footer_web.html' %}

@@ -1,0 +1,38 @@
+
+<table id="table_users" class="display" style="width:100%">
+    <thead>
+        <tr>
+            <th style="text-align: center;">Title Francaise</th>
+            <th style="text-align: center;">Category</th>
+            <th style="text-align: center;">Image Francaise</th>
+            <th style="text-align: center;">Image Anglaise</th>
+            <th style="text-align: center;">Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for article in articles %}
+            <tr>
+                <td>{{ article.title_anglaise }}</td>
+                <td >{{ article.category }}-{{ article.active }}</td>
+                <td><a title="CLICK PARA VER" href="{{ article.image_francaise.url }}" target="_blank"><img width="80" height="70" src="{{ article.image_francaise.url }}"></a></td>
+                <td><a title="CLICK PARA VER" href="{{ article.image_anglaise.url }}" target="_blank"><img width="80" height="70" src="{{ article.image_anglaise.url }}"></a></td>
+                <td style="text-align: center;">
+                    <a href="{% url 'blog:post_detail' language='en' category_slug=article.category.slug_anglaise slug=article.slug_anglaise %}"><i class="icon-new-tab"></i> Ver</a> | 
+                    <a href="{% url 'blog:update_article' article_id=article.id %}"><i class="icon-pencil7"></i> Editar</a> | 
+                    <a href="#" class="open-modal" data-toggle="modal" data-target="#confirmModal" data-title="{{ article.title_francaise }}" data-id="{{ article.id }}">
+                        {% if article.active %}<i class="icon-blocked"></i> Inactivar{% else %}<i class="icon-checkmark-circle2"></i> Activar{% endif %}
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <th style="text-align: center;">Title Francaise</th>
+            <th style="text-align: center;">Category</th>
+            <th style="text-align: center;">Image Francaise</th>
+            <th style="text-align: center;">Image Anglaise</th>
+            <th style="text-align: center;">Acciones</th>
+        </tr>
+    </tfoot>
+</table>
