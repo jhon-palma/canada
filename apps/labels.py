@@ -250,6 +250,20 @@ DICT_LABELS = {
                     'three':'Phone',
                 },
             },
+            'blog':{
+                'button':{
+                    'one':'Login',
+                    'two':'Or',
+                    'three':'Sign up',
+                    'four':'Create an account',
+                },
+                'placeholder':{
+                    'one':'E-mail',
+                    'two': 'Confirm E-mail',
+                    'three': 'Password',
+                    'four': 'Confirm Password',
+                }
+            },
         },
     },
     'fr':{
@@ -498,6 +512,20 @@ DICT_LABELS = {
                     'two':'Courriel',
                     'three':'Téléphone',
                 },
+            },
+            'blog':{
+                'button':{
+                    'one':'Se connecter',
+                    'two':'Pas de compte ?',
+                    'three':'Inscrivez-vous.',
+                    'four':'Créez votre compte',
+                },
+                'placeholder':{
+                    'one':'Courriel',
+                    'two': 'Confirmer le courrier',
+                    'three': 'Mot de passe',
+                    'four': 'Confirmer le mot de passe',
+                }
             },
         },
     },

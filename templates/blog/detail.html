@@ -2,84 +2,99 @@
 {% block header_page %}
     <link href="{% static 'blog/css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'blog/css/styles.css' %}" rel="stylesheet">
+    <style>
+        /* Estilos básicos para el modal */
+        
+    </style>
 {% endblock %}
-<section class="bwp-single-page-wrap">
-	<div class="container">
-        <div class="bwp-single-page-container mt-4" role="main">
-
-				
-				
-            <!-- article -->
-            <article id="post-921" class="bwp-single-article bwp-transition-3">
-
-                
-                <!-- content container -->
-                <div class="bwp-single-content">
-
-                    <!-- content -->
-                    <div class="bwp-content entry-content clearfix">
-                        <p>
-                            <img class="aligncenter size-full" src="{% if language == 'en' %}{{ post.image_anglaise.url }}{% else %}{{ post.image_francaise.url }}{% endif %}">
-                        </p>
-                        <p>{% if language == "en" %}{{ post.content_anglaise|safe }}{% else %}{{ post.content_francaise|safe }}{% endif %}</p>
-                        <div class="row">
-                            <div class="col-md-7">
-                                <div class="bwp-single-share-wrap">
-                                    <span>Share:</span>
-                                    <ul class="bwp-single-share list-unstyled">
-                                        <li>
-                                            <a href="https://www.facebook.com/sharer.php?u={{ post.get_absolute_url }}" rel="nofollow noopener" target="_blank" class="bwp-share-link bwp-facebook-share" onclick="window.open('https://www.facebook.com/sharer.php?u={{ post.get_absolute_url }}', 'Facebook', 'width=700,height=500,left='+(screen.availWidth/2-350)+',top='+(screen.availHeight/2-250)+''); return false;">
-                                                <i class="fa fa-facebook"></i>
-                                            </a>
+    <section class="bwp-single-page-wrap">
+        <div class="container">
+            <div class="bwp-single-page-container mt-4" role="main">
+                <article id="post-921" class="bwp-single-article bwp-transition-3">
+                    <div class="bwp-single-content">
+                        <div class="bwp-content entry-content clearfix">
+                            <p><img class="aligncenter size-full" src="{% if language == 'en' %}{{ post.image_anglaise.url }}{% else %}{{ post.image_francaise.url }}{% endif %}"></p>
+                            <p>{% if language == "en" %}{{ post.content_anglaise|safe }}{% else %}{{ post.content_francaise|safe }}{% endif %}</p>
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <div class="bwp-single-share-wrap">
+                                        <span>Share:</span>
+                                        <ul class="bwp-single-share list-unstyled">
+                                            <li>
+                                                <a href="https://www.facebook.com/sharer.php?u={{ post.get_absolute_url }}" rel="nofollow noopener" target="_blank" class="bwp-share-link bwp-facebook-share" onclick="window.open('https://www.facebook.com/sharer.php?u={{ post.get_absolute_url }}', 'Facebook', 'width=700,height=500,left='+(screen.availWidth/2-350)+',top='+(screen.availHeight/2-250)+''); return false;">
+                                                    <i class="fa fa-facebook"></i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="https://twitter.com/share?url={{ post.get_absolute_url }}" rel="nofollow noopener" target="_blank" class="bwp-share-link bwp-twitter-share" onclick="window.open('https://twitter.com/share?url={{ post.get_absolute_url }}', 'Twitter', 'width=700,height=500,left='+(screen.availWidth/2-350)+',top='+(screen.availHeight/2-250)+''); return false;">
+                                                    <i class="fa fa-twitter"></i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="http://vk.com/share.php?url={{ post.get_absolute_url }}" rel="nofollow noopener" target="_blank" class="bwp-share-link bwp-vk-share" onclick="window.open('http://vk.com/share.php?url={{ post.get_absolute_url }}', 'VK', 'width=600,height=300,left='+(screen.availWidth/2-300)+',top='+(screen.availHeight/2-150)+''); return false;">
+                                                    <i class="fa fa-vk"></i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="http://pinterest.com/pin/create/button/?url={{ post.get_absolute_url }}&media=&description=Les%20crit%C3%A8res%20%C3%A0%20prendre%20en%20compte%20lors%20de%20la%20recherche%20d%E2%80%99une%20maison%20en%20hiver" rel="nofollow noopener" target="_blank" class="bwp-share-link bwp-pinterest-share" onclick="window.open('http://pinterest.com/pin/create/button/?url={{ post.get_absolute_url }}&media=&description=Les%20crit%C3%A8res%20%C3%A0%20prendre%20en%20compte%20lors%20de%20la%20recherche%20d%E2%80%99une%20maison%20en%20hiver', 'Pinterest', 'width=800,height=700,left='+(screen.availWidth/2-400)+',top='+(screen.availHeight/2-350)+''); return false;">
+                                                    <i class="fa fa-pinterest-p"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <ul class="bwp-single-counters list-unstyled clearfix ">
+                                        <li class="bwp-views-count"><i class="fa fa-eye"></i>{{ post.visites }}</li>
+                                        <li class="bwp-likes-count">
+                                            <span class="jm-post-like">
+                                                {% if language == 'en' %}
+                                                    <a href="#" class="like-button" data-language="{{ language }}" data-category_slug="{{ post.category.slug_anglaise }}" data-slug="{{ post.slug_anglaise }}">
+                                                {% else %}
+                                                    <a href="#" class="like-button" data-language="{{ language }}" data-category_slug="{{ post.category.slug_francaise }}" data-slug="{{ post.slug_francaise }}">
+                                                {% endif %}
+                                                <span class="like">
+                                                    {% if user.is_authenticated %}
+                                                        {% if user_liked %}
+                                                            <i class="fa fa-heart"></i>
+                                                        {% else %}
+                                                            <i class="fa fa-heart-o"></i>
+                                                        {% endif %}
+                                                    {% else %}
+                                                        <i class="fa fa-heart-o"></i>
+                                                    {% endif %}
+                                                </span>
+                                                    <span class="count">{{ post.like_set.count }}</span>
+                                                </a>
+                                            </span>
                                         </li>
-                                        <li>
-                                            <a href="https://twitter.com/share?url={{ post.get_absolute_url }}" rel="nofollow noopener" target="_blank" class="bwp-share-link bwp-twitter-share" onclick="window.open('https://twitter.com/share?url={{ post.get_absolute_url }}', 'Twitter', 'width=700,height=500,left='+(screen.availWidth/2-350)+',top='+(screen.availHeight/2-250)+''); return false;">
-                                                <i class="fa fa-twitter"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="http://vk.com/share.php?url={{ post.get_absolute_url }}" rel="nofollow noopener" target="_blank" class="bwp-share-link bwp-vk-share" onclick="window.open('http://vk.com/share.php?url={{ post.get_absolute_url }}', 'VK', 'width=600,height=300,left='+(screen.availWidth/2-300)+',top='+(screen.availHeight/2-150)+''); return false;">
-                                                <i class="fa fa-vk"></i>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="http://pinterest.com/pin/create/button/?url={{ post.get_absolute_url }}&media=&description=Les%20crit%C3%A8res%20%C3%A0%20prendre%20en%20compte%20lors%20de%20la%20recherche%20d%E2%80%99une%20maison%20en%20hiver" rel="nofollow noopener" target="_blank" class="bwp-share-link bwp-pinterest-share" onclick="window.open('http://pinterest.com/pin/create/button/?url={{ post.get_absolute_url }}&media=&description=Les%20crit%C3%A8res%20%C3%A0%20prendre%20en%20compte%20lors%20de%20la%20recherche%20d%E2%80%99une%20maison%20en%20hiver', 'Pinterest', 'width=800,height=700,left='+(screen.availWidth/2-400)+',top='+(screen.availHeight/2-350)+''); return false;">
-                                                <i class="fa fa-pinterest-p"></i>
-                                            </a>
-                                        </li>
+                                    
                                     </ul>
                                 </div>
                             </div>
-                            <div class="col-md-5">
-                                <ul class="bwp-single-counters list-unstyled clearfix ">
-                                    <li class="bwp-views-count"><i class="fa fa-eye"></i>323</li>
-                                    <li class="bwp-likes-count"><span class="jm-post-like"><a rel="nofollow" href="#" data-post_id="921"><span class="like"><i class="fa fa-heart-o"></i></span><span class="count">0</span></a></span></li>
+                            <div class="bwp-single-metadata-wrap">
+                                <ul class="bwp-single-metadata list-unstyled">
+                                    <li>
+                                        <span class="vcard author">
+                                            <span class="fn">
+                                                <i class="fa fa-pencil-square-o"></i><a href="https://ljrealties-blog.com/author/admin/" title="Articles par admin" rel="author">{{ post.authors.first_name }}</a>
+                                            </span>
+                                        </span>
+                                        <span class="bwp-metadata-slash">/</span>
+                                    </li>
+                                    <li>
+                                        <span class="date updated">
+                                            <i class="fa fa-clock-o"></i><a href="https://ljrealties-blog.com/2023/12/28/">{{ post.created_at|date:"d F Y" }}</a>
+                                        </span>
+                                        <span class="bwp-metadata-slash">/</span>
+                                    </li>
+                                    <li>
+                                        <i class="fa fa-bookmark-o"></i><a href="https://ljrealties-blog.com/category/conseils/" rel="category tag">Conseils</a>
+                                        <span class="bwp-metadata-slash">/</span>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
-                        <div class="bwp-single-metadata-wrap">
-                            <ul class="bwp-single-metadata list-unstyled">
-                                <li>
-                                    <span class="vcard author">
-                                        <span class="fn">
-                                            <i class="fa fa-pencil-square-o"></i><a href="https://ljrealties-blog.com/author/admin/" title="Articles par admin" rel="author">{{ post.authors.first_name }}</a>
-                                        </span>
-                                    </span>
-                                    <span class="bwp-metadata-slash">/</span>
-                                </li>
-                                <li>
-                                    <span class="date updated">
-                                        <i class="fa fa-clock-o"></i><a href="https://ljrealties-blog.com/2023/12/28/">{{ post.created_at|date:"d F Y" }}</a>
-                                    </span>
-                                    <span class="bwp-metadata-slash">/</span>
-                                </li>
-                                <li>
-                                    <i class="fa fa-bookmark-o"></i><a href="https://ljrealties-blog.com/category/conseils/" rel="category tag">Conseils</a>
-                                    <span class="bwp-metadata-slash">/</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
                     <div>
                     <hr>
                     <p class="__txoform"><span>Comments</span></p>
@@ -110,21 +125,101 @@
                         </article>
                     {% endfor %}
                 </article>
-                <!-- {% with post.category.slug_francaise as category_slug %}
-                {% with post.slug_francaise as post_slug %}
-                {% with category_slug|add:"/"|add:post_slug as url %}
-                    {% include 'blog/comments.html' with url=url %}
-                {% endwith %}
-                {% endwith %}
-                {% endwith %} -->
-
+                    <!-- {% with post.category.slug_francaise as category_slug %}
+                    {% with post.slug_francaise as post_slug %}
+                    {% with category_slug|add:"/"|add:post_slug as url %}
+                        {% include 'blog/comments.html' with url=url %}
+                    {% endwith %}
+                    {% endwith %}
+                    {% endwith %} -->
+                
             </div>
         </div>
-    </div>
-</section>
+    </section>
+    <hr>
+    <section class="popnews" id="loginModal">
+        <span class="close">+</span>
+        <article>
+            <div id="confirm_message_loginModal" class="confirm_message" style="color: black;"></div>
+            <form action="https://ljrealties.us20.list-manage.com/subscribe/post?u=cae8a392e5c10d2e79b4d6635&amp;id=c5c07613d4&amp;f_id=00f7ccedf0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank">
+                <p class="h2def"><strong>{{ labels.blog.button.one }}</strong></p>
+                <input type="email" name="EMAIL" id="login-EMAIL" class="champs_tem" required="required" placeholder="{{ labels.blog.placeholder.one }} *"/>
+                <input type="password" name="PASSWORD" id="login-FNAME" class="champs_tem" required="required" placeholder="{{ labels.blog.placeholder.two }} *"/>
+                <div hidden=""><input type="hidden" name="tags" value="1114108"></div>
+                <div id="mce-responses" class="clear">
+                    <div class="response" id="mce-error-response" style="display:none; color: #000000; padding: 14px;"></div>
+                    <div class="response" id="mce-success-response" style="display:none; color: #000000; padding: 14px;"></div>
+                </div>
+                <div aria-hidden="true" style="position:absolute; left:-5000px;">
+                    <input type="text" name="b_cae8a392e5c10d2e79b4d6635_c5c07613d4" tabindex="-1" value="">
+                </div>
+                <input type="submit" style="margin-top: 20px; margin-bottom: 20px;" name="login" id="mc-embedded-login" class="bouton pointer" value="{{ labels.blog.button.one }}" data-field="loginModal">
+                <div class="loginBtn">{{ labels.blog.button.two }}<a href="#" id="openModalSignUp"> {{ labels.blog.button.three }}</a></div>
+            </form>
+            
+        </article>
+    </section>
+    <section class="poplogin" id="signupModal">
+        <span class="close">+</span>
+        <article>
+            <form action="https://ljrealties.us20.list-manage.com/subscribe/post?u=cae8a392e5c10d2e79b4d6635&amp;id=c5c07613d4&amp;f_id=00f7ccedf0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank">
+                <div id="confirm_message_signupModal" class="confirm_message" style="color: black;"></div>
+                <p class="h2def"><strong>{{ labels.blog.button.four }}</strong></p>
+                <input type="email" name="EMAIL" id="signup-EMAIL" class="champs_tem" required="required" placeholder="{{ labels.blog.placeholder.one }} *"/>
+                <input type="email" name="RE-EMAIL" id="signup-RE-EMAIL" class="champs_tem" required="required" placeholder="{{ labels.blog.placeholder.two }} *"/>
+                <input type="password" name="PASSWORD" id="login-PASSWORD" class="champs_tem" required="required" placeholder="{{ labels.blog.placeholder.three }} *"/>
+                <input type="password" name="RE-PASSWORD" id="login-RE-PASSWORD" class="champs_tem" required="required" placeholder="{{ labels.blog.placeholder.four }} *"/>
+                <input type="submit" style="margin-top: 20px; margin-bottom: 20px;" name="signup" id="mc-embedded-subscribe" class="bouton pointer" value="{{ labels.blog.button.four }}" data-field="newsletter">
+            </form>
+        </article>
+    </section>
 
-                
-                            <hr>
+    <script>
+        $(document).ready(function() {
+            $('.like-button').on('click', function(e) {
+                e.preventDefault();
 
-                    
+                var $this = $(this);
+                var language = $this.data('language');
+                var category_slug = $this.data('category_slug');
+                var slug = $this.data('slug');
+                var url = "{% url 'blog:like_article' language='en' category_slug='slug_category' slug='slug_article' %}";
+                url = url.replace('en', language).replace('slug_category', category_slug).replace('slug_article', slug);
+                $.ajax({
+                    url: url,
+                    method: 'GET',
+                    success: function(response) {
+                        if (response.liked) {
+                            $this.find('.like i').removeClass('fa-heart-o').addClass('fa-heart');
+                        } else {
+                            $this.find('.like i').removeClass('fa-heart').addClass('fa-heart-o');
+                        }
+                        $this.find('.count').text(response.likes_count);
+                    },
+                    error: function(xhr) {
+                        if (xhr.status === 401) {
+                            $('#loginModal').fadeIn();
+                        }
+                    }
+                });
+            });
+            $('#openModalSignUp').on('click', function(event) {
+                event.preventDefault();
+                $('#loginModal').fadeOut();
+                $('#signupModal').fadeIn();
+            });
+        });
+    </script>
+    <!-- <script>
+        document.getElementById('like-button2').addEventListener('click', function(event) {
+            {% if not user.is_authenticated %}
+                event.preventDefault();
+                $('#authModal').modal('show');
+            {% else %}
+                document.getElementById('like-form').submit();
+            {% endif %}
+        });
+    </script> -->
+    <!-- /blog/article/like/fr/real-estate-education/pourquoi-vancouver-et-toronto-ne-peuvent-rivaliser-avec-les-prix-de-limmobilier-a-montreal/ -->
+    <!-- /blog/fr/real-estate-education/pourquoi-vancouver-et-toronto-ne-peuvent-rivaliser-avec-les-prix-de-limmobilier-a-montreal/blog/article/like/fr/real-estate-education/pourquoi-vancouver-et-toronto-ne-peuvent-rivaliser-avec-les-prix-de-limmobilier-a-montreal/ -->
 {% include 'web/footer_web.html' %}

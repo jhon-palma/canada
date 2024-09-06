@@ -13,6 +13,6 @@ urlpatterns = [
     # re_path(r'^(?P<language>fr|en)/<slug:category_slug>/<slug:slug>/', views.detail, name='post_detail'),
     re_path(r'^(?P<language>fr|en)/(?P<category_slug>[-\w]+)/(?P<slug>[-\w]+)/$', views.detail, name='post_detail'),
     path('update_status_ajax/', views.update_status_ajax, name='update_status_ajax'),
-
+    re_path(r'^article/like/(?P<language>fr|en)/(?P<category_slug>[-\w]+)/(?P<slug>[-\w]+)/$', views.like_article, name='like_article'),
     path('<slug:slug>/', views.category, name='category_detail'),
 ]

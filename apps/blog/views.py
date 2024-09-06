@@ -1,7 +1,8 @@
 import pdb
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404, redirect, render
-from .models import Article, Category
+from django.urls import reverse
+from .models import Article, Category, Like
 from .forms import ArticleForm, CategoryAdminForm, CommentForm
 from django.db.models import Q
 from django.views.generic import ListView
@@ -13,6 +14,7 @@ from babel.dates import format_date
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.template.loader import render_to_string
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def articles(request, language='fr'):
@@ -93,6 +95,13 @@ def detail(request, language, category_slug, slug):
         post = get_object_or_404(Article, slug_anglaise=slug, active=True)
     else:
         post = get_object_or_404(Article, slug_francaise=slug, active=True)
+    post.visites += 1
+    post.save()
+
+    user_liked = False
+    if request.user.is_authenticated:
+        user_liked = Like.objects.filter(user=request.user, post=post).exists()
+
     if request.method == 'POST':
         form = CommentForm(request.POST)
 
@@ -109,6 +118,7 @@ def detail(request, language, category_slug, slug):
         'labels':labels,
         'form': form,
         'post': post,
+        'user_liked': user_liked,
     }
 
     return render(request, 'blog/detail.html', context)
@@ -178,3 +188,28 @@ def update_status_ajax(request):
         except Article.DoesNotExist:
             return JsonResponse({'success': False, 'message': 'Registro no encontrado'})
     return JsonResponse({'success': False, 'message': 'Método no permitido'})
+
+def like_article(request, language, category_slug, slug):
+
+    if not request.user.is_authenticated:
+        print("=============================")
+        return JsonResponse({'error': 'Unauthorized'}, status=401)
+    
+    if language == 'en':
+        article = get_object_or_404(Article, slug_anglaise=slug, active=True)
+    else:
+        article = get_object_or_404(Article, slug_francaise=slug, active=True)
+    liked = Like.objects.filter(user=request.user, post=article).exists()
+    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+    print(liked)
+    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+    if not liked:
+        Like.objects.create(user=request.user, post=article)
+        liked = True
+
+    likes_count = article.like_set.count()
+
+    return JsonResponse({
+        'liked': liked,
+        'likes_count': likes_count
+    })

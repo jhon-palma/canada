@@ -245,7 +245,7 @@ $(document).ready(function(){
 
     $('span.close').click(function(){
 
-		$('.poppod, .popnews, .popwwu').fadeOut();
+		$('.poppod, .popnews, .popwwu, .poplogin').fadeOut();
 
 		if($('.poppod').length){
 

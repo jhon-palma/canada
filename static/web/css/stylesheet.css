@@ -6373,7 +6373,7 @@ img.mfp-img{
 	padding: 5px 0;
 }
 .teal_btn,
-button[type=submit], .popnews article input[type=submit], .popwwu  article input[type=submit] {
+button[type=submit], .popnews article input[type=submit], .poplogin article input[type=submit], .popwwu  article input[type=submit] {
 	color: #fff !important;
     border: 1px solid #00AAAE;
 	

@@ -919,10 +919,6 @@ blockquote.right { float: right; }
 
 }
 
-
-
-
-
 /**
 
  * 3.0 - Header
@@ -934,35 +930,19 @@ blockquote.right { float: right; }
 
 
 #bwp-header-wrap {
-
   background-color: #2e3340;
-
 }
-
-
 
 /* bg image */
 
 .bwp-header-bg {
-
   width: 100%;
-
   position: relative;
-
-
-
   -webkit-background-size: cover !important;
-
   -moz-background-size: cover !important;
-
   -o-background-size: cover !important;
-
   background-size: cover !important;
-
-
-
   background-attachment: fixed !important;
-
 }
 
 
@@ -12865,14 +12845,9 @@ input[type="radio"] {
 
   }
 
-  .widget_bwp_content {
-
-    height: 62px;
-
-  }
-
-
-
+    .widget_bwp_content {
+        height: 62px;
+    }
 }
 
 .bwp-single-article{
@@ -12881,4 +12856,81 @@ input[type="radio"] {
 
 textarea {
     resize: none
+}
+
+/* Bootstrap 3.4.1 - Estilos de la clase .container */
+.container {
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  /* Contenedores fluidos */
+  .container-fluid {
+    width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  
+  /* Estilos para puntos de interrupción de la clase .container */
+  @media (min-width: 750px) {
+    .container {
+      width: 750px;
+    }
+  }
+  
+  @media (min-width: 970px) {
+    .container {
+      width: 970px;
+    }
+  }
+  
+  @media (min-width: 1170px) {
+    .container {
+      width: 1170px;
+    }
+  }
+  
+.container::after{
+    clear: both;
+}
+
+.container::before, .container::after{
+    display: table;
+    content: " ";
+}
+
+.poppod .close, .popnews .close, .popwwu .close, .poplogin .close {
+    color: #fff;
+    font-size: 60px;
+    transform: rotate(45deg);
+    line-height: 1;
+    position: absolute;
+    top: 50px;
+    display: block;
+    cursor: pointer;
+    right: 60px;
+    font-family: Arial;
+    opacity: 1;
+}
+
+.validate{
+    color: #3f434c;
+}
+
+#loginModal a {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.6;
+    color: #00AAAE;
+}
+
+.loginBtn {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.6;
+    color: #3f434c;
 }
