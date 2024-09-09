@@ -256,12 +256,21 @@ DICT_LABELS = {
                     'two':'Or',
                     'three':'Sign up',
                     'four':'Create an account',
+                    'five':'Submit comment',
                 },
                 'placeholder':{
                     'one':'E-mail',
                     'two': 'Confirm E-mail',
                     'three': 'Password',
                     'four': 'Confirm Password',
+                },
+                'error':{
+                    'one':'Emails do not match.',
+                    'two': 'Passwords do not match.',
+                    'three': 'The password must be at least 8 characters long, include letters, numbers and a special character.',
+                },
+                'text':{
+                    'one':'Comments',
                 }
             },
         },
@@ -519,12 +528,21 @@ DICT_LABELS = {
                     'two':'Pas de compte ?',
                     'three':'Inscrivez-vous.',
                     'four':'Créez votre compte',
+                    'five':'Soumettre un commentaire',
                 },
                 'placeholder':{
                     'one':'Courriel',
                     'two': 'Confirmer le courrier',
                     'three': 'Mot de passe',
                     'four': 'Confirmer le mot de passe',
+                },
+                'error':{
+                    'one':'Les courriels ne correspondent pas.',
+                    'two': 'Les mots de passe ne correspondent pas.',
+                    'three': 'Le mot de passe doit comporter au moins 8 caractères, des lettres, des chiffres et un caractère spécial.',
+                },
+                'text':{
+                    'one':'Commentaires',
                 }
             },
         },

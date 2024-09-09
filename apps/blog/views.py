@@ -1,9 +1,12 @@
 import pdb
 from django.db import IntegrityError
+from django.forms import ValidationError
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
+
+from apps.accounts.models import CustomUser
 from .models import Article, Category, Like
-from .forms import ArticleForm, CategoryAdminForm, CommentForm
+from .forms import ArticleForm, CategoryAdminForm
 from django.db.models import Q
 from django.views.generic import ListView
 from django.conf import settings
@@ -16,6 +19,9 @@ from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.auth import login, authenticate
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
 
 def articles(request, language='fr'):
     articles_list  = Article.objects.filter(active=True)
@@ -102,23 +108,29 @@ def detail(request, language, category_slug, slug):
     if request.user.is_authenticated:
         user_liked = Like.objects.filter(user=request.user, post=post).exists()
 
+    previous_post = Article.objects.filter(
+        active=True,
+        created_at__lt=post.created_at
+    ).order_by('-created_at').first()
+    
+    next_post = Article.objects.filter(
+        active=True,
+        created_at__gt=post.created_at
+    ).order_by('created_at').first()
+    
     if request.method == 'POST':
-        form = CommentForm(request.POST)
-
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.post = post
-            comment.save()
+        
 
             return redirect('post_detail', slug=slug)
-    else:
-        form = CommentForm()
+
     context = {
         'language':language,
         'labels':labels,
-        'form': form,
+        
         'post': post,
         'user_liked': user_liked,
+        'previous_post': previous_post,
+        'next_post': next_post,
     }
 
     return render(request, 'blog/detail.html', context)
@@ -192,7 +204,6 @@ def update_status_ajax(request):
 def like_article(request, language, category_slug, slug):
 
     if not request.user.is_authenticated:
-        print("=============================")
         return JsonResponse({'error': 'Unauthorized'}, status=401)
     
     if language == 'en':
@@ -200,10 +211,124 @@ def like_article(request, language, category_slug, slug):
     else:
         article = get_object_or_404(Article, slug_francaise=slug, active=True)
     liked = Like.objects.filter(user=request.user, post=article).exists()
-    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-    print(liked)
-    print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-    if not liked:
+    if liked:
+        Like.objects.filter(user=request.user, post=article).delete()
+        liked = False
+    else:
+        Like.objects.create(user=request.user, post=article)
+        liked = True
+
+    likes_count = article.like_set.count()
+
+    return JsonResponse({
+        'liked': liked,
+        'likes_count': likes_count
+    })
+
+def signup_blog(request):
+    if request.method == 'POST':
+        email = request.POST.get('email_signup')
+        re_email = request.POST.get('re_mail_signup')
+        password = request.POST.get('password_signup')
+        re_password = request.POST.get('re_password_signup')
+        language = request.POST.get('language')
+        slug = request.POST.get('post_slug')
+
+        if email != re_email:
+            return JsonResponse({'success': False, 'error_message': 'Los correos electrónicos no coinciden.'})
+        
+        if password != re_password:
+            return JsonResponse({'success': False, 'error_message': 'Las contraseñas no coinciden.'})
+
+        try:
+            user = CustomUser.objects.create_user(username=email, email=email, password=password)
+            if user:
+                login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+                if language == 'en':
+                    article = get_object_or_404(Article, slug_anglaise=slug, active=True)
+                else:
+                    article = get_object_or_404(Article, slug_francaise=slug, active=True)
+                liked = Like.objects.filter(user=user, post=article).exists()
+                if not liked:
+                    Like.objects.create(user=user, post=article)
+                    liked = True
+
+                likes_count = article.like_set.count()
+                return JsonResponse({
+                    'success': True,
+                    'liked': liked,
+                    'likes_count': likes_count
+                })
+        except IntegrityError:
+            if language == "en":
+                message = 'A user with this email already exists.'
+            else:
+                message = 'Un utilisateur avec cet email existe déjà.'
+            return JsonResponse({'success': False, 'error_message': message})
+        except ValidationError as e:
+            return JsonResponse({'success': False, 'error_message': str(e)})
+
+    return JsonResponse({'success': False, 'error_message': 'Método de solicitud no permitido.'})
+
+def login_blog(request):
+    if request.method == 'POST':
+        email = request.POST.get('email_login')
+        password = request.POST.get('password_login')
+        language = request.POST.get('language')
+        slug = request.POST.get('post_slug')
+        print(email)
+        try:
+            # Validate email format
+            validate_email(email)
+        except ValidationError:
+            if language == 'en': 
+                message = 'Invalid email address'
+            else:
+                message = 'Courriel non valide'
+            return JsonResponse({'success': False, 'error_message': message})
+
+        user = authenticate(request, username=email, password=password)
+        
+        if user is not None:
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            if language == 'en':
+                    article = get_object_or_404(Article, slug_anglaise=slug, active=True)
+            else:
+                article = get_object_or_404(Article, slug_francaise=slug, active=True)
+            liked = Like.objects.filter(user=user, post=article).exists()
+            if not liked:
+                Like.objects.create(user=user, post=article)
+                liked = True
+
+            likes_count = article.like_set.count()
+            return JsonResponse({
+                    'success': True,
+                    'liked': liked,
+                    'likes_count': likes_count
+                })
+        else:
+            message = 'Invalid email or password'
+            return JsonResponse({'success': False, 'error_message': message})
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method'})
+
+def comment(request):
+    if request.method == 'POST':
+        language = request.POST.get('language')
+        slug = request.POST.get('post_slug')
+
+    if not request.user.is_authenticated:
+        return JsonResponse({'error': 'Unauthorized'}, status=401)
+    
+    if language == 'en':
+        article = get_object_or_404(Article, slug_anglaise=slug, active=True)
+    else:
+        article = get_object_or_404(Article, slug_francaise=slug, active=True)
+    liked = Like.objects.filter(user=request.user, post=article).exists()
+    if liked:
+        Like.objects.filter(user=request.user, post=article).delete()
+        liked = False
+    else:
         Like.objects.create(user=request.user, post=article)
         liked = True
 

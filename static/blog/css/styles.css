@@ -12901,7 +12901,7 @@ textarea {
     content: " ";
 }
 
-.poppod .close, .popnews .close, .popwwu .close, .poplogin .close {
+.poppod .close, .popnews .close, .popwwu .close, .poplogin .close, .popcomments .close {
     color: #fff;
     font-size: 60px;
     transform: rotate(45deg);
@@ -12919,7 +12919,7 @@ textarea {
     color: #3f434c;
 }
 
-#loginModal a {
+#loginModal a, #loginModalComments a {
     font-size: 14px;
     font-style: normal;
     font-weight: 400;

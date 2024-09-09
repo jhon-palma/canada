@@ -131,7 +131,47 @@ $(document).ready(function(){
 		$("#confirm_message").html("");
 
     });
+    
+    $('.popnews .close').click(function(e){
 
+        e.preventDefault();
+
+        $('.popnews').fadeOut();
+
+		$("#login-form").trigger("reset");
+
+		$("#confirm_message_loginModal").html("");
+
+    });
+    
+    $('.popcomments .close').click(function(e){
+
+        e.preventDefault();
+
+        $('.popcomments').fadeOut();
+
+		$("#login-form-comment").trigger("reset");
+
+		$("#errorMessagesLogincomments").html("");
+
+    });
+
+    $('.poplogin .close').click(function(e){
+
+        e.preventDefault();
+
+        $('.poplogin').fadeOut();
+
+		$("#signup-form").trigger("reset");
+
+		$("#confirm_message_signupModal").html("");
+		$("#emailError").html("");
+		$("#passwordError").html("");
+        $("#errorMessages").html("");
+
+    });
+
+    
 
 	if($('.fullscreenfiche').length){
 
@@ -245,7 +285,7 @@ $(document).ready(function(){
 
     $('span.close').click(function(){
 
-		$('.poppod, .popnews, .popwwu, .poplogin').fadeOut();
+		$('.poppod, .popwwu').fadeOut();
 
 		if($('.poppod').length){
 

@@ -49,9 +49,9 @@
                                         <li class="bwp-likes-count">
                                             <span class="jm-post-like">
                                                 {% if language == 'en' %}
-                                                    <a href="#" class="like-button" data-language="{{ language }}" data-category_slug="{{ post.category.slug_anglaise }}" data-slug="{{ post.slug_anglaise }}">
+                                                    <a href="#" class="like-button">
                                                 {% else %}
-                                                    <a href="#" class="like-button" data-language="{{ language }}" data-category_slug="{{ post.category.slug_francaise }}" data-slug="{{ post.slug_francaise }}">
+                                                    <a href="#" class="like-button">
                                                 {% endif %}
                                                 <span class="like">
                                                     {% if user.is_authenticated %}
@@ -77,19 +77,19 @@
                                     <li>
                                         <span class="vcard author">
                                             <span class="fn">
-                                                <i class="fa fa-pencil-square-o"></i><a href="https://ljrealties-blog.com/author/admin/" title="Articles par admin" rel="author">{{ post.authors.first_name }}</a>
+                                                <i class="fa fa-pencil-square-o"></i><a href="#" title="Articles par admin" rel="author">{{ post.authors.first_name }}</a>
                                             </span>
                                         </span>
                                         <span class="bwp-metadata-slash">/</span>
                                     </li>
                                     <li>
                                         <span class="date updated">
-                                            <i class="fa fa-clock-o"></i><a href="https://ljrealties-blog.com/2023/12/28/">{{ post.created_at|date:"d F Y" }}</a>
+                                            <i class="fa fa-clock-o"></i><a href="#">{{ post.created_at|date:"d F Y" }}</a>
                                         </span>
                                         <span class="bwp-metadata-slash">/</span>
                                     </li>
                                     <li>
-                                        <i class="fa fa-bookmark-o"></i><a href="https://ljrealties-blog.com/category/conseils/" rel="category tag">Conseils</a>
+                                        <i class="fa fa-bookmark-o"></i><a href="#" rel="category tag">{% if language == "en" %}{{ post.category.title_anglaise }}{% else %}{{ post.category.title_francaise }}{% endif %}</a>
                                         <span class="bwp-metadata-slash">/</span>
                                     </li>
                                 </ul>
@@ -97,22 +97,17 @@
                         </div>
                     <div>
                     <hr>
-                    <p class="__txoform"><span>Comments</span></p>
-                    <form method="post" class="mb-6">
+                    <p class="__txoform"><span>{{ labels.blog.text.one }}</span></p>
+                    <form id="formComment" method="post" class="mb-6">
                         {% csrf_token %}
                         <div class="ligne_calcul">
                             <div class="box_ctem">
-                                {{ form.comment }}
+                                <textarea name="comment" cols="40" rows="10" class="champs_tem" placeholder="*{{ labels.blog.text.one }}" id="comment" required=""></textarea>
                             </div>
                         </div>
-                        <!-- {{ form.name.label_tag }}
-                        {{ form.name }}
-                        {{ form.email.label_tag }}
-                        {{ form.email }} -->
-                        
                         <div class="field">
                             <div class="control">
-                                <button type="submit" class="float_right pointer">Submit comment</button>
+                                <input type="button" id="openModalLoginComment" class="float_right pointer" value="{{ labels.blog.button.five }}">
                             </div>
                         </div>
                     </form>
@@ -132,57 +127,108 @@
                     {% endwith %}
                     {% endwith %}
                     {% endwith %} -->
-                
             </div>
+            <nav class="navigation post-navigation" aria-label="Publications">
+                <h2 class="screen-reader-text">Navigation de l’article</h2>
+                <div class="nav-links">
+                    {% if previous_post %}
+                        <div class="nav-previous">
+                            {% if language == "en" %}
+                                <a href="{% url 'blog:post_detail' language=language category_slug=previous_post.category.slug_anglaise slug=previous_post.slug_anglaise %}" rel="prev">
+                            {% else %}
+                                <a href="{% url 'blog:post_detail' language=language category_slug=previous_post.category.slug_francaise slug=previous_post.slug_francaise %}" rel="prev">
+                            {% endif %}
+                                <span class="meta-nav"><i class="fa fa-angle-left"></i>Previous post</span>
+                                <span class="post-title-nav">{% if language == "en" %}{{ previous_post.title_anglaise }}{% else %}{{ previous_post.title_francaise }}{% endif %}</span>
+                            </a>
+                        </div>
+                    {% endif %}
+                    {% if next_post %}
+                        <div class="nav-next">
+                            {% if language == "en" %}
+                                <a href="{% url 'blog:post_detail' language=language category_slug=next_post.category.slug_anglaise slug=next_post.slug_anglaise %}" rel="next">
+                            {% else %}
+                                <a href="{% url 'blog:post_detail' language=language category_slug=next_post.category.slug_francaise slug=next_post.slug_francaise %}" rel="next">
+                            {% endif %}
+                            <span class="meta-nav">Next post<i class="fa fa-angle-right"></i></span>
+                            <span class="post-title-nav">{% if language == "en" %}{{ next_post.title_anglaise }}{% else %}{{ next_post.title_francaise }}{% endif %}</span>
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </nav>
         </div>
     </section>
+    <input type="hidden" id="language" value="{{ language }}">
+    {% if language == 'en' %}
+        <input type="hidden" id="category_slug" value="{{ post.category.slug_anglaise }}">
+        <input type="hidden" id="post_slug" value="{{ post.slug_anglaise }}">
+        <input type="hidden" id="category_slug_traslate" value="{{ post.category.slug_francaise }}">
+        <input type="hidden" id="post_slug_traslate" value="{{ post.slug_francaise }}">
+    {% else %}
+        <input type="hidden" id="category_slug" value="{{ post.category.slug_francaise }}">
+        <input type="hidden" id="post_slug" value="{{ post.slug_francaise }}">
+        <input type="hidden" id="category_slug_traslate" value="{{ post.category.slug_anglaise }}">
+        <input type="hidden" id="post_slug_traslate" value="{{ post.slug_anglaise }}">
+    {% endif %}
     <hr>
     <section class="popnews" id="loginModal">
         <span class="close">+</span>
         <article>
-            <div id="confirm_message_loginModal" class="confirm_message" style="color: black;"></div>
-            <form action="https://ljrealties.us20.list-manage.com/subscribe/post?u=cae8a392e5c10d2e79b4d6635&amp;id=c5c07613d4&amp;f_id=00f7ccedf0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank">
+            <form action="" method="post" id="login-form" name="mc-embedded-subscribe-form" class="validate" target="_blank">
                 <p class="h2def"><strong>{{ labels.blog.button.one }}</strong></p>
                 <input type="email" name="EMAIL" id="login-EMAIL" class="champs_tem" required="required" placeholder="{{ labels.blog.placeholder.one }} *"/>
-                <input type="password" name="PASSWORD" id="login-FNAME" class="champs_tem" required="required" placeholder="{{ labels.blog.placeholder.two }} *"/>
+                <input type="password" name="PASSWORD" id="login-FNAME" class="champs_tem" required="required" placeholder="{{ labels.blog.placeholder.three }} *"/>
                 <div hidden=""><input type="hidden" name="tags" value="1114108"></div>
-                <div id="mce-responses" class="clear">
-                    <div class="response" id="mce-error-response" style="display:none; color: #000000; padding: 14px;"></div>
-                    <div class="response" id="mce-success-response" style="display:none; color: #000000; padding: 14px;"></div>
-                </div>
                 <div aria-hidden="true" style="position:absolute; left:-5000px;">
                     <input type="text" name="b_cae8a392e5c10d2e79b4d6635_c5c07613d4" tabindex="-1" value="">
                 </div>
                 <input type="submit" style="margin-top: 20px; margin-bottom: 20px;" name="login" id="mc-embedded-login" class="bouton pointer" value="{{ labels.blog.button.one }}" data-field="loginModal">
                 <div class="loginBtn">{{ labels.blog.button.two }}<a href="#" id="openModalSignUp"> {{ labels.blog.button.three }}</a></div>
+                <div id="errorMessagesLogin" style="color: red; margin-top: 10px;"></div>
             </form>
-            
         </article>
     </section>
     <section class="poplogin" id="signupModal">
         <span class="close">+</span>
         <article>
-            <form action="https://ljrealties.us20.list-manage.com/subscribe/post?u=cae8a392e5c10d2e79b4d6635&amp;id=c5c07613d4&amp;f_id=00f7ccedf0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank">
+            <form action="" method="post" id="signup-form" name="mc-embedded-signup-form" class="validate">
+                {% csrf_token %}
                 <div id="confirm_message_signupModal" class="confirm_message" style="color: black;"></div>
                 <p class="h2def"><strong>{{ labels.blog.button.four }}</strong></p>
-                <input type="email" name="EMAIL" id="signup-EMAIL" class="champs_tem" required="required" placeholder="{{ labels.blog.placeholder.one }} *"/>
-                <input type="email" name="RE-EMAIL" id="signup-RE-EMAIL" class="champs_tem" required="required" placeholder="{{ labels.blog.placeholder.two }} *"/>
-                <input type="password" name="PASSWORD" id="login-PASSWORD" class="champs_tem" required="required" placeholder="{{ labels.blog.placeholder.three }} *"/>
-                <input type="password" name="RE-PASSWORD" id="login-RE-PASSWORD" class="champs_tem" required="required" placeholder="{{ labels.blog.placeholder.four }} *"/>
+                <input type="email" name="email_signup" id="email_signup" class="champs_tem" required="required" placeholder="{{ labels.blog.placeholder.one }} *"/>
+                <input type="email" name="re_mail_signup" id="re_mail_signup" class="champs_tem" required="required" placeholder="{{ labels.blog.placeholder.two }} *"/>
+                <input type="password" name="password_signup" id="password_signup" class="champs_tem" required="required" placeholder="{{ labels.blog.placeholder.three }} *"/>
+                <input type="password" name="re_password_signup" id="re_password_signup" class="champs_tem" required="required" placeholder="{{ labels.blog.placeholder.four }} *"/>
                 <input type="submit" style="margin-top: 20px; margin-bottom: 20px;" name="signup" id="mc-embedded-subscribe" class="bouton pointer" value="{{ labels.blog.button.four }}" data-field="newsletter">
+                <div id="errorMessages" style="color: red;"></div>
+                <div id="emailError" data-error="{{ labels.blog.error.one }}" style="display: none;"></div>
+                <div id="passwordError" data-error="{{ labels.blog.error.two }}" style="display: none;"></div>
+                <div id="passwordErrorLength" data-error="{{ labels.blog.error.three }}" style="display: none;"></div>
             </form>
         </article>
     </section>
-
+    <section class="popcomments" id="loginModalComments">
+        <span class="close">+</span>
+        <article>
+            <form action="" method="post" id="login-form-comment" name="mc-embedded-subscribe-form" class="validate" target="_blank">
+                <p class="h2def"><strong>{{ labels.blog.button.one }}</strong></p>
+                <input type="email" name="EMAIL" id="login-EMAIL" class="champs_tem" required="required" placeholder="{{ labels.blog.placeholder.one }} *"/>
+                <input type="password" name="PASSWORD" id="login-FNAME" class="champs_tem" required="required" placeholder="{{ labels.blog.placeholder.three }} *"/>
+                <input type="submit" style="margin-top: 20px; margin-bottom: 20px;" name="login" id="mc-embedded-login" class="bouton pointer" value="{{ labels.blog.button.one }}" data-field="loginModal">
+                <div class="loginBtn">{{ labels.blog.button.two }}<a href="#" id="openModalSignUp"> {{ labels.blog.button.three }}</a></div>
+                <div id="errorMessagesLogincomments" style="color: red; margin-top: 10px;"></div>
+            </form>
+        </article>
+    </section>
     <script>
         $(document).ready(function() {
             $('.like-button').on('click', function(e) {
                 e.preventDefault();
 
-                var $this = $(this);
-                var language = $this.data('language');
-                var category_slug = $this.data('category_slug');
-                var slug = $this.data('slug');
+                var language = $('#language').val();
+                var category_slug = $('#category_slug').val();
+                var slug = $('#post_slug').val();
                 var url = "{% url 'blog:like_article' language='en' category_slug='slug_category' slug='slug_article' %}";
                 url = url.replace('en', language).replace('slug_category', category_slug).replace('slug_article', slug);
                 $.ajax({
@@ -190,11 +236,11 @@
                     method: 'GET',
                     success: function(response) {
                         if (response.liked) {
-                            $this.find('.like i').removeClass('fa-heart-o').addClass('fa-heart');
+                            $('.like i').removeClass('fa-heart-o').addClass('fa-heart');
                         } else {
-                            $this.find('.like i').removeClass('fa-heart').addClass('fa-heart-o');
+                            $('.like i').removeClass('fa-heart').addClass('fa-heart-o');
                         }
-                        $this.find('.count').text(response.likes_count);
+                        $('.count').text(response.likes_count);
                     },
                     error: function(xhr) {
                         if (xhr.status === 401) {
@@ -208,18 +254,217 @@
                 $('#loginModal').fadeOut();
                 $('#signupModal').fadeIn();
             });
-        });
-    </script>
-    <!-- <script>
-        document.getElementById('like-button2').addEventListener('click', function(event) {
-            {% if not user.is_authenticated %}
+            function validateFormSignUp() {
+                $('#errorMessages').text('');
+                var email = $('#email_signup').val();
+                var reEmail = $('#re_mail_signup').val();
+                var password = $('#password_signup').val();
+                var rePassword = $('#re_password_signup').val();
+                var emailError = $('#emailError').data('error');
+                var passwordError = $('#passwordError').data('error');
+                var passwordErrorLength = $('#passwordErrorLength').data('error');
+                var hasErrors = false;
+                if (email !== reEmail) {
+                    $('#emailError').show();
+                    $('#errorMessages').append('<p>' + emailError + '</p>');
+                    hasErrors = true;
+                } else {
+                    $('#emailError').hide();
+                }
+                var passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+                
+                if (password !== rePassword) {
+                    $('#passwordError').show();
+                    $('#errorMessages').append('<p>' + passwordError + '</p>');
+                    hasErrors = true;
+                } else if (!passwordPattern.test(password)) {
+                    $('#passwordErrorLength').show();
+                    $('#errorMessages').append('<p>' + passwordErrorLength + '</p>');
+                    hasErrors = true;
+                } else {
+                    $('#passwordError').hide();
+                }
+
+                return !hasErrors;
+            }
+
+            $('#signup-form').submit(function(event) {
                 event.preventDefault();
-                $('#authModal').modal('show');
-            {% else %}
-                document.getElementById('like-form').submit();
-            {% endif %}
+                if (!validateFormSignUp()) {
+                    return;
+                }
+                var email = $('#email_signup').val();
+                var reEmail = $('#re_mail_signup').val();
+                var password = $('#password_signup').val();
+                var rePassword = $('#re_password_signup').val();
+
+                var language = $('#language').val();
+                var categorySlug = $('#category_slug').val();
+                var postSlug = $('#post_slug').val();
+
+                $.ajax({
+                    url: "{% url 'blog:signup_blog' %}",
+                    type: "POST",
+                    data: {
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',
+                        'email_signup': email,
+                        're_mail_signup': reEmail,
+                        'password_signup': password,
+                        're_password_signup': rePassword,
+                        'language': language,
+                        'category_slug': categorySlug,
+                        'post_slug': postSlug
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            $('#loginLink').hide();
+                            $('#logoutLink').show();
+                            if (response.liked) {
+                                $('.like i').removeClass('fa-heart-o').addClass('fa-heart');
+                            } else {
+                                $('.like i').removeClass('fa-heart').addClass('fa-heart-o');
+                            }
+                            $('.count').text(response.likes_count);
+
+                            $('.poplogin').fadeOut();
+
+                            $("#signup-form").trigger("reset");
+
+                            $("#confirm_message_signupModal").html("");
+                            $("#emailError").html("");
+                            $("#passwordError").html("");
+                            $("#errorMessages").html("");
+                        } else {
+                            $('#errorMessages').text(response.error_message);
+                        }
+                    },
+                    error: function(xhr, errmsg, err) {
+                        $('#errorMessages').text('Hubo un error al procesar la solicitud.');
+                        try {
+                           var response = JSON.parse(xhr.responseText);
+                            if (response.error_message) {
+                                $('#errorMessages').text(response.error_message);
+                            }
+                        } catch (e) {
+                            console.error('No se pudo parsear la respuesta JSON:', e);
+                        }
+                    }
+                });
+            });
+
+            $('#email_signup, #re_mail_signup').on('input', function() {
+                validateFormSignUp();
+            });
+
+            $('#password_signup, #re_password_signup').on('input', function() {
+                validateFormSignUp();
+            });
+            $('#mc-embedded-login').on('click', function(event) {
+                event.preventDefault();
+                var email = $('#login-EMAIL').val();
+                var password = $('#login-FNAME').val();
+                
+                var language = $('#language').val();
+                var categorySlug = $('#category_slug').val();
+                var postSlug = $('#post_slug').val();
+                $.ajax({
+                    url: "{% url 'blog:login_blog' %}",
+                    type: "POST",
+                    data: {
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',
+                        'email_login': email,
+                        'password_login': password,
+                        'language': language,
+                        'category_slug': categorySlug,
+                        'post_slug': postSlug
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            $('#loginLink').hide();
+                            $('#logoutLink').show();
+                            if (response.liked) {
+                                $('.like i').removeClass('fa-heart-o').addClass('fa-heart');
+                            } else {
+                                $('.like i').removeClass('fa-heart').addClass('fa-heart-o');
+                            }
+                            $('.count').text(response.likes_count);
+                            $('#loginModal').fadeOut();
+                            $("#login-form").trigger("reset");
+                            $("#errorMessagesLogin").html("");
+
+                        } else {
+                            $('#errorMessagesLogin').text(response.error_message);
+                        }
+                    },
+                    error: function(xhr, errmsg, err) {
+                        $('#errorMessages').text('Hubo un error al procesar la solicitud.');
+                        try {
+                           var response = JSON.parse(xhr.responseText);
+                            if (response.error_message) {
+                                $('#errorMessages').text(response.error_message);
+                            }
+                        } catch (e) {
+                            console.error('No se pudo parsear la respuesta JSON:', e);
+                        }
+                    }
+                });
+            });
+            $('#login-EMAIL').on('input', function() {
+                $('#errorMessagesLogin').text('');
+            });
+            $('#openModalLoginComment').on('click', function(e) {
+                e.preventDefault();
+
+                var language = $('#language').val();
+                var category_slug = $('#category_slug').val();
+                var slug = $('#post_slug').val();
+                
+                $.ajax({
+                    url: "{% url 'blog:comment' %}",
+                    method: 'GET',
+                    success: function(response) {
+                        if (response.liked) {
+                            $('.like i').removeClass('fa-heart-o').addClass('fa-heart');
+                        } else {
+                            $('.like i').removeClass('fa-heart').addClass('fa-heart-o');
+                        }
+                        $('.count').text(response.likes_count);
+                    },
+                    error: function(xhr) {
+                        if (xhr.status === 401) {
+                            $('#loginModalComments').fadeIn();
+                        }
+                    }
+                });
+            });
+
         });
-    </script> -->
-    <!-- /blog/article/like/fr/real-estate-education/pourquoi-vancouver-et-toronto-ne-peuvent-rivaliser-avec-les-prix-de-limmobilier-a-montreal/ -->
-    <!-- /blog/fr/real-estate-education/pourquoi-vancouver-et-toronto-ne-peuvent-rivaliser-avec-les-prix-de-limmobilier-a-montreal/blog/article/like/fr/real-estate-education/pourquoi-vancouver-et-toronto-ne-peuvent-rivaliser-avec-les-prix-de-limmobilier-a-montreal/ -->
+        </script>
+    <script>
+        function changeParameterInURLBlog(search, param) {
+            var categorySlug = $('#category_slug').val();
+            var postSlug = $('#post_slug').val();
+            var categorySlugTraslate = $('#category_slug_traslate').val();
+            var postSlugTraslate = $('#post_slug_traslate').val();
+            var currentUrl = window.location.href;
+            var newUrl = currentUrl;
+
+            var categorySlugSearch = '/' + categorySlug + '/';
+            var categorySlugReplace = '/' + categorySlugTraslate + '/';
+            newUrl = newUrl.split(categorySlugSearch).join(categorySlugReplace);
+            var postSlugSearch = '/' + postSlug + '/';
+            var postSlugReplace = '/' + postSlugTraslate + '/';
+            newUrl = newUrl.split(postSlugSearch).join(postSlugReplace);
+            var languageSearch = '/' + search + '/';
+            var languageReplace = '/' + param + '/';
+            newUrl = newUrl.split(languageSearch).join(languageReplace);
+
+            if (newUrl !== currentUrl) {
+                window.location.href = newUrl;
+            } else {
+                window.location.href = newUrl + param+'/';
+            }
+        }
+
+    </script>
 {% include 'web/footer_web.html' %}

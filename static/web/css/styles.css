@@ -897,7 +897,7 @@ position: relative;color: #fff !important;}
     transform: translateX(10px);
 }
 
-.poppod, .popnews, .popwwu, .poplogin{
+.poppod, .popnews, .popwwu, .poplogin, .popcomments{
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -908,7 +908,7 @@ position: relative;color: #fff !important;}
 	display: none;
 }
 
-.poppod article, .popnews article, .popwwu article, .poplogin article{
+.poppod article, .popnews article, .popwwu article, .poplogin article, .popcomments article{
 	width: 70%;
 	padding-bottom: calc(56% * .7);
 	position: absolute;
@@ -917,7 +917,7 @@ position: relative;color: #fff !important;}
 	transform: translate(-50%,-50%);
 }
 
-.popnews article, .popwwu article, .poplogin article{
+.popnews article, .popwwu article, .poplogin article, .popcomments article{
 	width: 400px;
 	max-width: 96%;
 	padding-bottom: 0;
@@ -929,6 +929,7 @@ position: relative;color: #fff !important;}
 
 .popnews input:not([type=submit]),
 .poplogin input:not([type=submit]),
+.popcomments input:not([type=submit]),
 .fcontact_col3 input:not([type=submit]),
 .popwwu input:not([type=submit]){
 	appearance:none;
@@ -955,21 +956,21 @@ position: relative;color: #fff !important;}
 	transform: rotate(45deg);
 	line-height: 1;
 	position: absolute;
-	top: 50px;
-	right: 39px;
+	top: -50px;
+	right: -60px;
 	display: block;
 	cursor: pointer;
 	font-family: Arial;
 }
 
-.popnews .close{
+.popnews .close, .popcomments .close{
 	color: #fff;
 	font-size: 60px;
 	transform: rotate(45deg);
 	line-height: 1;
 	position: absolute;
-	top: -30px;
-	right: -80px;
+	top: 50px;
+	right: 60px;
 	display: block;
 	cursor: pointer;
 	font-family: Arial;

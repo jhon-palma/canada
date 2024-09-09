@@ -14,15 +14,15 @@ class Category(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     title_anglaise = models.CharField(max_length=255)
     title_francaise = models.CharField(max_length=255)
-    slug_francaise = models.SlugField()
-    slug_anglaise = models.SlugField()
+    slug_francaise = models.SlugField(unique=True,)
+    slug_anglaise = models.SlugField(unique=True,)
 
     class Meta:
         ordering = ('title_francaise',)
         verbose_name_plural = 'Categories'
 
     def __str__(self):
-        language = get_language()  # Obtiene el idioma actual
+        language = get_language()
         if language == 'fr':
             return self.title_francaise
         elif language == 'en': 
@@ -32,9 +32,9 @@ class Category(models.Model):
 
     def get_absolute_url(self):
         language = get_language()  # Obtiene el idioma actual
-        if language == 'fr':  # Ejemplo: idioma francés
+        if language == 'fr':
             return '/%s/' % self.slug_francaise
-        elif language == 'en':  # Ejemplo: idioma inglés
+        elif language == 'en':
             return '/%s/' % self.slug_anglaise
         else:
             return '/%s/' % self.slug_francaise
@@ -70,12 +70,11 @@ class Article(models.Model):
         language = get_language()
         if language == 'fr':
             relative_url = '/blog/%s/%s/' % (self.category.slug_francaise, self.slug_francaise)
-        elif language == 'en':  # Ejemplo: idioma inglés
+        elif language == 'en':
             relative_url = '/blog/%s/%s/' % (self.category.slug_anglaise, self.slug_anglaise)
         else:
             relative_url = '/blog/%s/%s/' % (self.category.slug_francaise, self.slug_francaise)
-        
-        # Obtiene el dominio actual del sitio
+
         current_site = Site.objects.get_current()
         domain = current_site.domain
 
@@ -104,10 +103,9 @@ class Article(models.Model):
 
 class Comment(models.Model):
     article = models.ForeignKey(Article, related_name='comments', on_delete=models.CASCADE)
-    name = models.CharField(max_length=255)
-    email = models.EmailField()
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    user = models.ManyToManyField(CustomUser, related_name='comments')
 
     def __str__(self):
         return self.name

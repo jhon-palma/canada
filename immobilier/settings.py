@@ -99,7 +99,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',  # El backend por defecto
+    'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',  # Backend de allauth
 )
 
@@ -157,8 +157,42 @@ customColorPalette = [
     },
 ]
 
-# CKEDITOR_5_CUSTOM_CSS = 'path_to.css' # optional
-# CKEDITOR_5_FILE_STORAGE = "path_to_storage.CustomStorage" # optional
+CKEDITOR_5_FILE_STORAGE = "apps.blog.storage.CustomStorage"
+# CKEDITOR_5_CONFIGS = {
+#     'default': {
+#         'toolbar': ['heading', '|', 'bold', 'italic', 'link',
+#                     'bulletedList', 'numberedList', 'blockQuote', 'imageUpload', ],
+
+#     },
+#     'extends': {
+#         'blockToolbar': [
+#             'paragraph', 'heading1', 'heading2', 'heading3',
+#             '|',
+#             'bulletedList', 'numberedList',
+#             '|',
+#             'blockQuote',
+#         ],
+#         'toolbar': ['heading', '|', 'outdent', 'indent', '|', 'bold', 'italic', 'link', 'underline', 'strikethrough', '|', 
+#                     'bulletedList', 'numberedList', 'todoList', '|', 'fontSize', 'fontColor'],
+        
+#         'heading' : {
+#             'options': [
+#                 { 'model': 'paragraph', 'title': 'Paragraph', 'class': 'ck-heading_paragraph' },
+#                 { 'model': 'heading1', 'view': 'h1', 'title': 'Heading 1', 'class': 'ck-heading_heading1' },
+#                 { 'model': 'heading2', 'view': 'h2', 'title': 'Heading 2', 'class': 'ck-heading_heading2' },
+#                 { 'model': 'heading3', 'view': 'h3', 'title': 'Heading 3', 'class': 'ck-heading_heading3' }
+#             ]
+#         }
+#     },
+#     'list': {
+#         'properties': {
+#             'styles': 'true',
+#             'startIndex': 'true',
+#             'reversed': 'true',
+#         } 
+#     }
+# }
+CKEDITOR_5_UPLOAD_FILE_TYPES = ['jpeg', 'jpg', 'png']
 CKEDITOR_5_CONFIGS = {
     'default': {
         'toolbar': ['heading', '|', 'bold', 'italic', 'link',
@@ -173,9 +207,35 @@ CKEDITOR_5_CONFIGS = {
             '|',
             'blockQuote',
         ],
-        'toolbar': ['heading', '|', 'outdent', 'indent', '|', 'bold', 'italic', 'link', 'underline', 'strikethrough', '|', 
-                    'bulletedList', 'numberedList', 'todoList', '|', 'fontSize', 'fontColor'],
-        
+        'toolbar': ['heading', '|', 'outdent', 'indent', '|', 'bold', 'italic', 'link', 'underline', 'strikethrough',
+        'code','subscript', 'superscript', 'highlight', '|', 'insertImage',
+                    'bulletedList', 'numberedList', 'todoList', '|',  'blockQuote', 'imageUpload', '|',
+                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', 'mediaEmbed', 'removeFormat',
+                    'insertTable',],
+        'image': {
+            'toolbar': ['imageTextAlternative', '|', 'imageStyle:alignLeft',
+                        'imageStyle:alignRight', 'imageStyle:alignCenter', 'imageStyle:side',  '|'],
+            'styles': [
+                'full',
+                'side',
+                'alignLeft',
+                'alignRight',
+                'alignCenter',
+            ]
+
+        },
+        'table': {
+            'contentToolbar': [ 'tableColumn', 'tableRow', 'mergeTableCells',
+            'tableProperties', 'tableCellProperties' ],
+            'tableProperties': {
+                'borderColors': customColorPalette,
+                'backgroundColors': customColorPalette
+            },
+            'tableCellProperties': {
+                'borderColors': customColorPalette,
+                'backgroundColors': customColorPalette
+            }
+        },
         'heading' : {
             'options': [
                 { 'model': 'paragraph', 'title': 'Paragraph', 'class': 'ck-heading_paragraph' },
@@ -190,7 +250,7 @@ CKEDITOR_5_CONFIGS = {
             'styles': 'true',
             'startIndex': 'true',
             'reversed': 'true',
-        } 
+        }
     }
 }
 

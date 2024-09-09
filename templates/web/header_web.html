@@ -90,7 +90,11 @@
 			<a href="https://www.youtube.com/@ljaguinaga" class="btnsoc" target="_blank"><img src="{% static 'web/images2/youtube.png' %}" alt="YouTube"></a>
 			<a href="https://www.tiktok.com/@ljaguinaga" class="btnsoc" target="_blank"><img src="{% static 'web/images2/tiktok.png' %}" alt="Tik tok"></a>
 			<a href="tel:+1514-500-4040" class="telh"><i class="fa fa-phone"></i>514-500-4040</a>
-			<a class="btn_language" style="cursor: pointer" onclick="changeParameterInURL('{{ language }}','{{ new_language }}');">{{ new_language_name }}</a>
+            {% if post %}
+                <a class="btn_language" style="cursor: pointer" onclick="changeParameterInURLBlog('{{ language }}','{{ new_language }}');">{{ new_language_name }}</a>
+            {% else %}
+			    <a class="btn_language" style="cursor: pointer" onclick="changeParameterInURL('{{ language }}','{{ new_language }}');">{{ new_language_name }}</a>
+            {% endif %}
 		</div>
 	</div>
 	<div class="wrap">
@@ -111,9 +115,14 @@
 			<a href="{{ server|server_url }}/{{ language }}/{{ labels.menu.url.three }}/">{{ labels.menu.name.three }}</a>
 			<!--<a href="{{ server|server_url }}/{{ language }}/{{ labels.menu.url.four }}/">{{ labels.menu.name.four }}</a>-->
 			<a href="{{ server|server_url }}/{{ language }}/{{ labels.menu.url.five }}">{{ labels.menu.name.five }}</a>
-			<!--<a href="{{ labels.menu.url.six }}">{{ labels.menu.name.six }}</a>-->
+			<a href="{{ server|server_url }}/{{ language }}/blog/">{{ labels.menu.name.six }}</a>
 			<a href="{{ server|server_url }}/{{ language }}/{{ labels.menu.url.seven }}/">{{ labels.menu.name.seven }}</a>
-			<a href="{% url 'accounts:login' %}">Login</a>
+            <a id="logoutLink" href="{% url 'accounts:logout' %}" style="display:none;">Logout</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'accounts:logout' %}">Logout</a>
+            {% else %}
+                <a id="loginLink" href="{% url 'accounts:login' %}">Login</a>
+            {% endif %}
 		</nav>
 		<div class="menu-ico">
 			<span></span>

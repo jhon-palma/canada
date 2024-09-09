@@ -8,18 +8,6 @@ class CategoryAdminForm(forms.ModelForm):
         model = Category
         fields = ('title_anglaise', 'title_francaise')
 
-class CommentForm(forms.ModelForm):
-    class Meta:
-        model = Comment
-        fields = ('name', 'email', 'comment')
-        widgets = {
-            'comment': forms.Textarea(attrs={
-                'class': 'champs_tem',
-                'placeholder':'*Commentaires',
-                'id': 'comment', 
-            }),
-        }
-
 class ArticleForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):

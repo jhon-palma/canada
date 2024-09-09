@@ -1,4 +1,3 @@
-
 dict_en = {
   'en':'fr',
   'properties':'proprietes',
