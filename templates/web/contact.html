@@ -12,7 +12,7 @@
 
 <section class="banner nothome">
     <div class="baninfo">
-        <h2>{{ labels.contact.title.one }}<span> {{ labels.contact.title.two }}</span></h2>
+        <h2>{{ labels.contact.title.one }}<span>{{ labels.contact.title.two }}</span></h2>
         <h1>{{ labels.contact.title.three }}</h1><br>
     </div>
 </section>
@@ -65,8 +65,12 @@
 						href="https://www.google.com/maps/place/LJ+Realties+-+LJ+Immobilier/@45.496386,-73.5727791,17z/data=!3m2!4b1!5s0x4cc91b14f987b8d5:0x3c14fc52240354fb!4m5!3m4!1s0x4cc93c824dc00621:0xb6aa87687fd1e9eb!8m2!3d45.496386!4d-73.5705904"
 						target="_blank"
 					>
-						1275 Av. des Canadiens-de-Montréal <br >
-						5th floor, Montreal, Quebec H3B 0G4 <br> <br>
+                    {% if language == "en" %}
+                    1275 Av. des Canadiens-de-Montréal <br>5th floor, Montreal, Québec H3B 0G4
+                    {% else %}
+                    1275 Av. des Canadiens-de-Montréal, <br>Suite 500, Montréal, Québec, H3B 0G4
+                    {% endif %}
+                    <br> <br>
 					</a>
 				</p>
 				<p>
@@ -95,7 +99,7 @@
 				<h2>{{ labels.contact.text.thirteen.upper }}<span> {{ labels.contact.text.fourteen.upper }}</span></h2>
 				<h3>{{ labels.contact.text.fifteen }}</h3>
 				<p>{{ labels.contact.text.sixteen }}</p>
-				<h3><strong>{{ labels.contact.text.seventeen }}</strong></h3>
+				<!-- <h3><strong>{{ labels.contact.text.seventeen }}</strong></h3> -->
 				<a class="bouton boutonnre2 btn-wwu pointer" style="margin-left: 0px; margin-top: 10px;" data-pop="popcontact">{{ labels.contact.button.two.upper }}</a>
 			</div>
 			<div class="txt">

@@ -97,36 +97,33 @@
                         </div>
                     <div>
                     <hr>
-                    <p class="__txoform"><span>{{ labels.blog.text.one }}</span></p>
-                    <form id="formComment" method="post" class="mb-6">
-                        {% csrf_token %}
-                        <div class="ligne_calcul">
-                            <div class="box_ctem">
-                                <textarea name="comment" cols="40" rows="10" class="champs_tem" placeholder="*{{ labels.blog.text.one }}" id="comment" required=""></textarea>
+                    <div class="comments">
+                        <p class="__txoform"><span>{{ labels.blog.text.one }}</span></p>
+                        <form id="formComment" method="post" class="mb-6">
+                            {% csrf_token %}
+                            <div class="ligne_calcul">
+                                <div class="box_ctem">
+                                    <textarea name="comment" cols="40" rows="10" data-error="{{ labels.blog.error.four }}" class="champs_tem" placeholder="*{{ labels.blog.text.one }}" id="comment" required=""></textarea>
+                                    <div id="errorMessagesComments" class="error-message" style="color: red; font-size: 12px; margin-top: 10px;"></div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="field">
-                            <div class="control">
-                                <input type="button" id="openModalLoginComment" class="float_right pointer" value="{{ labels.blog.button.five }}">
+                            <div class="field">
+                                <div class="control">
+                                    <input type="button" id="openModalLoginComment" class="float_right pointer" value="{{ labels.blog.button.five }}">
+                                </div>
                             </div>
-                        </div>
-                    </form>
-                    {% for comment in post.comments.all %}
-                        <article class="media box">
-                            <div class="media-content">
-                                <strong>{{ comment.name }}</strong> <small>{{ comment.created_at|timesince }} ago</small><br>
-                                {{ comment.body }}
+                        </form>
+                    </div>
+                    <hr>
+                    <div class="comments-container">
+                        {% for comment in post.comments.all %}
+                            <div class="comment">
+                                <p>{{ comment.comment }}</p>
+                                <small class="time">{{ comment.created_at|timesince }} ago</small>
                             </div>
-                        </article>
-                    {% endfor %}
+                        {% endfor %}
+                    </div>
                 </article>
-                    <!-- {% with post.category.slug_francaise as category_slug %}
-                    {% with post.slug_francaise as post_slug %}
-                    {% with category_slug|add:"/"|add:post_slug as url %}
-                        {% include 'blog/comments.html' with url=url %}
-                    {% endwith %}
-                    {% endwith %}
-                    {% endwith %} -->
             </div>
             <nav class="navigation post-navigation" aria-label="Publications">
                 <h2 class="screen-reader-text">Navigation de l’article</h2>
@@ -139,7 +136,7 @@
                                 <a href="{% url 'blog:post_detail' language=language category_slug=previous_post.category.slug_francaise slug=previous_post.slug_francaise %}" rel="prev">
                             {% endif %}
                                 <span class="meta-nav"><i class="fa fa-angle-left"></i>Previous post</span>
-                                <span class="post-title-nav">{% if language == "en" %}{{ previous_post.title_anglaise }}{% else %}{{ previous_post.title_francaise }}{% endif %}</span>
+                                <span class="post-title-nav">{% if language == "en" %}{{ previous_post.title_anglaise|slice:56 }}{% else %}{{ previous_post.title_francaise|slice:56 }}{% endif %}...</span>
                             </a>
                         </div>
                     {% endif %}
@@ -151,7 +148,7 @@
                                 <a href="{% url 'blog:post_detail' language=language category_slug=next_post.category.slug_francaise slug=next_post.slug_francaise %}" rel="next">
                             {% endif %}
                             <span class="meta-nav">Next post<i class="fa fa-angle-right"></i></span>
-                            <span class="post-title-nav">{% if language == "en" %}{{ next_post.title_anglaise }}{% else %}{{ next_post.title_francaise }}{% endif %}</span>
+                            <span class="post-title-nav">{% if language == "en" %}{{ next_post.title_anglaise|slice:56 }}{% else %}{{ next_post.title_francaise|slice:56 }}{% endif %}...</span>
                             </a>
                         </div>
                     {% endif %}
@@ -213,11 +210,29 @@
         <article>
             <form action="" method="post" id="login-form-comment" name="mc-embedded-subscribe-form" class="validate" target="_blank">
                 <p class="h2def"><strong>{{ labels.blog.button.one }}</strong></p>
-                <input type="email" name="EMAIL" id="login-EMAIL" class="champs_tem" required="required" placeholder="{{ labels.blog.placeholder.one }} *"/>
-                <input type="password" name="PASSWORD" id="login-FNAME" class="champs_tem" required="required" placeholder="{{ labels.blog.placeholder.three }} *"/>
-                <input type="submit" style="margin-top: 20px; margin-bottom: 20px;" name="login" id="mc-embedded-login" class="bouton pointer" value="{{ labels.blog.button.one }}" data-field="loginModal">
-                <div class="loginBtn">{{ labels.blog.button.two }}<a href="#" id="openModalSignUp"> {{ labels.blog.button.three }}</a></div>
+                <input type="email" name="EMAIL" id="login-EMAIL-comment" class="champs_tem" required="required" placeholder="{{ labels.blog.placeholder.one }} *"/>
+                <input type="password" name="PASSWORD" id="login-FNAME-comment" class="champs_tem" required="required" placeholder="{{ labels.blog.placeholder.three }} *"/>
+                <input type="submit" style="margin-top: 20px; margin-bottom: 20px;" name="login" id="mc-comment-login" class="bouton pointer" value="{{ labels.blog.button.one }}" data-field="loginModal">
+                <div class="loginBtn">{{ labels.blog.button.two }}<a href="#" id="openModalSignUpComment"> {{ labels.blog.button.three }}</a></div>
                 <div id="errorMessagesLogincomments" style="color: red; margin-top: 10px;"></div>
+            </form>
+        </article>
+    </section>
+    <section class="poploginComment" id="signupModalComment">
+        <span class="close">+</span>
+        <article>
+            <form action="" method="post" id="signup-form-comment" name="mc-embedded-signup-form" class="validate">
+                {% csrf_token %}
+                <p class="h2def"><strong>{{ labels.blog.button.four }}</strong></p>
+                <input type="email" name="email_signup" id="email_signup_comment" class="champs_tem" required="required" placeholder="{{ labels.blog.placeholder.one }} *"/>
+                <input type="email" name="re_mail_signup" id="re_mail_signup_comment" class="champs_tem" required="required" placeholder="{{ labels.blog.placeholder.two }} *"/>
+                <input type="password" name="password_signup" id="password_signup_comment" class="champs_tem" required="required" placeholder="{{ labels.blog.placeholder.three }} *"/>
+                <input type="password" name="re_password_signup" id="re_password_signup_comment" class="champs_tem" required="required" placeholder="{{ labels.blog.placeholder.four }} *"/>
+                <input type="submit" style="margin-top: 20px; margin-bottom: 20px;" name="signup-comment" id="mc-embedded-subscribe-comment" class="bouton pointer" value="{{ labels.blog.button.four }}" data-field="newsletter">
+                <div id="errorMessagesComment" style="color: red;"></div>
+                <div id="emailError_comment" data-error="{{ labels.blog.error.one }}" style="display: none;"></div>
+                <div id="passwordError_comment" data-error="{{ labels.blog.error.two }}" style="display: none;"></div>
+                <div id="passwordErrorLength_comment" data-error="{{ labels.blog.error.three }}" style="display: none;"></div>
             </form>
         </article>
     </section>
@@ -412,23 +427,34 @@
             $('#login-EMAIL').on('input', function() {
                 $('#errorMessagesLogin').text('');
             });
+            $('#openModalSignUpComment').on('click', function(event) {
+                event.preventDefault();
+                $('#loginModalComments').fadeOut();
+                $('#signupModalComment').fadeIn();
+            });
             $('#openModalLoginComment').on('click', function(e) {
                 e.preventDefault();
-
+                if (!validateCommentEmpty()) {
+                    return;
+                }
+                var comment = $('#comment').val();
                 var language = $('#language').val();
-                var category_slug = $('#category_slug').val();
-                var slug = $('#post_slug').val();
+                var categorySlug = $('#category_slug').val();
+                var postSlug = $('#post_slug').val();
                 
                 $.ajax({
                     url: "{% url 'blog:comment' %}",
-                    method: 'GET',
+                    method: 'POST',
+                    data: {
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',
+                        'language': language,
+                        'category_slug': categorySlug,
+                        'post_slug': postSlug,
+                        'comment': comment,
+                    },
                     success: function(response) {
-                        if (response.liked) {
-                            $('.like i').removeClass('fa-heart-o').addClass('fa-heart');
-                        } else {
-                            $('.like i').removeClass('fa-heart').addClass('fa-heart-o');
-                        }
-                        $('.count').text(response.likes_count);
+                        $('#comment').val('');
+                        window.location.reload();
                     },
                     error: function(xhr) {
                         if (xhr.status === 401) {
@@ -437,8 +463,160 @@
                     }
                 });
             });
+            function validateFormSignUpComment() {
+                $('#errorMessagesComment').text('');
+                var email = $('#email_signup_comment').val();
+                var reEmail = $('#re_mail_signup_comment').val();
+                var password = $('#password_signup_comment').val();
+                var rePassword = $('#re_password_signup_comment').val();
+                var emailError = $('#emailError_comment').data('error');
+                var passwordError = $('#passwordError_comment').data('error');
+                var passwordErrorLength = $('#passwordErrorLength_comment').data('error');
+                var commentError = $('#comment').data('error');
+                var hasErrors = false;
+                var comment = $('#comment').val().trim();
+                if (email !== reEmail) {
+                    $('#emailError_comment').show();
+                    $('#errorMessagesComment').append('<p>' + emailError + '</p>');
+                    hasErrors = true;
+                } else {
+                    $('#emailError_comment').hide();
+                }
+                var passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+                
+                if (password !== rePassword) {
+                    $('#passwordError_comment').show();
+                    $('#errorMessagesComment').append('<p>' + passwordError + '</p>');
+                    hasErrors = true;
+                } else if (!passwordPattern.test(password)) {
+                    $('#passwordErrorLength_comment').show();
+                    $('#errorMessagesComment').append('<p>' + passwordErrorLength + '</p>');
+                    hasErrors = true;
+                } else {
+                    $('#passwordError_comment').hide();
+                }
+                if (comment === '') {
+                    $('#errorMessagesComment').append('<p>' + commentError + '</p>');
+                    hasErrors = true;
+                }
 
+                return !hasErrors;
+            }
+            $('#email_signup_comment, #re_mail_signup_comment').on('input', function() {
+                validateFormSignUpComment();
+            });
+
+            $('#password_signup_comment, #re_password_signup_comment').on('input', function() {
+                validateFormSignUpComment();
+            });
+            
+            $('#signup-form-comment').submit(function(event) {
+                event.preventDefault();
+                if (!validateFormSignUpComment()) {
+                    return;
+                }
+                var email = $('#email_signup_comment').val();
+                var reEmail = $('#re_mail_signup_comment').val();
+                var password = $('#password_signup_comment').val();
+                var rePassword = $('#re_password_signup_comment').val();
+                var comment = $('#comment').val();
+                var language = $('#language').val();
+                var categorySlug = $('#category_slug').val();
+                var postSlug = $('#post_slug').val();
+
+                $.ajax({
+                    url: "{% url 'blog:signup_blog_comment' %}",
+                    type: "POST",
+                    data: {
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',
+                        'email_signup': email,
+                        're_mail_signup': reEmail,
+                        'password_signup': password,
+                        're_password_signup': rePassword,
+                        'language': language,
+                        'category_slug': categorySlug,
+                        'post_slug': postSlug,
+                        'comment': comment,
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            $("#signup-form-comment").trigger("reset");
+                            $("#errorMessagesComment").html("");
+                            $('#comment').val('');
+                            window.location.reload();
+                        } else {
+                            $('#errorMessagesComment').text(response.error_message);
+                        }
+                    },
+                    error: function(xhr, errmsg, err) {
+                        $('#errorMessagesComment').text('Hubo un error al procesar la solicitud.');
+                        try {
+                           var response = JSON.parse(xhr.responseText);
+                            if (response.error_message) {
+                                $('#errorMessagesComment').text(response.error_message);
+                            }
+                        } catch (e) {
+                            console.error('No se pudo parsear la respuesta JSON:', e);
+                        }
+                    }
+                });
+            });
         });
+        function validateCommentEmpty() {
+            var comment = $('#comment').val().trim();
+            if (comment === '') {
+                $('#errorMessagesLogincomments').text('El comentario no puede estar vacío.');
+                $('#errorMessagesComments').text('El comentario no puede estar vacío.');
+                return false;
+            }
+            return true;
+        };
+        $('#mc-comment-login').on('click', function(event) {
+                event.preventDefault();
+                if (!validateCommentEmpty()) {
+                    return;
+                }
+                var email = $('#login-EMAIL-comment').val();
+                var password = $('#login-FNAME-comment').val();
+                var comment = $('#comment').val();
+                var language = $('#language').val();
+                var categorySlug = $('#category_slug').val();
+                var postSlug = $('#post_slug').val();
+                $.ajax({
+                    url: "{% url 'blog:login_blog_comments' %}",
+                    type: "POST",
+                    data: {
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',
+                        'email_login': email,
+                        'password_login': password,
+                        'language': language,
+                        'category_slug': categorySlug,
+                        'post_slug': postSlug,
+                        'comment': comment,
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            $("#login-form-comment").trigger("reset");
+                            $("#errorMessagesLogincomments").html("");
+                            $('#comment').val('');
+                            window.location.reload();
+                        } else {
+                            $('#errorMessagesLogincomments').text(response.error_message);
+                        }
+                    },
+                    error: function(xhr, errmsg, err) {
+                        $('#errorMessagesLogincomments').text('Hubo un error al procesar la solicitud.');
+                        try {
+                           var response = JSON.parse(xhr.responseText);
+                            if (response.error_message) {
+                                $('#errorMessagesLogincomments').text(response.error_message);
+                            }
+                        } catch (e) {
+                            console.error('No se pudo parsear la respuesta JSON:', e);
+                        }
+                    }
+                });
+            });
         </script>
     <script>
         function changeParameterInURLBlog(search, param) {

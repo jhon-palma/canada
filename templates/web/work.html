@@ -321,7 +321,6 @@
                 url: form.attr("action"),
                 data: form.serialize(),
                 success: function (response) {
-                    console.log(response);
                     if (response.response == 1) {
                         var language = "{{ language }}";
                         if (language === "en") {

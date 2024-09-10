@@ -1192,8 +1192,7 @@ ul.sf-menu {
 ul.sf-menu li {
 
   white-space: nowrap;
-
-  *white-space: normal;
+  white-space: normal;
 
 }
 
@@ -1247,7 +1246,7 @@ ul.sf-menu ul {
 
   min-width: 180px;
 
-  *width: 12em; /* no auto sub width for IE7, see white-space comment below */
+  width: 12em; /* no auto sub width for IE7, see white-space comment below */
 
   padding: 15px;
 
@@ -12901,7 +12900,7 @@ textarea {
     content: " ";
 }
 
-.poppod .close, .popnews .close, .popwwu .close, .poplogin .close, .popcomments .close {
+.poppod .close, .popnews .close, .popwwu .close, .poplogin .close, .popcomments .close, .poploginComment .close {
     color: #fff;
     font-size: 60px;
     transform: rotate(45deg);
@@ -12934,3 +12933,37 @@ textarea {
     line-height: 1.6;
     color: #3f434c;
 }
+
+.comments-container{
+    margin-top: 23rem !important;
+}
+
+.comment {
+    border: 1px solid #f9f9f9;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #f8f8f8;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.comment p {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.5;
+}
+
+.comments-container {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+.time {
+    display: block;
+    text-align: right;
+    color: #777;
+    font-size: 10px;
+    margin-top: 10px;
+}
+
+

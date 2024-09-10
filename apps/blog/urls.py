@@ -16,6 +16,8 @@ urlpatterns = [
     re_path(r'^(?P<language>fr|en)/blog/article/like/(?P<category_slug>[-\w]+)/(?P<slug>[-\w]+)/$', views.like_article, name='like_article'),
     path('comment/', views.comment, name='comment'),
     path('signup/', views.signup_blog, name='signup_blog'),
+    path('signupComment/', views.signup_blog_comment, name='signup_blog_comment'),
     path('login/', views.login_blog, name='login_blog'),
+    path('loginComments/', views.login_blog_comments, name='login_blog_comments'),
     path('<slug:slug>/', views.category, name='category_detail'),
 ]

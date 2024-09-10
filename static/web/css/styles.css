@@ -70,7 +70,7 @@ header>.wrap{
 }
 
 .soch{
-	background-color: #00AAAE;
+	background-color: #1194A1;
 	color: #fff;
 	padding: 7px 0 8px;
 	font-size: 13px;
@@ -205,7 +205,7 @@ img.bannerimg{
 
 .titlebar{
     text-align: center;
-    background-color: #00AAAE;
+    background-color: #1194A1;
     color: #fff;
     padding: 15px 0 15px;
     font-size: 18px;
@@ -897,7 +897,7 @@ position: relative;color: #fff !important;}
     transform: translateX(10px);
 }
 
-.poppod, .popnews, .popwwu, .poplogin, .popcomments{
+.poppod, .popnews, .popwwu, .poplogin, .popcomments, .poploginComment{
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -908,7 +908,7 @@ position: relative;color: #fff !important;}
 	display: none;
 }
 
-.poppod article, .popnews article, .popwwu article, .poplogin article, .popcomments article{
+.poppod article, .popnews article, .popwwu article, .poplogin article, .popcomments article, .poploginComment article{
 	width: 70%;
 	padding-bottom: calc(56% * .7);
 	position: absolute;
@@ -917,7 +917,7 @@ position: relative;color: #fff !important;}
 	transform: translate(-50%,-50%);
 }
 
-.popnews article, .popwwu article, .poplogin article, .popcomments article{
+.popnews article, .popwwu article, .poplogin article, .popcomments article, .poploginComment article{
 	width: 400px;
 	max-width: 96%;
 	padding-bottom: 0;
@@ -929,6 +929,7 @@ position: relative;color: #fff !important;}
 
 .popnews input:not([type=submit]),
 .poplogin input:not([type=submit]),
+.poploginComment input:not([type=submit]),
 .popcomments input:not([type=submit]),
 .fcontact_col3 input:not([type=submit]),
 .popwwu input:not([type=submit]){
@@ -2019,7 +2020,7 @@ h1.h1styled{
 	background: #000 !important;
 	overflow: hidden; 
 	/*(height: 19vh;*/
-
+}
 
 .photo_vendu:hover img:not(.marq_vendu){transform: scale(1.1);opacity: .7;}
 .prophome a:not(.btn) img.marq_vendu{

@@ -4,8 +4,6 @@ from apps.web.files_path import web_images_path
 from apps.web.choices import *
 from PIL import Image
 
-
-
 class Formulaire_contact(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     no_formulaire = models.IntegerField()  

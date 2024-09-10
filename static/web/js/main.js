@@ -170,6 +170,20 @@ $(document).ready(function(){
         $("#errorMessages").html("");
 
     });
+    
+    $('.poploginComment .close').click(function(e){
+
+        e.preventDefault();
+
+        $('.poploginComment').fadeOut();
+
+		$("#signup-form-comment").trigger("reset");
+
+		$("#emailError_comment").html("");
+		$("#passwordError_comment").html("");
+        $("#errorMessagesComment").html("");
+
+    });
 
     
 
