@@ -13,7 +13,6 @@ from django.conf import settings
 from django.contrib import messages
 from ..labels import DICT_LABELS
 from django.utils.translation import gettext as _
-from babel.dates import format_date
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.template.loader import render_to_string
@@ -25,7 +24,6 @@ from django.core.validators import validate_email
 
 
 
-
 def articles(request, language='fr'):
     articles_list  = Article.objects.filter(active=True)
     paginator = Paginator(articles_list, 12)
@@ -33,16 +31,10 @@ def articles(request, language='fr'):
     try:
         articles = paginator.page(page_number)
     except PageNotAnInteger:
-        # Si el número de página no es un entero, muestra la primera página
         articles = paginator.page(1)
     except EmptyPage:
-        # Si la página está fuera del rango, muestra la última página de resultados
         articles = paginator.page(paginator.num_pages)
     labels = DICT_LABELS.get(language, {}).get('web', {})
-    # labels = DICT_LABELS.get(language).get('web')
-    for article in articles:
-        article.formatted_date = format_date(article.created_at, format='d MMMM yyyy', locale=language)
-
     context = {
         'language':language,
         'labels':labels,
