@@ -10,6 +10,15 @@
 <script type="text/javascript" src="{% static 'web/js/wow.js' %}"></script>
 <script type="text/javascript" src="{% static 'web/js/jquery.mmenu.min.all.js' %}"></script>
 
+<style>
+    .close_newsteller {
+        position: fixed !important;
+        display: block !important;
+        top: 26% !important;
+        right: 37% !important;
+    }
+</style>
+
 <div id="privacy-policies-message" class="displayed">
     <div class="close" onclick="acceptCookies()"><i class="fa fa-times"></i></div>
     <div class="content">
@@ -167,7 +176,7 @@
 		</script>
 
         <section class="popnews" id="newsteller">
-            <span class="close">+</span>
+            <span class="close close_newsteller">+</span>
             <article>
                 <div id="confirm_message_newsteller" class="confirm_message" style="color: black;"></div>
                 <form action="https://ljrealties.us20.list-manage.com/subscribe/post?u=cae8a392e5c10d2e79b4d6635&amp;id=c5c07613d4&amp;f_id=00f7ccedf0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank">
@@ -185,7 +194,6 @@
                     </div>
                     <input type="submit" style="margin-top: 20px; margin-bottom: 20px;" name="subscribe" id="mc-embedded-subscribe" class="bouton pointer" value="{{ labels.index.button.eight }}" data-field="newsletter">
                 </form>
-                
             </article>
         </section>
 
@@ -209,7 +217,6 @@
         fnames[0]='EMAIL'; ftypes[0]='email';
         fnames[1]='FNAME'; ftypes[1]='text';
         fnames[2]='LNAME'; ftypes[2]='text';
-        // Puedes agregar más campos si es necesario
     }(jQuery));
     var $mcj = jQuery.noConflict(true);
 </script>
