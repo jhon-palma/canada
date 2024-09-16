@@ -140,6 +140,7 @@ STORAGES = {
             "secret_key": AWS_S3_SECRET_ACCESS_KEY,
             "bucket_name": AWS_STORAGE_BUCKET_NAME,
             "endpoint_url": AWS_S3_ENDPOINT_URL,
+            "querystring_auth":False,
             "location": 'media',
         },
     },
@@ -155,7 +156,6 @@ STORAGES = {
         },
     },
 }
-
 
 
 customColorPalette = [
