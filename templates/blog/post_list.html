@@ -16,7 +16,7 @@
         <div class="page-title">
             <ul class="breadcrumb">
                 <li>
-                <h4><span class="no-margin text-bold">ARTICLES</span></h4>
+                <h4><span class="no-margin text-bold">LISTADO DE ARTICULOS</span></h4>
                 </li>
                 <div class="heading-elements">
                 </div>
@@ -85,11 +85,15 @@
                     <p id="modalMessage"></p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                     <form id="confirmForm">
                         {% csrf_token %}
                         <input type="hidden" name="record_id" id="recordId">
-                        <button type="button" class="btn bg-primary-800 btn-xlg" id="confirmButton">Confirmar</button>
+                        <div class="col-md-6">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        </div>
+                        <div class="col-md-6">
+                            <button type="button" class="btn bg-primary-800 btn-xlg" id="confirmButton">Confirmar</button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -112,14 +116,11 @@
             var dataTable;
             $(document).on('click', '.open-modal', function() {
                 event.preventDefault();
-
                 articleId = $(this).data('id');
                 var title = $(this).data('title');
                 actionType = $(this).data('action');
-
                 $('#modalMessage').html('¿Está seguro de que desea actualizar el registro <strong>' + title + '</strong>?');
                 $('#recordId').val(articleId);
-
                 $('#confirmModal').modal('show');
             });
             $('#confirmButton').on('click', function(event) {

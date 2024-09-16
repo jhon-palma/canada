@@ -6373,10 +6373,9 @@ img.mfp-img{
 	padding: 5px 0;
 }
 .teal_btn,
-button[type=submit], .popnews article input[type=submit], .poplogin article input[type=submit], .popwwu article input[type=submit], input[type=submit], #openModalLoginComment {
+button[type=submit], .popnews article input[type=submit], .poplogin article input[type=submit], .popwwu article input[type=submit], input[type=submit] {
 	color: #fff !important;
     border: 1px solid #00AAAE;
-	
     background-color: #00AAAE;
     padding: 10px 30px;
     border-radius: 4px;
@@ -6388,6 +6387,22 @@ button[type=submit], .popnews article input[type=submit], .poplogin article inpu
     outline:none;
 	font-family: 'Roboto Condensed', sans-serif;
 }
+
+
+#openModalLoginComment {
+    color: #fff !important;
+    border: 1px solid #00AAAE;
+    background-color: #00AAAE;
+    padding: 10px 30px;
+    border-radius: 4px;
+    display: inline-block;
+    font-size: 16px;
+    transition: all .4s;
+    text-transform: uppercase;
+    outline: none;
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
 .teal_btn:hover,
 button[type=submit]:hover, .popnews article input[type=submit]:hover, .popwwu  article input[type=submit]:hover {
     color: #00AAAE !important;

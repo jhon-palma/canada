@@ -8,7 +8,7 @@
         <div class="page-title">
             <ul class="breadcrumb">
                 <li>
-                <h4><span class="no-margin text-bold">ARTICLES</span></h4>
+                <h4><span class="no-margin text-bold">CATEGORIAS</span></h4>
                 </li>
                 <div class="heading-elements">
                 </div>
@@ -18,7 +18,7 @@
         <div class="breadcrumb-line">
         <ul class="breadcrumb">
             <li><a>Blog</a></li>
-            <li class="active">Articulos</li>
+            <li class="active">Categorias</li>
         </ul>
         </div>
     </div>
@@ -56,15 +56,14 @@
                         <fieldset class="content-group">
                             <div class="col-lg-12">
                                 <div class="form-group">
-                                    <legend class="text-bold"><i class="icon-spell-check"></i> Categoria POST</legend>
                                     <div class="row">
-                                        <div class="col-md-3">
+                                        <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="id_price_initial_year">Title francaise : </label>
                                                 <input type="text" class="form-control" id="id_title_francaise" name="title_francaise" value="{{ category.title_francaise|default_if_none:'' }}">
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="id_price_initial_year">Title anglaise : </label>
                                                 <input type="text" class="form-control" id="id_title_anglaise" name="title_anglaise" value="{{ category.title_anglaise|default_if_none:'' }}">
@@ -74,7 +73,7 @@
                                 </div>
                                 <div class="form-group">
                                     <a href="{% url 'blog:categories' %}" class="btn bg-orange-600 btn-labeled btn-xlg"  style="width: auto;"><b><i class="icon-undo2"></i></b><span class="margin-left-20">VOLVER</span></a>
-                                    <button type="submit" class="btn bg-primary-800 btn-labeled btn-xlg"  style="width: auto;"><b><i class="icon-floppy-disk"></i></b><span class="margin-left-20">Crear</span></button>
+                                    <button type="submit" class="btn bg-primary-800 btn-labeled btn-xlg"  style="width: auto;"><b><i class="icon-floppy-disk"></i></b><span class="margin-left-20">GUARDAR</span></button>
                                 </div>
                             </div>
                         </fieldset>

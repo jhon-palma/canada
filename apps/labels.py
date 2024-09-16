@@ -80,7 +80,7 @@ DICT_LABELS = {
                     'thirty': 'click here',
                     'thirty_one': 'Got it',
                     'thirty_two': 'As expert real state brokers, we deliver exceptional results.',
-                    'thirty_three': 'Our average sold price is among the highest in the market, our listings sell faster, and we have completed thousands of successful transactions.',
+                    'thirty_three': 'Our average sold price is among the highest in the market, our listings sell faster, and we have completed numerous thousands of successful transactions.',
                     'thirty_four': 'Trust us for a seamless and profitable real estate experience.',
                 }
             },

@@ -16,18 +16,18 @@
                             <article id="post-2270" class="bwp-masonry-item bwp-blog-col-3 articleprev post-2270 post type-post status-publish format-standard hentry category-formation-en-immobilier">
                                 <div class="img">
                                     <div class="cattag">{% if language == "en" %}{{ article.category.title_anglaise }}{% else %}{{ article.category.title_francaise }}{% endif %}</div>
-                                    {% if language == "en" %}<a href="{% url 'blog:post_detail' language=language category_slug=article.category.slug_anglaise slug=article.slug_anglaise %}">{% else %}<a href="{% url 'blog:post_detail' language=language category_slug=article.category.slug_francaise slug=article.slug_francaise %}">{% endif %}
+                                    {% if language == "en" %}<a href="{% url 'blog:post_detail' language=language slug=article.slug_anglaise %}">{% else %}<a href="{% url 'blog:post_detail' language=language slug=article.slug_francaise %}">{% endif %}
                                         {% if language == "en" %}<img src="{{ article.image_anglaise.url }}" alt="{{ article.title_anglaise }}">{% else %}<img src="{{ article.image_francaise.url }}" alt="{{ article.title_francaise }}">{% endif %}
                                     </a>
                                 </div>
                                 <p class="date">{{ article.formatted_date }}</p>
                                 <h3 class=>
-                                    {% if language == "en" %}<a href="{% url 'blog:post_detail' language=language category_slug=article.category.slug_anglaise slug=article.slug_anglaise %}">{{ article.title_anglaise }}{% else %}<a href="{% url 'blog:post_detail' language=language category_slug=article.category.slug_francaise slug=article.slug_francaise %}">{{ article.title_francaise }}{% endif %}</a>
+                                    {% if language == "en" %}<a href="{% url 'blog:post_detail' language=language slug=article.slug_anglaise %}">{{ article.title_anglaise }}{% else %}<a href="{% url 'blog:post_detail' language=language  slug=article.slug_francaise %}">{{ article.title_francaise }}{% endif %}</a>
                                 </h3>
                                 <div class="bwp-post-excerpt entry-content">
                                     <p>{% if language == "en" %}{{ article.content_anglaise|slice:":150"|safe }}{% else %}{{ article.content_anglaise|slice:":150"|safe }}{% endif %}...</p>
                                 </div>
-                                {% if language == "en" %}<a href="{% url 'blog:post_detail' language=language category_slug=article.category.slug_anglaise slug=article.slug_anglaise %}" class="bouton">Read{% else %}<a href="{% url 'blog:post_detail' language=language category_slug=article.category.slug_francaise slug=article.slug_francaise %}" class="bouton">Lire{% endif %}</a>
+                                {% if language == "en" %}<a href="{% url 'blog:post_detail' language=language slug=article.slug_anglaise %}" class="bouton">Read{% else %}<a href="{% url 'blog:post_detail' language=language slug=article.slug_francaise %}" class="bouton">Lire{% endif %}</a>
                             </article>
                         {% endfor %}
                     {% else %}

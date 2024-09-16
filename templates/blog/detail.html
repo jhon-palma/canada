@@ -2,10 +2,6 @@
 {% block header_page %}
     <link href="{% static 'blog/css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'blog/css/styles.css' %}" rel="stylesheet">
-    <style>
-        /* Estilos básicos para el modal */
-        
-    </style>
 {% endblock %}
     <section class="bwp-single-page-wrap">
         <div class="container">
@@ -119,7 +115,7 @@
                         {% for comment in post.comments.all %}
                             <div class="comment">
                                 <p>{{ comment.comment }}</p>
-                                <small class="time">{{ comment.created_at|timesince }} ago</small>
+                                <small class="time">{{ comment.user }}<br>{{ comment.created_at|timesince }} ago </small>
                             </div>
                         {% endfor %}
                     </div>
@@ -131,9 +127,9 @@
                     {% if previous_post %}
                         <div class="nav-previous">
                             {% if language == "en" %}
-                                <a href="{% url 'blog:post_detail' language=language category_slug=previous_post.category.slug_anglaise slug=previous_post.slug_anglaise %}" rel="prev">
+                                <a href="{% url 'blog:post_detail' language=language slug=previous_post.slug_anglaise %}" rel="prev">
                             {% else %}
-                                <a href="{% url 'blog:post_detail' language=language category_slug=previous_post.category.slug_francaise slug=previous_post.slug_francaise %}" rel="prev">
+                                <a href="{% url 'blog:post_detail' language=language slug=previous_post.slug_francaise %}" rel="prev">
                             {% endif %}
                                 <span class="meta-nav"><i class="fa fa-angle-left"></i>Previous post</span>
                                 <span class="post-title-nav">{% if language == "en" %}{{ previous_post.title_anglaise|slice:56 }}{% else %}{{ previous_post.title_francaise|slice:56 }}{% endif %}...</span>
@@ -143,9 +139,9 @@
                     {% if next_post %}
                         <div class="nav-next">
                             {% if language == "en" %}
-                                <a href="{% url 'blog:post_detail' language=language category_slug=next_post.category.slug_anglaise slug=next_post.slug_anglaise %}" rel="next">
+                                <a href="{% url 'blog:post_detail' language=language slug=next_post.slug_anglaise %}" rel="next">
                             {% else %}
-                                <a href="{% url 'blog:post_detail' language=language category_slug=next_post.category.slug_francaise slug=next_post.slug_francaise %}" rel="next">
+                                <a href="{% url 'blog:post_detail' language=language slug=next_post.slug_francaise %}" rel="next">
                             {% endif %}
                             <span class="meta-nav">Next post<i class="fa fa-angle-right"></i></span>
                             <span class="post-title-nav">{% if language == "en" %}{{ next_post.title_anglaise|slice:56 }}{% else %}{{ next_post.title_francaise|slice:56 }}{% endif %}...</span>
@@ -237,6 +233,15 @@
         </article>
     </section>
     <script>
+
+        {% if language == 'en' %}
+            var msg_error_1 = 'There was an error processing the request.'
+            var msg_error_2 = 'The comment cannot be empty'
+        {% else %}
+            var msg_error_1 = 'Le commentaire ne peut pas être vide.'
+            var msg_error_2 = "Une erreur s'est produite lors du traitement de la demande."
+        {% endif %}
+
         $(document).ready(function() {
             $('.like-button').on('click', function(e) {
                 e.preventDefault();
@@ -354,7 +359,7 @@
                         }
                     },
                     error: function(xhr, errmsg, err) {
-                        $('#errorMessages').text('Hubo un error al procesar la solicitud.');
+                        $('#errorMessages').text(msg_error_1);
                         try {
                            var response = JSON.parse(xhr.responseText);
                             if (response.error_message) {
@@ -412,7 +417,7 @@
                         }
                     },
                     error: function(xhr, errmsg, err) {
-                        $('#errorMessages').text('Hubo un error al procesar la solicitud.');
+                        $('#errorMessages').text(msg_error_1);
                         try {
                            var response = JSON.parse(xhr.responseText);
                             if (response.error_message) {
@@ -549,7 +554,7 @@
                         }
                     },
                     error: function(xhr, errmsg, err) {
-                        $('#errorMessagesComment').text('Hubo un error al procesar la solicitud.');
+                        $('#errorMessagesComment').text(msg_error_1);
                         try {
                            var response = JSON.parse(xhr.responseText);
                             if (response.error_message) {
@@ -565,8 +570,8 @@
         function validateCommentEmpty() {
             var comment = $('#comment').val().trim();
             if (comment === '') {
-                $('#errorMessagesLogincomments').text('El comentario no puede estar vacío.');
-                $('#errorMessagesComments').text('El comentario no puede estar vacío.');
+                $('#errorMessagesLogincomments').text(msg_error_2);
+                $('#errorMessagesComments').text(msg_error_2);
                 return false;
             }
             return true;
@@ -605,7 +610,7 @@
                         }
                     },
                     error: function(xhr, errmsg, err) {
-                        $('#errorMessagesLogincomments').text('Hubo un error al procesar la solicitud.');
+                        $('#errorMessagesLogincomments').text(msg_error_1);
                         try {
                            var response = JSON.parse(xhr.responseText);
                             if (response.error_message) {

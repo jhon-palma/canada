@@ -171,8 +171,8 @@ def create_user(request):
                 user.username = user.email  
                 user.save()
                 membre = Membres()
-                membre.nom = user.first_name
-                membre.prenom = user.last_name
+                membre.nom = user.last_name
+                membre.prenom = user.first_name
                 bur_code = get_id_bureau('JLI001')
                 membre.bur_code = bur_code
                 code_langue = get_id_valeurs("A",'CODE_LANGUE')

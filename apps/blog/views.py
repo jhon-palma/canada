@@ -23,6 +23,9 @@ from django.contrib.auth import login, authenticate
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 
+
+
+
 def articles(request, language='fr'):
     articles_list  = Article.objects.filter(active=True)
     paginator = Paginator(articles_list, 12)
@@ -47,6 +50,8 @@ def articles(request, language='fr'):
         'paginator': paginator,
     }
     return render(request, 'blog/blog.html',context)
+
+
 
 def new_post(request):
     form = ArticleForm()
@@ -74,9 +79,13 @@ def new_post(request):
                 print("Formulario no válido. Errores:", form.errors)
     return render(request, 'blog/new_post.html',{'form':form})
 
+
+
 def list_articles(request):
     articles = Article.objects.all()
     return render(request, 'blog/post_list.html',{'articles':articles})
+
+
 
 def new_category(request):
     # language = request.GET.get('language', 'fr')
@@ -95,51 +104,57 @@ def categories(request):
     categories = Category.objects.all()
     return render(request, 'blog/list_category.html',{'categories':categories})
 
-def detail(request, language, category_slug, slug):
+
+
+def detail(request, language, slug):
     labels = DICT_LABELS.get(language).get('web')
-    if language == 'en':
-        post = get_object_or_404(Article, slug_anglaise=slug, active=True)
-    else:
-        post = get_object_or_404(Article, slug_francaise=slug, active=True)
-    post.visites += 1
-    post.save()
+    slug_field = 'slug_anglaise' if language == 'en' else 'slug_francaise'
 
-    user_liked = False
-    if request.user.is_authenticated:
-        user_liked = Like.objects.filter(user=request.user, post=post).exists()
+    try:
+        post = get_object_or_404(Article, **{slug_field: slug, 'active': True})
+        post.visites += 1
+        post.save()
 
-    previous_post = Article.objects.filter(
-        active=True,
-        created_at__lt=post.created_at
-    ).order_by('-created_at').first()
-    
-    next_post = Article.objects.filter(
-        active=True,
-        created_at__gt=post.created_at
-    ).order_by('created_at').first()
-    
-    if request.method == 'POST':
+        user_liked = False
+        if request.user.is_authenticated:
+            user_liked = Like.objects.filter(user=request.user, post=post).exists()
+
+        previous_post = Article.objects.filter(
+            active=True,
+            created_at__lt=post.created_at
+        ).order_by('-created_at').first()
         
-
+        next_post = Article.objects.filter(
+            active=True,
+            created_at__gt=post.created_at
+        ).order_by('created_at').first()
+        
+        if request.method == 'POST':
             return redirect('post_detail', slug=slug)
 
-    context = {
-        'language':language,
-        'labels':labels,
-        
-        'post': post,
-        'user_liked': user_liked,
-        'previous_post': previous_post,
-        'next_post': next_post,
-    }
+        context = {
+            'language':language,
+            'labels':labels,
+            'post': post,
+            'user_liked': user_liked,
+            'previous_post': previous_post,
+            'next_post': next_post,
+        }
 
-    return render(request, 'blog/detail.html', context)
+        return render(request, 'blog/detail.html', context)
+
+    except: return redirect('/')
+   
+  
+
+
 
 def category(request, slug):
     category = get_object_or_404(Category, slug_francaise=slug)
     articles = category.posts.filter(status=Article.ACTIVE)
-
     return render(request, 'blog/post_list.html', {'category': category, 'articles': articles})
+
+
 
 def update_article(request, article_id):
     post = get_object_or_404(Article, id=article_id)
@@ -189,10 +204,10 @@ def update_status_ajax(request):
             article = Article.objects.get(id=record_id)
             if article.active:
                 article.active = False
-                status_message = 'activado'
+                status_message = 'desactivado'
             else:
                 article.active = True
-                status_message = 'inactivado'
+                status_message = 'activado'
             article.save()
             articles = Article.objects.all()
             articles_html = render_to_string('blog/articles_list.html', {'articles': articles})
@@ -270,6 +285,8 @@ def signup_blog(request):
 
     return JsonResponse({'success': False, 'error_message': 'Método de solicitud no permitido.'})
 
+
+
 def login_blog(request):
     if request.method == 'POST':
         email = request.POST.get('email_login')
@@ -318,6 +335,8 @@ def login_blog(request):
 
     return JsonResponse({'success': False, 'message': 'Invalid request method'})
 
+
+
 def comment(request):
     if request.method == 'POST':
         language = request.POST.get('language')
@@ -339,6 +358,8 @@ def comment(request):
         return JsonResponse({
             'success': True,
         })
+
+
 
 def signup_blog_comment(request):
     if request.method == 'POST':
@@ -383,6 +404,8 @@ def signup_blog_comment(request):
             return JsonResponse({'success': False, 'error_message': str(e)})
 
     return JsonResponse({'success': False, 'error_message': 'Método de solicitud no permitido.'})
+
+
 
 def login_blog_comments(request):
     if request.method == 'POST':
