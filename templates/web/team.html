@@ -66,6 +66,12 @@
                             {% if member.twitter %}
                                 <a class="btnsoc" href="{{ member.twitter }}" target="_blank"><img src="{% static 'web/images2/twitter.png' %}" alt="Facebook" /></a>
                             {% endif %}
+                            {% if member.tiktok %}
+                                <a class="btnsoc" href="{{ member.tiktok }}" target="_blank"><img src="{% static 'web/images2/tiktok.png' %}" alt="Facebook" /></a>
+                            {% endif %}
+                            {% if member.youtube %}
+                                <a class="btnsoc" href="{{ member.youtube }}" target="_blank"><img src="{% static 'web/images2/youtube.png' %}" alt="Youtube" /></a>
+                            {% endif %}
                         </div>
                         {% if member.membre %}
                             <a href="{% url 'web:member' language=language option='courtier' member_id=member.membre.id %}" class="bouton">{{ labels.team.button.one }}</a>

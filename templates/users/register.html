@@ -60,9 +60,10 @@
                 <h5 class="panel-title"></h5>
                 <div class="panel-body">
                     <form method="POST" enctype="multipart/form-data">{% csrf_token %}
+
                         <fieldset class="content-group">
                             <div class="col-lg-12">
-                                <legend class="text-bold"><i class="icon-user position-left"></i>Crear usuario</legend>
+                                <legend class="text-bold"><i class="icon-vcard mr-2 position-left"></i>Datos Básicos</legend>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="text-center mb-3">
@@ -71,7 +72,8 @@
                                             </div>
                                         </div>
                                         <div class="form-group ">
-                                            <label for="id_image">Cambiar Imagen:</label>
+                                            <label for="id_image">Cambiar Imagen: <span class="form-text text-danger"></span></label>
+                                            
                                             <span class="text-danger">{{profile_form.image.errors}}</span>
                                             <input type="file" class="form-control-file" accept="image/*" id="id_image" name="image">
                                         </div>
@@ -83,7 +85,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group ">
-                                            <label for="id_image">Cambiar Imagen Secundaria:</label>
+                                            <label for="id_image">Cambiar Imagen Secundaria: <span class="form-text text-danger"></span></label>
                                             <span class="text-danger">{{profile_form.image_over.errors}}</span>
                                             <input type="file" class="form-control-file" accept="image/*" id="id_image_over" name="image_over">
                                         </div>
@@ -92,61 +94,37 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-3">
                                                 <div class="form-group">
-                                                    <label for="id_first_name">Nombres:</label>
+                                                    <label for="id_first_name">Nombres: <span class="form-text text-danger">*</span></label>
                                                     <span class="text-danger">{{user_form.first_name.errors}}</span>
                                                     <input type="text" class="form-control" id="id_first_name" name="first_name" value="{{ user_form.data.first_name }}" required>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-3">
                                                 <div class="form-group">
-                                                    <label for="id_last_name">Apellidos:</label>
+                                                    <label for="id_last_name">Apellidos: <span class="form-text text-danger">*</span></label>
                                                     <span class="text-danger">{{user_form.last_name.errors}}</span>
                                                     <input type="text" class="form-control" id="id_last_name" name="last_name" value="{{ user_form.data.last_name }}" required>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <div class="form-group">
-                                                    <label for="id_email">Email:</label>
+                                                    <label for="id_email">Email: <span class="form-text text-danger">*</span></label>
                                                     <span class="text-danger">{{user_form.email.errors}}</span>
                                                     <input type="email" class="form-control" id="id_email" name="email" value="{{ user_form.data.email }}" required>
                                                 </div>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-3">
                                                 <div class="form-group">
-                                                    <label for="id_type_user">Tipo de Usuario:</label>
-                                                    <span class="text-danger">{{profile_form.type_user.errors}}</span>
-                                                    <select class="form-control" id="id_type_user" name="type_user">
-                                                        <option value="">Seleccione una opción</option>
-                                                        <option value="admin" {% if profile_form.data.type_user == "admin" %}selected{% endif %}>Administrador</option>
-                                                        <option value="operador" {% if profile_form.data.type_user == "operador" %}selected{% endif %}>Operador</option>
-                                                        <option value="supervisor" {% if profile_form.data.type_user == "supervisor" %}selected{% endif %}>Supervisor</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="id_member">Miembro:</label>
-                                                    <span class="text-danger">{{profile_form.member.errors}}</span>
-                                                    <select class="form-control" id="id_member" name="member">
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="id_password1">Contraseña:</label>
+                                                    <label for="id_password1">Contraseña: <span class="form-text text-danger">*</span></label>
                                                     <span class="text-danger">{{user_form.password1.errors}}</span>
                                                     <input type="password" class="form-control" id="id_password1" name="password1" required>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-3" style="display: none">
                                                 <div class="form-group">
-                                                    <label for="id_password2">Contraseña:</label>
+                                                    <label for="id_password2">Repetir Contraseña: <span class="form-text text-danger">*</span></label>
                                                     <span class="text-danger">{{user_form.password2.errors}}</span>
                                                     <input type="password" class="form-control" id="id_password2" name="password2" required>
                                                 </div>
@@ -154,38 +132,93 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset class="content-group">
+                            <div class="col-lg-12">
+                                <legend class="text-bold"><i class="icon-equalizer3 position-left"></i>Parametrización</legend>
                                 <div class="row">
-                                    <div class="col-md-3">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="id_occupation">Cargo Francés: </label>
+                                            <input type="text" class="form-control" id="id_occupation" name="occupation" value="{{ user_form.instance.profile.occupation|default_if_none:'' }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="id_occupation_anglaise">Cargo Ingles:</label>
+                                            <input type="text" class="form-control" id="id_occupation_anglaise" name="occupation_anglaise" value="{{ user_form.instance.profile.occupation_anglaise|default_if_none:'' }}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="id_presentation_f">Presentación Francés:</label>
+                                            <textarea rows="10" class="form-control" id="id_presentation_f" name="presentation_f">{{ user_form.instance.profile.presentation_f|default_if_none:'' }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="id_presentation_a">Presentación Inglés:</label>
+                                            <textarea rows="10" class="form-control" id="id_presentation_a" name="presentation_a">{{ user_form.instance.profile.presentation_a|default_if_none:'' }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+        
+                        <fieldset class="content-group">
+                            <div class="col-lg-12">
+                                <legend class="text-bold"><i class="icon-price-tag2 position-left"></i>Redes Sociales</legend>
+                                <div class="row">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="id_facebook">Facebook:</label>
                                             <input type="text" class="form-control" id="id_facebook" name="facebook" value="{{ user_form.instance.profile.facebook|default_if_none:'' }}">
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="id_instagram">Instagram:</label>
                                             <input type="text" class="form-control" id="id_instagram" name="instagram" value="{{ user_form.instance.profile.instagram|default_if_none:'' }}">
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="id_linkedin">Linkedin:</label>
                                             <input type="text" class="form-control" id="id_linkedin" name="linkedin" value="{{ user_form.instance.profile.linkedin|default_if_none:'' }}">
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label for="id_twitter">Twitter:</label>
                                             <input type="text" class="form-control" id="id_twitter" name="twitter" value="{{ user_form.instance.profile.twitter|default_if_none:'' }}">
                                         </div>
                                     </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="id_tiktok">TikTok:</label>
+                                            <input type="text" class="form-control" id="id_tiktok" name="tiktok" value="{{ user_form.instance.profile.tiktok|default_if_none:'' }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="id_tiktok">Youtube:</label>
+                                            <input type="text" class="form-control" id="id_youtube" name="youtube" value="{{ user_form.instance.profile.youtube|default_if_none:'' }}">
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
+                                <button type="submit" class="btn bg-primary-800 btn-labeled btn-xlg"  style="width: auto;"><b><i class="icon-floppy-disk"></i></b><span class="margin-left-20">GUARDAR</span></button>
                                 <a href="{% url 'users:profile_list' %}" class="btn bg-orange-600 btn-labeled btn-xlg"  style="width: auto;"><b><i class="icon-undo2"></i></b><span class="margin-left-20">VOLVER</span></a>
-                                <button type="submit" class="btn bg-primary-800 btn-labeled btn-xlg"  style="width: auto;"><b><i class="icon-floppy-disk"></i></b><span class="margin-left-20">CREAR</span></button>
                             </div>
                         </fieldset>
+
                     </form>
                 </div>
             </div>
@@ -200,5 +233,12 @@
 <script type="text/javascript" src="{% static 'app/js/core/libraries/jquery_ui/interactions.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'app/js/plugins/forms/selects/select2.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'app/js/pages/form_select2.js' %}"></script>
+
+<script>
+    document.getElementById('id_password1').addEventListener('input', function() {
+        document.getElementById('id_password2').value = this.value;
+    });
+</script>
+
 
 {% endblock %}

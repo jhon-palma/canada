@@ -223,7 +223,7 @@ def user_verification():
             if not Profile.objects.filter(user=user).exists():
                 profile = Profile.objects.create(
                     user=user,
-                    image='static/media/default.png',
+                    image='public/app/profile_imgs/default.png',
                     membre = membre,
                     order= order,
                 )
