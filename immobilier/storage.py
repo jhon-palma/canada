@@ -6,7 +6,7 @@ from storages.backends.s3boto3 import S3Boto3Storage
 
 
 class MediaS3Boto3Storage(S3Boto3Storage):
-    file_overwrite = False
+    file_overwrite = True
 
     def _save(self, name, content):
         public_directories = ['public/', 'public\\']
