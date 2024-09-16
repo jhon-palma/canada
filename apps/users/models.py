@@ -7,7 +7,7 @@ import uuid
 
 
 def user_photo_directory_path(instance, filename):
-    path = 'profile_imgs/{}'.format(filename)
+    path = 'public/app/profile_imgs/{}'.format(filename)
     return path
 
 
@@ -15,8 +15,8 @@ def user_photo_directory_path(instance, filename):
 class Profile(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    image = models.ImageField(default='profile_imgs/default.png', upload_to=user_photo_directory_path)
-    image_over = models.ImageField(default='profile_imgs/default_over.png', upload_to=user_photo_directory_path)
+    image = models.ImageField(default='public/app/profile_imgs/default.png', upload_to=user_photo_directory_path)
+    image_over = models.ImageField(default='public/app/profile_imgs/default_over.png', upload_to=user_photo_directory_path)
     order = models.SmallIntegerField(blank=True, null=True)
     membre = models.ForeignKey(Membres, on_delete=models.CASCADE, blank=True, null=True)
     type = models.ManyToManyField(TypeUser, through='ProfileTypeUser', related_name='type_users', blank=True)

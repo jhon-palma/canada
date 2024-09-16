@@ -1,6 +1,7 @@
 from pathlib import Path
 from .local_settings import *
 import os
+import boto3
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -8,6 +9,7 @@ SECRET_KEY = 'django-insecure-46l99m0=n-fxom7f-7-q9ia8rt9-sh$c^vmz7dcjy9-#$v1j2w
 FILE_CHARSET = 'utf-8'
 ALLOWED_HOSTS = ['*']
 AUTH_USER_MODEL = 'accounts.CustomUser'
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -26,6 +28,7 @@ INSTALLED_APPS = [
     'apps.blog',
     'django_ckeditor_5',
     'django.contrib.sites',
+    'storages',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -104,15 +107,13 @@ AUTHENTICATION_BACKENDS = (
 )
 
 
-SITE_ID = 1
+# -------- VARIABLES GLOBALES
 
+SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
-
 USE_HTTPS = True
-# STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
-# MEDIA_URL = '/media/'
+
 # --------- CONFIGURACION DE LENGUAJE ----------------
 
 LANGUAGE_CODE = 'fr-FR'
@@ -121,14 +122,41 @@ USE_I18N = True
 USE_TZ = True
 USE_L10N = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
 POSTS_PER_PAGE = 10
 
 
+# --------- CONFIGURACION DE ARCHIVOS S3 ----------------
 
-# STATIC_URL = '/static/'
+STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'static'
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = BASE_DIR / 'media'
+
+STORAGES = {
+    "default": {
+        "BACKEND": "immobilier.storage.MediaS3Boto3Storage",
+        "OPTIONS": {
+            "access_key": AWS_S3_ACCESS_KEY_ID,
+            "secret_key": AWS_S3_SECRET_ACCESS_KEY,
+            "bucket_name": AWS_STORAGE_BUCKET_NAME,
+            "endpoint_url": AWS_S3_ENDPOINT_URL,
+            "location": 'media',
+        },
+    },
+    "staticfiles": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+            "access_key":AWS_S3_ACCESS_KEY_ID,
+            "secret_key":AWS_S3_SECRET_ACCESS_KEY,
+            "bucket_name":AWS_STORAGE_BUCKET_NAME,
+            "endpoint_url":AWS_S3_ENDPOINT_URL,
+            "location": 'static',
+            "default_acl": 'public-read'
+        },
+    },
+}
+
+
 
 customColorPalette = [
     {
