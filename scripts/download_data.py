@@ -13,7 +13,7 @@ django.setup()
 
 from immobilier.local_settings import FTP_IP, FTP_USER, FTP_PASSWORD
 from apps.users.views import user_verification
-from .scripts.send_email import sendEmail
+from scripts.send_email import sendEmail
 
 PATH_BASE = Path(__file__).resolve().parent.parent / 'data'
 PATH_BACKUP = PATH_BASE / 'backups'
