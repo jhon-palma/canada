@@ -12,10 +12,10 @@
     <tbody>
         {% for article in articles %}
             <tr>
-                <td>{{ article.title_anglaise }}</td>
-                <td >{{ article.category }}-{{ article.active }}</td>
-                <td><a title="CLICK PARA VER" href="{{ article.image_francaise.url }}" target="_blank"><img width="80" height="70" src="{{ article.image_francaise.url }}"></a></td>
-                <td><a title="CLICK PARA VER" href="{{ article.image_anglaise.url }}" target="_blank"><img width="80" height="70" src="{{ article.image_anglaise.url }}"></a></td>
+                <td style="text-align: center;">{{ article.title_anglaise }}</td>
+                <td style="text-align: center;">{{ article.category }}</td>
+                <td style="text-align: center;"><a title="CLICK PARA VER" href="{{ article.image_francaise.url }}" target="_blank"><img width="80" height="70" src="{{ article.image_francaise.url }}"></a></td>
+                <td style="text-align: center;"><a title="CLICK PARA VER" href="{{ article.image_anglaise.url }}" target="_blank"><img width="80" height="70" src="{{ article.image_anglaise.url }}"></a></td>
                 <td style="text-align: center;">
                     <a href="{% url 'blog:post_detail' language='en' slug=article.slug_anglaise %}"><i class="icon-new-tab"></i> Ver</a> | 
                     <a href="{% url 'blog:update_article' article_id=article.id %}"><i class="icon-pencil7"></i> Editar</a> | 
