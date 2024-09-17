@@ -139,8 +139,6 @@ def detail(request, language, slug):
    
   
 
-
-
 def category(request, slug):
     category = get_object_or_404(Category, slug_francaise=slug)
     articles = category.posts.filter(status=Article.ACTIVE)
@@ -176,17 +174,51 @@ def update_article(request, article_id):
 
     return render(request, 'blog/new_post.html', {'form': form})
 
-def update_category(request, category_id):
+
+
+
+from django.urls import reverse_lazy
+from django.views.generic.edit import UpdateView
+
+class CategoryUpdateView(UpdateView):
+    model = Category
+    form_class = CategoryAdminForm
+    template_name = 'blog/new_category.html'
+    success_url = reverse_lazy('blog:categories')
+
+    def get_object(self, queryset=None):
+        uuid_value = self.kwargs.get('uuid')
+        return get_object_or_404(Category, id=uuid_value)
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, 'Categoría actualizada correctamente', extra_tags='successful')
+        return response
+
+    def form_invalid(self, form):
+        response = super().form_invalid(form)
+        messages.error(self.request, form.errors)
+        return response
+
+
+
+
+
+def update_categorys(request, category_id):
     category = get_object_or_404(Category, id=category_id)
     if request.method == 'POST':
         form = CategoryAdminForm(request.POST)
-        if form.is_valid:
+        if form.is_valid():
             form.save()
             messages.success(request, 'Categoria actualizada correctamente', 'succesful')
             return redirect('blog:categories')  
         else:
-            messages.error(request, 'Error al actualizar la categoria')
+            messages.error(request, form.errors)
     return render(request, 'blog/new_category.html',{'category':category})
+
+
+
+
 
 @csrf_exempt
 def update_status_ajax(request):

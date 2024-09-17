@@ -48,3 +48,5 @@ class FormLoginValidator(Validator):
         except CustomUser.DoesNotExist:
             self._message = 'Acceso Incorrecto'
             return False
+
+

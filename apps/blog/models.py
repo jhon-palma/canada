@@ -10,6 +10,8 @@ from django_ckeditor_5.fields import CKEditor5Field
 from django.contrib.sites.models import Site
 from apps.accounts.models import CustomUser
 
+
+
 class Category(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     title_anglaise = models.CharField(max_length=255)
@@ -22,16 +24,11 @@ class Category(models.Model):
         verbose_name_plural = 'Categories'
 
     def __str__(self):
-        language = get_language()
-        if language == 'fr':
-            return self.title_francaise
-        elif language == 'en': 
-            return self.title_anglaise
-        else:
-            return self.title_francaise
+        title = '{} | {}'.format(self.title_francaise, self.title_anglaise)
+        return title
 
     def get_absolute_url(self):
-        language = get_language()  # Obtiene el idioma actual
+        language = get_language()
         if language == 'fr':
             return '/%s/' % self.slug_francaise
         elif language == 'en':
@@ -40,10 +37,11 @@ class Category(models.Model):
             return '/%s/' % self.slug_francaise
 
     def save(self, *args, **kwargs):
-        self.slug_francaise = slugify(self.title_anglaise)
+        self.slug_francaise = slugify(self.title_francaise)
         self.slug_anglaise = slugify(self.title_anglaise)
-
         super(Category, self).save(*args, **kwargs)
+
+
 
 class Article(models.Model):
 
@@ -101,6 +99,8 @@ class Article(models.Model):
 
         super(Article, self).save(*args, **kwargs)
 
+
+
 class Comment(models.Model):
     article = models.ForeignKey(Article, related_name='comments', on_delete=models.CASCADE)
     comment = models.TextField()
@@ -112,6 +112,8 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.name
+
+
 
 class Like(models.Model):
     post = models.ForeignKey(Article, on_delete=models.CASCADE)

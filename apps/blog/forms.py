@@ -2,11 +2,21 @@ from django import forms
 from .models import Category, Comment
 from django_ckeditor_5.widgets import CKEditor5Widget
 from .models import Article
+from .validators import *
+
+
 
 class CategoryAdminForm(forms.ModelForm):
     class Meta:
         model = Category
         fields = ('title_anglaise', 'title_francaise')
+    
+    def clean(self): 
+        cleaned_data = super().clean()
+        CategoryValidator(self) 
+        return self.cleaned_data
+
+
 
 class ArticleForm(forms.ModelForm):
 
@@ -14,7 +24,6 @@ class ArticleForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields["content_francaise"].required = False
         self.fields["content_anglaise"].required = False
-
         self.fields["title_francaise"].widget.attrs.update({"class": "form-control"})
         self.fields["title_anglaise"].widget.attrs.update({"class": "form-control"})
         self.fields["category"].widget.attrs.update({"class": "form-control"})

@@ -1,8 +1,21 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, register_converter
 from django.conf.urls import include
 from django.conf.urls.static import static
 from django.conf import settings
+
+class UUIDConverter:
+    regex = '[a-fA-F0-9\-]{36}'
+
+    def to_python(self, value):
+        import uuid
+        return uuid.UUID(value)
+
+    def to_url(self, value):
+        return str(value)
+
+register_converter(UUIDConverter, 'uuid')
+
 
 urlpatterns = [
     path('admin', admin.site.urls),

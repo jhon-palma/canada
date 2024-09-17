@@ -1,5 +1,5 @@
 {% extends 'users/base.html' %}
-{% block title %}Categories | {% endblock %}
+{% block title %}Listado de Categorias{% endblock %}
 {% block head_page %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'app/css/datatables/dataTables.css' %}"/>
@@ -69,10 +69,10 @@
                         <tbody>
                             {% for category in categories %}
                             <tr>
-                                <td>{{ category.title_anglaise }}</td>
                                 <td>{{ category.title_francaise }}</td>
+                                <td>{{ category.title_anglaise }}</td>
                                 <td>
-                                    <a href="{% url 'blog:update_category' category_id=category.id %}"><i class="icon-pencil7"></i> Editar</a>
+                                    <a href="{% url 'blog:category_update' category.id %}"><i class="icon-pencil7"></i> Editar</a>
                                 </td>
                             </tr>
                             {% endfor %}

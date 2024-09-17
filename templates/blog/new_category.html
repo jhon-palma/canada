@@ -1,6 +1,6 @@
 {% extends 'users/base.html' %}
 
-{% block title %}New Category | {% endblock %}
+{% block title %}Crear Categoria{% endblock %}
 
 {% block content %}
     <div class="page-header">
@@ -25,7 +25,7 @@
     <div class="content">
         {% if messages %}
             {% for message in messages %}
-                {% if message.tags == "error"%}
+                {% if message.tags == "error" %}
                     <div class="alert alert-danger">
                         {{ message }}
                         <ul>
@@ -59,21 +59,22 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="id_price_initial_year">Title francaise : </label>
+                                                <label for="id_price_initial_year">Title francaise : <span class="form-text text-danger">*</span></label>
                                                 <input type="text" class="form-control" id="id_title_francaise" name="title_francaise" value="{{ category.title_francaise|default_if_none:'' }}">
+                                                {{ form.category.errors.0 }}
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="id_price_initial_year">Title anglaise : </label>
+                                                <label for="id_price_initial_year">Title anglaise : <span class="form-text text-danger">*</span></label>
                                                 <input type="text" class="form-control" id="id_title_anglaise" name="title_anglaise" value="{{ category.title_anglaise|default_if_none:'' }}">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <a href="{% url 'blog:categories' %}" class="btn bg-orange-600 btn-labeled btn-xlg"  style="width: auto;"><b><i class="icon-undo2"></i></b><span class="margin-left-20">VOLVER</span></a>
                                     <button type="submit" class="btn bg-primary-800 btn-labeled btn-xlg"  style="width: auto;"><b><i class="icon-floppy-disk"></i></b><span class="margin-left-20">GUARDAR</span></button>
+                                    <a href="{% url 'blog:categories' %}" class="btn bg-orange-600 btn-labeled btn-xlg"  style="width: auto;"><b><i class="icon-undo2"></i></b><span class="margin-left-20">VOLVER</span></a>
                                 </div>
                             </div>
                         </fieldset>

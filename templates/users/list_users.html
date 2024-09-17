@@ -60,7 +60,6 @@
                                 <tr>
                                     <th>Nombre</th>
                                     <th>Correo</th>
-                                    <th>Tipo usuario</th>
                                     <th>Orden</th>
                                     <th>Estado</th>
                                     <th>Acciones</th>
@@ -71,7 +70,6 @@
                                 <tr>
                                     <td class="text-capitalize">{{ user.first_name }} {{ user.last_name }}</td>
                                     <td>{{ user.email }}</td>
-                                    <td class="text-capitalize"> {{ user.profile.type_user }}</td>
                                     <td>{% if user.profile.order %}{{ user.profile.order }}{% else %}--{% endif %}</td>
                                     <td>{% if user.is_active %}Activo{% else %}Inactivo{% endif %}</td>
                                     <td><a href="{% url 'users:update_profile' user_id=user.id %}"><i class="icon-pencil7"></i> Editar</a></td>
