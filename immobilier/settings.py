@@ -10,7 +10,6 @@ FILE_CHARSET = 'utf-8'
 ALLOWED_HOSTS = ['*']
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -126,37 +125,6 @@ POSTS_PER_PAGE = 10
 
 
 # --------- CONFIGURACION DE ARCHIVOS S3 ----------------
-
-STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'static'
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
-
-STORAGES = {
-    "default": {
-        "BACKEND": "immobilier.storage.MediaS3Boto3Storage",
-        "OPTIONS": {
-            "access_key": AWS_S3_ACCESS_KEY_ID,
-            "secret_key": AWS_S3_SECRET_ACCESS_KEY,
-            "bucket_name": AWS_STORAGE_BUCKET_NAME,
-            "endpoint_url": AWS_S3_ENDPOINT_URL,
-            "querystring_auth":False,
-            "location": 'media',
-        },
-    },
-    "staticfiles": {
-        "BACKEND": "storages.backends.s3.S3Storage",
-        "OPTIONS": {
-            "access_key":AWS_S3_ACCESS_KEY_ID,
-            "secret_key":AWS_S3_SECRET_ACCESS_KEY,
-            "bucket_name":AWS_STORAGE_BUCKET_NAME,
-            "endpoint_url":AWS_S3_ENDPOINT_URL,
-            "location": 'static',
-            "default_acl": 'public-read'
-        },
-    },
-}
-
 
 customColorPalette = [
     {
