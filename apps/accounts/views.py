@@ -1,3 +1,4 @@
+import pdb
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import *
 from django.urls import reverse
@@ -20,6 +21,9 @@ def login(request):
             auth.login(request, validator.access)  
             if request.user.is_superuser:
                 return HttpResponseRedirect(reverse('users:profile_list'))
+            elif request.user.userBlog:
+                language = 'fr' 
+                return HttpResponseRedirect(reverse('blog:articles', kwargs={'language': language}))
             else:
                 return HttpResponseRedirect(reverse('users:profile_list'))
                 #return HttpResponseRedirect(reverse('normal_user_view'))

@@ -1,3 +1,4 @@
+import pdb
 from django.contrib import auth
 from .models import CustomUser
 
@@ -35,8 +36,7 @@ class FormLoginValidator(Validator):
         password = self._post['password']
 
         try:
-            username = CustomUser.objects.get(email=email)
-            access = auth.authenticate(username = username, password=password)
+            access = auth.authenticate(request=self._post, username=email, password=password)
             self.access = access
 
             if access is None:

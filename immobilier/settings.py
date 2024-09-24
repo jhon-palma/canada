@@ -1,7 +1,7 @@
 from pathlib import Path
 from .local_settings import *
 import os
-import boto3
+# import boto3
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent

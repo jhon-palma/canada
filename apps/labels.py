@@ -491,7 +491,7 @@ DICT_LABELS = {
                     'fifteen':"Nous serons présents lors de toutes les visites, ce qui vous permettra de bénéficier de conseils d'experts à chaque étape du processus.",
                     'sixteen':"Aide à la négociation",
                     'seventeen':"Notre équipe vous conseillera tout au long des négociations d'achat et vous aidera à obtenir la meilleure offre.",
-                    'eighteen':"NSPECTION AVANT L’ACHAT",
+                    'eighteen':"INSPECTION AVANT L’ACHAT",
                     'nineteen':"Nous vous assisterons lors de l'inspection préalable à l'achat afin de nous assurer que votre future maison répond à toutes vos attentes.",  
                     'twenty':"Aide au financement",
                     'twenty_one':"Nous vous aiderons à obtenir un financement en vous guidant vers les meilleures options pour vos besoins.", 

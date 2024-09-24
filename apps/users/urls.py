@@ -4,12 +4,14 @@ from django.urls import path, re_path
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
-from .views import change_password, create_user, detail_message, list_images, list_messages, password_change_done, profile_list, updateProfile, updateProfileUsers, change_password_user, update_image
+from .views import change_password, create_user, detail_message, list_images, list_messages, password_change_done, profile_list, update_profile, update_profile_users, change_password_user, update_image, update_user_blog, users_blog_list
 
 urlpatterns = [
-    path('profileList/', profile_list, name='profile_list'),
-    path('profile/', updateProfile, name='profile'),
-    re_path('profile/update/(?P<user_id>[\w-]+)/$', updateProfileUsers, name='update_profile'),
+    path('profile_list/', profile_list, name='profile_list'),
+    path('users_blog_list/', users_blog_list, name='users_blog_list'),
+    path('profile/', update_profile, name='profile'),
+    re_path('update_user_blog/(?P<user_id>[\w-]+)/$', update_user_blog, name='update_user_blog'),
+    re_path('profile/update/(?P<user_id>[\w-]+)/$', update_profile_users, name='update_profile'),
     path('password_change/',login_required(change_password), name='password_change'),
     path('password_change/done/',password_change_done, name='password_change_done'),
     re_path('password_change_user/(?P<user_id>[\w-]+)/$', login_required(change_password_user), name='password_change_user'),

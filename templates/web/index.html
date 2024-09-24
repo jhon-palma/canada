@@ -207,7 +207,7 @@
             <h2 class="h2def-white">{{ labels.index.text.fourteen }}<br><strong>{{ labels.index.text.fifteen }}</strong></h2>
             <div class="horizontal-line-white"></div>
             <p>{{ labels.index.text.sixteen }} <br><strong>{{ labels.index.text.seventeen }}</strong><br><br>{{ labels.index.text.eighteen }}</p>
-            <a target="_blank" href="https://autisme-montreal.com/en/" class="bouton boutonnre3">{{ labels.index.button.five }}</a>
+            <a target="_blank" href='{% if language == "en" %}https://autisme-montreal.com/en/{% else %}https://autisme-montreal.com{% endif %}' class="bouton boutonnre3">{{ labels.index.button.five }}</a>
         </div>
         <div class="img">
             <img src="{{ images.index_donate_image.image.url }}" alt="LJ Immobilier">

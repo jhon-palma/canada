@@ -14,7 +14,7 @@
                             <div class="row">
                                 <div class="col-md-7">
                                     <div class="bwp-single-share-wrap">
-                                        <span>Share:</span>
+                                        <span>{% if language == "en" %}Share:{% else %}Partager:{% endif %}</span>
                                         <ul class="bwp-single-share list-unstyled">
                                             <li>
                                                 <a href="https://www.facebook.com/sharer.php?u={{ post.get_absolute_url }}" rel="nofollow noopener" target="_blank" class="bwp-share-link bwp-facebook-share" onclick="window.open('https://www.facebook.com/sharer.php?u={{ post.get_absolute_url }}', 'Facebook', 'width=700,height=500,left='+(screen.availWidth/2-350)+',top='+(screen.availHeight/2-250)+''); return false;">
@@ -27,8 +27,8 @@
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="http://vk.com/share.php?url={{ post.get_absolute_url }}" rel="nofollow noopener" target="_blank" class="bwp-share-link bwp-vk-share" onclick="window.open('http://vk.com/share.php?url={{ post.get_absolute_url }}', 'VK', 'width=600,height=300,left='+(screen.availWidth/2-300)+',top='+(screen.availHeight/2-150)+''); return false;">
-                                                    <i class="fa fa-vk"></i>
+                                                <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ post.get_absolute_url }}" rel="nofollow noopener" target="_blank" class="bwp-share-link bwp-vk-share" onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url={{ post.get_absolute_url }}', 'LinkedIn', 'width=600,height=300,left='+(screen.availWidth/2-300)+',top='+(screen.availHeight/2-150)+''); return false;">
+                                                    <i class="fa fa-linkedin"></i>
                                                 </a>
                                             </li>
                                             <li>
@@ -131,7 +131,7 @@
                             {% else %}
                                 <a href="{% url 'blog:post_detail' language=language slug=previous_post.slug_francaise %}" rel="prev">
                             {% endif %}
-                                <span class="meta-nav"><i class="fa fa-angle-left"></i>Previous post</span>
+                                <span class="meta-nav"><i class="fa fa-angle-left"></i>{% if language == "en" %}Previous post{% else %}Poste précédent{% endif %}</span>
                                 <span class="post-title-nav">{% if language == "en" %}{{ previous_post.title_anglaise|slice:56 }}{% else %}{{ previous_post.title_francaise|slice:56 }}{% endif %}...</span>
                             </a>
                         </div>
@@ -143,7 +143,7 @@
                             {% else %}
                                 <a href="{% url 'blog:post_detail' language=language slug=next_post.slug_francaise %}" rel="next">
                             {% endif %}
-                            <span class="meta-nav">Next post<i class="fa fa-angle-right"></i></span>
+                            <span class="meta-nav">{% if language == "en" %}Next post{% else %}Poste suivant{% endif %}<i class="fa fa-angle-right"></i></span>
                             <span class="post-title-nav">{% if language == "en" %}{{ next_post.title_anglaise|slice:56 }}{% else %}{{ next_post.title_francaise|slice:56 }}{% endif %}...</span>
                             </a>
                         </div>

@@ -1,0 +1,136 @@
+{% extends 'users/base.html' %}
+{% load tags %}{% load static %}
+{% block head_page %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'app/css/datatables/dataTables.css' %}"/>
+    <script src="{% static 'app/js/datatables/dataTables.js' %}"></script>
+    <script src="{% static 'app/js/core/libraries/bootstrap.min.js' %}"></script>
+{% endblock %}
+{% block content %}
+    <div class="page-header">
+        <div class="page-header-content">
+        <div class="page-title">
+            <ul class="breadcrumb">
+                <li>
+                <h4><span class="no-margin text-bold">{{ user_form.instance.email }}</span></h4>
+                </li>
+                <div class="heading-elements">
+                </div>
+            </ul>
+        </div>
+        </div>
+        <div class="breadcrumb-line">
+        <ul class="breadcrumb">
+            <li><a>Usuarios</a></li>
+            <li>Usuario Blog</li>
+            <li class="active">{{ user_form.instance.email }}</li>
+        </ul>
+        </div>
+    </div>
+    <div class="content">
+        {% if messages %}
+                {% for message in messages %}
+                    {% if message.tags == "error"%}
+                        <div class="alert alert-danger">
+                            {{ message }}
+                            <ul>
+                                {% for error in profile_form.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-success">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %} 
+        <div class="panel panel-flat">
+            <div class="panel-heading">
+                <h5 class="panel-title"></h5>
+                <div class="panel-body">
+                    <form method="POST" enctype="multipart/form-data">{% csrf_token %}
+
+
+                        <fieldset class="content-group">
+                            <div class="col-lg-12">
+                                <legend class="text-bold"><i class="icon-vcard mr-2 position-left"></i>Datos Básicos</legend>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="id_first_name">Nombres: <span class="form-text text-danger">*</span></label>
+                                                    <span class="text-danger">{{user_form.first_name.errors}}</span>
+                                                    <input type="text" class="form-control" id="id_first_name" name="first_name" value="{{ user_form.instance.first_name }}" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="id_last_name">Apellidos: <span class="form-text text-danger">*</span></label>
+                                                    <span class="text-danger">{{user_form.last_name.errors}}</span>
+                                                    <input type="text" class="form-control" id="id_last_name" name="last_name" value="{{ user_form.instance.last_name }}" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="id_email">Email: <span class="form-text text-danger">*</span></label>
+                                                    <span class="text-danger">{{user_form.email.errors}}</span>
+                                                    <input type="email" class="form-control" id="id_email" name="email" value="{{ user_form.instance.email }}" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+
+                        <fieldset class="content-group">
+                            <div class="col-lg-12">
+                                <legend class="text-bold"><i class="icon-equalizer3 position-left"></i>Parametrización</legend>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="id_estado">Estado:</label>
+                                            <select class="form-control" id="id_estado" name="is_active" required>
+                                                <option value="True" {% if user_form.instance.is_active %}selected{% endif %}>Activo</option>
+                                                <option value="false" {% if not user_form.instance.is_active %}selected{% endif %}>Inactivo</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        
+                        <fieldset class="content-group">
+                            <div class="form-group">
+                                <button type="submit" class="btn bg-primary-800 btn-labeled btn-xlg"  style="width: auto;"><b><i class="icon-floppy-disk"></i></b><span class="margin-left-20">ACTUALIZAR</span></button>
+                                <a href="{% url 'users:users_blog_list' %}" class="btn bg-orange-600 btn-labeled btn-xlg"  style="width: auto;"><b><i class="icon-undo2"></i></b><span class="margin-left-20">VOLVER</span></a>
+                                <a href="{% url 'users:password_change_user' user_id=user_form.instance.id %}" class="btn bg-pink-600 btn-labeled btn-xlg"  style="width: auto;"><b><i class="icon-undo2"></i></b><span class="margin-left-20">CAMBIAR LA CONTRASEÑA</span></a>
+                            </div>
+                        </fieldset>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+{% block javascript %}
+
+<script type="text/javascript" src="{% static 'app/js/pages/form_validation.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/js/plugins/forms/tags/tokenfield.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/js/pages/form_tags_input.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/js/core/libraries/jquery_ui/interactions.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/js/plugins/forms/selects/select2.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/js/pages/form_select2.js' %}"></script>
+
+{% endblock %}

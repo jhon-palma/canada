@@ -52,7 +52,7 @@
 					<p style="white-space: break-spaces;">{% autoescape off %}{% if language == "en" %}{{ member.presentation_a|default_if_none:''  }}{% else %}{{ member.presentation_f|default_if_none:''  }}{% endif %}{% endautoescape %}</p>
 				</div>
 				<div class="minibiocontact">
-					<a href="mailto:{{ member.membre.courriel }}" class="bouton">Contact</a>
+					<a href="mailto:{{ member.membre.courriel }}" class="bouton">{% if language == "en" %}Contact{% else %}Contactez{% endif %}</a>
 				</div>	
 			</div>
 			<hr>

@@ -1334,7 +1334,7 @@ ul.sf-menu ul > li.current-menu-ancestor > .sf-with-ul:after {
 
   padding-right: 2.5em;
 
-  *padding-right: 1em; /* no CSS arrows for IE7 (lack pseudo-elements) */
+  padding-right: 1em; /* no CSS arrows for IE7 (lack pseudo-elements) */
 
 }
 
@@ -4486,6 +4486,8 @@ object {
 
 .bwp-twitter-share { background-color: #96e1ea; }
 
+.bwp-linkedin-share { background-color: #00a0dc; }
+
 .bwp-google-plus-share { background-color: #e15f4f; }
 
 .bwp-vk-share { background-color: #89aed5; }
@@ -4503,6 +4505,8 @@ object {
 .bwp-facebook-share:hover { background-color: #557ac9; }
 
 .bwp-twitter-share:hover { background-color: #59d1df; }
+
+.bwp-linkedin-share:hover { background-color: #0077b5; }
 
 .bwp-google-plus-share:hover { background-color: #bd3424; }
 

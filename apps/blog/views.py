@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 
 from apps.accounts.models import CustomUser
+from apps.users.models import Profile
 from .models import Article, Category, Like, Comment
 from .forms import ArticleForm, CategoryAdminForm
 from django.db.models import Q
@@ -402,8 +403,10 @@ def signup_blog_comment(request):
             return JsonResponse({'success': False, 'error_message': 'Las contraseñas no coinciden.'})
 
         try:
-            user = CustomUser.objects.create_user(username=email, email=email, password=password)
+            # user = CustomUser.objects.create_user(username=email, email=email, password=password)
+            user = CustomUser.objects.create_user(username=email, email=email, password=password, userBlog=True)
             if user:
+                Profile.objects.create(user=user) 
                 login(request, user, backend='django.contrib.auth.backends.ModelBackend')
                 if language == 'en':
                     article = get_object_or_404(Article, slug_anglaise=slug, active=True)

@@ -26,7 +26,7 @@ from apps.web.models import Formulaire_contact, ImagesWeb
 
 
 
-def updateProfile(request):
+def update_profile(request):
     existing_orders = Profile.objects.exclude(order__isnull=True).values_list('order', flat=True)
     if request.user and request.user.profile.order:
         existing_orders = list(existing_orders)
@@ -67,7 +67,7 @@ def updateProfile(request):
 
 
 
-def updateProfileUsers(request, user_id):
+def update_profile_users(request, user_id):
     user = get_object_or_404(CustomUser, id=user_id)
     existing_orders = Profile.objects.exclude(order__isnull=True).values_list('order', flat=True)
     if user and user.profile.order:
@@ -155,10 +155,27 @@ def change_password_user(request, user_id):
 
 
 def profile_list(request):
-    usuarios = CustomUser.objects.all().order_by('first_name')
+    usuarios = CustomUser.objects.filter(userBlog=False).order_by('first_name')
     return render(request, 'users/list_users.html',{'usuarios':usuarios})
 
+def users_blog_list(request):
+    usuarios = CustomUser.objects.filter(userBlog=True).order_by('first_name')
+    return render(request, 'users/list_users_blog.html',{'usuarios':usuarios})
 
+def update_user_blog(request, user_id):
+    user = get_object_or_404(CustomUser, id=user_id)
+    if request.method == 'POST':
+        user_form = UserEditForm(request.POST, instance=user)
+        if user_form.is_valid():
+            user_form.save()
+            messages.success(request, 'Usuario actualizado', 'succesful')
+            return redirect('users:users_blog_list')  
+        else:
+            messages.error(request, 'Error al actualizar el Usuario')
+    else:
+        user_form = UserEditForm(instance=user)
+    
+    return render(request, 'users/update_user_blog.html', {'user_form': user_form})
 
 
 def create_user(request):
