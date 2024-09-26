@@ -7,7 +7,7 @@ from .models import *
 
 @receiver(post_save, sender=Formulaire_contact)
 def post_save_formulaire_contact(sender, instance, **kwargs):
-    subject = '🔰 YOU HAVE RECEIVED AN LEAD FROM THE WEBSITE'
+    subject = '🔰 YOU HAVE RECEIVED AN LEAD --> {}'.format(instance.sujet.upper)
     date = '📅 Date: {}\n'.format(str(instance.date_creation)[:19])
     name = '👔 Names: {}\n'.format(instance.nom)
     email = '✉️ Email: {}\n'.format(instance.courriel)
