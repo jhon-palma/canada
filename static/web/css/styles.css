@@ -179,7 +179,7 @@ header nav .sub a {
 	color: white;
 }
 header nav .sub a:hover {
-	color: #FFF;
+	color: white;
 }
 .banner{position: relative;}
 
@@ -964,18 +964,67 @@ position: relative;color: #fff !important;}
 	font-family: Arial;
 }
 
+@media (max-width: 767px) {
+	.poppod .close, .popwwu .close{
+		color: #fff;
+		font-size: 60px;
+		transform: rotate(45deg);
+		line-height: 1;
+		position: absolute;
+		top: -50px;
+		right: 0px;
+		display: block;
+		cursor: pointer;
+		font-family: Arial;
+	}
+  }
+
 .popnews .close, .popcomments .close{
 	color: #fff;
 	font-size: 60px;
 	transform: rotate(45deg);
 	line-height: 1;
 	position: absolute;
-	top: 50px;
-	right: 60px;
+	top: -50px;
+	right: -60px;
 	display: block;
 	cursor: pointer;
 	font-family: Arial;
 }
+
+.close_newsteller {
+	color: #fff;
+	font-size: 60px;
+	transform: rotate(45deg);
+	line-height: 1;
+	position: absolute;
+	top: -50px;
+	right: -60px;
+	display: block;
+	cursor: pointer;
+	font-family: Arial;
+}
+
+.btn_search_properties{
+	padding: 13px;
+    border-radius: 5px;
+}
+
+@media (max-width: 767px) {
+	.popnews .close, .popcomments .close{
+		color: #fff;
+		font-size: 60px;
+		transform: rotate(45deg);
+		line-height: 1;
+		position: absolute;
+		top: -50px;
+		right: 0px;
+		display: block;
+		cursor: pointer;
+		font-family: Arial;
+	}
+  }
+
 
 .soldprop{
 	padding-top: 60px;

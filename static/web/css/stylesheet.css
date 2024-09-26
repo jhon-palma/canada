@@ -15,7 +15,7 @@ body a:link {
 }
 
 body a:visited {
-	color: #ffffff;
+	color: #333333;
 	text-decoration: none;
 	
 }
@@ -4289,7 +4289,7 @@ a.mosaique .btn_mosaique:active { color: #FFFFFF; text-decoration: none; }
 
 .box_maison {
 	width: 25%;
-	height: 490px;
+	height: 494px;
 	max-height: 490px;
 	margin: 0;
 	overflow: hidden;

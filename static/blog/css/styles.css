@@ -19,7 +19,6 @@ a.backlink i{
 
 body {
 
-  font-family: 'Lato', sans-serif;
 
   font-size: 16px;
 
@@ -63,7 +62,7 @@ a:focus {
 
 a:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
@@ -1322,7 +1321,7 @@ ul.sf-menu ul > li.current-menu-ancestor > a,
 
 ul.sf-menu ul > li.current-menu-ancestor > .sf-with-ul:after {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
@@ -1334,7 +1333,7 @@ ul.sf-menu ul > li.current-menu-ancestor > .sf-with-ul:after {
 
   padding-right: 2.5em;
 
-  padding-right: 1em; /* no CSS arrows for IE7 (lack pseudo-elements) */
+  *padding-right: 1em; /* no CSS arrows for IE7 (lack pseudo-elements) */
 
 }
 
@@ -1394,7 +1393,7 @@ ul.sf-menu ul > li.current-menu-ancestor > .sf-with-ul:after {
 
 .sf-arrows ul .sfHover > .sf-with-ul:after {
 
-  color:  #478d8c;
+  color:  #00AAAE;
 
 }
 
@@ -1844,7 +1843,7 @@ ul.sf-menu ul > li.current-menu-ancestor > .sf-with-ul:after {
 
 .bwp-mobile-menu li.current-menu-item > a {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
@@ -2094,7 +2093,7 @@ ul.sf-menu ul > li.current-menu-ancestor > .sf-with-ul:after {
 
 #searchform .bwp-search-submit:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
@@ -2968,7 +2967,7 @@ div.bwp-header-custom-text p {
 
 .bwp-post-media-carousel .owl-theme .owl-controls .owl-buttons div:hover {
 
-  background: #478d8c;
+  background: #00AAAE;
 
   color: #ffffff;
 
@@ -3132,7 +3131,7 @@ object {
 
 .bwp-post-title a:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
@@ -3226,7 +3225,7 @@ object {
 
 .bwp-post-excerpt.bwp-content .more-link:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
   text-decoration: none !important;
 
@@ -3274,7 +3273,7 @@ object {
 
 .bwp-post-date:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
@@ -3302,7 +3301,7 @@ object {
 
 .bwp-read-more:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
@@ -3356,7 +3355,7 @@ object {
 
 .bwp-post-counters li a:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
@@ -3382,15 +3381,15 @@ object {
 
 .jm-post-like a { color: #a9aeba; }
 
-.jm-post-like a:hover { color: #478d8c; }
+.jm-post-like a:hover { color: #00AAAE; }
 
 
 
 /* like color */
 
-.jm-post-like a .like.pastliked { color: #478d8c; } /* icon */
+.jm-post-like a .like.pastliked { color: #00AAAE; } /* icon */
 
-.jm-post-like a .count.liked { color: #478d8c; } /* count */
+.jm-post-like a .count.liked { color: #00AAAE; } /* count */
 
 
 
@@ -3410,15 +3409,15 @@ object {
 
 .jm-post-like a:hover .like.disliked,
 
-.jm-post-like a:hover .count.disliked { color: #478d8c; }
+.jm-post-like a:hover .count.disliked { color: #00AAAE; }
 
 
 
 /* alreadyliked color */
 
-.jm-post-like a .like.prevliked { color: #478d8c; } /* icon */
+.jm-post-like a .like.prevliked { color: #00AAAE; } /* icon */
 
-.jm-post-like a .count.alreadyliked { color: #478d8c; } /* count */
+.jm-post-like a .count.alreadyliked { color: #00AAAE; } /* count */
 
 
 
@@ -3564,13 +3563,13 @@ object {
 
 .bwp-post-quote a {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
 .bwp-post-quote a:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
   text-decoration: underline !important;
 
@@ -3718,13 +3717,13 @@ object {
 
 .bwp-no-results-container a {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
 .bwp-no-results-container a:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
   text-decoration: underline !important;
 
@@ -3858,7 +3857,7 @@ object {
 
 .pagination .nav-links a.page-numbers:hover {
 
-  background-color: #478d8c;
+  background-color: #00AAAE;
 
   color: #ffffff;
 
@@ -3974,7 +3973,7 @@ object {
 
 .posts-navigation .nav-links a:hover {
 
-  background-color: #478d8c;
+  background-color: #00AAAE;
 
   color: #ffffff;
 
@@ -4142,7 +4141,7 @@ object {
 
 .bwp-load-more-button:hover {
 
-  background-color: #478d8c;
+  background-color: #00AAAE;
 
   color: #ffffff;
 
@@ -4486,8 +4485,6 @@ object {
 
 .bwp-twitter-share { background-color: #96e1ea; }
 
-.bwp-linkedin-share { background-color: #00a0dc; }
-
 .bwp-google-plus-share { background-color: #e15f4f; }
 
 .bwp-vk-share { background-color: #89aed5; }
@@ -4505,8 +4502,6 @@ object {
 .bwp-facebook-share:hover { background-color: #557ac9; }
 
 .bwp-twitter-share:hover { background-color: #59d1df; }
-
-.bwp-linkedin-share:hover { background-color: #0077b5; }
 
 .bwp-google-plus-share:hover { background-color: #bd3424; }
 
@@ -4586,7 +4581,7 @@ object {
 
 .bwp-single-counters li a:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
@@ -4604,15 +4599,15 @@ object {
 
 .bwp-single-counters .jm-post-like a { color: #3f434c; }
 
-.bwp-single-counters .jm-post-like a:hover { color: #478d8c; }
+.bwp-single-counters .jm-post-like a:hover { color: #00AAAE; }
 
 
 
 /* like color */
 
-.bwp-single-counters .jm-post-like a .like.pastliked { color: #478d8c; } /* icon */
+.bwp-single-counters .jm-post-like a .like.pastliked { color: #00AAAE; } /* icon */
 
-.bwp-single-counters .jm-post-like a .count.liked { color: #478d8c; } /* count */
+.bwp-single-counters .jm-post-like a .count.liked { color: #00AAAE; } /* count */
 
 
 
@@ -4632,15 +4627,15 @@ object {
 
 .bwp-single-counters .jm-post-like a:hover .like.disliked,
 
-.bwp-single-counters .jm-post-like a:hover .count.disliked { color: #478d8c; }
+.bwp-single-counters .jm-post-like a:hover .count.disliked { color: #00AAAE; }
 
 
 
 /* alreadyliked color */
 
-.bwp-single-counters .jm-post-like a .like.prevliked { color: #478d8c; } /* icon */
+.bwp-single-counters .jm-post-like a .like.prevliked { color: #00AAAE; } /* icon */
 
-.bwp-single-counters .jm-post-like a .count.alreadyliked { color: #478d8c; } /* count */
+.bwp-single-counters .jm-post-like a .count.alreadyliked { color: #00AAAE; } /* count */
 
 
 
@@ -4732,7 +4727,7 @@ object {
 
 .bwp-single-metadata li a:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
@@ -4814,7 +4809,7 @@ object {
 
 .comment-content a {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
@@ -4822,7 +4817,7 @@ object {
 
 .comment-content a:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
   text-decoration: underline !important;
 
@@ -5342,7 +5337,7 @@ img.wp-post-image {
 
 .bwp-content input[type="submit"]:hover {
 
-  background-color: #478d8c;
+  background-color: #00AAAE;
 
   color: #ffffff !important;
 
@@ -5646,9 +5641,9 @@ input[type="radio"] {
 
   color: #ffffff !important;
 
-  background-color: #478d8c;
+  background-color: #00AAAE;
 
-  border-color: #478d8c;
+  border-color: #00AAAE;
 
 }
 
@@ -5786,7 +5781,7 @@ input[type="radio"] {
 
   top: -4px;
 
-  color: #478d8c;
+  color: #00AAAE;
 
   -webkit-box-shadow: 0 6px 0 -2px rgba(46,51,64,0.1);
 
@@ -5946,7 +5941,7 @@ input[type="radio"] {
 
 .bwp-about-author-name a:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
@@ -6038,7 +6033,7 @@ input[type="radio"] {
 
 .bwp-about-author-social li a:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
@@ -6302,7 +6297,7 @@ input[type="radio"] {
 
 #commentform #submit:hover {
 
-  background-color: #478d8c;
+  background-color: #00AAAE;
 
   color: #ffffff !important;
 
@@ -6332,13 +6327,13 @@ input[type="radio"] {
 
 .comment-respond .must-log-in a {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
 .comment-respond .must-log-in a:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
   text-decoration: underline !important;
 
@@ -6372,13 +6367,13 @@ input[type="radio"] {
 
 #commentform .logged-in-as a:last-child {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
 #commentform .logged-in-as a:last-child:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
   text-decoration: underline !important;
 
@@ -6406,7 +6401,7 @@ input[type="radio"] {
 
 .comment-reply-title #cancel-comment-reply-link:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
@@ -6530,13 +6525,13 @@ input[type="radio"] {
 
 .pingback .comment-body a {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
 .pingback .comment-body a:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
   text-decoration: underline !important;
 
@@ -6578,7 +6573,7 @@ input[type="radio"] {
 
 .comment-meta .comment-author .fn .url:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
@@ -6636,7 +6631,7 @@ input[type="radio"] {
 
 .comment-meta .comment-metadata a:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
@@ -6680,7 +6675,7 @@ input[type="radio"] {
 
 .comment-meta .edit-link .comment-edit-link:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
@@ -6724,7 +6719,7 @@ input[type="radio"] {
 
 .comment-body .reply .comment-reply-link:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
@@ -6896,7 +6891,7 @@ input[type="radio"] {
 
   top: -4px;
 
-  color: #478d8c;
+  color: #00AAAE;
 
   -webkit-box-shadow: 0 6px 0 -2px rgba(46,51,64,0.1);
 
@@ -7106,13 +7101,13 @@ input[type="radio"] {
 
 .bwp-page-404-container a {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
 .bwp-page-404-container a:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
   text-decoration: underline !important;
 
@@ -7280,7 +7275,7 @@ input[type="radio"] {
 
 .bwp-widget-title a:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
@@ -7332,7 +7327,7 @@ input[type="radio"] {
 
 .widget_archive ul li a:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
@@ -7400,7 +7395,7 @@ input[type="radio"] {
 
 .widget_pages ul li a:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
@@ -7472,7 +7467,7 @@ input[type="radio"] {
 
 .widget_categories a:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
@@ -7548,7 +7543,7 @@ input[type="radio"] {
 
 .widget_recent_entries ul li a:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
@@ -7608,9 +7603,9 @@ input[type="radio"] {
 
   color: #ffffff !important;
 
-  background-color: #478d8c;
+  background-color: #00AAAE;
 
-  border-color: #478d8c;
+  border-color: #00AAAE;
 
 }
 
@@ -7714,13 +7709,13 @@ input[type="radio"] {
 
   font-weight: 700;
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
 #wp-calendar tbody a:hover {
 
-  color: #478d8c !important;
+  color: #00AAAE !important;
 
   text-decoration: underline !important;
 
@@ -7728,7 +7723,7 @@ input[type="radio"] {
 
 #wp-calendar tbody #today {
 
-  background-color: #478d8c;
+  background-color: #00AAAE;
 
   color: #ffffff;
 
@@ -7778,7 +7773,7 @@ input[type="radio"] {
 
   background: transparent;
 
-  color: #478d8c !important;
+  color: #00AAAE !important;
 
   text-decoration: underline !important;
 
@@ -7834,7 +7829,7 @@ input[type="radio"] {
 
 .widget_nav_menu a:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
@@ -7892,7 +7887,7 @@ input[type="radio"] {
 
 .widget_meta ul li a:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
@@ -7942,7 +7937,7 @@ input[type="radio"] {
 
 #recentcomments li a:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
@@ -8082,7 +8077,7 @@ input[type="radio"] {
 
 .widget_search #searchform .bwp-search-submit:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
@@ -8156,7 +8151,7 @@ input[type="radio"] {
 
 .widget_rss ul li a:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
@@ -8416,7 +8411,7 @@ input[type="radio"] {
 
 .widget_bwp_content h4 a:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
@@ -8470,7 +8465,7 @@ input[type="radio"] {
 
 .widget_bwp_meta li a:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
@@ -8530,9 +8525,9 @@ input[type="radio"] {
 
   color: #ffffff !important;
 
-  background-color: #478d8c;
+  background-color: #00AAAE;
 
-  border-color: #478d8c;
+  border-color: #00AAAE;
 
 }
 
@@ -8746,7 +8741,7 @@ input[type="radio"] {
 
 .widget_bwp_posts_slider_item figcaption h4 a:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
@@ -8828,7 +8823,7 @@ input[type="radio"] {
 
 .widget_bwp_posts_slider .owl-theme .owl-controls .owl-buttons div:hover {
 
-  background: #478d8c;
+  background: #00AAAE;
 
   color: #ffffff;
 
@@ -9176,7 +9171,7 @@ input[type="radio"] {
 
 #bwp-footer-widgets-wrap .widget_bwp_posts_slider_item figcaption h4 a:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
@@ -9244,9 +9239,9 @@ input[type="radio"] {
 
 #bwp-footer-widgets-wrap .w_bwp_social_i:hover {
 
-  background-color: #478d8c;
+  background-color: #00AAAE;
 
-  border-color: #478d8c;
+  border-color: #00AAAE;
 
 }
 
@@ -9274,7 +9269,7 @@ input[type="radio"] {
 
 #bwp-footer-widgets-wrap #wp-calendar tbody a {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
@@ -9284,13 +9279,13 @@ input[type="radio"] {
 
 #bwp-footer-widgets-wrap #wp-calendar #prev a:hover {
 
-  color: #478d8c !important;
+  color: #00AAAE !important;
 
 }
 
 #bwp-footer-widgets-wrap #wp-calendar tbody #today {
 
-  background-color: #478d8c;
+  background-color: #00AAAE;
 
 }
 
@@ -9314,7 +9309,7 @@ input[type="radio"] {
 
 #bwp-footer-widgets-wrap .widget_bwp_posts_slider .owl-theme .owl-controls .owl-buttons div:hover {
 
-  background: #478d8c;
+  background: #00AAAE;
 
 }
 
@@ -9398,7 +9393,7 @@ input[type="radio"] {
 
 .bwp-footer-text a:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
@@ -9454,7 +9449,7 @@ input[type="radio"] {
 
 .bwp-footer-social-links li a:hover {
 
-  color: #478d8c;
+  color: #00AAAE;
 
 }
 
@@ -9838,7 +9833,7 @@ input[type="radio"] {
 
   color: #ffffff;
 
-  background-color: #478d8c;
+  background-color: #00AAAE;
 
 }
 
@@ -11890,7 +11885,7 @@ input[type="radio"] {
 
   .post-navigation .nav-links a:hover .meta-nav {
 
-    color: #478d8c;
+    color: #00AAAE;
 
   }
 
@@ -12971,3 +12966,17 @@ textarea {
 }
 
 
+.other-btn{
+  color: #fff !important;
+  border: 1px solid #000000;
+  background-color: #000000;
+  padding: 10px 30px;
+  border-radius: 4px;
+  display: inline-block;
+  font-size: 16px;
+  transition: all .4s;
+  text-transform: uppercase;
+  outline: none;
+  font-family: 'Roboto Condensed', sans-serif;
+  margin-right: 5px;
+}

@@ -72,7 +72,7 @@ header>.wrap{
 }
 
 .soch{
-	background-color: #478d8c;
+	background-color: #1194A1;
 	color: #fff;
 	padding: 7px 0 8px;
 	font-size: 13px;
@@ -122,13 +122,12 @@ header nav a{
 	font-size: 14px;
 	display: inline-block;
 	vertical-align: middle;
-	margin-left: 15px;
 	position: relative;
 	transition: all .4s;
 }
 
 header nav a:hover, header nav a.selected{
-	color: #478d8c !important;
+	color: #00AAAE;
 }
 
 header nav a.selected:after{
@@ -138,7 +137,7 @@ header nav a.selected:after{
 	left: 0;
 	width: 100%;
 	height: 2px;
-	background-color: #478d8c;
+	background-color: #00AAAE;
 	display: block;
 }
 
@@ -173,7 +172,7 @@ img.bannerimg{
 }
 
 .banner h1 span, .banner>p span{
-	color: #478d8c;
+	color: #00AAAE;
 }
 
 .banner>.baninfo h1{text-align: right;margin-bottom: -50px;}
@@ -183,7 +182,7 @@ img.bannerimg{
 	width: max-content;
 	margin-right: 20px;
 	background-color: rgba(255,255,255,.7);
-	color: #478d8c;
+	color: #00AAAE;
 	text-transform: uppercase;
 	font-size: 15px;
 	padding: 15px 25px;transition: all .4s;
@@ -225,7 +224,7 @@ input:checked + .tablabel{
 	appearance:none;
 	border:0 !important;
 	background-color: #fff;
-	color: #478d8c;
+	color: #00AAAE;
 	box-sizing: border-box;
 	padding-left: 60px;
 	padding-block:15px;
@@ -241,7 +240,7 @@ input:checked + .tablabel{
 	border:0 !important;
 	color: #fff;
 	text-transform: uppercase;
-	background-color: #478d8c;
+	background-color: #00AAAE;
 	padding: 8px 20px;
 	font-family: 'Roboto Condensed', sans-serif;
 }
@@ -336,8 +335,8 @@ a.bouton, .submitclearcont input[type=button], .propsearch input[type=submit]{
 	display: inline-block;
 	text-transform: uppercase;
 	color: #fff !important;
-	background-color: #478d8c;
-	border:1px solid #478d8c;
+	background-color: #00AAAE;
+	border:1px solid #00AAAE;
 	text-decoration: none !important;
 	padding: 10px 20px;
 	font-size: 15px;
@@ -347,7 +346,7 @@ a.bouton, .submitclearcont input[type=button], .propsearch input[type=submit]{
 
 a.bouton.bouton2, .submitclearcont input[type=button]{
 	background-color: #fff;
-	color: #478d8c !important;
+	color: #00AAAE !important;
 }
 
 a.bouton:hover{color: #000 !important;}
@@ -622,7 +621,7 @@ position: relative;color: #fff !important;}
 .capsules .capsule h3{
     text-transform: uppercase;
     font-weight: normal;
-	color: #478d8c;
+	color: #00AAAE;
     margin: 0;
     padding: 30px 20px 0px 20px;
     font-size: 17px;
@@ -794,7 +793,7 @@ a.logocontact img{display: block;width: 100%;}
     font-size: 18px;
     margin-right: 10px;
     width: 15px;
-	color: #478d8c;
+	color: #00AAAE;
 }
 
 .pagecontact form p{
@@ -915,7 +914,7 @@ a.logocontact img{display: block;width: 100%;}
 	color: #a5a5a5;
 }
 
-.singleinfo h1{color: #478d8c;margin-bottom: 0px;}
+.singleinfo h1{color: #00AAAE;margin-bottom: 0px;}
 .singleinfo h1+p{margin-top: 0;margin-bottom: 5px;}
 
 .singleinfo hr{
@@ -1054,7 +1053,7 @@ a.logocontact img{display: block;width: 100%;}
 }
 
 .avanceediv input[type=checkbox]{
-	accent-color:#478d8c;
+	accent-color:#00AAAE;
 }
 
 .submitclearcont{margin-left: auto;margin-top: 10px;margin-bottom: 10px;gap:15px;display: flex;}
@@ -1062,7 +1061,7 @@ a.logocontact img{display: block;width: 100%;}
 a.avanceea{
 	text-transform: uppercase;
 	text-decoration: none !important;
-	color:#478d8c !important;
+	color:#00AAAE !important;
 	margin: 10px 0;
 	align-self: center;
 }
@@ -1127,7 +1126,7 @@ form.propsearch{padding: 60px 0px 40px;}
 }
 
 .toolsect .wrap{
-	color: #478d8c;
+	color: #00AAAE;
 	margin-top: 60px;
 	box-sizing: border-box;
 	padding-left: 80px;padding-right: 80px;
@@ -1172,7 +1171,7 @@ form.propsearch{padding: 60px 0px 40px;}
 
 .articleprev .cattag{
 	position: absolute;
-	background-color: #478d8c;
+	background-color: #00AAAE;
 	color: #fff;
 	text-transform: uppercase;
 	font-size: 12px;
@@ -1216,10 +1215,10 @@ form.propsearch{padding: 60px 0px 40px;}
 
 .teal_btn, button[type=submit], .popnews article input[type=submit], .popwwu article input[type=submit] {
     color: #fff !important;
-    border: 1px solid #478d8c;
-    background-color: #478d8c;
+    border: 1px solid #00AAAE;
+    background-color: #00AAAE;
     padding: 10px 30px;
-    border-radius: 0;
+    border-radius: 5px;
     display: inline-block;
     font-size: 16px;
     margin-top: 20px;
@@ -1229,37 +1228,14 @@ form.propsearch{padding: 60px 0px 40px;}
    
 }
 .teal_btn:hover, button[type=submit]:hover, .popnews article input[type=submit]:hover, .popwwu article input[type=submit]:hover {
-    color: #478d8c !important;
+    color: #00AAAE !important;
     background-color: #fff;
 }
 
 .float_right {
     float: right;
+	text-align: center;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1432,20 +1408,20 @@ form.propsearch{padding: 60px 0px 40px;}
 
 
 a.btn_print:link, a.btn_print:visited, a.retour_maison:link, a.retour_maison:visited, .btn_wrapper i{
-	color: #478d8c;
+	color: #00AAAE;
 }
 
 .indentmenu ul li a.selected {
-    background-color: #478d8c;
-    border-bottom: 1px solid #478d8c;
+    background-color: #00AAAE;
+    border-bottom: 1px solid #00AAAE;
 }
 
 .box_tabs{
-	border-bottom: 3px solid #478d8c;
+	border-bottom: 3px solid #00AAAE;
 }
 
 button.btn_calcul4, a.btn_calculateurs:link, a.btn_calculateurs:visited, .form_infos a.btn_calcul4:link, .form_infos a.btn_calcul4:visited, a.btn_calcul4:link, a.btn_calcul4:visited, h3.stit_detail.stit_calcul, .wrapper_triger.active, .btn_eval.btn_calcul4, a.btn_download:link, a.btn_download:visited{
-	background-color: #478d8c;
+	background-color: #00AAAE;
 	border-radius: 0px;
 	font-weight: 600;
 	text-transform: uppercase;
@@ -1466,7 +1442,7 @@ button.btn_calcul4:hover, button.btn_calcul4:focus, .form_infos a.btn_calcul4:ho
 .wrapper_right_btns{right: 30px;}
 
 .right_btn{
-	background-color: #478d8c;
+	background-color: #00AAAE;
 }
 
 .right_btn:hover {
@@ -1478,12 +1454,12 @@ a.btn_social, p.socialbtns a{
 }
 
 a.btn_social:hover, p.socialbtns a:hover{
-	color: #478d8c !important;
+	color: #00AAAE !important;
 }
 
 .vendreintro{
 	text-align: center;
-	background: #478d8c;
+	background: #00AAAE;
 	color: #fff;
 	padding: 30px 0;
 }
@@ -1512,7 +1488,7 @@ a.btn_social:hover, p.socialbtns a:hover{
 h1.h1styled{
 	text-transform: uppercase;
     font-weight: 800;
-    color: #478d8c;
+    color: #00AAAE;
     font-size: 30px;
     line-height: 1;
     margin: 0;
@@ -1539,7 +1515,7 @@ h1.h1styled{
 .page_temoin{max-width: 800px !important;}
 
 .wrapper_btns_mobile > div:first-child, .btn_mobile {
-    background-color: #478d8c;
+    background-color: #00AAAE;
 }
 
 .wrapper_btns_mobile > div:last-child, .wrapper_btns_mobile > div:last-child .btn_mobile{

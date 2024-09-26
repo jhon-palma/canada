@@ -95,11 +95,6 @@
             {% else %}
 			    <a class="btn_language" style="cursor: pointer" onclick="changeParameterInURL('{{ language }}','{{ new_language }}');">{{ new_language_name }}</a>
             {% endif %}
-            {% if user.is_authenticated %}
-                <a href="{% url 'accounts:logout' %}">Logout</a>
-            {% else %}
-                <a id="loginLink" href="{% url 'accounts:login' %}">{% if language == "en" %}Login{% else %}Se connecter{% endif %}</a>
-            {% endif %}
 		</div>
 	</div>
 	<div class="wrap">
@@ -122,8 +117,11 @@
 			<a href="{{ server|server_url }}/{{ language }}/{{ labels.menu.url.five }}">{{ labels.menu.name.five }}</a>
 			<a href="{{ server|server_url }}/{{ language }}/blog/">{{ labels.menu.name.six }}</a>
 			<a href="{{ server|server_url }}/{{ language }}/{{ labels.menu.url.seven }}/">{{ labels.menu.name.seven }}</a>
-            <a id="logoutLink" href="{% url 'accounts:logout' %}" style="display:none;">Logout</a>
-            
+			{% if user.is_authenticated %}
+                <a href="{% url 'accounts:logout' %}">Logout</a>
+            {% else %}
+                <a id="loginLink" href="{% url 'accounts:login' %}">{% if language == "en" %}Login{% else %}Se connecter{% endif %}</a>
+            {% endif %}
 		</nav>
 		<div class="menu-ico">
 			<span></span>

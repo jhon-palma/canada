@@ -257,6 +257,7 @@ DICT_LABELS = {
                     'three':'Sign up',
                     'four':'Create an account',
                     'five':'Submit comment',
+                    'six':'Back',
                 },
                 'placeholder':{
                     'one':'E-mail',
@@ -530,6 +531,7 @@ DICT_LABELS = {
                     'three':'Inscrivez-vous.',
                     'four':'Créez votre compte',
                     'five':'Soumettre un commentaire',
+                    'six':'Revenir',
                 },
                 'placeholder':{
                     'one':'Courriel',
