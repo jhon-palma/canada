@@ -1,6 +1,6 @@
 {% extends 'users/base.html' %}
 
-{% block title %}Listado de Articulos{% endblock %}
+{% block title %}Comentarios{% endblock %}
 {% block head_page %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'app/css/datatables/dataTables.css' %}"/>
@@ -16,7 +16,7 @@
         <div class="page-title">
             <ul class="breadcrumb">
                 <li>
-                <h4><span class="no-margin text-bold">LISTADO DE ARTICULOS</span></h4>
+                <h4><span class="no-margin text-bold">Comentarios</span></h4>
                 </li>
                 <div class="heading-elements">
                 </div>
@@ -26,7 +26,7 @@
         <div class="breadcrumb-line">
         <ul class="breadcrumb">
             <li><a>Blog</a></li>
-            <li class="active">Articulos</li>
+            <li class="active">Comentarios</li>
         </ul>
         </div>
     </div>
@@ -54,7 +54,7 @@
                     </div>
                 {% endif %}
             {% endfor %}
-        {% endif %} 
+        {% endif %}
         <div id="alertMessage" class="alert alert-success" style="display: none;">
             <button type="button" class="close" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
@@ -63,10 +63,17 @@
         </div>
         <div class="panel panel-flat">
             <div class="panel-heading">
-                <h5 class="panel-title"></h5>
+                <h5 class="panel-title">Post: </h5>{{ article.title_anglaise }}
                 <div class="panel-body">
                     <div id="articlesList">
-                        {% include 'blog/articles_list.html' %}
+                        {% if comments %}
+                            {% include 'blog/comments_list.html' %}
+                        {% else %}
+                            <h1>No hay comentarios aún.</h1>
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        <a href="{% url 'blog:list_articles' %}" class="btn bg-orange-600 btn-labeled btn-xlg"  style="width: auto;"><b><i class="icon-undo2"></i></b><span class="margin-left-20">VOLVER</span></a>
                     </div>
                 </div>
             </div>
@@ -99,6 +106,7 @@
             </div>
         </div>
     </div>
+
 {% endblock %}
 {% block javascript %}
     <script type="text/javascript" src="{% static 'app/js/pages/form_validation.js' %}"></script>
@@ -107,7 +115,6 @@
     <script type="text/javascript" src="{% static 'app/js/core/libraries/jquery_ui/interactions.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'app/js/plugins/forms/selects/select2.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'app/js/pages/form_select2.js' %}"></script>
-    
     <script>
         $(document).ready(function() {
             initializeDataTable();
@@ -117,16 +124,15 @@
             $(document).on('click', '.open-modal', function() {
                 event.preventDefault();
                 articleId = $(this).data('id');
-                var title = $(this).data('title');
                 actionType = $(this).data('action');
-                $('#modalMessage').html('¿Está seguro de que desea actualizar el registro <strong>' + title + '</strong>?');
+                $('#modalMessage').html('¿Está seguro de que desea actualizar el comentario?');
                 $('#recordId').val(articleId);
                 $('#confirmModal').modal('show');
             });
             $('#confirmButton').on('click', function(event) {
                 event.preventDefault();
                 $.ajax({
-                    url: '{% url "blog:update_status_ajax" %}',
+                    url: '{% url "blog:update_status_comment" %}',
                     type: 'POST',
                     data: {
                         'record_id': $('#recordId').val(),
@@ -137,7 +143,7 @@
                         if (response.success) {
                             alertDiv.removeClass('alert-danger').addClass('alert-success');
                             $('#alertMessageText').html(response.message);
-                            $('#articlesList').html(response.articles_html);
+                            $('#articlesList').html(response.comments_html);
                         } else {
                             $('#alertMessageText').text(response.message);
                             $('#alertMessage').removeClass('alert-success').addClass('alert-danger');
@@ -155,11 +161,11 @@
                 });
             });
             function initializeDataTable() {
-                if ($.fn.DataTable.isDataTable('#table_users')) {
-                    $('#table_users').DataTable().destroy();
+                if ($.fn.DataTable.isDataTable('#table_comments')) {
+                    $('#table_comments').DataTable().destroy();
                 }
 
-                dataTable = new DataTable('#table_users', {
+                dataTable = new DataTable('#table_comments', {
                     columnDefs: [
                         { 
                             width: 200,
@@ -190,6 +196,11 @@
                 $('#modalMessage').empty();
                 $('#recordId').val('');
             });
+        });
+    </script>
+    <script>
+        $('#table_comments').DataTable({
+            ordering: false
         });
     </script>
 {% endblock %}

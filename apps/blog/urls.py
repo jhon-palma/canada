@@ -5,9 +5,10 @@ from .views import *
 
 urlpatterns = [
     re_path(r'^(?P<language>fr|en)/blog/$', articles, name='articles'),
-    path('new-post', new_post, name='new_post'),
+    path('new-post', login_required(new_post), name='new_post'),
     path('new-category', new_category, name='new_category'),
     path('list_articles/', list_articles, name='list_articles'),
+    re_path('list_comment_article/(?P<article_id>[\w-]+)/$', list_comment_article, name='list_comment_article'),
     re_path('update_article/(?P<article_id>[\w-]+)/$',login_required(update_article), name='update_article'),
     path('category/update/<uuid:uuid>/', CategoryUpdateView.as_view(), name='category_update'),
     #re_path('update_category/(?P<category_id>[\w-]+)/$',login_required(views.update_category), name='update_category'),
@@ -21,5 +22,6 @@ urlpatterns = [
     path('signupComment/', signup_blog_comment, name='signup_blog_comment'),
     path('login/', login_blog, name='login_blog'),
     path('loginComments/', login_blog_comments, name='login_blog_comments'),
+    path('update_status_comment/', login_required(update_status_comment), name='update_status_comment'),
     path('<slug:slug>/', category, name='category_detail'),
 ]

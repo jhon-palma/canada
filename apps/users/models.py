@@ -28,8 +28,9 @@ class Profile(models.Model):
     twitter = models.CharField(blank=True, null=False, max_length=60)
     tiktok = models.CharField(blank=True, null=False, max_length=60)
     youtube = models.CharField(blank=True, null=False, max_length=60)
-    presentation_f = models.CharField(max_length=2000, blank=True, null=True)  
-    presentation_a = models.CharField(max_length=2000, blank=True, null=True)  
+    presentation_f = models.CharField(max_length=2000, blank=True, null=True)
+    presentation_a = models.CharField(max_length=2000, blank=True, null=True)
+    telephone = models.CharField(max_length=20, blank=True, null=True) 
 
     def __str__(self):
         return f' Perfil de {self.user.username}'

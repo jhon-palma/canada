@@ -22,7 +22,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth import login, authenticate
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
-
+from django.utils import timezone
 
 
 def articles(request, language='fr'):
@@ -48,7 +48,6 @@ def articles(request, language='fr'):
 
 def new_post(request):
     form = ArticleForm()
-    language = request.GET.get('language', 'fr')
     if request.method == 'POST':
         form = ArticleForm(request.POST, request.FILES)
         if request.POST.get('content_francaise') == '<p>&nbsp;</p>':
@@ -64,6 +63,7 @@ def new_post(request):
             try:
                 post = form.save(commit=False)
                 post.authors = request.user
+                post.created_at = timezone.now() 
                 post.save()
                 messages.success(request, 'Post creado correctamente', 'succesful')
                 return redirect('blog:list_articles')
@@ -81,7 +81,6 @@ def list_articles(request):
 
 
 def new_category(request):
-    # language = request.GET.get('language', 'fr')
     form = CategoryAdminForm()
     if request.method == 'POST':
         form = CategoryAdminForm(request.POST)
@@ -472,3 +471,29 @@ def login_blog_comments(request):
             return JsonResponse({'success': False, 'error_message': message})
 
     return JsonResponse({'success': False, 'message': 'Invalid request method'})
+
+def list_comment_article(request, article_id):
+    article = get_object_or_404(Article, id=article_id)
+    comments = article.comments.all()
+    return render(request, 'blog/list_comment_article.html',{'article':article, 'comments': comments,})
+
+@csrf_exempt
+def update_status_comment(request):
+    if request.method == 'POST':
+        record_id = request.POST.get('record_id')
+        try:
+            comment = Comment.objects.get(id=record_id)
+            if comment.active:
+                comment.active = False
+                status_message = 'desactivado'
+            else:
+                comment.active = True
+                status_message = 'activado'
+            comment.save()
+            article = comment.article
+            comments = article.comments.all()
+            comments_html = render_to_string('blog/comments_list.html', {'comments': comments})
+            return JsonResponse({'success': True, 'message': f'Registro {status_message} con éxito.','comments_html': comments_html})
+        except Article.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Registro no encontrado'})
+    return JsonResponse({'success': False, 'message': 'Método no permitido'})

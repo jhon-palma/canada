@@ -49,7 +49,7 @@ class Article(models.Model):
     category = models.ForeignKey(Category, related_name='posts', on_delete=models.CASCADE, blank=False, null=False)
     title_francaise = models.CharField(max_length=255)
     title_anglaise = models.CharField(max_length=255)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField()
     active = models.BooleanField(default=True)
     image_francaise = models.ImageField(default='public/web/blog/images/default.png', upload_to='public/web/blog/images/', blank=True, null=True)
     image_anglaise = models.ImageField(default='public/web/blog/images/default.png', upload_to='public/web/blog/images/', blank=True, null=True)
@@ -106,7 +106,7 @@ class Comment(models.Model):
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(CustomUser, related_name='comments', on_delete=models.CASCADE)
-
+    active = models.BooleanField(default=True)
     class Meta:
         ordering = ('-created_at',)
 

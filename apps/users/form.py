@@ -19,7 +19,7 @@ class UserEditForm(forms.ModelForm):
 class ProfileEditForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['image', 'order', 'type', 'membre','occupation', 'occupation_anglaise', 'facebook', 'instagram', 'linkedin', 'twitter', 'tiktok', 'presentation_f', 'presentation_a','youtube']
+        fields = ['image', 'order', 'type', 'membre','occupation', 'occupation_anglaise', 'facebook', 'instagram', 'linkedin', 'twitter', 'tiktok', 'presentation_f', 'presentation_a','youtube','telephone']
 
 
 class CustomUserCreationForm(UserCreationForm):

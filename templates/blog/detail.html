@@ -114,10 +114,12 @@
                     <hr>
                     <div class="comments-container">
                         {% for comment in post.comments.all %}
-                            <div class="comment">
-                                <p>{{ comment.comment }}</p>
-                                <small class="time">{{ comment.user }}<br>{{ comment.created_at|timesince }} ago </small>
-                            </div>
+                            {% if comment.active %}
+                                <div class="comment">
+                                    <p>{{ comment.comment }}</p>
+                                    <small class="time">{{ comment.user }}<br>{{ comment.created_at|timesince }} ago </small>
+                                </div>
+                            {% endif %}
                         {% endfor %}
                     </div>
                 </article>

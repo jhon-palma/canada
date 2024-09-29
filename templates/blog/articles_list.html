@@ -17,11 +17,12 @@
                 <td style="text-align: center;"><a title="CLICK PARA VER" href="{{ article.image_francaise.url }}" target="_blank"><img width="80" height="70" src="{{ article.image_francaise.url }}"></a></td>
                 <td style="text-align: center;"><a title="CLICK PARA VER" href="{{ article.image_anglaise.url }}" target="_blank"><img width="80" height="70" src="{{ article.image_anglaise.url }}"></a></td>
                 <td style="text-align: center;">
-                    <a href="{% url 'blog:post_detail' language='en' slug=article.slug_anglaise %}"><i class="icon-new-tab"></i> Ver</a> | 
-                    <a href="{% url 'blog:update_article' article_id=article.id %}"><i class="icon-pencil7"></i> Editar</a> | 
-                    <a href="#" class="open-modal" data-toggle="modal" data-target="#confirmModal" data-title="{{ article.title_francaise }}" data-id="{{ article.id }}">
-                        {% if article.active %}<i class="icon-blocked"></i> Desactivar{% else %}<i class="icon-checkmark-circle2"></i> Activar{% endif %}
-                    </a>
+                    <a href="{% url 'blog:post_detail' language='en' slug=article.slug_anglaise %}" title="Ver"><i class="icon-new-tab"></i></a> | 
+                    <a href="{% url 'blog:update_article' article_id=article.id %}" title="Editar"><i class="icon-pencil7"></i></a> | 
+                    <a href="#" class="open-modal" data-toggle="modal" data-target="#confirmModal" data-title="{{ article.title_francaise }}" data-id="{{ article.id }}" {% if article.active %} title="Desactivar">
+                        <i class="icon-blocked"></i>{% else %}title="Activar"><i class="icon-checkmark-circle2"></i>{% endif %}
+                    </a> |
+                    <a href="{% url 'blog:list_comment_article' article_id=article.id %}" title="Comentarios"><i class="icon-bubbles4"></i></a> 
                 </td>
             </tr>
         {% endfor %}

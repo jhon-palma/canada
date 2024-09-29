@@ -75,7 +75,7 @@ def update_profile_users(request, user_id):
         existing_orders.remove(user.profile.order)
 
     available_orders = [i for i in range(1, 11) if i not in existing_orders]
-    
+    print("#########################################")
     user_membre = user.profile.membre
     available_membres = Membres.objects.filter(profile__isnull=True)
     membres = available_membres | Membres.objects.filter(pk=user_membre.pk) if user_membre else available_membres
@@ -84,6 +84,7 @@ def update_profile_users(request, user_id):
                                  data=request.POST)
         profile_form = ProfileEditForm(instance=user.profile,
                                        data=request.POST)
+        print(request.POST)
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile = profile_form.save(commit=False)  
@@ -91,7 +92,8 @@ def update_profile_users(request, user_id):
                 profile.image = request.FILES['image'] 
             if 'image_over' in request.FILES:  
                 profile.image_over = request.FILES['image_over'] 
-            profile.save()  
+            profile.save()
+            print(profile)
             messages.success(request, 'Perfil actualizado', 'succesful')
             return redirect('users:profile_list')  
         else:
