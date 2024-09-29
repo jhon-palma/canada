@@ -91,12 +91,15 @@ class Article(models.Model):
     was_published_recently.boolean = True
     was_published_recently.short_description = "Published recently?"
 
+    def clean(self):
+        if not self.slug_francaise and self.title_francaise:
+            self.slug_francaise = slugify(self.title_francaise)
+        if not self.slug_anglaise and self.title_anglaise:
+            self.slug_anglaise = slugify(self.title_anglaise)
+
+        super(Article, self).clean()
+
     def save(self, *args, **kwargs):
-       
-
-        self.slug_francaise = slugify(self.title_francaise)
-        self.slug_anglaise = slugify(self.title_anglaise)
-
         super(Article, self).save(*args, **kwargs)
 
 

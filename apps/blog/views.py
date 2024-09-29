@@ -7,7 +7,7 @@ from django.urls import reverse
 from apps.accounts.models import CustomUser
 from apps.users.models import Profile
 from .models import Article, Category, Like, Comment
-from .forms import ArticleForm, CategoryAdminForm
+from .forms import ArticleForm, ArticleUpdateForm, CategoryAdminForm
 from django.db.models import Q
 from django.views.generic import ListView
 from django.conf import settings
@@ -148,10 +148,10 @@ def category(request, slug):
 
 def update_article(request, article_id):
     post = get_object_or_404(Article, id=article_id)
-    form = ArticleForm(instance=post)
+    form = ArticleUpdateForm(instance=post)
 
     if request.method == 'POST':
-        form = ArticleForm(request.POST, request.FILES, instance=post)
+        form = ArticleUpdateForm(request.POST, request.FILES, instance=post)
         if request.POST.get('content_francaise') == '<p>&nbsp;</p>':
             form.add_error('content_francaise', 'Este campo no puede estar vacío.')
         if request.POST.get('content_anglaise') == '<p>&nbsp;</p>':
@@ -172,7 +172,7 @@ def update_article(request, article_id):
                 form.add_error(None, 'Error al guardar el post: ' + str(e))
                 print("Formulario no válido. Errores:", form.errors)
 
-    return render(request, 'blog/new_post.html', {'form': form})
+    return render(request, 'blog/update_post.html', {'form': form})
 
 
 
