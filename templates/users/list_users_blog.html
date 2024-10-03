@@ -52,17 +52,13 @@
             <div class="panel panel-flat">
                 <div class="panel-heading">
                     <div class="panel-body">
-                        <div class="form-group">
-                            <a href="{% url 'users:create_user' %}" class="btn btn-success" style="width: auto;"><i class="icon-user-plus" style="margin-right: 0.5em;"></i><span class="mx-auto">Agregar Usuario</span></a>
-                        </div>
                         <table id="table_users" class="display" style="width:100%">
                             <thead>
                                 <tr>
                                     <th>Nombre</th>
                                     <th>Correo</th>
-                                    <th>Orden</th>
+                                    <th>Último Acceso</th>
                                     <th>Estado</th>
-                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -70,23 +66,13 @@
                                 <tr>
                                     <td class="text-capitalize">{{ user.first_name }} {{ user.last_name }}</td>
                                     <td>{{ user.email }}</td>
-                                    <td>{% if user.profile.order %}{{ user.profile.order }}{% else %}--{% endif %}</td>
+                                    <td>{{ user.last_login }}</td>
                                     <td>{% if user.is_active %}Activo{% else %}Inactivo{% endif %}</td>
-                                    <td><a href="{% url 'users:update_user_blog' user_id=user.id %}"><i class="icon-pencil7"></i> Editar</a></td>
+                                    <!--<td><a href="{% url 'users:update_user_blog' user_id=user.id %}"><i class="icon-pencil7"></i> Editar</a></td>-->
                                 </tr>
                                 {% endfor %}
                                 
                             </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>Nombre</th>
-                                    <th>Correo</th>
-                                    <th>Tipo usuario</th>
-                                    <th>Orden</th>
-                                    <th>Estado</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </tfoot>
                         </table>
                     </div>
                 </div>
@@ -1252,7 +1238,6 @@
     <script>
         $(document).ready( function () {
             new DataTable('#table_users');
-            
         } );
     </script>
 

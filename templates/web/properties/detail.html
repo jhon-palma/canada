@@ -2867,6 +2867,7 @@
 {% endif %}
 
 <a class="btnside btnpopfiche btnfixedfiche">Request a visit or information</a>
+
 <section class="popwwu popcontactBook">
 	<article>
 		<form id="formContactBook" method="post" action="{% url 'web:contact_messages' %}">{% csrf_token %}
@@ -2882,21 +2883,14 @@
         <span class="close">+</span>
 	</article>
 </section>
-<div id="load_spinner" style="
-                position: fixed;
-                z-index: 99999;
-                left: 50%;
-                top: 50%;
-                width: 120px;
-                height: 120px;
-                display: none;">
-                <div id="load_spinner" class="loader-container">
-                    <div class="loader"></div>
-                    <div class="row mt-4">
-                        <!-- <p class="font-weight-bold" style="font-size:2rem; color: #0095a2;">Processing</p> -->
-                    </div>
-                </div>
-            </div>
+<div id="load_spinner" style="position: fixed; z-index: 99999; left: 50%; top: 50%; width: 120px; height: 120px; display: none;">
+<div id="load_spinner" class="loader-container">
+    <div class="loader"></div>
+        <div class="row mt-4">
+            <!-- <p class="font-weight-bold" style="font-size:2rem; color: #0095a2;">Processing</p> -->
+        </div>
+    </div>
+</div>
 <script>
 	$(document).ready(function(){
 		$('.morestat').click(function(e){

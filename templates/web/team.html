@@ -53,7 +53,7 @@
                         </p>
                         <div class="socmember">
                             <a class="btnsoc" href="tel:+1{{ member.telephone }}"><i class="fa fa-phone"></i></a>
-                            <a class="btnsoc" href="mailto:{{ member.membre.courriel }}"><i class="fa fa-envelope"></i></a>
+                            <a class="btnsoc" href="mailto:{{ member.user.email }}"><i class="fa fa-envelope"></i></a>
                             {% if member.facebook %}
                                 <a class="btnsoc" href="{{ member.facebook }}" target="_blank"><img src="{% static 'web/images2/facebook.png' %}" alt="Facebook" /></a>
                             {% endif %}

@@ -1,33 +1,24 @@
 <table id="table_comments" class="display" style="width:100%">
     <thead>
-        <tr>
-            <th>Comentario</th>
-            <th>Usuario</th>
-            <th>Creado</th>
-            <th>Acciones</th>
+        <tr style="text-align: center !important">
+            <th style="text-align: center">Comentario</th>
+            <th style="text-align: center">Usuario</th>
+            <th style="text-align: center">Fecha del Comentario</th>
+            <th style="text-align: center">Acciones</th>
         </tr>
     </thead>
     <tbody>
         {% for comment in comments %}
-        <tr>
-            <td>{{ comment.comment|slice:80 }}...</td>
-            <td>{{ comment.user }}</td>
-            <td>{{ comment.created_at }}</td>
-            <td>
-                <a href="#" class="open-modal" data-toggle="modal" data-target="#confirmModal" data-id="{{ comment.id }}" {% if comment.active %} title="Desactivar">
-                    <i class="icon-blocked"></i>{% else %}title="Activar"><i class="icon-checkmark-circle2"></i>{% endif %}
-                </a>
-            </td>
-        </tr>
-        
+            <tr>
+                <td style="text-align: center">{{ comment.comment }}</td>
+                <td style="text-align: center">{{ comment.user }}</td>
+                <td style="text-align: center">{{ comment.created_at }}</td>
+                <td style="text-align: center">
+                    <a href="#" class="open-modal" data-toggle="modal" data-target="#confirmModal" data-id="{{ comment.id }}" {% if comment.active %} title="Desactivar">
+                        <i class="icon-blocked"></i>{% else %}title="Activar"><i class="icon-checkmark-circle2"></i>{% endif %}
+                    </a>
+                </td>
+            </tr>
         {% endfor %}
     </tbody>
-    <tfoot>
-        <tr>
-            <th>Comentario</th>
-            <th>Usuario</th>
-            <th>Creado</th>
-            <th>Acciones</th>
-        </tr>
-    </tfoot>
 </table>

@@ -1,7 +1,8 @@
 
-<table id="table_users" class="display" style="width:100%">
+<table id="table_users" class="display" style="width:100%; height 100%">
     <thead>
         <tr>
+            <th style="text-align: center;">Title Francaise</th>
             <th style="text-align: center;">Title Anglaise</th>
             <th style="text-align: center;">Category</th>
             <th style="text-align: center;">Image Francaise</th>
@@ -12,6 +13,7 @@
     <tbody>
         {% for article in articles %}
             <tr>
+                <td style="text-align: center;">{{ article.title_francaise }}</td>
                 <td style="text-align: center;">{{ article.title_anglaise }}</td>
                 <td style="text-align: center;">{{ article.category }}</td>
                 <td style="text-align: center;"><a title="CLICK PARA VER" href="{{ article.image_francaise.url }}" target="_blank"><img width="80" height="70" src="{{ article.image_francaise.url }}"></a></td>
@@ -27,13 +29,4 @@
             </tr>
         {% endfor %}
     </tbody>
-    <tfoot>
-        <tr>
-            <th style="text-align: center;">Title Anglaise</th>
-            <th style="text-align: center;">Category</th>
-            <th style="text-align: center;">Image Francaise</th>
-            <th style="text-align: center;">Image Anglaise</th>
-            <th style="text-align: center;">Acciones</th>
-        </tr>
-    </tfoot>
 </table>

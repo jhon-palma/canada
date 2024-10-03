@@ -14,9 +14,9 @@
 
 <section class="teamsingle">
 	<div class="wrap">
-		<div class="img"><img src="{{ member.image.url }}" alt="{{ member.membre.prenom }} {{ member.membre.nom }}"></div>
+		<div class="img"><img src="{{ member.image.url }}" alt="{{ member.user.get_full_name }}"></div>
 		<div class="singleinfo">
-			<h1 class="h2def"><span>{% if language == 'en' %}Meet{% else %}Rencontrez{% endif %}</span> {{ member.membre.prenom }} {{ member.membre.nom }}</h1>
+			<h1 class="h2def"><span>{% if language == 'en' %}Meet{% else %}Rencontrez{% endif %}</span>{{ member.user.get_full_name }}</h1>
 			<p>
                 {% if language == 'fr' %}
                     {{ member.occupation }} 
@@ -26,7 +26,7 @@
             </p>
 			<div class="socmember">
                 <a class="btnsoc" href="tel:+1{{ member.telephone }}"><i class="fa fa-phone"></i></a>
-                <a class="btnsoc" href="mailto:{{ member.membre.courriel }}"><i class="fa fa-envelope"></i></a>
+                <a class="btnsoc" href="mailto:{{ member.user.email }}"><i class="fa fa-envelope"></i></a>
                 {% if member.facebook %}
                     <a class="btnsoc" href="{{ member.facebook }}" target="_blank"><img src="{% static 'web/images2/facebook.png' %}" alt="Facebook" /></a>
                 {% endif %}
@@ -52,7 +52,7 @@
 					<p style="white-space: break-spaces;">{% autoescape off %}{% if language == "en" %}{{ member.presentation_a|default_if_none:''  }}{% else %}{{ member.presentation_f|default_if_none:''  }}{% endif %}{% endautoescape %}</p>
 				</div>
 				<div class="minibiocontact">
-					<a href="mailto:{{ member.membre.courriel }}" class="bouton">{% if language == "en" %}Contact{% else %}Contactez{% endif %}</a>
+					<a href="mailto:{{ member.user.email }}" class="bouton">{% if language == "en" %}Contact{% else %}Contactez{% endif %}</a>
 				</div>	
 			</div>
 			<hr>
