@@ -189,10 +189,12 @@ CKEDITOR_5_FILE_STORAGE = "apps.blog.storage.CustomStorage"
 #     }
 # }
 CKEDITOR_5_UPLOAD_FILE_TYPES = ['jpeg', 'jpg', 'png']
+CKEDITOR_5_CUSTOM_CSS = '/static/blog/css/editor.css'
 CKEDITOR_5_CONFIGS = {
     'default': {
-        'toolbar': ['heading', '|', 'bold', 'italic', 'link',
-                    'bulletedList', 'numberedList', 'blockQuote', 'imageUpload', ],
+        'toolbar': ['heading', '|', 'bold', 'italic', 'link','bulletedList', 'numberedList', 'blockQuote', 'imageUpload'],
+        'contentsCss': ['https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap', '/static/css/styles.css'],
+        'bodyClass': 'ckeditor-custom',
 
     },
     'extends': {
