@@ -1,5 +1,6 @@
 from . import views
 from django.urls import path, include, re_path
+from .views import WebCalculator
 
 urlpatterns = [
     path('', views.WebIndex.as_view()),
@@ -19,4 +20,5 @@ urlpatterns = [
     path('contact_messages/', views.contact_messages, name='contact_messages'),
     path('statistics/', views.statistics, name='statistics'),
     re_path(r'^search/(?P<language>fr|en)/(?P<option>[\w-]+)/$', views.SearchProperties.as_view(), name='search_properties'),
+    path('calculator/', WebCalculator.as_view(), name='calculator')
     ]

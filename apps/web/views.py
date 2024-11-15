@@ -27,6 +27,10 @@ from django.utils.dateparse import parse_datetime
 from immobilier.local_settings import CHANNEL_ID, KEY_API_YB
 
 
+class WebCalculator(TemplateView):
+    template_name = 'web/calculator.html'
+
+
 class WebIndex(View):
     template_name = 'web/index.html'
     def get(self, request, *args, **kwargs):
