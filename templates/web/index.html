@@ -776,6 +776,18 @@
             position: 'bottomright'
         }).addTo(map);
 
+
+        
+        function checkForModalParameter() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const hasModalParam = urlParams.has('popup');
+            if (hasModalParam) {
+                document.querySelector("#index > footer > div.wrap.wrap_contact > div.finfo.fcontact_col2 > a").click()
+            }
+          }
+         
+          window.onload = checkForModalParameter
+
 	</script>
 </section>
 
