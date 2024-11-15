@@ -14,6 +14,7 @@ from django.urls import reverse
 from django.views.decorators.csrf import *
 from django.views.generic import *
 from django.shortcuts import get_object_or_404
+from django.db.models import Case, When, Value, IntegerField
 # from googleapiclient.discovery import build
 
 from datetime import *
@@ -34,8 +35,8 @@ class WebIndex(View):
         language = kwargs.get('language', 'fr')
         option = kwargs.get('option', 'proprietes')
         labels = DICT_LABELS.get(language).get('web')
-        inscriptions = Inscriptions.objects.all().order_by('-id')[:3]
-        inscriptions_vendu = Inscriptions.objects.select_related('code_statut').filter(code_statut__valeur="VE")
+        inscriptions = Inscriptions.objects.exclude(code_statut__valeur="VE").order_by('-id')[:3]
+        #inscriptions_vendu = Inscriptions.objects.select_related('code_statut').filter(code_statut__valeur="VE")
         staticts_query = Statistics.objects.all()
         images_query = ImagesWeb.objects.filter(reference__in=[
             'index_banner','index_team_background','index_donate_background',
@@ -51,12 +52,14 @@ class WebIndex(View):
             'option':option,
             'labels':labels,
             'inscriptions':inscriptions,
-            'inscriptions_vendu':inscriptions_vendu,
+            #'inscriptions_vendu':inscriptions_vendu,
             'video_urls':videos,
             'images':images_dict,
             'staticts':staticts_dict,
         }
         return render(request, self.template_name, context)
+
+
 
 class WebProperties(View):
     template_name = 'web/properties/list.html'
@@ -67,13 +70,21 @@ class WebProperties(View):
         language = kwargs.get('language', 'fr')
         option = kwargs.get('option', 'proprietes')
         labels = DICT_LABELS.get(language).get('web')
+        inscriptions = Inscriptions.objects.exclude(code_statut__valeur="VE").annotate(
+            usa_last=Case(
+                When(mun_code__description__icontains="USA", then=Value(1)),
+                default=Value(0),
+                output_field=IntegerField(),
+            )
+        ).order_by('usa_last', 'mun_code__description')
+
         if option == "properties-for-sale" or option == "proprietes-a-vendre":
-            inscriptions_all = Inscriptions.objects.filter(prix_demande__isnull=False)
-        elif option == "properties-for-rent" or option == "proprietes-a-louer":
-            inscriptions_all = Inscriptions.objects.filter(prix_location_demande__isnull=False)
-        else:
-            inscriptions_all = Inscriptions.objects.all()
-        paginator = Paginator(inscriptions_all, 36)
+            inscriptions = inscriptions.filter(prix_demande__isnull=False)
+
+        if option == "properties-for-rent" or option == "proprietes-a-louer":
+            inscriptions = inscriptions.filter(prix_location_demande__isnull=False)
+
+        paginator = Paginator(inscriptions, 36)
         page_number = request.GET.get('page')
         inscriptions = paginator.get_page(page_number)
         images_query = ImagesWeb.objects.filter(reference__in=['properties_banner'])
@@ -87,17 +98,27 @@ class WebProperties(View):
             'inscriptions':inscriptions,
             'images':images_dict,
         }
+        
         return render(request, self.template_name, context)
+
 
 def searchpropriete(request):
     term = request.GET.get('term')
     status = request.GET.get('status')
     regions = Regions.objects.all()
     municipalites = Municipalites.objects.all()
+    inscriptions = Inscriptions.objects.exclude(code_statut__valeur="VE").annotate(
+        usa_last=Case(
+            When(mun_code__description__icontains="USA", then=Value(1)),
+            default=Value(0),
+            output_field=IntegerField(),
+        )
+    ).order_by('usa_last', 'mun_code__description')
+    
     if status == '2':
-        inscriptions = Inscriptions.objects.filter(prix_location_demande__isnull=False)
+        inscriptions = inscriptions.filter(prix_location_demande__isnull=False)
     else:
-        inscriptions = Inscriptions.objects.filter(prix_demande__isnull=False)
+        inscriptions = inscriptions.filter(prix_demande__isnull=False)
 
     data_dict = {
         "regions": {},
@@ -134,6 +155,8 @@ def searchpropriete(request):
 
     json_data = {str(i + 1): val for i, val in enumerate(list(filtered_data["regions"].values()) + list(filtered_data["municipalites"].values()) + list(filtered_data["inscriptions"].values()))}
     return JsonResponse(json_data, safe=False)
+
+
 
 class SearchView(View):
     template_name = 'web/properties/list.html'
@@ -203,7 +226,14 @@ class SearchView(View):
         if adress_region:
             query &= Q(mun_code__region_code__in=adress_region)
 
-        inscriptions_all = Inscriptions.objects.filter(query)
+        inscriptions_all = Inscriptions.objects.exclude(code_statut__valeur="VE").filter(query).annotate(
+            usa_last=Case(
+                When(mun_code__description__icontains="USA", then=Value(1)),
+                default=Value(0),
+                output_field=IntegerField(),
+            )
+        ).order_by('usa_last', 'mun_code__description')
+
         paginator = Paginator(inscriptions_all, 36)
         page_number = request.GET.get('page')
         inscriptions = paginator.get_page(page_number)
@@ -226,6 +256,7 @@ class SearchView(View):
         }
 
         return render(request, self.template_name, context)
+
 
 class WebDetailProperty(View):
     template_name = 'web/properties/detail.html'
@@ -292,6 +323,7 @@ class WebDetailProperty(View):
             'images':images_dict,
         }
         return render(request, self.template_name, context)
+
 
 class WebVideos(View):
     template_name = 'web/videos.html'
@@ -410,15 +442,17 @@ class WebWork(View):
         genres = GenresProprietes.objects.filter(genre_proprietes__isnull=False).distinct()
         language = kwargs.get('language', 'fr')
         labels = DICT_LABELS.get(language).get('web')
-        option = kwargs.get('option', 'travailler-avec-nous')
+        option = kwargs.get('option')
+        type_option = 'one' if option in ['buying','acheter'] else 'two'
         images_query = ImagesWeb.objects.filter(reference__in=['work_banner','work_buy','work_sell','work_next_steps'])
         images_dict = {image.reference: image for image in images_query}
         context = {
             'municipalites':municipalites,
             'genres':genres,
             'language':language,
-            'option':option,
             'labels':labels,
+            'option':option,
+            'type_option':type_option,
             'images':images_dict,
         }
         return render(request, self.template_name, context)

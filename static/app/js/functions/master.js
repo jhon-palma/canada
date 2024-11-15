@@ -5,7 +5,8 @@ dict_en = {
   'properties-for-sale':'proprietes-a-vendre',
   'properties-for-rent':'proprietes-a-louer',
   'real-estate-broker':'courtier-immobilier',
-  'work-with-us':'travailler-avec-nous',
+  'buying':'acheter',
+  'selling':'vendre',
   'contact-realestate-broker':'contact-courtier-immobilier',
   'privacy-policy':'politique-confidentialite',
 }
@@ -17,7 +18,8 @@ dict_fr = {
   'proprietes-a-vendre':'properties-for-sale',
   'proprietes-a-louer':'properties-for-rent',
   'courtier-immobilier':'real-estate-broker',
-  'travailler-avec-nous':'work-with-us',
+  'acheter':'buying',
+  'vendre':'selling',
   'contact-courtier-immobilier':'contact-realestate-broker',
   'politique-confidentialite':'privacy-policy',
 }

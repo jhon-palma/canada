@@ -67,3 +67,9 @@ def format_number(value):
         return '{:,.0f}'.format(value).replace(',', ' ')
     except (ValueError, TypeError):
         return value
+    
+    
+@register.filter
+def tag_in_list(value, list):
+    if_list = list.split(',')
+    return True if value in if_list else False

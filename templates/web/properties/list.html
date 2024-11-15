@@ -125,8 +125,7 @@
         <section class="banner nothome">
             <div class="baninfo">
                 <h2>{{ labels.index.title.one }}<span> {{ labels.index.title.two }}</span></h2>
-                <!-- <a class="bouton boutonnre2 boutonnre2gra pointer" onclick="$('#free_evaluation').fadeIn();">{{ labels.index.button.eleven }}</a> -->
-                <a class="bouton btn-wwu boutonnre2 boutonnre2gra pointer" data-pop="popcontactBook">{{ labels.index.button.eleven }}</a>
+                <a class="bouton btn-wwu boutonnre2 boutonnre2gra pointer" data-pop="popcontactBook">{{ labels.index.button.fourteen }}</a>
             </div>
         </section>
 
@@ -161,7 +160,6 @@
                             </ul>
                         </div>
 						<div class="content_maisons">
-                            {{ propiete }}
                             <!-- <div class="ligne_maison"> -->
                             {% if inscriptions %}
                                 {% for inscription in inscriptions %}
@@ -176,7 +174,7 @@
                                                         {% if photo.seq == 1 %}
                                                             <img loading="lazy" decoding="async" src="{{ photo.photourl }}" loading="lazy" decoding="async" alt="{% if language == 'en' %}{{ inscription.genre_propriete.description_anglaise }}{% else %}{{ inscription.genre_propriete.description_francaise }}{% endif %}
                                                             {% if inscription.prix_demande %}{% if language == 'en' %} for sale{% else %}à vendre {% endif %}{% endif %}{% if inscription.prix_location_demande %}
-                                                            {% if language == 'en' %}for rent{% else %}à louer{% endif %}{% endif %} {{inscription.mun_code.description}}" title="{% if language == 'en' %}{{ inscription.genre_propriete.description_anglaise }}{% else %}{{ inscription.genre_propriete.description_francaise }}{% endif %}{% if inscription.prix_demande %}{% if language == 'en' %} for sale{% else %}à vendre{% endif %}{% endif %}{% if inscription.prix_location_demande %}{% if language == 'en' %} for rent{% else %}à louer{% endif %}{% endif %} {{inscription.mun_code.description}}" />
+                                                            {% if language == 'en' %}for rent{% else %}à louer{% endif %}{% endif %} {{ inscription.mun_code.description }}" title="{% if language == 'en' %}{{ inscription.genre_propriete.description_anglaise }}{% else %}{{ inscription.genre_propriete.description_francaise }}{% endif %}{% if inscription.prix_demande %}{% if language == 'en' %} for sale{% else %}à vendre{% endif %}{% endif %}{% if inscription.prix_location_demande %}{% if language == 'en' %} for rent{% else %}à louer{% endif %}{% endif %} {{inscription.mun_code.description}}" />
                                                             {% for visite in inscription.no_inscription_visites_libres.all %}
                                                                 {% if language == 'en' %}
                                                                     <img src="{% static 'web/images/newicons/visite_libreen.png' %}" alt="Vendu" class="marq_vendu">
@@ -201,7 +199,7 @@
                                         
                                         <div class="box_infos_maison">
                                             <div class="secteur_maison">
-                                                <a href="{% url 'web:detail-propertie' language=language option=url_propertie propertie_id=inscription.id %}">{{inscription.mun_code.description}}</a>
+                                                <a href="{% url 'web:detail-propertie' language=language option=url_propertie propertie_id=inscription.id %}">{{ inscription.mun_code.description }}</a>
                                             </div>
                                             <div class="prix_maison">
                                                 <a href="{% url 'web:detail-propertie' language=language option=url_propertie propertie_id=inscription.id %}">
@@ -352,7 +350,7 @@
 <section class="popwwu popcontactBook">
 	<article>
 		<form id="formContactBook" method="post" action="{% url 'web:contact_messages' %}">{% csrf_token %}
-			<p class="h2def"><strong>{{ labels.work.button.three }}</strong></p>
+			<p class="h2def"><strong>{{ labels.index.button.fourteen }}</strong></p>
 			<input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" value="" />
             <input type="hidden" id="sujet" name="sujet" value="Button properties">
 			<input type="text" name="prenom" id="prenom" class="champs_tem" placeholder="{{ labels.work.placeholder.one }} *" required="required" />
@@ -364,14 +362,17 @@
         <span class="close">+</span>
 	</article>
 </section>
+
+<!--
 <div id="load_spinner" style="position: fixed; z-index: 99999; left: 50%; top: 50%; width: 120px; height: 120px; display: none;">
 <div id="load_spinner" class="loader-container">
     <div class="loader"></div>
         <div class="row mt-4">
-            <!-- <p class="font-weight-bold" style="font-size:2rem; color: #0095a2;">Processing</p> -->
+            <p class="font-weight-bold" style="font-size:2rem; color: #0095a2;">Processing</p>
         </div>
     </div>
 </div>
+-->
 <script>
 	$(document).ready(function(){
 		$('.morestat').click(function(e){

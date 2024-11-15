@@ -15,121 +15,130 @@
 
 <section class="banner nothome">
     <div class="baninfo">
-        <h2>{{ labels.work.title.three }} <span>{{ labels.work.title.four }} ?</span></h2>
+        <h2>{% if type_option == 'one' %}
+            {{ labels.work.title.three }}
+        {% else %}
+            {{ labels.work.title.four }}
+        {% endif %}
+        </h2>
         <h1>{{ labels.work.text.ten }}</h1><br>
     </div>
 </section>
 
-<section class="profilhome wwuhome ww_buyint profilhome2">
-    <div class="wrap">
-        <div class="txt">
-            <h2 class="h2def-white"><strong>{{ labels.work.text.one }} <span style="color: #333333;">{{ labels.work.text.two }}</span></strong></h2>
-            <div class="horizontal-line-white"></div>
-            <p>{{ labels.work.text.five }} <br><strong>{{ labels.work.text.eleven }}</strong><br><br>{{ labels.work.text.twelve }}</p>
-            <table class="responsive-table">
-                <tr>
-                  <td><img src="{% static 'web/images2/icotba1.svg' %}" alt=""></td>
-                  <td style="text-transform: uppercase;"><strong>{{ labels.work.text.fourteen }}:</strong> </td>
-                  <td>{{ labels.work.text.fifteen }}</td>
-                </tr>
-                <tr>
+
+{% if type_option == 'one' %}
+
+    <section class="profilhome wwuhome ww_buyint profilhome2" style="font-size: 18px;">
+        <div class="wrap">
+            <div class="txt">
+                <h2 class="h2def-white"><strong>{{ labels.work.text.one }} <span style="color: #333333;">{{ labels.work.text.two }}</span></strong></h2>
+                <div class="horizontal-line-white"></div>
+                <p>{{ labels.work.text.five }} <br><strong>{{ labels.work.text.eleven }}</strong><br><br>{{ labels.work.text.twelve }}</p>
+                <table class="responsive-table">
+                    <tr>
                     <td><img src="{% static 'web/images2/icotba1.svg' %}" alt=""></td>
-                  <td style="text-transform: uppercase;"><strong>{{ labels.work.text.sixteen }}:</strong> </td>
-                  <td>{{ labels.work.text.seventeen }}</td>
-                </tr>
-                <tr>
-                    <td><img src="{% static 'web/images2/icotba1.svg' %}" alt=""></td>
-                  <td style="text-transform: uppercase;"><strong>{{ labels.work.text.eighteen }}:</strong> </td>
-                  <td>{{ labels.work.text.nineteen }}</td>
-                </tr>
-                <tr>
-                    <td><img src="{% static 'web/images2/icotba1.svg' %}" alt=""></td>
-                  <td style="text-transform: uppercase;"><strong>{{ labels.work.text.twenty }}:</strong> </td>
-                  <td>{{ labels.work.text.twenty_one }}</td>
-                </tr>
-                <tr>
-                    <td><img src="{% static 'web/images2/icotba1.svg' %}" alt=""></td>
-                  <td style="text-transform: uppercase;"><strong>{{ labels.work.text.twenty_two }}:</strong> </td>
-                  <td>{{ labels.work.text.twenty_three }}</td>
-                </tr>
-               
-              </table>
-              
-            <div class="__diplex">
-                <a data-pop="popcontactBook" style="margin-bottom: 10px !important; color: #00AAAE !important; font-weight: 600;" class="bouton btn-wwu boutonnre5 pointer">{{ labels.work.button.six }}</a>
-                <a data-pop="buyers" class="bouton btn-wwu boutonnre4 pointer">{{ labels.work.button.seven }}</a>
+                    <td style="text-transform: uppercase;"><strong>{{ labels.work.text.fourteen }}:</strong> </td>
+                    <td>{{ labels.work.text.fifteen }}</td>
+                    </tr>
+                    <tr>
+                        <td><img src="{% static 'web/images2/icotba1.svg' %}" alt=""></td>
+                    <td style="text-transform: uppercase;"><strong>{{ labels.work.text.sixteen }}:</strong> </td>
+                    <td>{{ labels.work.text.seventeen }}</td>
+                    </tr>
+                    <tr>
+                        <td><img src="{% static 'web/images2/icotba1.svg' %}" alt=""></td>
+                    <td style="text-transform: uppercase;"><strong>{{ labels.work.text.eighteen }}:</strong> </td>
+                    <td>{{ labels.work.text.nineteen }}</td>
+                    </tr>
+                    <tr>
+                        <td><img src="{% static 'web/images2/icotba1.svg' %}" alt=""></td>
+                    <td style="text-transform: uppercase;"><strong>{{ labels.work.text.twenty }}:</strong> </td>
+                    <td>{{ labels.work.text.twenty_one }}</td>
+                    </tr>
+                    <tr>
+                        <td><img src="{% static 'web/images2/icotba1.svg' %}" alt=""></td>
+                    <td style="text-transform: uppercase;"><strong>{{ labels.work.text.twenty_two }}:</strong> </td>
+                    <td>{{ labels.work.text.twenty_three }}</td>
+                    </tr>
+                
+                </table>
+                
+                <div class="__diplex">
+                    <a data-pop="popcontactBook" style="margin-bottom: 10px !important; color: #00AAAE !important; font-weight: 600;" class="bouton btn-wwu boutonnre5 pointer">{{ labels.work.button.six }}</a>
+                    <a data-pop="buyers" class="bouton btn-wwu boutonnre4 pointer">{{ labels.work.button.seven }}</a>
+                </div>
+                
             </div>
-            
-        </div>
-        <div class="img">
-            <img src="{{ images.work_buy.image.url }}">
-        </div>
-    </div>
-</section>
-
-
-<section class="profilhome wwuhome ww_buyint2 profilhome2">
-    <div class="wrap">
-        <div class="img">
-            <img src="{{ images.work_sell.image.url }}">
-        </div>
-
-        <div class="txt">
-            <h2 class="h2def-white cgris"><strong>{{ labels.work.text.three }} <span style="color: #1194A1;">{{ labels.work.text.four }}</span></strong></h2>
-            <div class="horizontal-line-verde"></div>
-            <p>{{ labels.work.text.six}}</p>
-            <table class="responsive-table2">
-                <tr>
-                  <td><img src="{% static 'web/images2/icotba2.svg' %}" alt=""></td>
-                  <td><strong>{{ labels.work.text.twenty_five }}:</strong> {{ labels.work.text.twenty_six }}</td>
-      
-                </tr>
-                <tr>
-                    <td><img src="{% static 'web/images2/icotba2.svg' %}" alt=""></td>
-                  <td><strong>{{ labels.work.text.twenty_seven}}:</strong> {{ labels.work.text.twenty_eight }}</td>
-                 
-                </tr>
-                <tr>
-                    <td><img src="{% static 'web/images2/icotba2.svg' %}" alt=""></td>
-                  <td><strong>{{ labels.work.text.twenty_nine }}:</strong> {{ labels.work.text.thirty }}</td>
-                 
-                </tr>
-                <tr>
-                    <td><img src="{% static 'web/images2/icotba2.svg' %}" alt=""></td>
-                  <td><strong>{{ labels.work.text.thirty_one }}:</strong> {{ labels.work.text.thirty_two }}</td>
-                  
-                </tr>
-                <tr>
-                    <td><img src="{% static 'web/images2/icotba2.svg' %}" alt=""></td>
-                  <td><strong>{{ labels.work.text.thirty_three }}:</strong> {{ labels.work.text.thirty_four }}</td>
-         
-                </tr>
-                <tr>
-                    <td><img src="{% static 'web/images2/icotba2.svg' %}" alt=""></td>
-                  <td><strong>{{ labels.work.text.thirty_five }}:</strong> {{ labels.work.text.thirty_six }}</td>
-         
-                </tr>
-               
-              </table>
-              
-            <div class="__diplex">
-                <a target="_blank" style="margin-bottom: 10px !important; color: #00AAAE !important; font-weight: 600;" onclick="$('#free_evaluation').fadeIn();" class="bouton boutonnre5 pointer">{{ labels.work.button.eight }}</a>
-                <a data-pop="listing" class="bouton btn-wwu boutonnre4 pointer">{{ labels.work.button.nine }}</a>
+            <div class="img">
+                <img src="{{ images.work_buy.image.url }}">
             </div>
-            
         </div>
-        
-    </div>
-</section>
+    </section>
 
-<section class="banner nothome bannertwo">
-    <div class="baninfo" style="padding-top: 0px !important; margin-top: -10px !important;">
-        <h2>{{ labels.work.text.thirty_seven }}<span> {{ labels.work.text.thirty_eight }}</span></h2>
-        <h3>{{ labels.work.text.thirty_nine }}<br>{{ labels.work.text.forty }}</h3>
-        <p>{{ labels.work.text.forty_one }}<br>{{ labels.work.text.forty_two }}</p>
-        <a class="bouton boutonnre2 btn-wwu pointer" data-pop="popcontact">{{ labels.work.button.ten }}</a>
-    </div>
-</section>
+    <section class="banner nothome bannertwo">
+        <div class="baninfo" style="padding-top: 0px !important; margin-top: -10px !important;">
+            <h2>{{ labels.work.text.thirty_seven }}<span> {{ labels.work.text.thirty_eight }}</span></h2>
+            <h3>{{ labels.work.text.thirty_nine }}<br>{{ labels.work.text.forty }}</h3>
+            <p>{{ labels.work.text.forty_one }}<br>{{ labels.work.text.forty_two }}</p>
+            <a class="bouton boutonnre2 btn-wwu pointer" data-pop="popcontact">{{ labels.work.button.ten }}</a>
+        </div>
+    </section>
+
+{% else %}
+
+    <section class="profilhome wwuhome ww_buyint2 profilhome2" style="font-size: 18px;">
+        <div class="wrap">
+            <div class="img">
+                <img src="{{ images.work_sell.image.url }}">
+            </div>
+            <div class="txt">
+                <h2 class="h2def-white cgris"><strong>{{ labels.work.text.three }} <span style="color: #1194A1;">{{ labels.work.text.four }}</span></strong></h2>
+                <div class="horizontal-line-verde"></div>
+                <p>{{ labels.work.text.six}}</p>
+                <table class="responsive-table2">
+                    <tr>
+                    <td><img src="{% static 'web/images2/icotba2.svg' %}" alt=""></td>
+                    <td><strong>{{ labels.work.text.twenty_five }}:</strong> {{ labels.work.text.twenty_six }}</td>
+                    </tr>
+                    <tr>
+                        <td><img src="{% static 'web/images2/icotba2.svg' %}" alt=""></td>
+                    <td><strong>{{ labels.work.text.twenty_seven}}:</strong> {{ labels.work.text.twenty_eight }}</td>
+                    </tr>
+                    <tr>
+                        <td><img src="{% static 'web/images2/icotba2.svg' %}" alt=""></td>
+                    <td><strong>{{ labels.work.text.twenty_nine }}:</strong> {{ labels.work.text.thirty }}</td>
+                    </tr>
+                    <tr>
+                        <td><img src="{% static 'web/images2/icotba2.svg' %}" alt=""></td>
+                    <td><strong>{{ labels.work.text.thirty_one }}:</strong> {{ labels.work.text.thirty_two }}</td>
+                    </tr>
+                    <tr>
+                        <td><img src="{% static 'web/images2/icotba2.svg' %}" alt=""></td>
+                    <td><strong>{{ labels.work.text.thirty_three }}:</strong> {{ labels.work.text.thirty_four }}</td>
+                    </tr>
+                    <tr>
+                        <td><img src="{% static 'web/images2/icotba2.svg' %}" alt=""></td>
+                    <td><strong>{{ labels.work.text.thirty_five }}:</strong> {{ labels.work.text.thirty_six }}</td>
+                    </tr>
+                </table>
+                <div class="__diplex">
+                    <a target="_blank" style="margin-bottom: 10px !important; color: #00AAAE !important; font-weight: 600;" onclick="$('#free_evaluation').fadeIn();" class="bouton boutonnre5 pointer">{{ labels.work.button.eight }}</a>
+                    <a data-pop="listing" class="bouton btn-wwu boutonnre4 pointer">{{ labels.work.button.nine }}</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="banner nothome bannertwo">
+        <div class="baninfo" style="padding-top: 0px !important; margin-top: -10px !important;">
+            <h2>{{ labels.work.text.thirty_seven }}<span> {{ labels.work.text.thirty_eight }}</span></h2>
+            <h3>{{ labels.work.text.forty_three }}<br>{{ labels.work.text.forty_four }}</h3>
+            <p>{{ labels.work.text.forty_five }}<br>{{ labels.work.text.forty_six }}</p>
+            <a class="bouton boutonnre2 btn-wwu pointer" data-pop="popcontact">{{ labels.work.button.ten }}</a>
+        </div>
+    </section>
+
+{% endif %}
 
 <section class="popwwu buyers">
 	<article>
@@ -189,7 +198,7 @@
 <section class="popwwu popcontactBook">
 	<article>
 		<form id="formContactBook" method="post" action="{% url 'web:contact_messages' %}">{% csrf_token %}
-			<p class="h2def"><strong>{{ labels.work.button.three }}</strong></p>
+			<p class="h2def"><strong>{{ labels.work.button.six }}</strong></p>
 			<input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" value="" />
             <input type="hidden" id="sujet" name="sujet" value="Book a Call with Us">
 			<input type="text" name="prenom" id="prenom" class="champs_tem" placeholder="{{ labels.work.placeholder.one }} *" required="required" />
@@ -202,12 +211,16 @@
 	</article>
 </section>
 
-<section class="toolsect">
-	<div class="wrap">
-		<h2 class="h2def">{% if language == 'en' %}<span>Tools</span> Mortgage calculator{% else %}<span>Outils</span> Calculatrice hypothécaire{% endif %}</h2>
-        <script src="https://www.ratehub.ca/scripts/rh-widget-loader.js" rh-title="Mortgage Payment Calculator" rh-frame-title="Ratehub.ca mortgage payment calculator" rh-widget-key="PaymentCalculator"></script><div style="text-align:right; font-size:0.8em"><span style="font-family:sans-serif; color:#6a787c; display:inline-block;">powered by <a rel="nofollow" href="https://www.ratehub.ca/?offer_id=2 " style="display:inline-block;width:6em;"><img src="https://www.ratehub.ca/static/logo_ratehub_full_dark.svg" style="width:100%;vertical-align:text-top;" alt="Ratehub.ca "></a></span></div>
-	</div>
-</section>
+{% if type_option == 'one' %}
+
+    <section class="toolsect">
+        <div class="wrap">
+            <h2 class="h2def">{% if language == 'en' %}<span>Tools</span> Mortgage calculator{% else %}<span>Outils</span> Calculatrice hypothécaire{% endif %}</h2>
+            <script src="https://www.ratehub.ca/scripts/rh-widget-loader.js" rh-title="Mortgage Payment Calculator" rh-frame-title="Ratehub.ca mortgage payment calculator" rh-widget-key="PaymentCalculator"></script><div style="text-align:right; font-size:0.8em"><span style="font-family:sans-serif; color:#6a787c; display:inline-block;">powered by <a rel="nofollow" href="https://www.ratehub.ca/?offer_id=2 " style="display:inline-block;width:6em;"><img src="https://www.ratehub.ca/static/logo_ratehub_full_dark.svg" style="width:100%;vertical-align:text-top;" alt="Ratehub.ca "></a></span></div>
+        </div>
+    </section>
+
+{% endif %}
 
 <script>
 
@@ -308,11 +321,7 @@
                 }
             });
         });
-    });
 
-</script>
-<script>
-    $(document).ready(function () {
 		$("#formContactBook").on('submit', function (e) {
             e.preventDefault();
             var form = $("#formContactBook");
@@ -347,14 +356,5 @@
     });
 </script>
 
-<!--
-<div class="avishome">
-    <div class="wrap">
-        <h2 class="h2def"><span class="text-span">{{ labels.index.text.nineteen }}</span> <strong>{{ labels.index.text.twenty }}</strong></h2>
-        <div class="calculator">
-        </div>
-    </div>
-</div>
--->
 
 {% load static %}{% include 'web/footer_web.html' %}

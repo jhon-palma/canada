@@ -25,6 +25,7 @@ from django.core.validators import validate_email
 from django.utils import timezone
 
 
+
 def articles(request, language='fr'):
     articles_list  = Article.objects.filter(active=True)
     paginator = Paginator(articles_list, 12)
@@ -91,6 +92,8 @@ def new_category(request):
         else:
             messages.error(request, 'Error al crear la categoria')
     return render(request, 'blog/new_category.html',{'form':form})
+
+
 
 def categories(request):
     categories = Category.objects.all()
@@ -199,8 +202,6 @@ class CategoryUpdateView(UpdateView):
         response = super().form_invalid(form)
         messages.error(self.request, form.errors)
         return response
-
-
 
 
 

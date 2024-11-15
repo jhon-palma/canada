@@ -57,7 +57,7 @@
         <div class="__cnt">
             <div class="contsjks">
                 <h3> {{ labels.index.text.thirty_two }}</h3>
-                <p>{{ labels.index.text.thirty_three }}<br>{{ labels.index.text.thirty_four }}</p>
+                <p>{{ labels.index.text.thirty_three }}<br>{{ labels.index.text.thirty_four }}<br>{{ labels.index.text.thirty_five }}</p>
             </div>
         </div>
 		<div class="statscont">
@@ -761,7 +761,7 @@
 
 		var tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {});
 		latlng = L.latLng(45.503121, -73.589550);
-		var map = L.map('map', {center: latlng, zoom: 11, layers: [tiles],dragging: !L.Browser.mobile, tap: !L.Browser.mobile});
+		var map = L.map('map', {center: latlng, zoom: 11, layers: [tiles],dragging: !L.Browser.mobile, tap: !L.Browser.mobile, zoomControl: false });
 		var markers = L.markerClusterGroup();
 
 		for (var i = 0; i < point.length; i++) {
@@ -771,6 +771,10 @@
 		}
 
 		map.addLayer(markers);
+
+        L.control.zoom({
+            position: 'bottomright'
+        }).addTo(map);
 
 	</script>
 </section>

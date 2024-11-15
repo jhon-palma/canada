@@ -2,8 +2,21 @@
 
 <!-- {% include 'web/free_evaluation.html' %} -->
 
+<div id="privacy-policies-message" class="displayed">
+    <div class="close" onclick="acceptCookies()"><i class="fa fa-times"></i></div>
+    <div class="content">
+        <div class="heading h3 "><span>{{ labels.index.text.twenty_seven }}</span>
+            <div class="post-heading"></div>
+        </div>
+        <p>{{ labels.index.text.twenty_eight }}<br>a
+			{{ labels.index.text.twenty_nine }}' <a href='{{ server|server_url }}/{{ language }}/privacy-policy/'>{{ labels.index.text.thirty }}</a>.</p>
+		<div class="wrapper_btn_policies">
+        	<button type="button" class="btn_policies" onclick="acceptCookies()">{{ labels.index.text.thirty_one }}</button>
+		</div>
+    </div>
+</div>
+
 <script type="text/javascript" src="https://use.fontawesome.com/e686055a0b.js"></script>
-<script type="text/javascript" src="{% static 'web/js/cookies.js' %}"></script>
 <script type="text/javascript" src="{% static 'web/js/cookies.js' %}"></script>
 <script type="text/javascript" src="{% static 'web/js/jquery.bxslider.min.js' %}"></script>
 <script type="text/javascript" src="{% static 'web/js/common.js' %}"></script>
@@ -18,20 +31,6 @@
         right: 37% !important;
     }
 </style>
-
-<div id="privacy-policies-message" class="displayed">
-    <div class="close" onclick="acceptCookies()"><i class="fa fa-times"></i></div>
-    <div class="content">
-        <div class="heading h3 "><span>{{ labels.index.text.twenty_seven }}</span>
-            <div class="post-heading"></div>
-        </div>
-        <p>{{ labels.index.text.twenty_eight }}<br>
-			{{ labels.index.text.twenty_nine }}' <a href='{{ server|server_url }}/{{ language }}/privacy-policy/'>{{ labels.index.text.thirty }}</a>.</p>
-		<div class="wrapper_btn_policies">
-        	<button type="button" class="btn_policies" onclick="acceptCookies()">{{ labels.index.text.thirty_one }}</button>
-		</div>
-    </div>
-</div>
 
 <footer>
     <div class="wrap wrap_contact">
