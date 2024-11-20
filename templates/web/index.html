@@ -220,7 +220,21 @@
         <h2 class="h2def"><span class="text-span">{{ labels.index.text.nineteen }}</span> <strong>{{ labels.index.text.twenty }}</strong></h2>
         <div class="aviscont">
             <div data-romw-token="PZzqTWZUzrgNv4PnX9OJGq3pFaIKjpTUDmgpBRUAl2Qj9nl2dq"></div>
-            <script src="https://reviewsonmywebsite.com/js/v2/embed.js?id=fd1f59fcc8467fb2938d974af932af56" type="text/javascript"></script>
+            <script src="https://reviewsonmywebsite.com/js/v2/embed.js?id=7bf8acda5d5930b1a9db343a4ec1b31c" type="text/javascript"></script>
+            <script>
+                let script = document.createElement('script');
+                script.src = "https://reviewsonmywebsite.com/js/v2/embed.js?id=7bf8acda5d5930b1a9db343a4ec1b31";
+                script.type = "text/javascript";
+                script.onload = function() {
+                    setTimeout(function() {
+                        $('#iFrameResizer0').attr('style', function(i, style) {
+                            return (style || '') + 'left: 0px !important; position: relative !important;';
+                        });
+                    }, 1000); // 3000 ms = 3 segundos
+                };
+                document.head.appendChild(script);
+
+            </script>
             <a href="https://search.google.com/local/writereview?placeid=ChIJIQbATYI8yUwR6-nRf2iHqrY" target="_blank" class="bouton">{{ labels.index.button.six }}</a>
         </div>
     </div>
@@ -256,7 +270,8 @@
     <script src="https://macleweb.com/mapLeaflet/leaflet-src.js"></script>
 	<script src="https://macleweb.com/mapLeaflet/markercluster/dist/leaflet.markercluster-src.js"></script>
 	<script type="text/javascript">
-
+        
+      
         function codeTouche(evenement) {
             for (prop in evenement) {
                 if (prop == 'which') return (evenement.which);
@@ -787,7 +802,7 @@
           }
          
           window.onload = checkForModalParameter
-
+          
 	</script>
 </section>
 

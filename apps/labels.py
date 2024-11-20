@@ -65,7 +65,7 @@ DICT_LABELS = {
                     'fourteen': 'We donate to',
                     'fifteen': 'Autism montreal',
                     'sixteen': 'A percentage of our proceeds from each transaction goes towards Autism Montreal.',
-                    'seventeen': 'We donated over $10,000 in 2023',
+                    'seventeen': 'We donated over $10,000 in 2023.',
                     'eighteen': 'Autisme Montréal is a place that inspires, unites, carries hope, promotes growth and social solidarity.',
                     'nineteen': 'Our clients’',
                     'twenty': 'testimonials',
