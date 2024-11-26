@@ -9,7 +9,7 @@ DICT_LABELS = {
                 'header':{
                     'one':'LJ Realties | Your Trusted Real Estate Brokers | House, Condo for sale Sud Ouest, Ville-Marie',
                     'two':'House, Condo for sale Sud Ouest, Ville-Marie - LJ Immobilier Real estate broker',
-                    'three':'Get your free property evaluation today!',
+                    'three':'How much is your property worth?',
                 },
                 'title':{
                     'one':'unlock Your',
@@ -25,7 +25,7 @@ DICT_LABELS = {
                 'button':{
                     'one':'Search',
                     'two':'Find a Broker',
-                    'three':'How much is your property worth?',
+                    'three':'Get a free evaluation!',
                     'four':'See More Properties',
                     'five':'Learn More',
                     'six':'Write a Review',
@@ -289,7 +289,7 @@ DICT_LABELS = {
                 'header':{
                     'one':'LJ Realties | Vos courtiers immobiliers de confiance | Maison, Condo à vendre Sud Ouest, Ville-Marie',
                     'two':"LJ Realties est votre courtier immobilier résidentiel dans le Sud Ouest, Ville-Marie. Nous avons une expertise et une expérience dans l'immobilier, pour l'achat ou la vente de maisons.",
-                    'three':"Obtenez une évaluation gratuite de votre propriété dès aujourd'hui !",
+                    'three':'Quelle est la valeur de votre propriété ?',
                 },
                 'title':{
                     'one':"Trouvez la maison",
@@ -305,7 +305,7 @@ DICT_LABELS = {
                 'button':{
                     'one':'Rechercher',
                     'two':'Trouvez un Courtier',
-                    'three':'Quelle est la valeur de votre propriété ?',
+                    'three':'Obtenir une évaluation gratuite',
                     'four':'Voir Plus De Propriétés',
                     'five':'En Savoir Plus',
                     'six':'Laissez un Avis',
@@ -345,7 +345,7 @@ DICT_LABELS = {
                     'fourteen': 'Nous faisons des dons à',
                     'fifteen': 'Autisme Montréal',
                     'sixteen': 'Un pourcentage du produit de chaque transaction est versé à Autisme Montréal.',
-                    'seventeen': 'Nous avons donné plus de 10 000 dollars en 2023',
+                    'seventeen': 'Nous avons donné plus de 10 000 dollars en 2023.',
                     'eighteen': "Autisme Montréal est un lieu qui inspire, rassemble, porte l'espoir, favorise l'épanouissement et la solidarité sociale.",
                     'nineteen': 'Les témoignages',
                     'twenty': 'De nos clients',
@@ -519,8 +519,8 @@ DICT_LABELS = {
                     'thirty_four':'Nous vous guiderons dans les offres et les négociations.',
                     'thirty_five':'Fermeture',
                     'thirty_six':'Nous vous aiderons à franchir les dernières étapes de la vente.',
-                    'thirty_seven':'Étapes',
-                    'thirty_eight':'Suivantes',
+                    'thirty_seven':'Prochaines',
+                    'thirty_eight':'Étapes',
                     'thirty_nine':"Prochaines étapes Acheter une maison dans un marché compétitif peut s'avérer difficile,", 
                     'forty':"mais avec la bonne équipe, vous économiserez du temps et de l'argent.",
                     'forty_one':"En tant qu’acheteur, si vous souhaitez analyser des opportunités spécifiques, élaborer un plan d'action et/ou obtenir",
