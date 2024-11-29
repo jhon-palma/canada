@@ -42,6 +42,8 @@ class ArticleForm(forms.ModelForm):
             ),
         }
 
+
+
 class ArticleUpdateForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
