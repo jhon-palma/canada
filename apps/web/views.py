@@ -39,8 +39,13 @@ class WebIndex(View):
         language = kwargs.get('language', 'fr')
         option = kwargs.get('option', 'proprietes')
         labels = DICT_LABELS.get(language).get('web')
-        inscriptions = Inscriptions.objects.exclude(code_statut__valeur="VE").order_by('-id')[:3]
-        #inscriptions_vendu = Inscriptions.objects.select_related('code_statut').filter(code_statut__valeur="VE")
+        inscriptions = Inscriptions.objects.filter(prix_demande__isnull=False).exclude(code_statut__valeur="VE").annotate(
+            usa_last=Case(
+                When(mun_code__description__icontains="USA", then=Value(1)),
+                default=Value(0),
+                output_field=IntegerField(),
+            )
+        ).order_by('usa_last', '-no_inscription')[:3]
         staticts_query = Statistics.objects.all()
         images_query = ImagesWeb.objects.filter(reference__in=[
             'index_banner','index_team_background','index_donate_background',
@@ -56,11 +61,11 @@ class WebIndex(View):
             'option':option,
             'labels':labels,
             'inscriptions':inscriptions,
-            #'inscriptions_vendu':inscriptions_vendu,
             'video_urls':videos,
             'images':images_dict,
             'staticts':staticts_dict,
         }
+        
         return render(request, self.template_name, context)
 
 
@@ -74,19 +79,28 @@ class WebProperties(View):
         language = kwargs.get('language', 'fr')
         option = kwargs.get('option', 'proprietes')
         labels = DICT_LABELS.get(language).get('web')
-        inscriptions = Inscriptions.objects.exclude(code_statut__valeur="VE").annotate(
+        base_inscriptions = Inscriptions.objects.exclude(code_statut__valeur="VE").annotate(
             usa_last=Case(
                 When(mun_code__description__icontains="USA", then=Value(1)),
                 default=Value(0),
                 output_field=IntegerField(),
             )
-        ).order_by('usa_last', 'mun_code__description')
+        )
+
+        if option == 'proprietes' or option == 'properties':
+            all_sale = base_inscriptions.filter(prix_demande__isnull=False)
+            all_rent = base_inscriptions.filter(prix_location_demande__isnull=False)
+            inscriptions_sale = list(all_sale.filter(usa_last=0).order_by('-prix_demande'))
+            inscriptions_rent = list(all_rent.filter(usa_last=0).order_by('-prix_location_demande'))
+            inscriptions_usa_sale = list(all_sale.filter(usa_last=1).order_by('-prix_demande'))
+            inscriptions_usa_rent = list(all_rent.filter(usa_last=1).order_by('-prix_location_demande'))
+            inscriptions = inscriptions_sale + inscriptions_rent + inscriptions_usa_sale + inscriptions_usa_rent
 
         if option == "properties-for-sale" or option == "proprietes-a-vendre":
-            inscriptions = inscriptions.filter(prix_demande__isnull=False)
-
+            inscriptions = base_inscriptions.filter(prix_demande__isnull=False).order_by('usa_last','-prix_demande')
+            
         if option == "properties-for-rent" or option == "proprietes-a-louer":
-            inscriptions = inscriptions.filter(prix_location_demande__isnull=False)
+            inscriptions = base_inscriptions.filter(prix_location_demande__isnull=False).order_by('usa_last','-prix_location_demande')
 
         paginator = Paginator(inscriptions, 36)
         page_number = request.GET.get('page')

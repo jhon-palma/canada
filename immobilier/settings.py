@@ -7,7 +7,12 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-46l99m0=n-fxom7f-7-q9ia8rt9-sh$c^vmz7dcjy9-#$v1j2w'
 FILE_CHARSET = 'utf-8'
-ALLOWED_HOSTS = ['www.ljrealties.com', 'ljrealties.com']
+
+if DEBUG:
+    ALLOWED_HOSTS = ['*']
+else:
+    ALLOWED_HOSTS = ['www.ljrealties.com', 'ljrealties.com']
+
 CSRF_TRUSTED_ORIGINS = ['https://www.ljrealties.com', 'https://ljrealties.com']
 AUTH_USER_MODEL = 'accounts.CustomUser'
 X_FRAME_OPTIONS = 'ALLOWALL'
