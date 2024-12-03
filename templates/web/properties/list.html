@@ -169,7 +169,7 @@
 								    <div class="box_maison">
                                         <div class="box_maison_img">
                                             <div class="photo_vendu">
-                                                <a href="{% url 'web:detail-propertie' language=language option=url_propertie propertie_id=inscription.id %}">
+                                                <a href="{% url 'web:detail-propertie' language=language option=url_propertie propertie_id=inscription.id flag='detail' %}">
                                                     {% for photo in inscription.photos.all %}
                                                         {% if photo.seq == 1 %}
                                                             <img loading="lazy" decoding="async" src="{{ photo.photourl }}" loading="lazy" decoding="async" alt="{% if language == 'en' %}{{ inscription.genre_propriete.description_anglaise }}{% else %}{{ inscription.genre_propriete.description_francaise }}{% endif %}
@@ -199,10 +199,10 @@
                                         
                                         <div class="box_infos_maison">
                                             <div class="secteur_maison">
-                                                <a href="{% url 'web:detail-propertie' language=language option=url_propertie propertie_id=inscription.id %}">{{ inscription.mun_code.description }}</a>
+                                                <a href="{% url 'web:detail-propertie' language=language option=url_propertie propertie_id=inscription.id flag='detail' %}">{{ inscription.mun_code.description }}</a>
                                             </div>
                                             <div class="prix_maison">
-                                                <a href="{% url 'web:detail-propertie' language=language option=url_propertie propertie_id=inscription.id %}">
+                                                <a href="{% url 'web:detail-propertie' language=language option=url_propertie propertie_id=inscription.id flag='detail' %}">
                                                     {% if inscription.code_statut.valeur == "VE" %}
                                                         <span class="prix_maison_hid">{% if language == "en" %}Sold{% else %}Vendu{% endif%}</span>
                                                     {% else %}
@@ -242,7 +242,7 @@
                                             </div>
                                             <!--  -->
                                             <div class="adresse_maison">
-                                                <a href="{% url 'web:detail-propertie' language=language option=url_propertie propertie_id=inscription.id %}">
+                                                <a href="{% url 'web:detail-propertie' language=language option=url_propertie propertie_id=inscription.id flag='detail' %}">
                                                     {{inscription.no_civique_debut}}{% if inscription.no_civique_fin %} - {{inscription.no_civique_fin}}{%endif%}, {{inscription.nom_rue_complet}}{% if inscription.appartement %}, apt. {{inscription.appartement}}{%endif%}
                                                 </a>
                                             </div>
@@ -256,7 +256,7 @@
                                                 {% endfor %}
                                             </div>
                                             <div class="type_maison">
-                                                <a href="{% url 'web:detail-propertie' language=language option=url_propertie propertie_id=inscription.id %}">
+                                                <a href="{% url 'web:detail-propertie' language=language option=url_propertie propertie_id=inscription.id flag='detail' %}">
                                                     {% if language == "en" %}
                                                         {{ inscription.genre_propriete.description_anglaise }}
                                                     {% else %}
@@ -279,7 +279,7 @@
                                                 </a>
                                             </div>
                                             <div class="adresse_maison">
-                                                <a href="{% url 'web:detail-propertie' language=language option=url_propertie propertie_id=inscription.id %}">
+                                                <a href="{% url 'web:detail-propertie' language=language option=url_propertie propertie_id=inscription.id flag='detail' %}">
                                                     {% if language == "en" %}Centris No. {% else %}No Centris {%endif%}{{inscription.no_inscription}}
                                                 </a>
                                             </div>

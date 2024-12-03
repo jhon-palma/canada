@@ -277,7 +277,7 @@ class SearchView(View):
 
 
 class WebDetailProperty(View):
-    template_name = 'web/properties/detail.html'
+
     def get(self, request, *args, **kwargs):
         municipalites = Municipalites.objects.filter(municipalite_code__isnull=False).distinct()
         genres = GenresProprietes.objects.filter(genre_proprietes__isnull=False).distinct()
@@ -286,9 +286,12 @@ class WebDetailProperty(View):
         language = kwargs.get('language', 'fr')
         labels = DICT_LABELS.get(language).get('web')
         option = kwargs.get('option', 'detail-propertie')
+        flag = kwargs.get('flag', 'detail')
+        self.template_name = 'web/properties/{}.html'.format(flag)
         mun_code = propertie.mun_code
         same_district = Inscriptions.objects.filter(mun_code=mun_code).exclude(id=propertie.id)[:4]
-
+        url_pdf = '{}/{}/{}/pdf/'.format(language, option, propertie_id)
+        
         taxsco = propertie.depenses.filter(tdep_code__valeur='TAXSCO').first()
         taxmun = propertie.depenses.filter(tdep_code__valeur='TAXMUN').first()
         try:
@@ -332,6 +335,7 @@ class WebDetailProperty(View):
             'genres':genres,
             'language':language,
             'option':option,
+            'flag':flag,
             'labels':labels,
             'inscription': propertie,
             'same_district': same_district,
@@ -339,6 +343,7 @@ class WebDetailProperty(View):
             'addenda_f':addenda_f,
             'addenda_a':addenda_a,
             'images':images_dict,
+            'url_pdf':url_pdf,
         }
         return render(request, self.template_name, context)
 

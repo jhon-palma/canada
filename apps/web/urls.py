@@ -6,7 +6,7 @@ urlpatterns = [
     path('', views.WebIndex.as_view()),
     re_path(r'^(?P<language>fr|en)/$', views.WebIndex.as_view(), name='index'),
     re_path(r'^(?P<language>fr|en)/(?P<option>properties|properties-for-sale|properties-for-rent|proprietes|proprietes-a-vendre|proprietes-a-louer)/$', views.WebProperties.as_view(), name='properties'),
-    re_path(r'^(?P<language>fr|en)/(?P<option>propertie|propriete)/(?P<propertie_id>[-\w]+)/$', views.WebDetailProperty.as_view(), name='detail-propertie'),
+    re_path(r'^(?P<language>fr|en)/(?P<option>propertie|propriete)/(?P<propertie_id>[-\w]+)/(?P<flag>detail|pdf)/$', views.WebDetailProperty.as_view(), name='detail-propertie'),
     re_path(r'^(?P<language>fr|en)/media/$', views.WebVideos.as_view(), name='videos'),
     re_path(r'^(?P<language>fr|en)/(?P<option>contact-realestate-broker|contact-courtier-immobilier)/$', views.WebContact.as_view(), name='contact'),
     re_path(r'^(?P<language>fr|en)/(?P<option>privacy-policy|politique-confidentialite)/$', views.WebPolicy.as_view(), name='privacy-policy'),
@@ -22,3 +22,4 @@ urlpatterns = [
     re_path(r'^search/(?P<language>fr|en)/(?P<option>[\w-]+)/$', views.SearchProperties.as_view(), name='search_properties'),
     path('calculator/', WebCalculator.as_view(), name='calculator'),
     ]
+
