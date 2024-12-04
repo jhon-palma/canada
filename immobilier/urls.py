@@ -18,6 +18,7 @@ register_converter(UUIDConverter, 'uuid')
 
 
 urlpatterns = [
+    path('grappelli/', include('grappelli.urls')), # grappelli URLS
     path('admin', admin.site.urls),
     path('', include(('apps.accounts.urls','accounts'), namespace='accounts')),
     path('', include(('apps.users.urls','users'), namespace='users')),

@@ -183,6 +183,7 @@ class Membres(models.Model):
     class Meta:
         db_table = 'MEMBRES'
 
+
 class Inscriptions(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     no_inscription = models.CharField(db_column='NO_INSCRIPTION', max_length=14, unique=True)  
