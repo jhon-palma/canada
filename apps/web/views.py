@@ -31,6 +31,7 @@ class WebCalculator(TemplateView):
     template_name = 'web/calculator.html'
 
 
+
 class WebIndex(View):
     template_name = 'web/index.html'
     def get(self, request, *args, **kwargs):
@@ -39,7 +40,7 @@ class WebIndex(View):
         language = kwargs.get('language', 'fr')
         option = kwargs.get('option', 'proprietes')
         labels = DICT_LABELS.get(language).get('web')
-        inscriptions = Inscriptions.objects.filter(prix_demande__isnull=False).exclude(code_statut__valeur="VE").annotate(
+        inscriptions = Inscriptions.objects.filter(prix_demande__isnull=False, status=True).exclude(code_statut__valeur="VE").annotate(
             usa_last=Case(
                 When(mun_code__description__icontains="USA", then=Value(1)),
                 default=Value(0),
@@ -79,7 +80,7 @@ class WebProperties(View):
         language = kwargs.get('language', 'fr')
         option = kwargs.get('option', 'proprietes')
         labels = DICT_LABELS.get(language).get('web')
-        base_inscriptions = Inscriptions.objects.exclude(code_statut__valeur="VE").annotate(
+        base_inscriptions = Inscriptions.objects.filter(status=True).exclude(code_statut__valeur="VE").annotate(
             usa_last=Case(
                 When(mun_code__description__icontains="USA", then=Value(1)),
                 default=Value(0),
@@ -125,14 +126,14 @@ def searchpropriete(request):
     status = request.GET.get('status')
     regions = Regions.objects.all()
     municipalites = Municipalites.objects.all()
-    inscriptions = Inscriptions.objects.exclude(code_statut__valeur="VE").annotate(
+    inscriptions = Inscriptions.objects.filter(status=True).exclude(code_statut__valeur="VE").annotate(
         usa_last=Case(
             When(mun_code__description__icontains="USA", then=Value(1)),
             default=Value(0),
             output_field=IntegerField(),
         )
     ).order_by('usa_last', 'mun_code__description')
-    
+
     if status == '2':
         inscriptions = inscriptions.filter(prix_location_demande__isnull=False)
     else:
@@ -192,7 +193,7 @@ class SearchView(View):
         minamount = request.GET.get('minamount', '')
         maxamount = request.GET.get('maxamount', '')
         propriete = request.GET.getlist('propriete[]')
-        query = Q()
+        query = Q(status=True)
 
         if propriete:
             proprietes = [item.split('-')[1] for item in propriete]
