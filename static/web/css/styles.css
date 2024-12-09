@@ -977,6 +977,18 @@ position: relative;color: #fff !important;}
 		cursor: pointer;
 		font-family: Arial;
 	}
+	.close_newsteller {
+		color: #00AAAE;
+		font-size: 60px;
+		transform: rotate(45deg);
+		line-height: 1;
+		position: absolute;
+		top: -50px;
+		right: -60px;
+		display: block;
+		cursor: pointer;
+		font-family: Arial;
+	}
   }
 
 .popnews .close, .popcomments .close{
@@ -1016,9 +1028,9 @@ position: relative;color: #fff !important;}
 		font-size: 60px;
 		transform: rotate(45deg);
 		line-height: 1;
-		position: absolute;
-		top: -50px;
-		right: 0px;
+		position: fixed;
+        top: 26vh;
+        right: 3% !important;
 		display: block;
 		cursor: pointer;
 		font-family: Arial;
@@ -1257,7 +1269,13 @@ a.logocontact img{display: block;width: 100%;}
 	text-align: right;
 	margin: 0px 0 40px;
 }
-
+@media (max-width: 767px) {
+.fullbtn{
+	width: 100%;
+	text-align: center;
+	margin: 0px 0 40px;
+}
+}
 
 .aboutsingle{
 	width: 100%;
@@ -2034,6 +2052,7 @@ h1.h1styled{
     top: -55px;
 }
 
+
 @media screen and (max-width: 590px) {
 	.back_btn {
 		top: 0;
@@ -2054,7 +2073,7 @@ h1.h1styled{
 	}
 	.socf,
 	.finfo p {
-		justify-content: center;
+		justify-content: left;
 		align-items: center;
 	}
 }
