@@ -249,7 +249,7 @@
     font-size: 20px; }
   .banner .baninfo .bannergranso {
     padding-top: 50px;
-    font-size: 28px; }
+    font-size: 22px; }
   .banner .baninfo .bannergranso2 {
     padding-top: 50px;
     font-size: 38px; }
@@ -275,7 +275,10 @@
     margin-top: 9px; }
 
   .__bordemit {
-    margin-bottom: 5px; } }
+    margin-bottom: 5px; }
+
+  .boutonnre2gra {
+    font-size: 13px !important; } }
 .__txoform {
   color: #333;
   font-weight: bold;

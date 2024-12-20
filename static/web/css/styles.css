@@ -481,6 +481,24 @@ a.bouton, .submitclearcont input[type=button], .propsearch input[type=submit], .
     border-radius: 5px;
 }
 
+@media (max-width: 767px) {
+
+	a.bouton, .submitclearcont input[type=button], .propsearch input[type=submit], .propsearch input[type=reset]{
+		font-family: 'Roboto Condensed', sans-serif;
+		display: inline-block;
+		text-transform: uppercase;
+		color: #fff ;
+		background-color: #00AAAE;
+		border:0px solid #00AAAE;
+		text-decoration: none !important;
+		padding: 7px 40px;
+		font-size: 15px;
+		letter-spacing: 1px;
+		text-shadow: none;
+		transition: all .4s;
+		border-radius: 5px;
+	}
+}
 a.bouton.bouton2, .submitclearcont input[type=button], .propsearch input[type=reset]{
 	background-color: #fff;
 	color: #00AAAE !important;
@@ -1029,7 +1047,7 @@ position: relative;color: #fff !important;}
 		transform: rotate(45deg);
 		line-height: 1;
 		position: fixed;
-        top: 26vh;
+        top: -60px;
         right: 3% !important;
 		display: block;
 		cursor: pointer;

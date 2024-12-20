@@ -4245,8 +4245,9 @@ a.mosaique .btn_mosaique:active { color: #FFFFFF; text-decoration: none; }
 	padding: 4px 0 5px 20px;
 	font-size: 13px;
 	margin: 1px 10px 0 0;
-	background: url(../images/btn_pieces.png) no-repeat 0 3px;
-	float: left;
+	background: url(../images/house.svg) no-repeat 0px 3px;
+    float: left;
+    background-size: 18px 15px;
 }
 
 .btn_chamb {
@@ -4254,8 +4255,9 @@ a.mosaique .btn_mosaique:active { color: #FFFFFF; text-decoration: none; }
 	padding: 4px 0 5px 25px;
 	font-size: 13px;
 	margin: 0 10px 0 0;
-	background: url(../images/btn_chamb.png) no-repeat 0 6px;
+	background: url(../images/bed.svg) no-repeat 0 6px;
 	float: left;
+	background-size: 18px 12px;
 }
 
 .btn_salleb {
@@ -4263,8 +4265,9 @@ a.mosaique .btn_mosaique:active { color: #FFFFFF; text-decoration: none; }
 	padding: 4px 0 5px 21px;
 	font-size: 13px;
 	margin: 0 10px 0 0;
-	background: url(../images/btn_salleb.png) no-repeat 0 2px;
+	background: url(../images/bathroom.svg) no-repeat 0 2px;
 	float: left;
+	background-size: 18px 21px;
 }
 
 .btn_salle_eau {
@@ -4272,8 +4275,9 @@ a.mosaique .btn_mosaique:active { color: #FFFFFF; text-decoration: none; }
 	padding: 4px 0 5px 21px;
 	font-size: 13px;
 	margin: 0 10px 0 0;
-	background: url(../images/btn_salle_eau.png) no-repeat 0 2px;
+	background: url(../images/powderRoom.svg) no-repeat 0 2px;
 	float: left;
+	background-size: 18px 20px;
 }
 
 .ligne_maison {
