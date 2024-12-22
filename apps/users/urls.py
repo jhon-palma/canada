@@ -4,7 +4,7 @@ from django.urls import path, re_path
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
-from .views import change_password, create_user, detail_message, list_images, list_messages, password_change_done, profile_list, update_profile, update_profile_users, change_password_user, update_image, update_user_blog, users_blog_list
+from .views import *
 
 urlpatterns = [
     path('profile_list/', profile_list, name='profile_list'),

@@ -44,7 +44,6 @@ class Category(models.Model):
 
 
 class Article(models.Model):
-
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     category = models.ForeignKey(Category, related_name='posts', on_delete=models.CASCADE, blank=False, null=False)
     title_francaise = models.CharField(max_length=255)
@@ -60,6 +59,10 @@ class Article(models.Model):
     slug_anglaise = models.SlugField(max_length=150, unique=True, blank=True, null=True)
     visites = models.PositiveIntegerField(default=0)
     likes = models.ManyToManyField(CustomUser, related_name='likes', through='Like')
+    meta_title_a = models.CharField(max_length=100, blank=True, null=True)
+    meta_title_f = models.CharField(max_length=100, blank=True, null=True)
+    meta_description_a = models.CharField(max_length=100, blank=True, null=True)
+    meta_description_f = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
         ordering = ('-created_at',)

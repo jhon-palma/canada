@@ -7,7 +7,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import *
 from django.contrib import auth,messages
 from django.core.paginator import Paginator
-# from django.db.models import F, Q
 from django.db.models import Value, CharField, Q
 from django.template.loader import *
 from django.urls import reverse
@@ -15,16 +14,16 @@ from django.views.decorators.csrf import *
 from django.views.generic import *
 from django.shortcuts import get_object_or_404
 from django.db.models import Case, When, Value, IntegerField
-# from googleapiclient.discovery import build
 
 from datetime import *
 from apps.users.models import Profile
-from apps.web.models import Formulaire_contact, ImagesWeb, Statistics, VideosWeb
-from ..properties.models import Addenda, Caracteristiques, GenresProprietes, Inscriptions, Membres, Municipalites, Propertie, Quartiers, Regions, SousTypeCaracteristiques
+from apps.web.models import *
+from apps.web.forms import *
+from ..properties.models import *
 from ..labels import DICT_LABELS
 from googleapiclient.discovery import build
 from django.utils.dateparse import parse_datetime
-from immobilier.local_settings import CHANNEL_ID, KEY_API_YB
+
 
 
 class WebCalculator(TemplateView):
@@ -550,6 +549,7 @@ def searchMember(request):
         })
     return JsonResponse({'results': results})
 
+
 def statistics(request):
     try:
         sold_price = Statistics.objects.get(name = "sold_price")
@@ -634,4 +634,27 @@ class SearchProperties(ListView):
         }
 
         return render(request, self.template_name, context)
+
+
+
+
+def metadata(request):
+    objects = MetaDataWeb.objects.all()
+    return render(request, 'web/metadata/list.html',{'objects':objects})
+
+
+def update_metadata(request, pk):
+    meta = get_object_or_404(MetaDataWeb, id=pk)
+    if request.method == 'POST':
+        meta_form = MetadataForm(request.POST, instance=meta)
+        if meta_form.is_valid():
+            meta_form.save()
+            messages.success(request, 'Metadata actualizada', 'succesful')
+            return redirect('web:list-metadata')  
+        else:
+            messages.error(request, 'Error al actualizar la Metadata')
+    else:
+        meta_form = MetadataForm(instance=meta)
+    
+    return render(request, 'web/metadata/update.html', {'meta_form': meta_form})
 

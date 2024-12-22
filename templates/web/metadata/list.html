@@ -1,0 +1,98 @@
+{% extends 'users/base.html' %}
+{% block title %}Metadata WEB{% endblock %}
+{% block head_page %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'app/css/datatables/dataTables.css' %}"/>
+    <script src="{% static 'app/js/datatables/dataTables.js' %}"></script>
+    <script src="{% static 'app/js/core/libraries/bootstrap.min.js' %}"></script>
+    <style>
+        .fw-bold{font-weight: bold;}
+    </style>
+{% endblock %}
+    
+{% block content %}
+    <div class="page-header">
+        <div class="page-header-content">
+            <div class="page-title">
+            <ul class="breadcrumb">
+                <li>
+                    <h4><span class="no-margin text-bold">Metadata WEB</span></h4>
+                </li>
+                <div class="heading-elements">
+                </div>
+            </ul>
+            </div>
+        </div>
+        <div class="breadcrumb-line">
+            <ul class="breadcrumb">
+                <li>Web</li>
+                <li class="active">Metadata</li>
+            </ul>
+        </div>
+    </div>
+    <div class="content">
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == "error"%}
+                    <div class="alert alert-danger">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% else %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}   
+        <div class="panel panel-flat">
+            <div class="panel-heading">
+                <div class="panel-body">
+                    <table id="table_metadata" class="display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;">URL</th>
+                                <th style="text-align: center;">Titulo Ingles</th>
+                                <th style="text-align: center;">Titulo Frances</th>
+                                <th style="text-align: center;">Descripcion Ingles</th>
+                                <th style="text-align: center;">Descripcion Frances</th>
+                                <th style="text-align: center;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for object in objects %}
+                                <tr>
+                                    <td><strong>{{ object.get_origin_display }}</strong></td>
+                                    <td>{{ object.meta_title_a }}</td>
+                                    <td>{{ object.meta_title_f }}</td>
+                                    <td>{{ object.meta_description_a }}</td>
+                                    <td>{{ object.meta_description_f }}</td>
+                                    <td><a href="{% url 'web:update-metadata' object.id %}" title="EDITAR METADATA"><i class="icon-pencil"></i></a></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script type="text/javascript" src="{% static 'app/js/pages/form_validation.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/js/plugins/forms/tags/tokenfield.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/js/pages/form_tags_input.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/js/core/libraries/jquery_ui/interactions.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/js/plugins/forms/selects/select2.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'app/js/pages/form_select2.js' %}"></script>
+    <script>
+        $(document).ready( function () {
+            new DataTable('#table_metadata');
+        } );
+    </script>
+{% endblock %}

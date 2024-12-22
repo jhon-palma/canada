@@ -1,0 +1,129 @@
+{% extends 'users/base.html' %}
+{% load tags %}{% load static %}
+{% block head_page %}
+    <link rel="stylesheet" href="{% static 'app/css/datatables/dataTables.css' %}"/>
+    <script src="{% static 'app/js/datatables/dataTables.js' %}"></script>
+    <script src="{% static 'app/js/core/libraries/bootstrap.min.js' %}"></script>
+{% endblock %}
+{% block content %}
+    <div class="page-header">
+        <div class="page-header-content">
+        <div class="page-title">
+            <ul class="breadcrumb">
+                <li>
+                <h4><span class="no-margin text-bold">{{ meta_form.instance.get_origin_display }}</span></h4>
+                </li>
+                <div class="heading-elements">
+                </div>
+            </ul>
+        </div>
+        </div>
+        <div class="breadcrumb-line">
+        <ul class="breadcrumb">
+            <li><a>Web</a></li>
+            <li>Metadata</li>
+            <li class="active">Actualizar</li>
+        </ul>
+        </div>
+    </div>
+    <div class="content">
+        {% if messages %}
+                {% for message in messages %}
+                    {% if message.tags == "error"%}
+                        <div class="alert alert-danger">
+                            {{ message }}
+                            <ul>
+                                {% for error in meta_form.errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-success">
+                            {{ message }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %} 
+        <div class="panel panel-flat">
+            <div class="panel-heading">
+                <h5 class="panel-title"></h5>
+                <div class="panel-body">
+                    <form method="POST" enctype="multipart/form-data">{% csrf_token %}
+
+                        <fieldset class="content-group">
+                            <div class="col-lg-12">
+                                <legend class="text-bold"><i class="icon-vcard mr-2 position-left"></i>METADATA {{ meta_form.instance.get_origin_display }}</legend>
+                                <div class="row" style="display: none">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="id_last_name">Origin: <span class="form-text text-danger">*</span></label>
+                                            <span class="text-danger">{{ meta_form.origin.errors }}</span>
+                                            {{ meta_form.origin }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="id_last_name">Meta-title French: <span class="form-text text-danger">*</span></label>
+                                            <span class="text-danger">{{ meta_form.meta_title_f.errors }}</span>
+                                            {{ meta_form.meta_title_f }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="id_first_name">Meta-title English: <span class="form-text text-danger">*</span></label>
+                                            <span class="text-danger">{{ meta_form.meta_title_a.errors}}</span>
+                                            {{ meta_form.meta_title_a }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="id_last_name">Meta-description French: <span class="form-text text-danger">*</span></label>
+                                            <span class="text-danger">{{ meta_form.meta_description_f.errors }}</span>
+                                            {{ meta_form.meta_description_f }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="id_first_name">Meta-description English: <span class="form-text text-danger">*</span></label>
+                                            <span class="text-danger">{{ meta_form.meta_description_a.errors}}</span>
+                                            {{ meta_form.meta_description_a }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        
+                        <fieldset class="content-group">
+                            <div class="form-group">
+                                <button type="submit" class="btn bg-primary-800 btn-labeled btn-xlg"  style="width: auto;"><b><i class="icon-floppy-disk"></i></b><span class="margin-left-20">ACTUALIZAR</span></button>
+                                <a href="{% url 'web:list-metadata' %}" class="btn bg-orange-600 btn-labeled btn-xlg"  style="width: auto;"><b><i class="icon-undo2"></i></b><span class="margin-left-20">VOLVER</span></a>
+                            </div>
+                        </fieldset>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+{% block javascript %}
+
+<script type="text/javascript" src="{% static 'app/js/pages/form_validation.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/js/plugins/forms/tags/tokenfield.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/js/pages/form_tags_input.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/js/core/libraries/jquery_ui/interactions.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/js/plugins/forms/selects/select2.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'app/js/pages/form_select2.js' %}"></script>
+
+{% endblock %}

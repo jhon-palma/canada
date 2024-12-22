@@ -21,7 +21,7 @@ from apps.users.models import Profile
 from django.contrib.auth.forms import SetPasswordForm, PasswordChangeForm
 from django.contrib.auth.hashers import make_password
 from django.db import transaction
-from apps.web.models import Formulaire_contact, ImagesWeb
+from apps.web.models import *
 
 
 
@@ -260,7 +260,6 @@ def user_verification():
 def list_messages(request):
     messages_list = Formulaire_contact.objects.order_by('date_creation')
     return render(request, 'users/list_messages.html',{'messages_list':messages_list})
-
 
 
 def detail_message(request, id):

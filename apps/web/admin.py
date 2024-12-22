@@ -7,4 +7,4 @@ from .models import *
 
 admin.site.register(Statistics)
 admin.site.register(ImagesWeb)
-
+admin.site.register(MetaDataWeb)

@@ -21,5 +21,7 @@ urlpatterns = [
     path('statistics/', views.statistics, name='statistics'),
     re_path(r'^search/(?P<language>fr|en)/(?P<option>[\w-]+)/$', views.SearchProperties.as_view(), name='search_properties'),
     path('calculator/', WebCalculator.as_view(), name='calculator'),
-    ]
+    path('metadata/',login_required(metadata), name='list-metadata'),
+    re_path('metadata/update/(?P<pk>[\w-]+)/$', login_required(update_metadata), name='update-metadata'),
+]
 

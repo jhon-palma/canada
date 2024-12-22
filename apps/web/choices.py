@@ -26,3 +26,16 @@ WEB_IMAGES_CHOICES = (
     ('videos_banner', '(Videos) Banner'),
     ('privacy_banner', '(Politic Privacy) Banner'), 
 )
+
+WEB_META_ORIGIN_CHOICES = (
+    ('index', 'Home'),
+    ('properties', 'Properties'),
+    ('sale','Properties Sale'),
+    ('rent','Properties Rent'),
+    ('team','Team'),
+    ('buy','Buying'),
+    ('sell','Selling'),
+    ('video','Videos'),
+    ('blog','Blog'),
+    ('contact','Contact'),
+)

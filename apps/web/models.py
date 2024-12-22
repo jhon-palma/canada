@@ -4,6 +4,7 @@ from apps.web.files_path import web_images_path
 from apps.web.choices import *
 from PIL import Image
 
+
 class Formulaire_contact(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     no_formulaire = models.IntegerField()  
@@ -76,3 +77,22 @@ class VideosWeb(models.Model):
     
     def __str__(self):
         return self.tittle
+    
+
+
+class MetaDataWeb(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
+    origin = models.CharField(choices=WEB_META_ORIGIN_CHOICES, max_length=10, null=False, default='index')
+    meta_title_a = models.CharField(max_length=100, blank=False, null=True)
+    meta_title_f = models.CharField(max_length=100, blank=False, null=True)
+    meta_description_a = models.CharField(max_length=100, blank=False, null=True)
+    meta_description_f = models.CharField(max_length=100, blank=False, null=True)
+    
+    class Meta:
+        db_table = 'web_metadata'
+        verbose_name = 'web_metadata'
+    
+    def __str__(self):
+        return self.origin
+    
+    
