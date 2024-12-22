@@ -1852,6 +1852,12 @@ body a:visited {
       width: 1170px;
     }
   }
+
+  @media (max-width: 480px) {
+	.bwp-blog-col-3.articleprev {
+		margin-left: 7px;
+	}
+  }
   
 .container::after{
     clear: both;
