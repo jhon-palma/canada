@@ -40,7 +40,6 @@
     color: #fff !important; }
 
 .boutonnre4 {
-  background-color: #ee1717 !important;
   color: #fff !important;
   border-radius: 5px;
   margin-left: 20px;
@@ -51,7 +50,6 @@
     color: #fff !important; }
 
 .boutonnre5 {
-  background-color: #ee1717 !important;
   color: #00AAAE !important;
   border-radius: 5px;
   margin-left: 20px;
@@ -338,4 +336,32 @@
     display: block !important;
     float: none; } }
 
+@media (max-width: 480px) {
+  a.bouton, .submitclearcont input[type=button], .propsearch input[type=submit], .propsearch input[type=reset] {
+      padding: 7px 30px;
+  }
+  .poppod .close, .popwwu .close {
+    font-size: 50px;
+  }
+  .banner {
+    height: 300px;
+  }
+  .banner .baninfo .bannergranso2 {
+    font-size: 25px;
+  }
+  .banner .baninfo h1 {
+    font-size: 18px;
+  }
+  .banner .baninfo h2 {
+    padding-top: 20px;
+  }
+  .popnews article{
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+
+
 /*# sourceMappingURL=jenner.css.map */
+
