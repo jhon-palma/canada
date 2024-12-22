@@ -344,13 +344,14 @@
     font-size: 50px;
   }
   .banner {
-    height: 300px;
+    height: 320px;
   }
   .banner .baninfo .bannergranso2 {
     font-size: 25px;
   }
   .banner .baninfo h1 {
     font-size: 18px;
+    margin-bottom: 0px;
   }
   .popnews article{
     width: 100% !important;
