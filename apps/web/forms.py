@@ -11,7 +11,7 @@ from .models import *
 class MetadataForm(ModelForm):
     class Meta:
         model = MetaDataWeb
-        fields = ['origin', 'meta_title_a', 'meta_title_f', 'meta_description_a', 'meta_description_f']
+        fields = ['origin', 'm_title_a', 'm_title_f', 'm_description_a', 'm_description_f']
 
     def __init__(self, *args, **kwargs):
         super(MetadataForm, self).__init__(*args, **kwargs) 

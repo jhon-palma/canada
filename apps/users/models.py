@@ -31,10 +31,10 @@ class Profile(models.Model):
     presentation_f = models.CharField(max_length=2000, blank=True, null=True)
     presentation_a = models.CharField(max_length=2000, blank=True, null=True)
     telephone = models.CharField(max_length=20, blank=True, null=True) 
-    meta_title_a = models.CharField(max_length=100, blank=True, null=True)
-    meta_title_f = models.CharField(max_length=100, blank=True, null=True)
-    meta_description_a = models.CharField(max_length=100, blank=True, null=True)
-    meta_description_f = models.CharField(max_length=100, blank=True, null=True)
+    m_title_a = models.CharField(max_length=100, blank=True, null=True)
+    m_title_f = models.CharField(max_length=100, blank=True, null=True)
+    m_description_a = models.CharField(max_length=100, blank=True, null=True)
+    m_description_f = models.CharField(max_length=100, blank=True, null=True)
     
     def __str__(self):
         return f' Perfil de {self.user.username}'

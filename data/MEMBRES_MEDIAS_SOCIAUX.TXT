@@ -1,5 +1,0 @@
-96839,"FACEB","https://facebook.com/ljrealties"
-96839,"INSTAG","https://instagram.com/ljaguinaga"
-96839,"LINK","https://www.linkedin.com/in/ljaguinaga/"
-96839,"TWIT","https://twitter.com/ljaguinaga"
-96839,"YTUBE","https://www.youtube.com/channel/UC-N5wwzJke86zXT-zcEFR1A"

@@ -19,8 +19,20 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+	{% if data_meta.m_description_f and data_meta.m_description_a and data_meta.m_title_f and data_meta.m_title_a %}
+		{% if language == 'fr' %}
+			<title>{{ data_meta.m_title_f }}</title>
+			<meta name="description" content="{{ data_meta.m_description_f }}"/>
+		{% else %}
+			<title>{{ data_meta.m_title_a }}</title>
+			<meta name="description" content="{{ data_meta.m_description_a }}"/>
+		{% endif %}
+	{% else %}
+		<title>{{ labels.index.header.one }}</title>
+		<meta name="description" content="{{ labels.index.header.two }}"/>
+	{% endif %}
+	
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-	<
 	<meta http-equiv="Content-Language" content="fr, ca"/>
 	<meta name="google" content="notranslate"/>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>

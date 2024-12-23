@@ -30,7 +30,6 @@ class WebCalculator(TemplateView):
     template_name = 'web/calculator.html'
 
 
-
 class WebIndex(View):
     template_name = 'web/index.html'
     def get(self, request, *args, **kwargs):
@@ -39,11 +38,12 @@ class WebIndex(View):
         language = kwargs.get('language', 'fr')
         option = kwargs.get('option', 'proprietes')
         labels = DICT_LABELS.get(language).get('web')
+        data_meta = MetaDataWeb.objects.get(origin='index')
         inscriptions = Inscriptions.objects.filter(prix_demande__isnull=False, status=True).exclude(code_statut__valeur="VE").annotate(
             usa_last=Case(
                 When(mun_code__description__icontains="USA", then=Value(1)),
                 default=Value(0),
-                output_field=IntegerField(),
+                output_field=models.IntegerField() 
             )
         ).order_by('usa_last', '-no_inscription')[:3]
         staticts_query = Statistics.objects.all()
@@ -63,6 +63,7 @@ class WebIndex(View):
             'inscriptions':inscriptions,
             'video_urls':videos,
             'images':images_dict,
+            'data_meta':data_meta,
             'staticts':staticts_dict,
         }
         
@@ -79,11 +80,12 @@ class WebProperties(View):
         language = kwargs.get('language', 'fr')
         option = kwargs.get('option', 'proprietes')
         labels = DICT_LABELS.get(language).get('web')
+        data_meta = MetaDataWeb.objects.get(origin='properties')
         base_inscriptions = Inscriptions.objects.filter(status=True).exclude(code_statut__valeur="VE").annotate(
             usa_last=Case(
                 When(mun_code__description__icontains="USA", then=Value(1)),
                 default=Value(0),
-                output_field=IntegerField(),
+                output_field=models.IntegerField(),
             )
         )
 
@@ -98,9 +100,11 @@ class WebProperties(View):
 
         if option == "properties-for-sale" or option == "proprietes-a-vendre":
             inscriptions = base_inscriptions.filter(prix_demande__isnull=False).order_by('usa_last','-prix_demande')
+            data_meta = MetaDataWeb.objects.get(origin='sale')
             
         if option == "properties-for-rent" or option == "proprietes-a-louer":
             inscriptions = base_inscriptions.filter(prix_location_demande__isnull=False).order_by('usa_last','-prix_location_demande')
+            data_meta = MetaDataWeb.objects.get(origin='rent')
 
         paginator = Paginator(inscriptions, 36)
         page_number = request.GET.get('page')
@@ -113,6 +117,7 @@ class WebProperties(View):
             'language':language,
             'option':option,
             'labels':labels,
+            'data_meta':data_meta,
             'inscriptions':inscriptions,
             'images':images_dict,
         }
@@ -129,7 +134,7 @@ def searchpropriete(request):
         usa_last=Case(
             When(mun_code__description__icontains="USA", then=Value(1)),
             default=Value(0),
-            output_field=IntegerField(),
+            output_field=models.IntegerField(),
         )
     ).order_by('usa_last', 'mun_code__description')
 
@@ -193,6 +198,7 @@ class SearchView(View):
         maxamount = request.GET.get('maxamount', '')
         propriete = request.GET.getlist('propriete[]')
         query = Q(status=True)
+        data_meta = MetaDataWeb.objects.get(origin='properties')
 
         if propriete:
             proprietes = [item.split('-')[1] for item in propriete]
@@ -248,7 +254,7 @@ class SearchView(View):
             usa_last=Case(
                 When(mun_code__description__icontains="USA", then=Value(1)),
                 default=Value(0),
-                output_field=IntegerField(),
+                output_field=models.IntegerField(),
             )
         ).order_by('usa_last', 'mun_code__description')
 
@@ -270,6 +276,7 @@ class SearchView(View):
             'maxamount': maxamount,
             'propriete':propriete,
             'inscriptions':inscriptions,
+            'data_meta':data_meta,
             'images':images_dict,
         }
 
@@ -357,7 +364,7 @@ class WebVideos(View):
         language = kwargs.get('language', 'fr')
         labels = DICT_LABELS.get(language).get('web')
         videos = VideosWeb.objects.all().order_by('-publishedAt')
-        #videos = VideosWeb.objects.filter(is_short=False).order_by('-publishedAt')
+        data_meta = MetaDataWeb.objects.get(origin='video')
         images_query = ImagesWeb.objects.filter(reference__in=['videos_banner'])
         images_dict = {image.reference: image for image in images_query}
         context = {
@@ -366,6 +373,7 @@ class WebVideos(View):
             'language':language,
             'labels':labels,
             'videos':videos,
+            'data_meta':data_meta,
             'images':images_dict,
         }
         return render(request, self.template_name, context)
@@ -381,6 +389,8 @@ class WebContact(View):
         option = kwargs.get('option', 'contact-courtier-immobilier')
         images_query = ImagesWeb.objects.filter(reference__in=['contact_banner','contact_team_background','contact_team'])
         images_dict = {image.reference: image for image in images_query}
+        data_meta = MetaDataWeb.objects.get(origin='contact')
+
         context = {
             'municipalites':municipalites,
             'genres':genres,
@@ -388,7 +398,9 @@ class WebContact(View):
             'option':option,
             'labels':labels,
             'images':images_dict,
+            'data_meta':data_meta,
         }
+
         return render(request, self.template_name, context)
 
 class WebPolicy(View):
@@ -423,6 +435,8 @@ class WebTeam(View):
         option = kwargs.get('option', 'courtier-immobilier')
         images_query = ImagesWeb.objects.filter(reference__in=['team_banner'])
         images_dict = {image.reference: image for image in images_query}
+        data_meta = MetaDataWeb.objects.get(origin='team')
+
         context = {
             'municipalites':municipalites,
             'genres':genres,
@@ -431,6 +445,7 @@ class WebTeam(View):
             'labels':labels,
             'team':team,
             'images':images_dict,
+            'data_meta':data_meta,
         }
         return render(request, self.template_name, context)
 
@@ -454,8 +469,10 @@ class WebMemberDetail(View):
             'labels':labels,
             'member': member,
             'images':images_dict,
+            'data_meta':member,
         }
         return render(request, self.template_name, context)
+
 
 class WebWork(View):
     template_name = 'web/work.html'
@@ -469,6 +486,9 @@ class WebWork(View):
         type_option = 'one' if option in ['buying','acheter'] else 'two'
         images_query = ImagesWeb.objects.filter(reference__in=['work_banner','work_buy','work_sell','work_next_steps'])
         images_dict = {image.reference: image for image in images_query}
+        origin = 'buy' if type_option == 'one' else 'sell'
+        data_meta = MetaDataWeb.objects.get(origin=origin)
+
         context = {
             'municipalites':municipalites,
             'genres':genres,
@@ -477,8 +497,11 @@ class WebWork(View):
             'option':option,
             'type_option':type_option,
             'images':images_dict,
+            'data_meta':data_meta,
         }
+
         return render(request, self.template_name, context)
+
 
 def calc_monthly_payment_view(request):
     if request.method == 'GET':
@@ -622,6 +645,7 @@ class SearchProperties(ListView):
         inscriptions = paginator.get_page(page_number)
         images_query = ImagesWeb.objects.filter(reference__in=['properties_banner'])
         images_dict = {image.reference: image for image in images_query}
+        data_meta = MetaDataWeb.objects.get(origin='properties')
         
         context = {
             'municipalites':municipalites,
@@ -631,6 +655,7 @@ class SearchProperties(ListView):
             'labels':labels,
             'inscriptions':inscriptions,
             'images':images_dict,
+            'data_meta':data_meta,
         }
 
         return render(request, self.template_name, context)

@@ -22,7 +22,7 @@ class ProfileEditForm(forms.ModelForm):
         fields = [
             'image', 'order', 'type', 'membre','occupation', 'occupation_anglaise', 'facebook', 'instagram',
             'linkedin', 'twitter', 'tiktok', 'presentation_f', 'presentation_a','youtube','telephone',
-            'meta_title_a', 'meta_title_f', 'meta_description_a', 'meta_description_f'
+            'm_title_a', 'm_title_f', 'm_description_a', 'm_description_f'
         ]
 
 

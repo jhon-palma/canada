@@ -59,10 +59,10 @@ class Article(models.Model):
     slug_anglaise = models.SlugField(max_length=150, unique=True, blank=True, null=True)
     visites = models.PositiveIntegerField(default=0)
     likes = models.ManyToManyField(CustomUser, related_name='likes', through='Like')
-    meta_title_a = models.CharField(max_length=100, blank=True, null=True)
-    meta_title_f = models.CharField(max_length=100, blank=True, null=True)
-    meta_description_a = models.CharField(max_length=100, blank=True, null=True)
-    meta_description_f = models.CharField(max_length=100, blank=True, null=True)
+    m_title_a = models.CharField(max_length=100, blank=True, null=True)
+    m_title_f = models.CharField(max_length=100, blank=True, null=True)
+    m_description_a = models.CharField(max_length=100, blank=True, null=True)
+    m_description_f = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
         ordering = ('-created_at',)

@@ -6,6 +6,7 @@ from django.urls import reverse
 
 from apps.accounts.models import CustomUser
 from apps.users.models import Profile
+from apps.web.models import MetaDataWeb
 from .models import Article, Category, Like, Comment
 from .forms import ArticleForm, ArticleUpdateForm, CategoryAdminForm
 from django.db.models import Q
@@ -30,6 +31,7 @@ def articles(request, language='fr'):
     articles_list  = Article.objects.filter(active=True)
     paginator = Paginator(articles_list, 12)
     page_number = request.GET.get('page')
+    data_meta = MetaDataWeb.objects.get(origin='blog')
     try:
         articles = paginator.page(page_number)
     except PageNotAnInteger:
@@ -40,8 +42,9 @@ def articles(request, language='fr'):
     context = {
         'language':language,
         'labels':labels,
-        'articles': articles,
-        'paginator': paginator,
+        'articles':articles,
+        'paginator':paginator,
+        'data_meta':data_meta,
     }
     return render(request, 'blog/blog.html',context)
 
@@ -109,7 +112,7 @@ def detail(request, language, slug):
         post = get_object_or_404(Article, **{slug_field: slug, 'active': True})
         post.visites += 1
         post.save()
-
+ 
         user_liked = False
         if request.user.is_authenticated:
             user_liked = Like.objects.filter(user=request.user, post=post).exists()
@@ -134,6 +137,7 @@ def detail(request, language, slug):
             'user_liked': user_liked,
             'previous_post': previous_post,
             'next_post': next_post,
+            'data_meta':post,
         }
 
         return render(request, 'blog/detail.html', context)

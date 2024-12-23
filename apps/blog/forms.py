@@ -31,14 +31,14 @@ class ArticleForm(forms.ModelForm):
         self.fields["image_anglaise"].widget.attrs.update({"class": "form-control-file"})
         self.fields["slug_francaise"].widget.attrs.update({"class": "form-control"})
         self.fields["slug_anglaise"].widget.attrs.update({"class": "form-control"})
-        self.fields["meta_title_a"].widget.attrs.update({"class": "form-control"})
-        self.fields["meta_title_f"].widget.attrs.update({"class": "form-control"})
-        self.fields["meta_description_a"].widget.attrs.update({"class": "form-control"})
-        self.fields["meta_description_f"].widget.attrs.update({"class": "form-control"})
+        self.fields["m_title_a"].widget.attrs.update({"class": "form-control"})
+        self.fields["m_title_f"].widget.attrs.update({"class": "form-control"})
+        self.fields["m_description_a"].widget.attrs.update({"class": "form-control"})
+        self.fields["m_description_f"].widget.attrs.update({"class": "form-control"})
 
     class Meta:
         model = Article
-        fields = ['title_francaise', 'title_anglaise', 'category','content_francaise', 'content_anglaise', 'image_francaise', 'image_anglaise', 'slug_francaise', 'slug_anglaise', 'meta_title_a','meta_title_f','meta_description_a','meta_description_f']
+        fields = ['title_francaise', 'title_anglaise', 'category','content_francaise', 'content_anglaise', 'image_francaise', 'image_anglaise', 'slug_francaise', 'slug_anglaise', 'm_title_a','m_title_f','m_description_a','m_description_f']
         widgets = {
             "content_francaise": CKEditor5Widget(
                 attrs={"class": "django_ckeditor_5"}, config_name="extends"
@@ -63,15 +63,15 @@ class ArticleUpdateForm(forms.ModelForm):
         self.fields["image_anglaise"].widget.attrs.update({"class": "form-control-file"})
         self.fields["slug_francaise"].widget.attrs.update({"class": "form-control"})
         self.fields["slug_anglaise"].widget.attrs.update({"class": "form-control"})
-        self.fields["meta_title_a"].widget.attrs.update({"class": "form-control"})
-        self.fields["meta_title_f"].widget.attrs.update({"class": "form-control"})
-        self.fields["meta_description_a"].widget.attrs.update({"class": "form-control"})
-        self.fields["meta_description_f"].widget.attrs.update({"class": "form-control"})
+        self.fields["m_title_a"].widget.attrs.update({"class": "form-control"})
+        self.fields["m_title_f"].widget.attrs.update({"class": "form-control"})
+        self.fields["m_description_a"].widget.attrs.update({"class": "form-control"})
+        self.fields["m_description_f"].widget.attrs.update({"class": "form-control"})
 
 
     class Meta:
         model = Article
-        fields = ['title_francaise', 'title_anglaise', 'category','content_francaise', 'content_anglaise', 'image_francaise', 'image_anglaise', 'slug_francaise', 'slug_anglaise', 'meta_title_a','meta_title_f','meta_description_a','meta_description_f']
+        fields = ['title_francaise', 'title_anglaise', 'category','content_francaise', 'content_anglaise', 'image_francaise', 'image_anglaise', 'slug_francaise', 'slug_anglaise', 'm_title_a','m_title_f','m_description_a','m_description_f']
         widgets = {
             "content_francaise": CKEditor5Widget(
                 attrs={"class": "django_ckeditor_5"}, config_name="extends"

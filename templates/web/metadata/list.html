@@ -68,10 +68,10 @@
                             {% for object in objects %}
                                 <tr>
                                     <td><strong>{{ object.get_origin_display }}</strong></td>
-                                    <td>{{ object.meta_title_a }}</td>
-                                    <td>{{ object.meta_title_f }}</td>
-                                    <td>{{ object.meta_description_a }}</td>
-                                    <td>{{ object.meta_description_f }}</td>
+                                    <td>{{ object.m_title_a }}</td>
+                                    <td>{{ object.m_title_f }}</td>
+                                    <td>{{ object.m_description_a }}</td>
+                                    <td>{{ object.m_description_f }}</td>
                                     <td><a href="{% url 'web:update-metadata' object.id %}" title="EDITAR METADATA"><i class="icon-pencil"></i></a></td>
                                 </tr>
                             {% endfor %}
