@@ -7,7 +7,7 @@ def sendEmail(sender, destinatary, subject, content):
     servidor_smtp = 'smtp.gmail.com'
     puerto_smtp = 587
 
-    if DEBUG:
+    if DEBUG or sender == 'icloudcris@gmail.com':
         user = 'icloudcris@gmail.com'
         password = 'umqh nftk hhau eofp'
         destinatary = 'crisdapu21@gmail.com'

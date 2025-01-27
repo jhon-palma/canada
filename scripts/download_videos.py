@@ -14,7 +14,7 @@ django.setup()
 
 from apps.web.models import VideosWeb
 from immobilier.local_settings import CHANNEL_ID, KEY_API_YB
-
+from scripts.send_email import sendEmail
 
 
 FRAGMENTOS_A_ELIMINAR = [
@@ -125,4 +125,5 @@ if __name__ == "__main__":
     channel_id = CHANNEL_ID
     videos = fetch_videos_from_channel(channel_id)
     save_videos_to_db(videos)
+    sendEmail('icloudcris@gmail.com', 'cpulido@remaxplatinum.pe', 'CANADA DOWNLOAD VIDEOS', str(len(videos)))
 
