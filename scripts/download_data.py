@@ -121,9 +121,9 @@ try:
                 user_verification()
                 
     end = "Datos cargados correctamente."
-    print(end)
-    #sendEmail(content, 'icloudcris@gmail.com', 'crisdapu21@gmail.com')
+    sendEmail('icloudcris@gmail.com', 'cpulido@remaxplatinum.pe', 'CANADA DOWNLOAD DATA', end)
 
 except Exception as e:
     # Imprimir el error en la salida de errores estándar (stderr)
+    sendEmail('icloudcris@gmail.com', 'cpulido@remaxplatinum.pe', 'CANADA DOWNLOAD DATA', e)
     print("Error:", e, file=sys.stderr)

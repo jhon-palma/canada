@@ -47,12 +47,14 @@ def get_model_by_meta_name(model_name):
             return model
     return None
 
+
 def get_model_fields(model):
     fields = []
     for field in model._meta.fields:
         if field.name != 'id':
             fields.append(field.name)
     return fields
+
 
 def create_objects(data, model_name):
     mensaje = ""
@@ -109,7 +111,6 @@ def create_objects(data, model_name):
         mensaje = uploadDataGeneric(data, model_name)
 
     return mensaje
-
 
 
 def uploadDataGeneric(data, model_name):
@@ -190,7 +191,6 @@ def uploadDataGeneric(data, model_name):
         total_nuevos = total_nuevos + 1
     mensaje = f"{total_nuevos} Registros subidos exitosamente en el modelo {model_name}, y se encontraron {repetidos} registros repetidos"
     return mensaje
-
 
 
 def uploadFirmes(data):
@@ -1748,6 +1748,7 @@ def uploadRemarques(data):
     mensaje += f"Remarques creadas: {total_nuevas}, Remarques Actualizadas: {total_actualizadas}, Remarques Eliminadas: {total_eliminadas}"
     return mensaje
 
+
 def uploadUnitesDetaillees(data):
     mensaje = ''
     total_actualizadas = 0
@@ -1886,6 +1887,7 @@ def uploadUnitesDetaillees(data):
     mensaje += f"UnitesDetaillees creadas: {total_nuevas}, UnitesDetaillees Actualizadas: {total_actualizadas}, UnitesDetaillees Eliminadas: {total_eliminadas}"
     return mensaje
 
+
 def uploadAddenda(data):
     mensaje = ''
     total_actualizadas = 0
@@ -1960,7 +1962,6 @@ def uploadAddenda(data):
         mensaje="El archivo TXT contiene Addendas cuya Incriptions no existen. "
     mensaje += f"Addendas creadas: {total_nuevas}, Addendas Actualizadas: {total_actualizadas}, Addendas Eliminadas: {total_eliminadas}"
     return mensaje
-
 
 
 def uploadUnitesSommaires(data):
@@ -2042,7 +2043,6 @@ def uploadUnitesSommaires(data):
         mensaje="El archivo TXT contiene UnitesSommaires cuya Incriptions no existen. "
     mensaje += f"UnitesSommaires creadas: {total_nuevas}, UnitesSommaires Actualizadas: {total_actualizadas}, UnitesSommaires Eliminadas: {total_eliminadas}"
     return mensaje
-
 
 
 def uploadDepenses(data):
@@ -2133,7 +2133,6 @@ def uploadDepenses(data):
     return mensaje
 
 
-
 def uploadRenovations(data):
     mensaje = ''
     total_actualizadas = 0
@@ -2145,6 +2144,7 @@ def uploadRenovations(data):
     data_txt = {(str(row[0]),int(row[1])) for row in data}
     existing_keys = {(renovations.no_inscription.no_inscription, renovations.seq) for renovations in Renovations.objects.all()}
     renovations_to_delete = existing_keys.difference(data_txt)
+    
     # for renovations_del in renovations_to_delete:
     #     total_eliminadas = total_eliminadas + 1
     #     try:
@@ -2156,11 +2156,16 @@ def uploadRenovations(data):
     #         mensaje += f"Renovations eliminada: {renovations_del}\n"
     #     except Renovations.DoesNotExist:
     #         mensaje += f"Error: No se encontró la Renovations a eliminar: {renovations_del}\n"
+
+
     for row in data:
+        cambios = []
         no_inscription = get_id_inscription(str(row[0]))
+
         if no_inscription == None:
             errors.append(row[0])
             continue
+
         seq = row[1]
         valor_valeurs_fixes = row[2]
         renovation_type = get_id_valeurs(valor_valeurs_fixes,'RENOVATION_TYPE')
@@ -2169,9 +2174,26 @@ def uploadRenovations(data):
         informations_francaises = row[5]
         informations_anglaises = row[6]
         montant = int(row[7]) if row[7] else None
-        try:
-            renovations = Renovations.objects.get(no_inscription=no_inscription, seq=seq)
-            cambios = []
+
+        try: renovations = Renovations.objects.get(no_inscription=no_inscription, seq=seq)
+        except: renovations = None
+        if renovation_type:
+            print(renovation_type, 'renovation_type')
+            print(valor_valeurs_fixes, 'valor_valeurs_fixes')
+            print(no_inscription, 'no_inscription')
+            renovations = Renovations.objects.create(
+                no_inscription = no_inscription,
+                seq = seq,
+                renovation_type = renovation_type,
+                annee = annee,
+                champ_inutilise_1 = champ_inutilise_1,
+                informations_francaises = informations_francaises,
+                informations_anglaises = informations_anglaises,
+                montant = montant,
+            )
+            total_nuevas = total_nuevas + 1
+
+        if renovations:
             if renovations.renovation_type != renovation_type:
                 renovations.renovation_type = renovation_type
                 cambios.append('renovation_type')
@@ -2193,26 +2215,15 @@ def uploadRenovations(data):
             if cambios:
                 renovations.save()
                 total_actualizadas = total_actualizadas + 1
-        except ObjectDoesNotExist:
-            renovations = Renovations.objects.create(
-                no_inscription = no_inscription,
-                seq = seq,
-                renovation_type = renovation_type,
-                annee = annee,
-                champ_inutilise_1 = champ_inutilise_1,
-                informations_francaises = informations_francaises,
-                informations_anglaises = informations_anglaises,
-                montant = montant,
-            )
-            total_nuevas = total_nuevas + 1
-        except MultipleObjectsReturned:
-            mensaje = f"Se encontraron múltiples coincidencias para {renovations}, revise la base de datos"
+
+        #except MultipleObjectsReturned:
+        #    mensaje = f"Se encontraron múltiples coincidencias para {renovations}, revise la base de datos"
+
     if errors:
         mensaje="El archivo TXT contiene Renovations cuya Incriptions no existen. "
     mensaje += f"Renovations creadas: {total_nuevas}, Renovations Actualizadas: {total_actualizadas}, Renovations Eliminadas: {total_eliminadas}"
     return mensaje
-
-
+   
 
 def uploadPiecesUnites(data):
     mensaje = ''
@@ -2335,7 +2346,6 @@ def uploadPiecesUnites(data):
     return mensaje
 
 
-
 def uploadCaracteristiques(data):
     mensaje = ''
     total_actualizadas = 0
@@ -2416,14 +2426,12 @@ def get_id_valeurs(valor, domaine):
         return None
 
 
-
 def get_id_municipalite(code):
     try:
         municipalite = Municipalites.objects.get(code=code)
         return municipalite
     except Municipalites.DoesNotExist:
         return None
-
 
 
 def get_id_bureau(code):
@@ -2434,14 +2442,12 @@ def get_id_bureau(code):
         return None
 
 
-
 def get_id_courtier(code):
     try:
         membre = Membres.objects.get(code=code)
         return membre
     except Membres.DoesNotExist:
         return None
-
 
 
 def get_id_quartiers(code, municipalite):
@@ -2452,7 +2458,6 @@ def get_id_quartiers(code, municipalite):
         return None
 
 
-
 def get_id_genres_proprietes(code):
     try:
         quartier = GenresProprietes.objects.get(genre_propriete=code)
@@ -2461,14 +2466,12 @@ def get_id_genres_proprietes(code):
         return None
     
 
-
 def get_id_inscription(code):
     try:
         inscription = Inscriptions.objects.get(no_inscription=code)
         return inscription
     except Inscriptions.DoesNotExist:
         return None 
-
 
 
 def get_id_tcar_code(code):
@@ -2479,14 +2482,12 @@ def get_id_tcar_code(code):
         return None
 
 
-
 def get_id_scarac_code(code, tcar_code):
     try:
         scarac_code = SousTypeCaracteristiques.objects.get(code=code, tcar_code=tcar_code)
         return scarac_code
     except SousTypeCaracteristiques.DoesNotExist:
         return None
-
 
 
 def uploadMunicipalites(data):
