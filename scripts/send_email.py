@@ -10,7 +10,7 @@ def sendEmail(sender, destinatary, subject, content):
     if DEBUG or sender == 'icloudcris@gmail.com':
         user = 'icloudcris@gmail.com'
         password = 'umqh nftk hhau eofp'
-        destinatary = 'crisdapu21@gmail.com'
+        destinatary = 'backups@remaxplatinum.pe'
     else:
         user = 'mar@ljrealties.com'
         password = 'ndrj mpwg mxfn cnrb'
