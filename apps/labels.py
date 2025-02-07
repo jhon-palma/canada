@@ -84,6 +84,8 @@ DICT_LABELS = {
                     'thirty_three': 'With a sold price percentage well above the industry average, faster sales times, and thousands of successful transactions completed, our results speak for themselves.',
                     'thirty_four': 'When it comes to delivering exceptional outcomes, we consistently exceed expectations.',
                     'thirty_five': 'Trust us for a seamless and profitable real estate experience.',
+                    'thirty_six': 'Our professional',
+                    'thirty_seven': 'affiliations',
                 }
             },
             'menu':{
@@ -124,7 +126,10 @@ DICT_LABELS = {
                 },
                 'button':{
                     'one':'Watch Video',
-                }
+                },
+                'placeholder':{
+                    'one':'Search video',
+                },
             },
             'contact':{
                 'title':{
@@ -171,6 +176,7 @@ DICT_LABELS = {
                 },
                 'button':{
                     'one':'Read Bio',
+                    'two':'WRITE A REVIEW',
                 },
                 'text': {
                     'one':'Founder & Certified Real Estate Broker',
@@ -364,6 +370,8 @@ DICT_LABELS = {
                     'thirty_three': "Avec un pourcentage de prix de vente, bien supérieur à la moyenne du secteur, des délais plus courts pour vendre et des milliers de transactions réussies, nos résultats parlent d'eux-mêmes.",
                     'thirty_four': "Lorsqu'il s'agit d'obtenir des résultats exceptionnels, nous dépassons constamment les attentes.",
                     'thirty_five': 'Faites-nous confiance pour une expérience immobilière transparente et profitable.',
+                    'thirty_six': 'Nos affiliations',
+                    'thirty_seven': 'professionnelles',
                 }
             },
             'menu':{
@@ -404,7 +412,10 @@ DICT_LABELS = {
                 },
                 'button':{
                     'one':'Visionnez',
-                }
+                },
+                'placeholder':{
+                    'one':'Recherche vidéo',
+                },
             },
             'contact':{
                 'title':{
@@ -451,6 +462,7 @@ DICT_LABELS = {
                 },
                 'button':{
                     'one':'Lire la Bio',
+                    'two':'RÉDIGER UN AVIS',
                 },
                 'text': {
                     'one':'Fondateur et courtier immobilier agréé DA',

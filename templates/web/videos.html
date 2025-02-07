@@ -59,28 +59,31 @@
 	<div class="text-center my-3">
 	</div>
 	<div class="wrap centrar">
-		<div class="__cnt pointer">
-			<a  class="filter-btn bouton" data-filter="video">{{ labels.videos.title.five }}</a>
-			<a  class="filter-btn bouton" data-filter="short">{{ labels.videos.title.four }}</a>
-			<a  class="filter-btn bouton" data-filter="all">{{ labels.videos.title.three }}</a>
-		</div>
-	</div>
-	<div class="wrap">
-        {% for video in videos %}
-            <div href="https://www.youtube.com/watch?v={{ video.videoId }}" class="capsule msrItem portfolio-item {% if video.is_short %}short{% else %}video{% endif %}">
-                <a href="https://www.youtube.com/watch?v={{ video.videoId }}" class="img"> <img src="https://img.youtube.com/vi/{{ video.videoId }}/hqdefault.jpg" alt="{{ video.title }}t" /></a>
-                <h3>{{ video.tittle }}</h3>
-                <p class="sm">{{ video.publishedAt|date:"d/m/Y" }}</p>
-                <p>
-                    {{ video.description|slice:":200" }}{% if video.description|length > 200 %}...{% endif %}<br />
-                    <a>{% if language == "en" %}Read more{% else %}Lire plus{% endif %}</a>
-                </p>
-                <p class="hiddendesc">
-                    {{ video.description }}
-                </p>
-                <a href="https://www.youtube.com/watch?v={{ video.videoId }}" class="bouton">{{ labels.videos.button.one }}</a>
-            </div>
-        {% endfor %}
+        <div class="__cnt pointer">
+            <a class="filter-btn bouton" data-filter="video">{{ labels.videos.title.five }}</a>
+            <a class="filter-btn bouton" data-filter="short">{{ labels.videos.title.four }}</a>
+            <a class="filter-btn bouton" data-filter="all">{{ labels.videos.title.three }}</a>
+        </div>
+        <div class="search-container">
+            <input type="text" id="search-videos" placeholder="{{ labels.videos.placeholder.one }}"  class="search-input">
+        </div>
+    </div>
+	<div class="wrap initial">
+            {% for video in videos %}
+                <div href="https://www.youtube.com/watch?v={{ video.videoId }}" class="capsule msrItem portfolio-item {% if video.is_short %}short{% else %}video{% endif %}">
+                    <a href="https://www.youtube.com/watch?v={{ video.videoId }}" class="img"> <img src="https://img.youtube.com/vi/{{ video.videoId }}/hqdefault.jpg" alt="{{ video.title }}t" /></a>
+                    <h3>{{ video.tittle }}</h3>
+                    <p class="sm">{{ video.publishedAt|date:"d/m/Y" }}</p>
+                    <p>
+                        {{ video.description|slice:":200" }}{% if video.description|length > 200 %}...{% endif %}<br />
+                        <a>{% if language == "en" %}Read more{% else %}Lire plus{% endif %}</a>
+                    </p>
+                    <p class="hiddendesc">
+                        {{ video.description }}
+                    </p>
+                    <a href="https://www.youtube.com/watch?v={{ video.videoId }}" class="bouton">{{ labels.videos.button.one }}</a>
+                </div>
+            {% endfor %}
 	</div>
 </section>
 
@@ -110,6 +113,50 @@
 		$(".filter-btn[data-filter='video']").click();
 		
 	});
+    $(document).ready(function () {
+    var originalVideos = $(".wrap.initial").html();
+    var videosContainer = $(".wrap.initial");
+
+    $("#search-videos").on("keyup", function () {
+        var query = $(this).val().trim();
+
+        if (query === "") {
+            videosContainer.html(originalVideos).show();
+            return;
+        }
+
+        $.ajax({
+            url: "{% url 'web:search_videos' %}",
+            data: { q: query },
+            dataType: "json",
+            success: function (data) {
+                videosContainer.html("");
+              
+                if (data.videos.length > 0) {
+                    $.each(data.videos, function (index, video) {
+                        var videoHtml = `
+                        <div class="capsule msrItem portfolio-item ${video.is_short ? 'short' : 'video'} show">
+                            <a href="https://www.youtube.com/watch?v=${video.videoId}" class="img">
+                                <img src="https://img.youtube.com/vi/${video.videoId}/hqdefault.jpg" alt="${video.title}" />
+                            </a>
+                            <h3>${video.title}</h3>
+                            <p class="sm">${video.publishedAt}</p>
+                            <p>${video.description} <br />
+                                <a>{% if language == "en" %}Read more{% else %}Lire plus{% endif %}</a>
+                            </p>
+                            <a href="https://www.youtube.com/watch?v=${video.videoId}" class="bouton">{{ labels.videos.button.one }}</a>
+                        </div>`;
+                        videosContainer.append(videoHtml);
+                    });
+                } else {
+                    videosContainer.html("<p>No se encontraron videos.</p>");
+                }
+            }
+        });
+    });
+});
+
+
 
 </script>
 

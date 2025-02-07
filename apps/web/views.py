@@ -355,6 +355,23 @@ class WebDetailProperty(View):
         return render(request, self.template_name, context)
 
 
+
+class WebPropertyRedirect(View):
+    def get(self, request, *args, **kwargs):
+        propertie_code = request.GET.get("mls")
+        language = kwargs.get('language', 'fr')
+        flag = kwargs.get('flag', 'detail')
+        option = kwargs.get('option', 'proprietes')
+
+        try: 
+            propertie = Inscriptions.objects.get(no_inscription=propertie_code)
+            return redirect( "web:detail-propertie", language=language, option=option, propertie_id=propertie.id, flag=flag)
+        except:
+            propertie = False
+            return redirect("web:properties", language=language, option=option+"s")
+            
+
+
 class WebVideos(View):
     template_name = 'web/videos.html'
 
@@ -377,6 +394,27 @@ class WebVideos(View):
             'images':images_dict,
         }
         return render(request, self.template_name, context)
+
+def search_videos(request):
+    print("entro")
+    query = request.GET.get("q", "")
+    if query:
+        videos = VideosWeb.objects.filter(tittle__icontains=query)
+        results = [
+            {
+                "videoId": video.videoId,
+                "title": video.tittle,
+                "publishedAt": video.publishedAt.strftime("%d/%m/%Y"),
+                "description": video.description[:200] + ("..." if len(video.description) > 200 else ""),
+                "is_short": video.is_short,
+            }
+            for video in videos
+        ]
+    else:
+        results = []
+    
+    print(results)
+    return JsonResponse({"videos": results})
 
 class WebContact(View):
     template_name = 'web/contact.html'
@@ -436,7 +474,6 @@ class WebTeam(View):
         images_query = ImagesWeb.objects.filter(reference__in=['team_banner'])
         images_dict = {image.reference: image for image in images_query}
         data_meta = MetaDataWeb.objects.get(origin='team')
-
         context = {
             'municipalites':municipalites,
             'genres':genres,

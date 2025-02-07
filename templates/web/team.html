@@ -88,7 +88,14 @@
         </div>
     </section>
 {% endif %}
-
+<section class="rate_banner">
+    <div class="wrap">
+        <img src="{% static 'web/images/logos/rate.svg' %}" alt="Rate My agent">
+        <div class="content_button">
+            <a class="button" href="https://www.rate-my-agent.com/Montreal-QC-Agent-Ratings" target="_blank">{{ labels.team.button.two }}</a>
+        </div>
+    </div>
+</section>
 {% load static %}{% include 'web/footer_web.html' %}
 
 <script>

@@ -231,7 +231,28 @@
         </div>
     </div>
 </div>
-
+<section class="professional">
+    <div class="wrap">
+        <h2 class="h2def"><span class="text-span">{{ labels.index.text.thirty_six }}</span> <strong>{{ labels.index.text.thirty_seven }}</strong></h2>
+        <div class="row">
+            <div class="col-4">
+                <a {% if language == 'fr' %}href="https://www.corpiq.com/"{% else %}href="https://www.corpiq.com/en/"{% endif %} target="_blank">
+                    <img src="{% static 'web/images/logos/CORPIQ_Logo.svg' %}" alt="CORPIQ">
+                </a>
+            </div>
+            <div class="col-4">
+                <a {% if language == 'fr' %}href="https://www.oaciq.com/fr"{% else %}href="https://www.oaciq.com/en"{% endif %} target="_blank">
+                    <img src="{% static 'web/images/logos/OACIQ_idK3ObVObf_1.svg' %}" alt="Association courtiers de Quebec">
+                </a>
+            </div>
+            <div class="col-4">
+                <a {% if language == 'fr' %}href="https://apciq.ca/"{% else %}href="https://apciq.ca/en/"{% endif %} target="_blank">
+                    <img src="{% static 'web/images/logos/apciq-Logo.svg' %}" alt="OACIQ">
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
 <section class="videoshome">
     <div class="wrap">
         <h2 class="h3def"><span class="text-span">{{ labels.index.text.twenty_one }}</span> {{ labels.index.text.twenty_two }}</h2>

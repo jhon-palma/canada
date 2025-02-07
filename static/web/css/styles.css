@@ -1484,11 +1484,98 @@ form.propsearch{padding: 60px 0px 40px;}
 	cursor: pointer
 }
 
+.professional{
+    padding: 60px 0;
+    text-align: center;
+    background-color: rgb(245,246,247);
+}
 
+.professional .row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    padding: 50px 0;
+}
 
+.professional .col-4 {
+    flex: 1; /* Para que cada columna tenga el mismo ancho */
+    display: flex;
+}
 
+.professional .col-4 img {
+    width: 100%;  /* Ajusta según tu necesidad */
+    height: 100px; /* Ajusta según tu necesidad */
+    object-fit: contain; /* Asegura que la imagen se ajuste sin deformarse */
+}
 
+.rate_banner{
+    padding: 60px 0;
+    text-align: center;
+    background-color: rgb(245,246,247);
+    font-size: 18px;
+    font-weight: 400;
+}
 
+.rate_banner .content_button{
+    padding-top: 25px;
+}
+
+.rate_banner .button{
+    display: inline-block;
+    width: 250px;
+    padding: 0.2rem 3.5rem;
+    background-color: #000;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.politique {
+    font-size: 14px;
+}
+.politique input{
+    color: #333;
+}
+
+.politique input[type="checkbox"] {
+    appearance: auto;
+    -webkit-appearance: checkbox;
+    -moz-appearance: checkbox;
+    width: 13px;
+    height: 13px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.politique a:link {
+    color: #e1edfa;
+    text-decoration: underline;
+}
+
+.politique a:hover {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.search-container {
+    flex-shrink: 0;
+    margin-left: 8px;
+}
+
+.search-input {
+    padding: 8px;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 250px;
+    background-image: url(../images2/loupe.png);
+	background-repeat: no-repeat;
+	background-position: right 15px center;
+	background-size: 23px auto;
+}
 
 
 
