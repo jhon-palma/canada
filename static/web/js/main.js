@@ -339,8 +339,6 @@ $(document).ready(function(){
 
 		e.preventDefault();
 
-		
-
 		var url = $(this).attr('href');
 
 		var yt = "youtube";
@@ -357,9 +355,6 @@ $(document).ready(function(){
 
 		}
 
-		
-
-		
 
 		$('.poppod').fadeIn();
 

@@ -73,7 +73,7 @@ DICT_LABELS = {
                     'twenty_two': 'latest videos',
                     'twenty_three': 'Where we’ve recently sold!',
                     'twenty_four': 'Required fields',
-                    'twenty_five': 'Privacy policy',
+                    'twenty_five': 'Privacy policy & Terms of Service',
                     'twenty_six': 'All rights reserved, Columba Tecnology',
                     'twenty_seven': 'Cookie Notice',
                     'twenty_eight': 'We use cookies to give you the best possible experience on our website.',
@@ -86,6 +86,7 @@ DICT_LABELS = {
                     'thirty_five': 'Trust us for a seamless and profitable real estate experience.',
                     'thirty_six': 'Our professional',
                     'thirty_seven': 'affiliations',
+                    'thirty_eight': 'In 2024, we sold properties 50% faster than the average broker in Montreal!',
                 }
             },
             'menu':{
@@ -359,7 +360,7 @@ DICT_LABELS = {
                     'twenty_two': 'Dernières vidéos',
                     'twenty_three': 'Où nous avons vendu récemment',
                     'twenty_four': 'Champs obligatoires',
-                    'twenty_five': 'Politique de confidentialité',
+                    'twenty_five': "Politique de confidentialité et conditions d'utilisation",
                     'twenty_six': 'Tous droits réservés, Columba Technology',
                     'twenty_seven': 'Avis sur les cookies',
                     'twenty_eight': 'Nous utilisons des cookies pour vous offrir la meilleure expérience possible sur notre site Web.',
@@ -372,6 +373,7 @@ DICT_LABELS = {
                     'thirty_five': 'Faites-nous confiance pour une expérience immobilière transparente et profitable.',
                     'thirty_six': 'Nos affiliations',
                     'thirty_seven': 'professionnelles',
+                    'thirty_eight': 'En 2024, nous avons vendu des propriétés 50% plus rapidement que le courtier moyen à Montréal !',
                 }
             },
             'menu':{

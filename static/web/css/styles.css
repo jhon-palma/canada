@@ -1494,7 +1494,7 @@ form.propsearch{padding: 60px 0px 40px;}
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 40px;
+    gap: 15%;
     padding: 50px 0;
 }
 
@@ -1509,32 +1509,14 @@ form.propsearch{padding: 60px 0px 40px;}
     object-fit: contain; /* Asegura que la imagen se ajuste sin deformarse */
 }
 
-.rate_banner{
-    padding: 60px 0;
-    text-align: center;
-    background-color: rgb(245,246,247);
-    font-size: 18px;
-    font-weight: 400;
-}
 
-.rate_banner .content_button{
-    padding-top: 25px;
-}
-
-.rate_banner .button{
-    display: inline-block;
-    width: 250px;
-    padding: 0.2rem 3.5rem;
-    background-color: #000;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    text-decoration: none;
-}
 
 .politique {
-    font-size: 14px;
+	display: inline-flex;
+    align-items: center;
+    text-align: justify;
+    font-size: 13px;
+	padding-right: 12px;
 }
 .politique input{
     color: #333;
@@ -1551,15 +1533,14 @@ form.propsearch{padding: 60px 0px 40px;}
 }
 
 .politique a:link {
-    color: #e1edfa;
+    color: #1194a1;
     text-decoration: underline;
 }
 
-.politique a:hover {
-    color: #ffffff;
-    text-decoration: none;
-}
 
+.politique label {
+    flex: 1; /* Permite que el texto ocupe el resto del espacio */
+}
 .search-container {
     flex-shrink: 0;
     margin-left: 8px;
@@ -1576,209 +1557,6 @@ form.propsearch{padding: 60px 0px 40px;}
 	background-position: right 15px center;
 	background-size: 23px auto;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1903,12 +1681,12 @@ h1.h1styled{
 }
 
 
-
-
-
-
-
-
+.statics{
+	font-size: 14px;
+	text-align: justify;
+	padding-left: 15px;
+	padding-right: 15px;
+}
 
 .pol {
 	padding: 40px 0;
@@ -2275,10 +2053,58 @@ h1.h1styled{
     box-sizing: border-box; /* Incluye el padding y border dentro del ancho total */
 }
 
+
+
+.rate_banner{
+    padding: 60px 0;
+    text-align: center;
+    background-color: rgb(245,246,247);
+    font-size: 18px;
+    font-weight: 400;
+}
+
+
+.rate_banner .button {
+    display: inline-block;
+    width: 20%;
+    padding: 6px;
+    margin-left: 50px;
+    background-color: #000;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+
+.img_rate{
+	width: 40%;
+}
+
 /* Ejemplo de cómo puedes ajustar el tamaño máximo en pantallas más pequeñas */
 @media (max-width: 768px) {
     .content_search {
         max-width: 100%; /* En pantallas pequeñas, ocupar el ancho completo */
         padding: 0 10px; /* Reducir el padding interno */
     }
+
+	.img_rate {
+		width: 90%;
+	}
+
+	.rate_banner .button {
+		width: 60%;
+		padding: 6px;
+		margin-left: 20px;
+	}
+
+	.professional .row {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 5%;
+		padding: 0px 0;
+	}
+	
 }

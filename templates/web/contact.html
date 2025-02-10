@@ -50,19 +50,17 @@
 						<textarea name="comment" rows="5" class="champs_tem" id="comment" required="required" placeholder="*{{ labels.contact.text.seven }}"></textarea>
 					</div>
 				</div>
-				<div class="ligne_calcul">
-					<div class="box_ctem">
-						<input type="checkbox" id="check" name="check" style="float: left;"/ required>
-						<label for="check">
-							{% if language == "en" %}
-								I agree to be contacted by LJ Realties via call, email, and text. To opt-out, you can reply 'stop' at any time or click the unsubscribe link in the emails. Message and data rates may apply.
-							{% else %}
-								J'accepte d'être contacté(e) par LJ Immobilier par téléphone, par courrier électronique et par SMS. Pour vous désinscrire, vous pouvez répondre « stop » à tout moment ou cliquer sur le lien de désinscription figurant dans les courriels. Des frais de messagerie et de données peuvent s'appliquer.
-							{% endif %}
-							<a href="{{ server|server_url }}/{{ language }}/{{ labels.privacy.url }}/" target="_blank">{{ labels.index.text.twenty_five }}</a>
-						</label>
-				  	</div>
-				</div>
+				<div class="politique">
+                    <input type="checkbox" id="check" name="check" required>
+                    <label for="check">
+                        {% if language == "en" %}
+                            I agree to be contacted by LJ Realties via call, email, and text. To opt-out, you can reply 'stop' at any time or click the unsubscribe link in the emails. Message and data rates may apply.
+                        {% else %}
+                            J'accepte d'être contacté(e) par LJ Immobilier par téléphone, par courrier électronique et par SMS. Pour vous désinscrire, vous pouvez répondre « stop » à tout moment ou cliquer sur le lien de désinscription figurant dans les courriels. Des frais de messagerie et de données peuvent s'appliquer.
+                        {% endif %}
+                        <a href="{{ server|server_url }}/{{ language }}/{{ labels.privacy.url }}/" target="_blank">{{ labels.index.text.twenty_five }}</a>
+                    </label>
+                </div>
 				<div id="err"></div>
 				<button type="submit" class="float_right pointer">{{ labels.contact.button.one }}</button>
 			</form>
