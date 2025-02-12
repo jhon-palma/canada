@@ -286,73 +286,79 @@ class SearchView(View):
 class WebDetailProperty(View):
 
     def get(self, request, *args, **kwargs):
-        municipalites = Municipalites.objects.filter(municipalite_code__isnull=False).distinct()
-        genres = GenresProprietes.objects.filter(genre_proprietes__isnull=False).distinct()
         propertie_id = kwargs.get('propertie_id')
-        propertie = get_object_or_404(Inscriptions, id=propertie_id)
         language = kwargs.get('language', 'fr')
-        labels = DICT_LABELS.get(language).get('web')
-        option = kwargs.get('option', 'detail-propertie')
-        flag = kwargs.get('flag', 'detail')
-        self.template_name = 'web/properties/{}.html'.format(flag)
-        mun_code = propertie.mun_code
-        same_district = Inscriptions.objects.filter(mun_code=mun_code).exclude(id=propertie.id)[:4]
-        url_pdf = '{}/{}/{}/pdf/'.format(language, option, propertie_id)
-        
-        taxsco = propertie.depenses.filter(tdep_code__valeur='TAXSCO').first()
-        taxmun = propertie.depenses.filter(tdep_code__valeur='TAXMUN').first()
-        try:
-            total_fees = taxsco.montant_depense + taxmun.montant_depense
+
+        try: 
+            propertie = Inscriptions.objects.get(id=propertie_id, status=True)
+            municipalites = Municipalites.objects.filter(municipalite_code__isnull=False).distinct()
+            genres = GenresProprietes.objects.filter(genre_proprietes__isnull=False).distinct()
+            labels = DICT_LABELS.get(language).get('web')
+            option = kwargs.get('option', 'detail-propertie')
+            flag = kwargs.get('flag', 'detail')
+            self.template_name = 'web/properties/{}.html'.format(flag)
+            mun_code = propertie.mun_code
+            same_district = Inscriptions.objects.filter(mun_code=mun_code).exclude(id=propertie.id)[:4]
+            url_pdf = '{}/{}/{}/pdf/'.format(language, option, propertie_id)
+            
+            taxsco = propertie.depenses.filter(tdep_code__valeur='TAXSCO').first()
+            taxmun = propertie.depenses.filter(tdep_code__valeur='TAXMUN').first()
+            try:
+                total_fees = taxsco.montant_depense + taxmun.montant_depense
+            except:
+                total_fees = 0
+            total_municipal = 0
+            addenda_list = Addenda.objects.filter(no_inscription__id=propertie_id)
+            addenda_f_list = addenda_list.filter(code_langue__valeur="F")
+            addenda_f_texts = []
+            for addenda in addenda_f_list:
+                if addenda.texte:
+                    if addenda.texte.startswith('-'):
+                        addenda_f_texts.append('<br>' + addenda.texte)
+                    else:
+                        if addenda.texte[0].isupper():
+                            addenda_f_texts.append('<br><br>')
+                            addenda_f_texts.append(addenda.texte)
+                        else:
+                            addenda_f_texts.append(addenda.texte)
+            addenda_f = ' '.join(addenda_f_texts)
+            addenda_a_list = addenda_list.filter(code_langue__valeur="A")
+            addenda_a_texts = []
+            for addenda in addenda_a_list:
+                if addenda.texte:
+                    if addenda.texte.startswith('-'):
+                        addenda_a_texts.append('<br>' + addenda.texte)
+                    else:
+                        if addenda.texte[0].isupper():
+                            addenda_a_texts.append('<br><br>')
+                            addenda_a_texts.append(addenda.texte)
+                        else:
+                            addenda_a_texts.append(addenda.texte)
+            addenda_a = ' '.join(addenda_a_texts)
+            images_query = ImagesWeb.objects.filter(reference__in=['properties_banner'])
+            images_dict = {image.reference: image for image in images_query}
+
+            context = {
+                'municipalites':municipalites,
+                'genres':genres,
+                'language':language,
+                'option':option,
+                'flag':flag,
+                'labels':labels,
+                'inscription': propertie,
+                'same_district': same_district,
+                'total_fees':total_fees,
+                'addenda_f':addenda_f,
+                'addenda_a':addenda_a,
+                'images':images_dict,
+                'url_pdf':url_pdf,
+            }
+            return render(request, self.template_name, context)
+            
         except:
-            total_fees = 0
-        total_municipal = 0
-        addenda_list = Addenda.objects.filter(no_inscription__id=propertie_id)
-        addenda_f_list = addenda_list.filter(code_langue__valeur="F")
-        addenda_f_texts = []
-        for addenda in addenda_f_list:
-            if addenda.texte:
-                if addenda.texte.startswith('-'):
-                    addenda_f_texts.append('<br>' + addenda.texte)
-                else:
-                    if addenda.texte[0].isupper():
-                        addenda_f_texts.append('<br><br>')
-                        addenda_f_texts.append(addenda.texte)
-                    else:
-                        addenda_f_texts.append(addenda.texte)
-        addenda_f = ' '.join(addenda_f_texts)
-        addenda_a_list = addenda_list.filter(code_langue__valeur="A")
-        addenda_a_texts = []
-        for addenda in addenda_a_list:
-            if addenda.texte:
-                if addenda.texte.startswith('-'):
-                    addenda_a_texts.append('<br>' + addenda.texte)
-                else:
-                    if addenda.texte[0].isupper():
-                        addenda_a_texts.append('<br><br>')
-                        addenda_a_texts.append(addenda.texte)
-                    else:
-                        addenda_a_texts.append(addenda.texte)
-        addenda_a = ' '.join(addenda_a_texts)
-
-        images_query = ImagesWeb.objects.filter(reference__in=['properties_banner'])
-        images_dict = {image.reference: image for image in images_query}
-
-        context = {
-            'municipalites':municipalites,
-            'genres':genres,
-            'language':language,
-            'option':option,
-            'flag':flag,
-            'labels':labels,
-            'inscription': propertie,
-            'same_district': same_district,
-            'total_fees':total_fees,
-            'addenda_f':addenda_f,
-            'addenda_a':addenda_a,
-            'images':images_dict,
-            'url_pdf':url_pdf,
-        }
-        return render(request, self.template_name, context)
+            redirect_option = 'properties' if language == 'en' else 'proprietes'
+            return redirect("web:properties", language=language, option=redirect_option)
+        
 
 
 
@@ -362,9 +368,8 @@ class WebPropertyRedirect(View):
         language = kwargs.get('language', 'fr')
         flag = kwargs.get('flag', 'detail')
         option = kwargs.get('option', 'proprietes')
-
         try: 
-            propertie = Inscriptions.objects.get(no_inscription=propertie_code)
+            propertie = Inscriptions.objects.get(no_inscription=propertie_code, status=True)
             return redirect( "web:detail-propertie", language=language, option=option, propertie_id=propertie.id, flag=flag)
         except:
             propertie = False

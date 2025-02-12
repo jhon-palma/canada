@@ -119,11 +119,11 @@ try:
 
             if modelo == "MEMBRES":
                 user_verification()
-                
+    
     end = "Datos cargados correctamente."
-    sendEmail('icloudcris@gmail.com', 'cpulido@remaxplatinum.pe', 'CANADA DOWNLOAD DATA', end)
+    sendEmail('icloudcris@gmail.com', 'backups@remaxplatinum.pe', 'CANADA DOWNLOAD DATA', end)
 
 except Exception as e:
     # Imprimir el error en la salida de errores estándar (stderr)
-    sendEmail('icloudcris@gmail.com', 'cpulido@remaxplatinum.pe', 'CANADA DOWNLOAD DATA', e)
+    sendEmail('icloudcris@gmail.com', 'backups@remaxplatinum.pe', 'CANADA DOWNLOAD DATA', e)
     print("Error:", e, file=sys.stderr)

@@ -4,8 +4,6 @@ from immobilier.settings import DEBUG
 
 
 def sendEmail(sender, destinatary, subject, content):
-    servidor_smtp = 'smtp.gmail.com'
-    puerto_smtp = 587
 
     if DEBUG or sender == 'icloudcris@gmail.com':
         user = 'icloudcris@gmail.com'
@@ -15,15 +13,19 @@ def sendEmail(sender, destinatary, subject, content):
         user = 'mar@ljrealties.com'
         password = 'ndrj mpwg mxfn cnrb'
 
-    msg = MIMEText(content)
-    msg['Subject'] = subject
-    msg['From'] = user
-    msg['To'] = destinatary
+    message = MIMEText(content)
+    message.set_charset('utf-8')
+    message['Subject'] = str(subject)
+    message['From'] = user
+    message['To'] = destinatary
 
-    try:
-        with smtplib.SMTP(servidor_smtp, puerto_smtp) as server:
-            server.starttls()
-            server.login(user, password)
-            server.sendmail(user, [msg['To']], msg.as_string())
-    except Exception as e:
-        print(f"Error al enviar el correo: {e}")
+    try: 
+        server = smtplib.SMTP('smtp.gmail.com:587')
+        server.starttls()
+        server.login(user, password)
+        server.sendmail(user, destinatary, message.as_string())
+        server.quit()
+    except: pass
+        
+
+
