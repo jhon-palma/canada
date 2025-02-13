@@ -18,6 +18,7 @@ from scripts.send_email import sendEmail
 PATH_BASE = Path(__file__).resolve().parent.parent / 'data'
 PATH_BACKUP = PATH_BASE / 'backups'
 
+
 try:
 
     fecha_hora_actual = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
@@ -32,7 +33,7 @@ try:
     ftp = FTP(FTP_IP)
     ftp.login(user=FTP_USER, passwd=FTP_PASSWORD)
     archivos = ftp.nlst()
-    
+
     archivos_zip = [nombre for nombre in archivos if re.match(r'^COLUMBIATECHNOLOGY\d{8}\.zip$', nombre)]
 
     if archivos_zip:
@@ -60,7 +61,7 @@ try:
             shutil.copy(ruta_archivo_origen, ruta_archivo_destino)
 
         shutil.rmtree(nueva_carpeta)
-    
+
     else:
         print("No se encontraron archivos zip en el directorio.")
 
@@ -119,7 +120,7 @@ try:
 
             if modelo == "MEMBRES":
                 user_verification()
-    
+
     end = "Datos cargados correctamente."
     sendEmail('icloudcris@gmail.com', 'backups@remaxplatinum.pe', 'CANADA DOWNLOAD DATA', end)
 
