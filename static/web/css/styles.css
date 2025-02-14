@@ -1538,6 +1538,17 @@ form.propsearch{padding: 60px 0px 40px;}
 }
 
 
+.politique a:hover {
+    color: #1194a1;
+    text-decoration: underline;
+}
+
+.politique a:visited {
+    color: #1194a1;
+    text-decoration: none;
+}
+
+
 .politique label {
     flex: 1; /* Permite que el texto ocupe el resto del espacio */
 }
@@ -1683,7 +1694,7 @@ h1.h1styled{
 
 .statics{
 	font-size: 14px;
-	text-align: justify;
+	text-align: center;
 	padding-left: 15px;
 	padding-right: 15px;
 }
