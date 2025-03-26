@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.db import models
 import uuid
 from django.utils.text import slugify
@@ -558,3 +559,15 @@ class VisitesLibres(models.Model):
 
     class Meta:
         db_table = 'VISITES_LIBRES' 
+
+    @property
+    def date_debut_as_date(self):
+        if self.date_debut:
+            return datetime.strptime(self.date_debut, "%Y/%m/%d").date()
+        return None
+
+    @property
+    def date_fin_as_date(self):
+        if self.date_fin:
+            return datetime.strptime(self.date_fin, "%Y/%m/%d").date()
+        return None

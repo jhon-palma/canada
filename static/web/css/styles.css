@@ -1505,7 +1505,6 @@ form.propsearch{padding: 60px 0px 40px;}
 
 .professional .col-4 img {
     width: 100%;  /* Ajusta según tu necesidad */
-    height: 100px; /* Ajusta según tu necesidad */
     object-fit: contain; /* Asegura que la imagen se ajuste sin deformarse */
 }
 
@@ -1514,8 +1513,8 @@ form.propsearch{padding: 60px 0px 40px;}
 .politique {
 	display: inline-flex;
     align-items: center;
-    text-align: justify;
-    font-size: 13px;
+    text-align: left;
+    font-size: 12px;
 	padding-right: 12px;
 }
 .politique input{

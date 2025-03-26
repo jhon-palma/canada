@@ -1,4 +1,5 @@
 {% load static %}{% load humanize %}{% load tags %}{% include 'web/header_web.html' %}
+{% load i18n %}
 <link type="text/css" el="stylesheet" href="{% static 'web/css/responsiveslides.css' %}" rel="stylesheet"/>
 <link type="text/css" href="{% static 'web/css/printfiche.css' %}" rel="stylesheet" media="print"/>
 <link type="text/css" href="{% static 'web/css/magnific-popup.css' %}"  rel="stylesheet">
@@ -182,28 +183,32 @@
         {% if inscription.nb_chambres %}
             <div class="piece">
                 <img src="{% static 'web/images/chambreico.png' %}" alt="Bedroom(s)" style="width:56px;height:56px;" />
-                <p>{{inscription.nb_chambres}} {% if language == "en" %}Bedroom(s){% else %}Chambre(s){% endif %}</p>
+                <p>{{inscription.nb_chambres}} {% if language == "en" %}Bedroom(s){% else %}Chambre(s){% endif %} {% if inscription.nb_chambres_sous_sol %}<br>
+                    ({{ inscription.nb_chambres_sous_sol }} {% if language == "en" %}in basement{% else %}au sous-sol{% endif %}){% endif %}</p>
             </div>
-            {%endif%}
+        {% endif %}
         {% if inscription.nb_salles_bains %}
         <div class="piece">
             <img src="{% static 'web/images/sdbico.png' %}" alt="Bathroom(s)" style="width:58px;height:62px;" />
-            <p>{{inscription.nb_salles_bains}} {% if language == "en" %}Bathroom(s){% else %}Salle(s) de bains{% endif %}</p>
+            <p>{{inscription.nb_salles_bains}} {% if language == "en" %}Bathroom(s){% else %}Salle(s) de bains{% endif %}{% if inscription.nb_salles_eau %}<br>
+                {% if language == "en" %} and {{ inscription.nb_salles_eau }} powder room{% else %}et {{ inscription.nb_salles_eau }}salle d'eau {% endif %}{% endif %}</p>
         </div>
         {%endif%}
 		<hr class="hbig" />
         {% if inscription.superficie_habitable %}
 		<div class="piece">
             <img src="{% static 'web/images/picaico.png' %}" alt="pi. ca." style="width:58px;height:62px;" />
-			<p>{{inscription.superficie_habitable}} {% if language == "en" %}sq. ft.{% else %}pi. ca.{% endif %}</p>
+			<p>{{inscription.superficie_habitable|floatformat:0}} {% if language == "en" %}sqft{% else %}pc{% endif %}</p>
 		</div>
         {%endif%}
+        
 	</div>
 </section>
 
 <section class="descriptionbloc">
     <div class="fichewrap wrap">
         <div>
+            
             <p class="introfiche">
                 {% for supply in inscription.remarques.all %}
                     {% if language == "en" and supply.code_langue.valeur == "A" %}
@@ -212,6 +217,22 @@
                         {{ supply.texte }}
                     {% endif %}
                 {% endfor %}
+            </p>
+            <p>
+                {% if inscription.no_inscription_visites_libres.all %}
+                    {% if language == 'en' %}
+                        <h2>Open houses</h2>
+                    {% else %}
+                        <h2>Visites libres</h2>
+                    {%endif%}
+                    {% for visite in inscription.no_inscription_visites_libres.all %}
+                        {% if language == 'en' %}
+                            {% language 'en' %}{{ visite.date_debut_as_date|date:"l j F"|capfirst }} - {{ visite.heure_debut }} to {{ visite.heure_fin }}{% endlanguage %}
+                        {% else %}
+                            {{ visite.date_debut_as_date|date:"l j F"|capfirst }} - {{ visite.heure_debut }} à {{ visite.heure_fin }}
+                        {%endif%}
+                    {% endfor %}
+                {%endif%}
             </p>
             <h2>{% if language == "en" %}Detailed information{% else %}Informations détaillées{% endif %}</h2>
             <h3>{% if language == "en" %}Characteristics{% else %}Caractéristiques{% endif %}</h3>
