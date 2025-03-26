@@ -126,5 +126,5 @@ try:
 
 except Exception as e:
     # Imprimir el error en la salida de errores estándar (stderr)
-    sendEmail('icloudcris@gmail.com', 'backups@remaxplatinum.pe', 'CANADA DOWNLOAD DATA', e)
+    sendEmail('icloudcris@gmail.com', 'backups@remaxplatinum.pe', 'CANADA DOWNLOAD DATA', str(e))
     print("Error:", e, file=sys.stderr)

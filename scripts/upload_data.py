@@ -24,7 +24,6 @@ from apps.properties.models import *
 
 def process_txt_data(file_path):
     data = []
-
     with open(file_path, 'rb') as file:
         raw_data = file.read()
 
@@ -1599,15 +1598,14 @@ def uploadVisitesLibres(data):
     data_txt = {(str(row[0]),int(row[1])) for row in data}
     existing_keys = {(visites.no_inscription.no_inscription, visites.seq) for visites in VisitesLibres.objects.all()}
     visites_to_delete = existing_keys.difference(data_txt)
-
-    # for visites_del in visites_to_delete:
-    #     total_eliminadas = total_eliminadas + 1
-    #     try:
-    #         no_inscription_value, seq = visites_del
-    #         VisitesLibres.objects.filter(no_inscription__no_inscription=no_inscription_value, seq=seq).delete()
-    #         mensaje += f"VisitesLibres eliminada: {visites_del}\n"
-    #     except VisitesLibres.DoesNotExist:
-    #         mensaje += f"Error: No se encontró la VisitesLibres a eliminar: {visites_del}\n"
+    for visites_del in visites_to_delete:
+        total_eliminadas = total_eliminadas + 1
+        try:
+            no_inscription_value, seq = visites_del
+            VisitesLibres.objects.filter(no_inscription__no_inscription=no_inscription_value, seq=seq).delete()
+            mensaje += f"VisitesLibres eliminada: {visites_del}\n"
+        except VisitesLibres.DoesNotExist:
+            mensaje += f"Error: No se encontró la VisitesLibres a eliminar: {visites_del}\n"
     for row in data:
         no_inscription = get_id_inscription(str(row[0]))
         if no_inscription == None:
