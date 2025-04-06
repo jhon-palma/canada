@@ -1,5 +1,4 @@
 from django import template
-# from config.settings import STATIC_URL, SERVER, MEDIA_URL
 from immobilier.settings import SERVER
 import ast, json
 
@@ -60,6 +59,7 @@ def concat(value, concact):
 def get_item(dictionary, key):
     return dictionary.get(key)
 
+
 @register.filter
 def format_number(value):
     try:
@@ -73,3 +73,12 @@ def format_number(value):
 def tag_in_list(value, list):
     if_list = list.split(',')
     return True if value in if_list else False
+
+
+@register.filter
+def multiply(value, arg):
+    try:
+        value_str = str(value).replace(',', '.')
+        return float(value_str) * float(arg)
+    except (ValueError, TypeError):
+        return ''

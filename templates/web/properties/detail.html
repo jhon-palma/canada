@@ -198,7 +198,7 @@
         {% if inscription.superficie_habitable %}
 		<div class="piece">
             <img src="{% static 'web/images/picaico.png' %}" alt="pi. ca." style="width:58px;height:62px;" />
-			<p>{{inscription.superficie_habitable|floatformat:0}} {% if language == "en" %}sqft{% else %}pc{% endif %}</p>
+            <p>{{ inscription.superficie_habitable|multiply:10.7639|floatformat:0|intcomma }} {% if language == "en" %}sqft{% else %}pc{% endif %}</p>
 		</div>
         {%endif%}
         
@@ -266,7 +266,7 @@
                 </div>
                 <div class="tr">
                     <div class="td">{% if language == "en" %}Living area{% else %}Superficie habitable{% endif %}</div>
-                    <div class="td">{% if inscription.superficie_habitable %}{{ inscription.superficie_habitable|floatformat:2 }} m<sup>2</sup>{% endif %}</div>
+                    <div class="td">{{ inscription.superficie_habitable|multiply:10.7639|floatformat:0|intcomma }} {% if language == "en" %}sqft{% else %}pc{% endif %}</div>
                 </div>
                 <div class="tr">
                     <div class="td">Lot dimensions</div>
@@ -2209,7 +2209,7 @@
                     {% if inscription.superficie_habitable %}
                     <div class="tr">
                         <div class="td">{% if language == "en" %}Living area{% else %}Superficie habitable{% endif %}</div>
-                        <div class="td">{{ inscription.superficie_habitable }} m<sup>2</sup></div>
+                        <div class="td">{{ inscription.superficie_habitable|multiply:10.7639|floatformat:0|intcomma }} {% if language == "en" %}sqft{% else %}pc{% endif %}</div>
                     </div>
                     {% endif %}
                     {% if inscription.facade_terrain %}
@@ -2227,7 +2227,7 @@
                     {% if inscription.superficie_terrain %}
                     <div class="tr">
                         <div class="td">{% if language == "en" %}Lot dimensions (Sq. ft.){% else %}Superficie du terrain (p.c.){% endif %}</div>
-                        <div class="td">{{ inscription.superficie_terrain }}{% if language == "en" %} sq. ft.{% else %} pi. ca.{% endif %}</div>
+                        <div class="td">{{ inscription.superficie_terrain|multiply:10.7639|floatformat:0|intcomma }}{% if language == "en" %} sqft{% else %} pc{% endif %}</div>
                     </div>
                     {% endif %}
                     {% if inscription.prix_demande %}
