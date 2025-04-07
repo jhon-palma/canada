@@ -165,7 +165,23 @@
 				{{inscription.no_civique_debut}}{% if inscription.no_civique_fin %} - {{inscription.no_civique_fin}}{%endif%}, {{inscription.nom_rue_complet}}{% if inscription.appartement %}, apt. {{inscription.appartement}}{%endif%},
                 {{inscription.mun_code.description}}
 				<br />
-				<span>{% if language == "en" %}Centris No. {% else %}No Centris {%endif%}{{inscription.no_inscription}}</span>
+				<span>
+                    {% if language == "en" %}Centris No. {% else %}No Centris {%endif%}{{inscription.no_inscription}}
+                    {% if inscription.no_inscription_visites_libres.all %}
+                        </br>
+                        <span class="btn teal_btn">
+                            <strong>{% if language == 'en' %}Open houses{% else %}Visites libres{%endif%}</strong>
+                        </span>
+                        {% for visite in inscription.no_inscription_visites_libres.all %}
+                            {% if language == 'en' %}
+                                &nbsp;{% language 'en' %}{{ visite.date_debut_as_date|date:"l j F"|capfirst }} - {{ visite.heure_debut }} to {{ visite.heure_fin }}{% endlanguage %}
+                            {% else %}
+                                &nbsp;{{ visite.date_debut_as_date|date:"l j F"|capfirst }} - {{ visite.heure_debut }} à {{ visite.heure_fin }}
+                            {%endif%}
+                        {% endfor %}
+                    {%endif%}
+                   
+                </span>
 			</p>
 			<a href="{% url 'web:properties' language 'properties' %}" class="btn teal_btn">{% if language == "en" %}Back to properties{% else %}RETOUR AUX PROPRIÉTÉS{% endif %}</a>
 		</div>
@@ -217,22 +233,6 @@
                         {{ supply.texte }}
                     {% endif %}
                 {% endfor %}
-            </p>
-            <p>
-                {% if inscription.no_inscription_visites_libres.all %}
-                    {% if language == 'en' %}
-                        <h2>Open houses</h2>
-                    {% else %}
-                        <h2>Visites libres</h2>
-                    {%endif%}
-                    {% for visite in inscription.no_inscription_visites_libres.all %}
-                        {% if language == 'en' %}
-                            {% language 'en' %}{{ visite.date_debut_as_date|date:"l j F"|capfirst }} - {{ visite.heure_debut }} to {{ visite.heure_fin }}{% endlanguage %}
-                        {% else %}
-                            {{ visite.date_debut_as_date|date:"l j F"|capfirst }} - {{ visite.heure_debut }} à {{ visite.heure_fin }}
-                        {%endif%}
-                    {% endfor %}
-                {%endif%}
             </p>
             <h2>{% if language == "en" %}Detailed information{% else %}Informations détaillées{% endif %}</h2>
             <h3>{% if language == "en" %}Characteristics{% else %}Caractéristiques{% endif %}</h3>
