@@ -230,7 +230,7 @@
             <div class="piece">
                 <img src="{% static 'web/images/picaico.png' %}" alt="pi. ca." style="width:58px;height:62px;" />
                 <p>
-                {% if inscription.superficie_habitable.description_abregee_anglaise == "SM" %}
+                {% if inscription.um_superficie_habitable.description_abregee_anglaise == "SM" %}
                     {{ inscription.superficie_habitable|multiply:10.7639|floatformat:0|intcomma }}
                 {% else %}
                     {{ inscription.superficie_habitable|floatformat:0|intcomma }}
