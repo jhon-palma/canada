@@ -33,6 +33,21 @@
         height: 120px;
         animation: spin 2s linear infinite;
     }
+
+    .visit{
+        color: #fff !important;
+        border: 1px solid #00AAAE;
+        background-color: #00AAAE;
+        padding: 10px 30px;
+        border-radius: 4px;
+        display: inline-block;
+        font-size: 16px;
+        margin-top: 20px;
+        transition: all .4s;
+        text-transform: uppercase;
+        outline: none;
+        font-family: 'Roboto Condensed', sans-serif;
+        }
   
     @keyframes spin {
         0% {
@@ -166,11 +181,11 @@
                 {{inscription.mun_code.description}}
 				<br />
 				<span>
-                    {% if language == "en" %}Centris No. {% else %}No Centris {%endif%}{{inscription.no_inscription}}
-                    {% if inscription.no_inscription_visites_libres.all %}
+					{% if language == "en" %}Centris No. {% else %}No Centris {%endif%}{{inscription.no_inscription}}
+					{% if inscription.no_inscription_visites_libres.all %}
                         </br>
-                        <span class="btn teal_btn">
-                            <strong>{% if language == 'en' %}Open houses{% else %}Visites libres{%endif%}</strong>
+                        <span class="visit">
+                            <strong>{% if language == 'en' %}Open house{% else %}Visite libre{%endif%}</strong>
                         </span>
                         {% for visite in inscription.no_inscription_visites_libres.all %}
                             {% if language == 'en' %}
@@ -180,8 +195,7 @@
                             {%endif%}
                         {% endfor %}
                     {%endif%}
-                   
-                </span>
+				</span>
 			</p>
 			<a href="{% url 'web:properties' language 'properties' %}" class="btn teal_btn">{% if language == "en" %}Back to properties{% else %}RETOUR AUX PROPRIÉTÉS{% endif %}</a>
 		</div>
@@ -211,11 +225,19 @@
         </div>
         {%endif%}
 		<hr class="hbig" />
+
         {% if inscription.superficie_habitable %}
-		<div class="piece">
-            <img src="{% static 'web/images/picaico.png' %}" alt="pi. ca." style="width:58px;height:62px;" />
-            <p>{{ inscription.superficie_habitable|multiply:10.7639|floatformat:0|intcomma }} {% if language == "en" %}sqft{% else %}pc{% endif %}</p>
-		</div>
+            <div class="piece">
+                <img src="{% static 'web/images/picaico.png' %}" alt="pi. ca." style="width:58px;height:62px;" />
+                <p>
+                {% if inscription.superficie_habitable.description_abregee_anglaise == "SM" %}
+                    {{ inscription.superficie_habitable|multiply:10.7639|floatformat:0|intcomma }}
+                {% else %}
+                    {{ inscription.superficie_habitable|floatformat:0|intcomma }}
+                {% endif %}
+                {% if language == "en" %}sqft{% else %}pc{% endif %}
+                </p>
+            </div>
         {%endif%}
         
 	</div>
@@ -224,7 +246,6 @@
 <section class="descriptionbloc">
     <div class="fichewrap wrap">
         <div>
-            
             <p class="introfiche">
                 {% for supply in inscription.remarques.all %}
                     {% if language == "en" and supply.code_langue.valeur == "A" %}
@@ -266,7 +287,7 @@
                 </div>
                 <div class="tr">
                     <div class="td">{% if language == "en" %}Living area{% else %}Superficie habitable{% endif %}</div>
-                    <div class="td">{{ inscription.superficie_habitable|multiply:10.7639|floatformat:0|intcomma }} {% if language == "en" %}sqft{% else %}pc{% endif %}</div>
+                    <div class="td">{% if inscription.um_superficie_habitable.description_abregee_anglaise == "SM" %}{{ inscription.superficie_habitable|multiply:10.7639|floatformat:0|intcomma }}{% else %}{{ inscription.superficie_habitable|floatformat:0|intcomma }}{% endif %} {% if language == "en" %}sqft{% else %}pc{% endif %}</div>
                 </div>
                 <div class="tr">
                     <div class="td">Lot dimensions</div>
@@ -2209,7 +2230,7 @@
                     {% if inscription.superficie_habitable %}
                     <div class="tr">
                         <div class="td">{% if language == "en" %}Living area{% else %}Superficie habitable{% endif %}</div>
-                        <div class="td">{{ inscription.superficie_habitable|multiply:10.7639|floatformat:0|intcomma }} {% if language == "en" %}sqft{% else %}pc{% endif %}</div>
+                        <div class="td">{% if inscription.um_superficie_habitable.description_abregee_anglaise == "SM" %}{{ inscription.superficie_habitable|multiply:10.7639|floatformat:0|intcomma }}{% else %}{{ inscription.superficie_habitable|floatformat:0|intcomma }}{% endif %} {% if language == "en" %}sqft{% else %}pc{% endif %}</div>
                     </div>
                     {% endif %}
                     {% if inscription.facade_terrain %}
@@ -2227,7 +2248,7 @@
                     {% if inscription.superficie_terrain %}
                     <div class="tr">
                         <div class="td">{% if language == "en" %}Lot dimensions (Sq. ft.){% else %}Superficie du terrain (p.c.){% endif %}</div>
-                        <div class="td">{{ inscription.superficie_terrain|multiply:10.7639|floatformat:0|intcomma }}{% if language == "en" %} sqft{% else %} pc{% endif %}</div>
+                        <div class="td">{% if inscription.um_superficie_habitable.description_abregee_anglaise == "SM" %}{{ inscription.superficie_habitable|multiply:10.7639|floatformat:0|intcomma }}{% else %}{{ inscription.superficie_habitable|floatformat:0|intcomma }}{% endif %} {% if language == "en" %}sqft{% else %}pc{% endif %}</div>
                     </div>
                     {% endif %}
                     {% if inscription.prix_demande %}
