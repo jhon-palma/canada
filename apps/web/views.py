@@ -298,7 +298,7 @@ class WebDetailProperty(View):
             flag = kwargs.get('flag', 'detail')
             self.template_name = 'web/properties/{}.html'.format(flag)
             mun_code = propertie.mun_code
-            same_district = Inscriptions.objects.filter(mun_code=mun_code).exclude(id=propertie.id)[:4]
+            same_district = Inscriptions.objects.filter(mun_code=mun_code, status=True).exclude(id=propertie.id)[:4]
             url_pdf = '{}/{}/{}/pdf/'.format(language, option, propertie_id)
             
             taxsco = propertie.depenses.filter(tdep_code__valeur='TAXSCO').first()
