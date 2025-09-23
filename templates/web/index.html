@@ -808,16 +808,26 @@
         }).addTo(map);
 
 
-        
         function checkForModalParameter() {
             const urlParams = new URLSearchParams(window.location.search);
-            const hasModalParam = urlParams.has('popup');
-            if (hasModalParam) {
-                document.querySelector("#index > footer > div.wrap.wrap_contact > div.finfo.fcontact_col2 > a").click()
+            const popupValue = urlParams.get('popup');
+            switch (popupValue) {
+                case 'newsletter':
+                case 'infolettre':
+                    selector = "#index > footer > div.wrap.wrap_contact > div.finfo.fcontact_col2 > a"
+                    break;
+                case 'free_evaluation':
+                case 'évaluation_gratuite':
+                    selector = "#index > section.banner > div > a"
+                    break;
             }
-          }
-         
-          window.onload = checkForModalParameter
+
+            if (popupValue) {
+                document.querySelector(selector).click();
+            }
+        }
+
+        window.onload = checkForModalParameter;
           
 	</script>
 
@@ -830,7 +840,7 @@
                 $('#iFrameResizer0').attr('style', function(i, style) {
                     return (style || '') + 'left: 0px !important; position: relative !important;';
                 });
-            }, 2000); // 3000 ms = 3 segundos
+            }, 2000);
         };
         document.head.appendChild(script);
 
