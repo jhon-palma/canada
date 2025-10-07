@@ -258,7 +258,7 @@ def user_verification():
 
 
 def list_messages(request):
-    messages_list = Formulaire_contact.objects.order_by('date_creation')
+    messages_list = Formulaire_contact.objects.order_by('-date_creation')
     return render(request, 'users/list_messages.html',{'messages_list':messages_list})
 
 
