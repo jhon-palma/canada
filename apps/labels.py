@@ -7,7 +7,7 @@ DICT_LABELS = {
         'web':{
             'index':{
                 'header':{
-                    'one':'LJ Realties | Your Trusted Real Estate Brokers | House, Condo for sale Sud Ouest, Ville-Marie',
+                    'one':'LJ Realties | Your Trusted Real Estate Brokers in Montreal| House, Condo for sale Sud Ouest, Ville-Marie',
                     'two':'House, Condo for sale Sud Ouest, Ville-Marie - LJ Immobilier Real estate broker',
                     'three':'How much is your property worth?',
                 },
@@ -15,7 +15,7 @@ DICT_LABELS = {
                     'one':'unlock Your',
                     'two':'Dream home',
                     'three':'get a free buyers consulation',
-                    'four': 'Your trusted real estate brokers',
+                    'four': 'Your trusted real estate brokers in Montreal',
                     'five': 'Discover your ',
                     'six': "Home's worth",
                 },
@@ -302,7 +302,7 @@ DICT_LABELS = {
                     'one':"Trouvez la maison",
                     'two':'de vos rêves',
                     'three':'Obtenez une consultation d’acheteurs gratuite',
-                    'four': 'Vos courtiers immobiliers de confiance',
+                    'four': 'Vos courtiers immobiliers de confiance à Montréal',
                     'five': 'Découvrez la valeur',
                     'six': 'de votre maison',
                 },

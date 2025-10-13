@@ -21,6 +21,8 @@ from apps.users.models import Profile
 from django.contrib.auth.forms import SetPasswordForm, PasswordChangeForm
 from django.contrib.auth.hashers import make_password
 from django.db import transaction
+
+    
 from apps.web.models import *
 
 
@@ -259,7 +261,14 @@ def user_verification():
 
 def list_messages(request):
     messages_list = Formulaire_contact.objects.order_by('-date_creation')
-    return render(request, 'users/list_messages.html',{'messages_list':messages_list})
+    paginator = Paginator(messages_list, 50) 
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, 'users/list_messages.html',{
+        'messages_list': page_obj,
+        'page_obj': page_obj
+    })
 
 
 def detail_message(request, id):
@@ -272,6 +281,18 @@ def detail_message(request, id):
 
     return render(request, 'users/detail_message.html',{'message_detail':message_detail})
 
+
+@login_required
+def delete_message(request, id):
+    if request.method == 'POST':
+        message = get_object_or_404(Formulaire_contact, id=id)
+        message_name = message.nom or 'Sin nombre'
+        try:
+            message.delete()
+            messages.success(request, f'Mensaje de "{message_name}" eliminado correctamente')
+        except Exception as e:
+            messages.error(request, f'Error al eliminar el mensaje: {str(e)}')
+    return redirect('users:list_messages')
 
 
 def list_images(request):

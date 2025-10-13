@@ -17,7 +17,8 @@ urlpatterns = [
     re_path('password_change_user/(?P<user_id>[\w-]+)/$', login_required(change_password_user), name='password_change_user'),
     path('create_user/',login_required(create_user), name='create_user'),
     path('list_messages/',login_required(list_messages), name='list_messages'),
+    re_path('detail_message/(?P<id>[\w-]+)/$', login_required(detail_message), name='detail_message'),
+    re_path('delete_message/(?P<id>[\w-]+)/$', login_required(delete_message), name='delete_message'),
     path('list_images/',login_required(list_images), name='list_images'),
     re_path('update_image/(?P<image_id>[\w-]+)/$',login_required(update_image), name='update_image'),
-    re_path('detail_message/(?P<id>[\w-]+)/$', login_required(detail_message), name='detail_message'),
 ]

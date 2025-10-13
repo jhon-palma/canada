@@ -560,11 +560,13 @@ def calc_monthly_payment_view(request):
         return JsonResponse(response_data)
     return JsonResponse({'error': 'Invalid request method'})
 
+
 def calc_monthly_payment(P, r_anual, n_anos):
     r_mensual = r_anual / 12 / 100
     n_meses = n_anos * 12
     M = P * (r_mensual * (1 + r_mensual) ** n_meses) / ((1 + r_mensual) ** n_meses - 1)
     return M
+
 
 def contact_messages(request):
     if request.method == 'POST':

@@ -2,11 +2,161 @@
 {% block title %}Solicitudes WEB{% endblock %}
 {% block head_page %}
     {% load static %}
-    <link rel="stylesheet" href="{% static 'app/css/datatables/dataTables.css' %}"/>
-    <script src="{% static 'app/js/datatables/dataTables.js' %}"></script>
+    <!-- DataTables deshabilitado para usar paginación de Django -->
+    <!-- <link rel="stylesheet" href="{% static 'app/css/datatables/dataTables.css' %}"/> -->
+    <!-- <script src="{% static 'app/js/datatables/dataTables.js' %}"></script> -->
     <script src="{% static 'app/js/core/libraries/bootstrap.min.js' %}"></script>
     <style>
         .fw-bold{font-weight: bold;}
+        .pagination {
+            display: inline-block;
+            padding-left: 0;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .pagination > li {
+            display: inline;
+        }
+        .pagination > li > a,
+        .pagination > li > span {
+            position: relative;
+            float: left;
+            padding: 6px 12px;
+            margin-left: -1px;
+            line-height: 1.42857143;
+            color: #337ab7;
+            text-decoration: none;
+            background-color: #fff;
+            border: 1px solid #ddd;
+        }
+        .pagination > li.active > span {
+            z-index: 2;
+            color: #fff;
+            cursor: default;
+            background-color: #337ab7;
+            border-color: #337ab7;
+        }
+        .pagination > li.disabled > span {
+            color: #777;
+            cursor: not-allowed;
+            background-color: #fff;
+            border-color: #ddd;
+        }
+        .pagination > li > a:hover {
+            background-color: #eee;
+        }
+        .action-icon {
+            display: inline-block;
+            margin: 0 8px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+        .action-icon:hover {
+            transform: scale(1.2);
+            text-decoration: none;
+        }
+        .icon-view {
+            color: #5bc0de;
+        }
+        .icon-view:hover {
+            color: #31b0d5;
+        }
+        .icon-delete {
+            color: #c9302c;
+        }
+        .icon-delete:hover {
+            color: #c9302c;
+        }
+        /* Estilos generales para modales */
+        .modal {
+            display: none;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        .modal.show {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-dialog-centered {
+            margin: auto;
+        }
+        
+        /* Modal de eliminar */
+        .modal-sm {
+            max-width: 400px;
+            width: 100%;
+        }
+        #deleteModal .modal-content {
+            border-radius: 8px;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        #deleteModal .btn {
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        #deleteModal .btn-default {
+            background-color: #f5f5f5;
+            border: 1px solid #ddd;
+        }
+        #deleteModal .btn-default:hover {
+            background-color: #e8e8e8;
+        }
+        #deleteModal .btn-danger {
+            border: none;
+        }
+        
+        /* Modal de detalle */
+        #detailModal .modal-dialog {
+            max-width: 600px;
+            width: 100%;
+        }
+        #detailModal .modal-content {
+            border-radius: 8px;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        #detailModal .detail-row {
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        #detailModal .detail-row:last-of-type {
+            border-bottom: none;
+        }
+        #detailModal .modal-footer {
+            border-top: 1px solid #e5e5e5;
+            padding: 0;
+            margin: 0;
+        }
+        #detailModal .footer-btn-half {
+            padding: 15px 20px;
+            font-weight: 500;
+            font-size: 14px;
+            border: none;
+            transition: all 0.2s ease;
+        }
+        #detailModal .footer-btn-half:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+        #detailModal .btn-default.footer-btn-half {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        #detailModal .btn-default.footer-btn-half:hover {
+            background-color: #e8e8e8;
+        }
+        #detailModal .btn-danger.footer-btn-half {
+            background-color: #c9302c;
+            color: white;
+        }
+        #detailModal .btn-danger.footer-btn-half:hover {
+            background-color: #c9302c;
+        }
     </style>
 {% endblock %}
     
@@ -53,30 +203,157 @@
         <div class="panel panel-flat">
             <div class="panel-heading">
                 <div class="panel-body">
-                    <table id="table_messages" class="display" style="width:100%">
+                    <table id="table_messages" class="table table-striped" style="width:100%">
                         <thead>
                             <tr>
                                 <th>Fecha</th>
                                 <th>Nombres</th>
                                 <th>Correo</th>
                                 <th>Teléfono</th>
+                                <th>Mensaje</th>
                                 <th>Origen</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for message in messages_list %}
-                                <tr>
+                                <tr id="row-{{ message.id }}">
                                     <td>{{ message.date_creation }}</td>
                                     <td class="text-capitalize">{{ message.nom|default_if_none:'' }}</td>
                                     <td class="text-lowercase">{{ message.courriel }}</td>
-                                    <td >{{ message.telephone|default_if_none:'' }}</td>
-                                    <td >{{ message.sujet }}</td>
-                                    <td><a href="{% url 'users:detail_message' message.id %}"><i class="icon-new-tab"></i> Ver</a></td>
+                                    <td>{{ message.telephone|default_if_none:'' }}</td>
+                                    <td>{{ message.message|default_if_none:'Sin mensaje'|truncatechars:80 }}</td>
+                                    <td><strong>{{ message.sujet.upper }}</strong></td>
+                                    <td>
+                                        <a href="#" class="action-icon icon-view" 
+                                           data-id="{{ message.id }}"
+                                           data-nombre="{{ message.nom|default:'Sin nombre' }}"
+                                           data-email="{{ message.courriel|escapejs }}"
+                                           data-telefono="{{ message.telephone|default:'' }}"
+                                           data-mensaje="{{ message.message|default:'Sin mensaje' }}"
+                                           data-direccion="{{ message.adresse|default:'' }}"
+                                           data-origen="{{ message.sujet }}"
+                                           data-fecha="{{ message.date_creation|date:'d/m/Y H:i' }}"
+                                           data-leido="{{ message.read|yesno:'Sí,No' }}"
+                                           title="Ver detalles">
+                                            <i class="icon-eye"></i>
+                                        </a>
+                                        <a href="#" class="action-icon icon-delete" 
+                                           data-id="{{ message.id }}" 
+                                           data-email="{{ message.courriel }}"
+                                           title="Eliminar mensaje">
+                                            <i class="icon-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="6" class="text-center">No hay mensajes disponibles</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
                     </table>
+                    
+                    <!-- Paginación -->
+                    {% if page_obj.has_other_pages %}
+                    <div class="text-center">
+                        <ul class="pagination">
+                            {% if page_obj.has_previous %}
+                                <li><a href="?page=1">&laquo; Primera</a></li>
+                                <li><a href="?page={{ page_obj.previous_page_number }}">Anterior</a></li>
+                            {% else %}
+                                <li class="disabled"><span>&laquo; Primera</span></li>
+                                <li class="disabled"><span>Anterior</span></li>
+                            {% endif %}
+                            
+                            {% for num in page_obj.paginator.page_range %}
+                                {% if page_obj.number == num %}
+                                    <li class="active"><span>{{ num }}</span></li>
+                                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                    <li><a href="?page={{ num }}">{{ num }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+                            
+                            {% if page_obj.has_next %}
+                                <li><a href="?page={{ page_obj.next_page_number }}">Siguiente</a></li>
+                                <li><a href="?page={{ page_obj.paginator.num_pages }}">Última &raquo;</a></li>
+                            {% else %}
+                                <li class="disabled"><span>Siguiente</span></li>
+                                <li class="disabled"><span>Última &raquo;</span></li>
+                            {% endif %}
+                        </ul>
+                        <p class="text-muted">
+                            Mostrando página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }} 
+                            ({{ page_obj.paginator.count }} mensajes en total)
+                        </p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body text-center" style="padding: 30px;">
+                    <h4 style="margin-bottom: 10px; font-weight: 600;">¿ Eliminar mensaje ?</h4>
+                    <div style="display: flex; gap: 10px; justify-content: center;">
+                        <button type="button" class="btn" data-dismiss="modal">
+                            Cancelar
+                        </button>
+                        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+                           Si, Eliminar Mensaje
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="detailModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body" style="padding: 25px;">
+                    <div style="margin-bottom: 20px;">
+                        <div class="detail-row">
+                            <strong style="color: #555; display: inline-block; width: 120px;">Nombre:</strong>
+                            <span id="detailNombre" style="color: #333;"></span>
+                        </div>
+                        <div class="detail-row">
+                            <strong style="color: #555; display: inline-block; width: 120px;">Correo:</strong>
+                            <span id="detailEmail" style="color: #337ab7;"></span>
+                        </div>
+                        <div class="detail-row">
+                            <strong style="color: #555; display: inline-block; width: 120px;">Teléfono:</strong>
+                            <span id="detailTelefono" style="color: #333;"></span>
+                        </div>
+                        <div class="detail-row">
+                            <strong style="color: #555; display: inline-block; width: 120px;">Dirección:</strong>
+                            <span id="detailDireccion" style="color: #333;"></span>
+                        </div>
+                        <div class="detail-row">
+                            <strong style="color: #555; display: inline-block; width: 120px;">Origen:</strong>
+                            <span id="detailOrigen" style="color: #333; font-weight: 600;"></span>
+                        </div>
+                        <div class="detail-row">
+                            <strong style="color: #555; display: inline-block; width: 120px;">Fecha:</strong>
+                            <span id="detailFecha" style="color: #666;"></span>
+                        </div>
+                    </div>
+                    <div style="border-top: 1px solid #ddd; padding-top: 15px;">
+                        <strong style="color: #555; display: block; margin-bottom: 10px;">Mensaje:</strong>
+                        <div id="detailMensaje" style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; color: #333; white-space: pre-wrap; min-height: 80px; border-left: 3px solid #5bc0de;"></div>
+                    </div>
+
+                    <div style="display: flex; gap: 10px; justify-content: center; margin-top: 20px;">
+                        <button type="button" class="btn" data-dismiss="modal">
+                            Cerrar Mensaje
+                        </button>
+                        <button type="button" class="btn btn-danger" id="deleteFromDetailBtn">
+                            Eliminar Mensaje
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -91,8 +368,108 @@
     <script type="text/javascript" src="{% static 'app/js/plugins/forms/selects/select2.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'app/js/pages/form_select2.js' %}"></script>
     <script>
-        $(document).ready( function () {
-            new DataTable('#table_messages');
-        } );
+        let messageIdToDelete = null;
+
+        $(document).ready(function() {
+            // Función para centrar modales
+            function centerModal($modal) {
+                $modal.css('display', 'flex');
+            }
+            
+            // Eventos para centrar modales al abrirse
+            $('#deleteModal, #detailModal').on('show.bs.modal', function() {
+                centerModal($(this));
+            });
+            
+            // Click en el icono de ver detalle
+            $(document).on('click', '.icon-view', function(e) {
+                e.preventDefault();
+                
+                // Obtener todos los datos del mensaje
+                const messageId = $(this).data('id');
+                const nombre = $(this).data('nombre');
+                const email = $(this).data('email');
+                const telefono = $(this).data('telefono');
+                const mensaje = $(this).data('mensaje');
+                const direccion = $(this).data('direccion');
+                const origen = $(this).data('origen');
+                const fecha = $(this).data('fecha');
+                
+                // Guardar el ID del mensaje actual en el modal de detalle
+                $('#detailModal').data('current-message-id', messageId);
+                $('#detailModal').data('current-message', mensaje);
+                
+                // Llenar el modal con los datos
+                $('#detailNombre').text(nombre);
+                $('#detailEmail').text(email);
+                $('#detailTelefono').text(telefono);
+                $('#detailDireccion').text(direccion);
+                $('#detailOrigen').text(origen);
+                $('#detailFecha').text(fecha);
+                $('#detailMensaje').text(mensaje);
+                $('#detailModal').modal('show');
+            });
+            
+            // Click en el icono de eliminar
+            $(document).on('click', '.icon-delete', function(e) {
+                e.preventDefault();
+                const messageId = $(this).data('id');
+                messageIdToDelete = messageId;
+                $('#deleteModal').modal('show');
+            });
+            
+            // Click en el botón eliminar desde el modal de detalle
+            $('#deleteFromDetailBtn').on('click', function() {
+                // Obtener el ID y email del mensaje desde el modal de detalle
+                const messageId = $('#detailModal').data('current-message-id');
+                const message = $('#detailModal').data('current-message');
+                
+                // Cerrar el modal de detalle
+                $('#detailModal').modal('hide');
+                
+                // Esperar a que se cierre completamente antes de abrir el de confirmación
+                setTimeout(function() {
+                    messageIdToDelete = messageId;
+                    $('#messageName').text(message);
+                    $('#deleteModal').modal('show');
+                }, 300);
+            });
+            
+            // Confirmar eliminación
+            $('#confirmDeleteBtn').on('click', function() {
+
+                if (messageIdToDelete) {
+                    // Construir la URL correctamente
+                    const deleteUrl = '{% url "users:delete_message" 999999 %}'.replace('999999', messageIdToDelete);
+                    console.log('URL de eliminación:', deleteUrl);
+                    
+                    // Crear formulario para enviar POST
+                    const form = $('<form>', {
+                        'method': 'POST',
+                        'action': deleteUrl
+                    });
+                    
+                    // Agregar CSRF token
+                    form.append($('<input>', {
+                        'type': 'hidden',
+                        'name': 'csrfmiddlewaretoken',
+                        'value': '{{ csrf_token }}'
+                    }));
+                    
+                    // Agregar el formulario al body y enviarlo
+                    $('body').append(form);
+                    form.submit();
+                } else {
+                    console.error('No hay ID de mensaje para eliminar');
+                    alert('Error: No se pudo identificar el mensaje a eliminar');
+                }
+            });
+
+            // Limpiar al cerrar el modal
+            $('#deleteModal').on('hidden.bs.modal', function () {
+                messageIdToDelete = null;
+                $('#messageName').text('');
+            });
+        });
     </script>
 {% endblock %}
