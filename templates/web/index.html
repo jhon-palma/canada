@@ -270,6 +270,68 @@
     </div>
 </section>
 
+<section class="preguntashome">
+    <div class="wrap">
+        <h2 class="h2def"><span class="text-span">FAQ</span> <!--<strong>Frecuentes</strong>--></h2>
+        <div class="preguntashomecont">
+                <div class="accordion" id="faqAccordion">
+                    <div class="accordion-item">
+                        <button class="accordion-btn">{{ labels.index.text.thirty_nine }}</button>
+                        <div class="accordion-content">
+                            <p>-</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <button class="accordion-btn">{{ labels.index.text.forty }}</button>
+                        <div class="accordion-content">
+                            <p>-</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <button class="accordion-btn">{{ labels.index.text.forty_one }}</button>
+                        <div class="accordion-content">
+                            <p>-</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <button class="accordion-btn">{{ labels.index.text.forty_two }}</button>
+                        <div class="accordion-content">
+                            <p>-</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <button class="accordion-btn">{{ labels.index.text.forty_three }}</button>
+                        <div class="accordion-content">
+                            <p>-</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        var accBtns = document.querySelectorAll('.accordion-btn');
+                        accBtns.forEach(function(btn) {
+                            btn.addEventListener('click', function() {
+                                var content = this.nextElementSibling;
+                                var isOpen = this.classList.contains('active');
+                                document.querySelectorAll('.accordion-btn').forEach(function(b) {
+                                    b.classList.remove('active');
+                                    b.nextElementSibling.style.display = 'none';
+                                });
+                                if (!isOpen) {
+                                    this.classList.add('active');
+                                    content.style.display = 'block';
+                                }
+                            });
+                        });
+                    });
+                </script>
+        </div>
+     
+    </div>
+</section>
+
+
 <section class="soldprop">
 	<div class="soldmap">
         <div class="__topmap">

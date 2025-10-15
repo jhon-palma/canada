@@ -87,6 +87,11 @@ DICT_LABELS = {
                     'thirty_six': 'Our professional',
                     'thirty_seven': 'affiliations',
                     'thirty_eight': 'In 2024, we sold properties 50% faster than the average broker in Montreal!',
+                    'thirty_nine': 'What areas do you specialize in as a real estate broker in Montreal?',
+                    'forty': 'Why choose you as my real estate agent in Montreal?',
+                    'forty_one': 'Why are you considered one of the best real estate brokers in Montreal',
+                    'forty_two': 'How much does it cost to hire a real estate broker in Montreal',
+                    'forty_three': 'How do I find the best real estate agent in Montreal',
                 }
             },
             'menu':{
@@ -374,6 +379,11 @@ DICT_LABELS = {
                     'thirty_six': 'Nos affiliations',
                     'thirty_seven': 'professionnelles',
                     'thirty_eight': 'En 2024, nous avons vendu des propriétés 50% plus rapidement que le courtier moyen à Montréal !',
+                    'thirty_nine': 'Dans quels domaines vous spécialisez-vous en tant que courtier immobilier à Montréal ?',
+                    'forty': 'Pourquoi vous choisir comme mon agent immobilier à Montréal ?',
+                    'forty_one': 'Pourquoi êtes-vous considéré comme l’un des meilleurs courtiers immobiliers à Montréal ?',
+                    'forty_two': 'Combien coûte l’embauche d’un courtier immobilier à Montréal ?',
+                    'forty_three': 'Comment puis-je trouver le meilleur agent immobilier à Montréal ?'
                 }
             },
             'menu':{

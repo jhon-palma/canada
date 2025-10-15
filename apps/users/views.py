@@ -21,6 +21,8 @@ from apps.users.models import Profile
 from django.contrib.auth.forms import SetPasswordForm, PasswordChangeForm
 from django.contrib.auth.hashers import make_password
 from django.db import transaction
+import csv
+from io import BytesIO
 
     
 from apps.web.models import *
@@ -293,6 +295,48 @@ def delete_message(request, id):
         except Exception as e:
             messages.error(request, f'Error al eliminar el mensaje: {str(e)}')
     return redirect('users:list_messages')
+
+
+@login_required
+def export_messages_excel(request):
+    # Obtener todos los mensajes
+    messages_list = Formulaire_contact.objects.order_by('-date_creation')
+    
+    # Crear la respuesta HTTP con el tipo de contenido para CSV
+    response = HttpResponse(content_type='text/csv; charset=utf-8-sig')
+    response['Content-Disposition'] = 'attachment; filename="list_messages.csv"'
+    
+    # Agregar BOM para que Excel reconozca UTF-8
+    response.write('\ufeff')
+    
+    # Crear el escritor CSV
+    writer = csv.writer(response)
+    
+    # Escribir encabezados
+    writer.writerow([
+        'Fecha',
+        'Nombres',
+        'Correo',
+        'Teléfono',
+        'Dirección',
+        'Mensaje',
+        'Origen',
+        
+    ])
+    
+    # Escribir datos
+    for message in messages_list:
+        writer.writerow([
+            message.date_creation.strftime('%d/%m/%Y %H:%M') if message.date_creation else '',
+            message.nom or '',
+            message.courriel or '',
+            message.telephone or '',
+            message.adresse or '',
+            message.message or '',
+            message.sujet or '',
+        ])
+    
+    return response
 
 
 def list_images(request):

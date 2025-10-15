@@ -19,6 +19,7 @@ urlpatterns = [
     path('list_messages/',login_required(list_messages), name='list_messages'),
     re_path('detail_message/(?P<id>[\w-]+)/$', login_required(detail_message), name='detail_message'),
     re_path('delete_message/(?P<id>[\w-]+)/$', login_required(delete_message), name='delete_message'),
+    path('export_messages_excel/', login_required(export_messages_excel), name='export_messages_excel'),
     path('list_images/',login_required(list_images), name='list_images'),
     re_path('update_image/(?P<image_id>[\w-]+)/$',login_required(update_image), name='update_image'),
 ]

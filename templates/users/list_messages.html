@@ -157,6 +157,22 @@
         #detailModal .btn-danger.footer-btn-half:hover {
             background-color: #c9302c;
         }
+        /* Botón de exportar */
+        .btn-success {
+            background-color: #5cb85c;
+            border-color: #4cae4c;
+            color: white;
+        }
+        .btn-success:hover {
+            background-color: #449d44;
+            border-color: #398439;
+            color: white;
+        }
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 13px;
+            border-radius: 3px;
+        }
     </style>
 {% endblock %}
     
@@ -169,6 +185,9 @@
                     <h4><span class="no-margin text-bold">Listado de Solicitudes</span></h4>
                 </li>
                 <div class="heading-elements">
+                    <a href="{% url 'users:export_messages_excel' %}" class="btn btn-success btn-sm" style="margin-left: 10px;">
+                        <i class="icon-file-excel"></i> Exportar
+                    </a>
                 </div>
             </ul>
             </div>
