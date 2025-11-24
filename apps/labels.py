@@ -378,7 +378,7 @@ DICT_LABELS = {
                     'thirty_five': 'Faites-nous confiance pour une expérience immobilière transparente et profitable.',
                     'thirty_six': 'Nos affiliations',
                     'thirty_seven': 'professionnelles',
-                    'thirty_eight': 'En 2024, nous avons vendu des propriétés 50% plus rapidement que le courtier moyen à Montréal !',
+                    'thirty_eight': 'En 2025, nous avons vendu des propriétés 41% plus rapidement que le courtier moyen à Montréal !',
                     'thirty_nine': 'Dans quels domaines vous spécialisez-vous en tant que courtier immobilier à Montréal ?',
                     'forty': 'Pourquoi vous choisir comme mon agent immobilier à Montréal ?',
                     'forty_one': 'Pourquoi êtes-vous considéré comme l’un des meilleurs courtiers immobiliers à Montréal ?',
