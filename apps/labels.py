@@ -86,7 +86,7 @@ DICT_LABELS = {
                     'thirty_five': 'Trust us for a seamless and profitable real estate experience.',
                     'thirty_six': 'Our professional',
                     'thirty_seven': 'affiliations',
-                    'thirty_eight': 'In 2024, we sold properties 50% faster than the average broker in Montreal!',
+                    'thirty_eight': 'In 2025, we sold properties 41% faster than the average broker in Montreal!',
                     'thirty_nine': 'What areas do you specialize in as a real estate broker in Montreal?',
                     'forty': 'Why choose you as my real estate agent in Montreal?',
                     'forty_one': 'Why are you considered one of the best real estate brokers in Montreal',
