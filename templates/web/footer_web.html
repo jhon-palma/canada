@@ -203,6 +203,17 @@
                     <div aria-hidden="true" style="position:absolute; left:-5000px;">
                         <input type="text" name="b_cae8a392e5c10d2e79b4d6635_c5c07613d4" tabindex="-1" value="">
                     </div>
+                    <div class="politique">
+                        <input type="checkbox" id="check_newsletter" name="check_newsletter" required>
+                        <label for="check_newsletter" style="color: black;">
+                            {% if language == "en" %}
+                                I agree to be contacted by LJ Realties via call, email, and text. To opt-out, you can reply 'stop' at any time or click the unsubscribe link in the emails. Message and data rates may apply.
+                            {% else %}
+                                J'accepte d'être contacté(e) par LJ Immobilier par téléphone, par courrier électronique et par SMS. Pour vous désinscrire, vous pouvez répondre « stop » à tout moment ou cliquer sur le lien de désinscription figurant dans les courriels. Des frais de messagerie et de données peuvent s'appliquer.
+                            {% endif %}
+                            <a href="{{ server|server_url }}/{{ language }}/{{ labels.privacy.url }}/" target="_blank">{{ labels.index.text.twenty_five }}</a>
+                        </label>
+                    </div>
                     <input type="submit" style="margin-top: 20px; margin-bottom: 20px;" name="subscribe" id="mc-embedded-subscribe" class="bouton pointer" value="{{ labels.index.button.eight }}" data-field="newsletter">
                 </form>
             </article>

@@ -134,6 +134,17 @@
 			<input type="text" name="prenom" id="prenom" class="champs_tem" placeholder="{{ labels.work.placeholder.one }} *" required="required" />
 			<input type="email" name="email" id="email" class="champs_tem"  placeholder="{{ labels.work.placeholder.two }} *" required="required" />
 			<input type="tel" name="tel" id="tel" class="champs_tem" placeholder="{{ labels.work.placeholder.three }} *" onKeyPress="return scanTouche(event)" required="required" />
+			<div class="politique">
+				<input type="checkbox" id="check_contact" name="check_contact" required>
+				<label for="check_contact" style="color: black;">
+					{% if language == "en" %}
+						I agree to be contacted by LJ Realties via call, email, and text. To opt-out, you can reply 'stop' at any time or click the unsubscribe link in the emails. Message and data rates may apply.
+					{% else %}
+						J'accepte d'être contacté(e) par LJ Immobilier par téléphone, par courrier électronique et par SMS. Pour vous désinscrire, vous pouvez répondre « stop » à tout moment ou cliquer sur le lien de désinscription figurant dans les courriels. Des frais de messagerie et de données peuvent s'appliquer.
+					{% endif %}
+					<a href="{{ server|server_url }}/{{ language }}/{{ labels.privacy.url }}/" target="_blank">{{ labels.index.text.twenty_five }}</a>
+				</label>
+			</div>
 			<div id="err"></div>
 			<input type="submit" style="margin-top: 20px; margin-bottom: 20px;" class="bouton pointer" value="{{ labels.contact.button.one }}" />
 		</form>
