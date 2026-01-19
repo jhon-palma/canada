@@ -1,22 +1,23 @@
 import django
 from pathlib import Path
-from ftplib import FTP
 import re, os, zipfile
-import sys 
+import sys
 import shutil
 import datetime
+
 from upload_data import create_objects, process_txt_data
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'immobilier.settings')
 django.setup()
 
-from immobilier.local_settings import FTP_IP, FTP_USER, FTP_PASSWORD
 from apps.users.views import user_verification
 from scripts.send_email import sendEmail
 
 PATH_BASE = Path(__file__).resolve().parent.parent / 'data'
 PATH_BACKUP = PATH_BASE / 'backups'
+
+FTP_LOCAL_PATH = '/home/ftp'  # SOLO reemplaza al FTP
 
 
 try:
@@ -30,9 +31,8 @@ try:
         if os.path.isfile(ruta_archivo) and archivo.lower().endswith('.txt'):
             shutil.move(ruta_archivo, nueva_carpeta)
 
-    ftp = FTP(FTP_IP)
-    ftp.login(user=FTP_USER, passwd=FTP_PASSWORD)
-    archivos = ftp.nlst()
+    # === AQUÍ ANTES ERA FTP ===
+    archivos = os.listdir(FTP_LOCAL_PATH)
 
     archivos_zip = [nombre for nombre in archivos if re.match(r'^COLUMBIATECHNOLOGY\d{8}\.zip$', nombre)]
 
@@ -40,16 +40,21 @@ try:
         archivos_zip.sort(reverse=True)
         ultimo_archivo_zip = archivos_zip[0]
         print("ultimo archivo zip:", ultimo_archivo_zip)
-        
-        try: os.rmdir(PATH_BASE)
-        except: pass
-        
-        with open(ultimo_archivo_zip, 'wb') as archivo_local:
-            ftp.retrbinary('RETR ' + ultimo_archivo_zip, archivo_local.write)
+
+        try:
+            os.rmdir(PATH_BASE)
+        except:
+            pass
+
+        # === ANTES ftp.retrbinary ===
+        shutil.copy(
+            os.path.join(FTP_LOCAL_PATH, ultimo_archivo_zip),
+            ultimo_archivo_zip
+        )
 
         with zipfile.ZipFile(ultimo_archivo_zip, 'r') as archivo_zip:
-            archivo_zip.extractall(PATH_BASE)  # Extraer archivos en la carpeta 'data'
-        
+            archivo_zip.extractall(PATH_BASE)
+
         print("Archivo zip descargado y descomprimido correctamente.")
         os.remove(ultimo_archivo_zip)
 
@@ -64,9 +69,6 @@ try:
 
     else:
         print("No se encontraron archivos zip en el directorio.")
-
-    # Cerrar sesión
-    ftp.quit()
 
     modelos = [
         'VALEURS_FIXES',
@@ -122,9 +124,17 @@ try:
                 user_verification()
 
     end = "Datos cargados correctamente."
-    sendEmail('icloudcris@gmail.com', 'backups@remaxplatinum.pe', 'CANADA DOWNLOAD DATA', end)
+    sendEmail(
+        'icloudcris@gmail.com',
+        'backups@remaxplatinum.pe',
+        'CANADA DOWNLOAD DATA',
+        end
+    )
 
 except Exception as e:
-    # Imprimir el error en la salida de errores estándar (stderr)
-    sendEmail('icloudcris@gmail.com', 'backups@remaxplatinum.pe', 'CANADA DOWNLOAD DATA', str(e))
-    print("Error:", e, file=sys.stderr)
+    sendEmail(
+        'icloudcris@gmail.com',
+        'backups@remaxplatinum.pe',
+        'CANADA DOWNLOAD DATA',
+        str(e)
+    )

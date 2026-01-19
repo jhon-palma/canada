@@ -311,9 +311,9 @@
                     if (response.response == 1) {
                         var language = "{{ language }}";
                         if (language === "en") {
-                            var link = '<a target="_blank" href="{% static "web/pdf/Buyers booklet EN - LJ Realties - BUYERS BOOKLET 2024.pdf" %}" download>Click here to download buyers booklet</a>';
+                            var link = '<a target="_blank" href="{% static "web/pdf/Buyers booklet EN - LJ Realties - BUYERS BOOKLET 2026.pdf" %}" download>Click here to download buyers booklet</a>';
                         } else {
-                            var link = '<a target="_blank" href="{% static "web/pdf/Buyers booklet FR - LJ Immobilier - ORIENTATION EN MATIERE ACHAT IMMOBILIER 2024.pdf" %}" download>Cliquez ici pour télécharger la brochure de l\'acheteur</a>';
+                            var link = '<a target="_blank" href="{% static "web/pdf/Buyers booklet FR - LJ Immobilier - ORIENTATION EN MATIERE ACHAT IMMOBILIER 2026.pdf" %}" download>Cliquez ici pour télécharger la brochure de l\'acheteur</a>';
                         }
                         $("#confirmationBuyers").html("<p><p>" + link + "</p></p>");
 						// $('#formBuyers')[0].reset();
@@ -343,9 +343,9 @@
                     if (response.response == 1) {
                         var language = "{{ language }}";
                         if (language === "en") {
-                            var link = '<a target="_blank" href="{% static "web/pdf/Listing booklet EN - LJ Realties - HOME SELLING ORIENTATION 2024.pdf" %}" download>Click here to download listing booklet</a>';
+                            var link = '<a target="_blank" href="{% static "web/pdf/Listing booklet EN - LJ Realties - HOME SELLING ORIENTATION 2026.pdf" %}" download>Click here to download listing booklet</a>';
                         } else {
-                            var link = '<a target="_blank" href="{% static "web/pdf/Listing booklet FR - LJ Immobilier - ORIENTATION EN MATIERE DE VENTE IMMOBILIERE 2024.pdf" %}" download>Cliquez ici pour télécharger la brochure du vendeur</a>';
+                            var link = '<a target="_blank" href="{% static "web/pdf/Listing booklet FR - LJ Immobilier - ORIENTATION EN MATIERE DE VENTE IMMOBILIERE 2026.pdf" %}" download>Cliquez ici pour télécharger la brochure du vendeur</a>';
                         }
                         $("#confirmationListing").html("<p>" + link + "</p>");
 						$('#formListing')[0].reset();
@@ -395,7 +395,11 @@
                 }
             });
         });
+
+        window.onload = checkForModalParameter;
+
     });
+    
 
 </script>
 

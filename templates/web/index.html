@@ -270,68 +270,140 @@
     </div>
 </section>
 
-<!--
+
 <section class="preguntashome">
     <div class="wrap">
         <h2 class="h2def"><span class="text-span">FAQ</span></h2>
         <div class="preguntashomecont">
-                <div class="accordion" id="faqAccordion">
-                    <div class="accordion-item">
-                        <button class="accordion-btn">{{ labels.index.text.thirty_nine }}</button>
-                        <div class="accordion-content">
-                            <p>-</p>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <button class="accordion-btn">{{ labels.index.text.forty }}</button>
-                        <div class="accordion-content">
-                            <p>-</p>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <button class="accordion-btn">{{ labels.index.text.forty_one }}</button>
-                        <div class="accordion-content">
-                            <p>-</p>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <button class="accordion-btn">{{ labels.index.text.forty_two }}</button>
-                        <div class="accordion-content">
-                            <p>-</p>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <button class="accordion-btn">{{ labels.index.text.forty_three }}</button>
-                        <div class="accordion-content">
-                            <p>-</p>
-                        </div>
+            <div class="accordion" id="faqAccordion">
+                <div class="accordion-item">
+                    <button class="accordion-btn">{{ labels.index.text.thirty_nine }}</button>
+                    <div class="accordion-content">
+                        <p style="text-align: left;">
+                            {% if language == 'en' %}
+                                At LJ Realties, we specialize in some of Montreal’s most dynamic and sought-after neighbourhoods. From the vibrant lifestyle of the Sud-Ouest (Saint-Henri, Griffintown, Little Burgundy, Ville-Emard, Côte-St-Paul) to the family-friendly charm of NDG (Notre-Dame-de-Grâce), Westmount, and Verdun, our team knows the heartbeat of each community.<br><br>
+                                We’re also highly active in Downtown Montreal, the Plateau, Ville-Marie, Villeray, as well as suburban areas like the South Shore (Brossard, Saint-Lambert, Boucherville, Longueuil, Saint-Bruno-de-Montarville, La Prairie, Candiac, etc.) and the West Island (Pointe-Claire, Beaconsfield, Kirkland, Dollard-des-Ormeaux, Dorval, Lachine), helping both buyers and sellers navigate urban condo living and luxury home transactions alike.<br><br> 
+                                Whether you're a first-time buyer or a seasoned investor, we match people to properties with precision.
+                            {% endif %}
+                            {% if language == 'fr' %}
+                                Chez LJ Realties, nous sommes spécialisés dans certains des quartiers les plus dynamiques et prisés de Montréal. Des quartiers animés urbains du Sud-Ouest — Saint-Henri, Griffintown, Petite-Bourgogne, Ville-Émard, Côte-Saint-Paul — à l’élégance résidentielle de Notre-Dame-de-Grâce, Westmount et Verdun, notre expertise repose sur une connaissance fine des marchés locaux et de leur évolution.<br><br>
+                                Nous sommes également très actifs au centre-ville de Montréal, sur le Plateau, à Ville-Marie et Villeray, ainsi que dans les secteurs les plus convoités de la région métropolitaine. Mais encore sur la Rive-Sud (Brossard, Saint-Lambert, Boucherville, Longueuil, Saint-Bruno-de-Montarville, La Prairie, Candiac) comme dans l’Ouest-de-l’Île (Pointe-Claire, Beaconsfield, Kirkland, Dollard-des-Ormeaux, Dorval, Lachine), nous accompagnons nos clients, acheteurs/vendeurs à naviguer des transactions allant du condo urbain aux résidences de luxe.<br><br>
+                                Que vous soyez acquéreur pour la première fois ou investisseur averti, nous offrons un accompagnement et un service sur mesure.
+                            {% endif %}
+                        </p>
                     </div>
                 </div>
+                <div class="accordion-item">
+                    <button class="accordion-btn">{{ labels.index.text.forty }}</button>
+                    <div class="accordion-content">
+                        <p style="text-align: left;">
+                            {% if language == 'en' %}
+                                Choosing LJ Realties means you’re not just getting a broker, you’re getting a full-service team that’s invested in your success. We offer:<br><br>
+                                - Local knowledge of Montreal's ever-evolving market<br>
+                                - A powerful marketing engine that gets your property in front of qualified buyers<br>
+                                - Transparent, responsive, and data-driven service<br>
+                                - A proven track record of results, from condos to multi-million dollar properties<br>
+                                - Negotiation that protects your bottom line and maximizes your gains<br><br>
+                                Our mission? Make your real estate journey seamless, profitable, and enjoyable.
+                            {% endif %}
+                            {% if language == 'fr' %}
+                                Choisir LJ Realties, c’est opter/ retenir bien plus qu’un service de courtier : c’est s’entourer d’une équipe, pleinement engagée dans la réussite de votre projet immobilier. Nous vous offrons:<br><br>
+                                - Une expertise pointue du marché montréalais, en constante évolution<br>
+                                - Une stratégie marketing performante qui positionne votre propriété auprès d’acheteurs qualifiés<br>
+                                - Un service transparent, réactif et guidé par les données<br>
+                                - Un historique de résultats éprouvés, des condos urbains aux propriétés de plusieurs millions de dollars<br>
+                                - Une négociation stratégique qui protège vos intérêts et optimise la valeur de votre transaction<br><br>
+                                Notre mission? Faire de votre projet immobilier une expérience d'exception fluide, rentable et surtout agréable.
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-btn">{{ labels.index.text.forty_one }}</button>
+                    <div class="accordion-content">
+                        <p style="text-align: left;">
+                            {% if language == 'en' %}
+                                We didn’t just give ourselves that title; our client reviews, repeat business, and consistent top-tier results did. LJ Realties has built a strong reputation for:<br><br>
+                                - Being market leaders in the Sud-Ouest and surrounding boroughs<br>
+                                - Leveraging cutting-edge marketing and video storytelling to generate viral listings<br>
+                                - Offering white-glove service from first showing to final signature<br>
+                                - Staying ahead of trends and adapting fast in a competitive market<br><br>
+                                We treat each listing as if it were our own and every client as a lifelong partner. That’s just some of the reasons why so many of our clients say we’re the best real estate brokers in Montreal and come back again and again.
+                            {% endif %}
+                            {% if language == 'fr' %}
+                                Nous ne nous sommes pas attribué ce titre nous-mêmes — ce sont nos clients qui l’ont fait à travers leurs témoignages, retour d'expérience, et fidélité. Grâce à des résultats de performances d’exception, LJ Realties s’est forgé une solide réputation en:<br><br>
+                                - Se positionnant comme leader du marché dans le Sud-Ouest et les arrondissements environnants.<br>
+                                - Arborant une stratégies marketing de pointe, incluant la vidéo et le storytelling immobilier, pour créer des inscriptions à fort impact<br>
+                                - Offrant un service sur mesure de type “white glove”, de la première visite jusqu’à la signature finale<br>
+                                - Développant une capacité à anticiper les tendances et à s’adapter rapidement dans un marché hautement concurrentiel<br><br>
+                                Nous traitons chaque propriété comme si c’était la nôtre et chaque client comme un partenaire à long terme. C’est notamment pour ces raisons que tant de nos clients nous considèrent comme parmi les meilleurs courtiers immobiliers à Montréal — et choisissent de nous faire confiance, encore et encore.
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-btn">{{ labels.index.text.forty_two }}</button>
+                    <div class="accordion-content">
+                        <p style="text-align: left;">
+                            {% if language == 'en' %}
+                                Our commission is designed to be flexible and value-driven. Rather than a one-size-fits-all approach, we offer multiple service tiers so sellers can choose the level of marketing, exposure, and support that best fits their property and goals. Our commission packages vary from 4%-5%.<br><br> 
+                                Each option includes a core foundation - such as professional photography and property marketing, while higher tiers incorporate enhanced services like video, targeted digital advertising, advanced marketing tools, and additional preparation services. The goal is to maximize visibility, attract strong buyers, and ultimately achieve the best possible outcome for your sale.
+                            {% endif %}
+                            {% if language == 'fr' %}
+                                Notre structure de commission est flexible et axée sur la valeur. Plutôt qu’une approche uniforme, nous proposons plusieurs offres de services, permettant à nos clients de choisir le plan de mise en marché, de visibilité et d’accompagnement le mieux adapté à leur propriété et à leurs objectifs.<br><br>
+                                Nos forfaits de commission varient entre 4 % et 5 %. Chaque option repose sur une base essentielle, incluant notamment le service photo professionnel et une mise en marché stratégique de la propriété. Les forfaits supérieurs intègrent des services bonifiés tels que la vidéo immobilière, une publicité numérique ciblée, des outils marketing avancés, dont l’objectif est de maximiser la visibilité, attirer des acheteurs qualifiés et obtenir les meilleures offres possibles pour votre vente, tant sur le plan financier que stratégique.
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <button class="accordion-btn">{{ labels.index.text.forty_three }}</button>
+                    <div class="accordion-content">
+                        <p style="text-align: left;">
+                            {% if language == 'en' %}
+                                Start with reputation, results, and a real connection. Look for:<br><br>
+                                - Google reviews and testimonials<br>
+                                - Consistent sales performance in your neighbourhood<br>
+                                - A broker who listens to your needs and communicates clearly<br>
+                                - A team with marketing power and negotiation expertise<br>
+                                - Someone who makes the process feel personal, not transactional
+                            {% endif %}
+                            {% if language == 'fr' %}
+                                Commencez par la réputation, les résultats et une relation de confiance authentique. Recherchez notamment:<br><br>
+                                Avis sur Google et des témoignages clients vérifiés<br>
+                                Une performance de vente constante dans votre quartier<br>
+                                Un courtier/agent immobilier à l’écoute de vos besoins, avec une communication claire et transparente<br>
+                                Une équipe dotée d’une force marketing éprouvée et d’une expertise pointue en négociation<br>
+                                Un professionnel qui rend le processus humain, personnalisé et non transactionnel
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
                 
-                <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        var accBtns = document.querySelectorAll('.accordion-btn');
-                        accBtns.forEach(function(btn) {
-                            btn.addEventListener('click', function() {
-                                var content = this.nextElementSibling;
-                                var isOpen = this.classList.contains('active');
-                                document.querySelectorAll('.accordion-btn').forEach(function(b) {
-                                    b.classList.remove('active');
-                                    b.nextElementSibling.style.display = 'none';
-                                });
-                                if (!isOpen) {
-                                    this.classList.add('active');
-                                    content.style.display = 'block';
-                                }
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var accBtns = document.querySelectorAll('.accordion-btn');
+                    accBtns.forEach(function(btn) {
+                        btn.addEventListener('click', function() {
+                            var content = this.nextElementSibling;
+                            var isOpen = this.classList.contains('active');
+                            document.querySelectorAll('.accordion-btn').forEach(function(b) {
+                                b.classList.remove('active');
+                                b.nextElementSibling.style.display = 'none';
                             });
+                            if (!isOpen) {
+                                this.classList.add('active');
+                                content.style.display = 'block';
+                            }
                         });
                     });
-                </script>
+                });
+            </script>
         </div>
-     
     </div>
 </section>
--->
+
 
 <section class="soldprop">
 	<div class="soldmap">
@@ -869,26 +941,6 @@
         L.control.zoom({
             position: 'bottomright'
         }).addTo(map);
-
-
-        function checkForModalParameter() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const popupValue = urlParams.get('popup');
-            switch (popupValue) {
-                case 'newsletter':
-                case 'infolettre':
-                    selector = "#index > footer > div.wrap.wrap_contact > div.finfo.fcontact_col2 > a"
-                    break;
-                case 'free_evaluation':
-                case 'évaluation_gratuite':
-                    selector = "#index > section.banner > div > a"
-                    break;
-            }
-
-            if (popupValue) {
-                document.querySelector(selector).click();
-            }
-        }
 
         window.onload = checkForModalParameter;
           
