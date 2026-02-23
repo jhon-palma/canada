@@ -67,6 +67,7 @@
                 {% csrf_token %}
                 <input type="hidden" id="g-recaptcha-response-footer" name="g-recaptcha-response-footer" value="">
                 <input type="hidden" id="sujet" name="sujet" value="Footer Web">
+                <input type="hidden" id="tag" name="tag" value="Seller">
                 <input type="text" name="prenom" id="prenom" class="champs_tem" required="required" placeholder="{{ labels.index.placeholder.two }} *" />
                 <input type="email" name="email" id="email" class="champs_tem" required="required" placeholder="{{ labels.index.placeholder.three }} *" />
                 <input type="text" name="tel" id="tel" class="champs_tem" onKeyPress="return scanTouche(event)" required="required" placeholder="{{ labels.index.placeholder.four }} *" />

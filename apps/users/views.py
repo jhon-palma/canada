@@ -1,33 +1,25 @@
-import pdb
+import csv
 from datetime import datetime
+import pdb
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout as auth_logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.urls import reverse, reverse_lazy
-from django.utils.decorators import method_decorator
-from django.shortcuts import get_object_or_404, redirect, render
-from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.models import User
-from django.views.generic import *
-from django.http import HttpResponse
-from django.core import serializers
-from django.contrib.auth.mixins import LoginRequiredMixin
-from apps.accounts.models import CustomUser
-from apps.properties.models import Membres, MembresMediasSociaux
-from scripts.upload_data import get_id_bureau, get_id_valeurs
-from apps.users.form import ImageEditForm, ProfileEditForm, UserEditForm, CustomUserCreationForm
-from apps.users.models import Profile
 from django.contrib.auth.forms import SetPasswordForm, PasswordChangeForm
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.models import User
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db import transaction
-import csv
-from io import BytesIO
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views.generic import *
 
-    
+from apps.properties.models import Membres, MembresMediasSociaux
+from apps.accounts.models import CustomUser
+from apps.users.form import ImageEditForm, ProfileEditForm, UserEditForm, CustomUserCreationForm
+from apps.users.models import Profile
 from apps.web.models import *
-
-
+from scripts.upload_data import get_id_bureau, get_id_valeurs
 
 
 def update_profile(request):
@@ -69,8 +61,6 @@ def update_profile(request):
     })
 
 
-
-
 def update_profile_users(request, user_id):
     user = get_object_or_404(CustomUser, id=user_id)
     existing_orders = Profile.objects.exclude(order__isnull=True).values_list('order', flat=True)
@@ -79,7 +69,6 @@ def update_profile_users(request, user_id):
         existing_orders.remove(user.profile.order)
 
     available_orders = [i for i in range(1, 11) if i not in existing_orders]
-    print("#########################################")
     user_membre = user.profile.membre
     available_membres = Membres.objects.filter(profile__isnull=True)
     membres = available_membres | Membres.objects.filter(pk=user_membre.pk) if user_membre else available_membres
@@ -88,7 +77,6 @@ def update_profile_users(request, user_id):
                                  data=request.POST)
         profile_form = ProfileEditForm(instance=user.profile,
                                        data=request.POST)
-        print(request.POST)
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile = profile_form.save(commit=False)  
@@ -113,7 +101,6 @@ def update_profile_users(request, user_id):
     })
 
 
-
 def change_password(request):
     if request.method == 'POST':
         form = PasswordChangeForm(request.user, request.POST)
@@ -132,11 +119,8 @@ def change_password(request):
     })
 
 
-
 def password_change_done(request):
     return render(request, 'users/password_change_done.html')
-
-
 
 
 def change_password_user(request, user_id):
@@ -158,15 +142,15 @@ def change_password_user(request, user_id):
     })
 
 
-
-
 def profile_list(request):
     usuarios = CustomUser.objects.filter(userBlog=False).order_by('first_name')
     return render(request, 'users/list_users.html',{'usuarios':usuarios})
 
+
 def users_blog_list(request):
     usuarios = CustomUser.objects.filter(userBlog=True).order_by('first_name')
     return render(request, 'users/list_users_blog.html',{'usuarios':usuarios})
+
 
 def update_user_blog(request, user_id):
     user = get_object_or_404(CustomUser, id=user_id)
@@ -225,8 +209,6 @@ def create_user(request):
     return render(request, 'users/register.html', {'user_form': user_form, 'profile_form': profile_form})
 
 
-
-
 def user_verification():
     try:
         membres = Membres.objects.all()
@@ -260,10 +242,9 @@ def user_verification():
     return "Usuarios y perfiles verificados y/o creados correctamente"
 
 
-
 def list_messages(request):
     messages_list = Formulaire_contact.objects.order_by('-date_creation')
-    paginator = Paginator(messages_list, 50) 
+    paginator = Paginator(messages_list, 10) 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     

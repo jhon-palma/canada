@@ -1,7 +1,10 @@
-from datetime import datetime
-from django.db import models
 import uuid
+from datetime import datetime
+
+from django.db import models
 from django.utils.text import slugify
+from django.utils import timezone
+
 
 class Propertie(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
@@ -13,6 +16,7 @@ class Propertie(models.Model):
         verbose_name = 'properties'
         verbose_name_plural = 'Create Propertie'
         ordering = ['id']
+
 
 class ValeursFixes(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
@@ -26,6 +30,7 @@ class ValeursFixes(models.Model):
     class Meta:
         db_table = 'VALEURS_FIXES'
 
+
 class TypesBannieres(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     code = models.CharField(db_column='CODE', max_length=10, unique=True)  
@@ -37,6 +42,7 @@ class TypesBannieres(models.Model):
     class Meta:
         db_table = 'TYPES_BANNIERES'
 
+
 class Regions(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     code = models.CharField(db_column='CODE', max_length=2, unique=True)  
@@ -45,7 +51,8 @@ class Regions(models.Model):
 
     class Meta:
         db_table = 'REGIONS'
-        
+
+
 class Municipalites(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     code = models.CharField(db_column='CODE', max_length=6, unique=True)  
@@ -70,6 +77,7 @@ class Municipalites(models.Model):
 
         super().save(*args, **kwargs)
 
+
 class Quartiers(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     mun_code = models.ForeignKey(Municipalites, on_delete=models.CASCADE, to_field='code', db_column='MUN_CODE')
@@ -89,6 +97,7 @@ class Quartiers(models.Model):
             self.slug = f"{description}-{code}"
         super().save(*args, **kwargs)
 
+
 class Firmes(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     code = models.CharField(db_column='CODE', max_length=12, unique=True)  
@@ -101,6 +110,7 @@ class Firmes(models.Model):
 
     class Meta:
         db_table = 'FIRMES'
+
 
 class Bureaux(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
@@ -125,6 +135,7 @@ class Bureaux(models.Model):
 
     class Meta:
         db_table = 'BUREAUX'
+
 
 class GenresProprietes(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
@@ -152,6 +163,7 @@ class GenresProprietes(models.Model):
             self.slug_anglaise = f"{description_en}-for-sale-{code}-categorie"
 
         super().save(*args, **kwargs)
+
 
 class Membres(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
@@ -183,6 +195,13 @@ class Membres(models.Model):
 
     class Meta:
         db_table = 'MEMBRES'
+    
+    @property
+    def full_name(self):
+        return " ".join(filter(None, [self.prenom, self.nom]))
+    
+    def __str__(self):
+        return self.full_name
 
 
 class Inscriptions(models.Model):
@@ -355,6 +374,7 @@ class Inscriptions(models.Model):
     def __str__(self):
         return self.no_inscription
 
+
 class Addenda(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     no_inscription = models.ForeignKey(Inscriptions, on_delete=models.CASCADE, to_field='no_inscription', related_name='no_inscription_addenda', db_column='NO_INSCRIPTION')  
@@ -368,6 +388,7 @@ class Addenda(models.Model):
     class Meta:
         db_table = 'ADDENDA'
 
+
 class TypeCaracteristiques(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     code = models.CharField(db_column='CODE', max_length=4, unique=True)  
@@ -379,6 +400,7 @@ class TypeCaracteristiques(models.Model):
 
     class Meta:
         db_table = 'TYPE_CARACTERISTIQUES'
+
 
 class SousTypeCaracteristiques(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
@@ -392,6 +414,7 @@ class SousTypeCaracteristiques(models.Model):
     class Meta:
         db_table = 'SOUS_TYPE_CARACTERISTIQUES'
 
+
 class Caracteristiques(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     no_inscription = models.ForeignKey(Inscriptions, on_delete=models.CASCADE, related_name='caracteristiques', db_column='NO_INSCRIPTION')
@@ -404,6 +427,7 @@ class Caracteristiques(models.Model):
 
     class Meta:
         db_table = 'CARACTERISTIQUES'
+
 
 class Depenses(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
@@ -420,6 +444,7 @@ class Depenses(models.Model):
     class Meta:
         db_table = 'DEPENSES'
 
+
 class LiensAdditionnels(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     no_inscription = models.ForeignKey(Inscriptions, on_delete=models.CASCADE, related_name='liensAdditionnels', db_column='NO_INSCRIPTION')  
@@ -431,6 +456,7 @@ class LiensAdditionnels(models.Model):
     class Meta:
         db_table = 'LIENS_ADDITIONNELS'
 
+
 class MembresMediasSociaux(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     membre_code = models.ForeignKey(Membres, on_delete=models.CASCADE, to_field='code', db_column='MEMBRE_CODE') 
@@ -439,6 +465,7 @@ class MembresMediasSociaux(models.Model):
 
     class Meta:
         db_table = 'MEMBRES_MEDIAS_SOCIAUX'
+
 
 class Photos(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
@@ -454,6 +481,7 @@ class Photos(models.Model):
 
     class Meta:
         db_table = 'PHOTOS'
+
 
 class PiecesUnites(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
@@ -478,6 +506,7 @@ class PiecesUnites(models.Model):
     class Meta:
         db_table = 'PIECES_UNITES'
 
+
 class Remarques(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     no_inscription = models.ForeignKey(Inscriptions, on_delete=models.CASCADE, related_name='remarques', db_column='NO_INSCRIPTION')  
@@ -490,6 +519,7 @@ class Remarques(models.Model):
 
     class Meta:
         db_table = 'REMARQUES'
+
 
 class Renovations(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
@@ -504,6 +534,7 @@ class Renovations(models.Model):
 
     class Meta:
         db_table = 'RENOVATIONS'
+
 
 class UnitesDetaillees(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
@@ -531,6 +562,7 @@ class UnitesDetaillees(models.Model):
     class Meta:
         db_table = 'UNITES_DETAILLEES'
 
+
 class UnitesSommaires(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     no_inscription = models.ForeignKey(Inscriptions, on_delete=models.CASCADE, related_name='TYPE_UNITE_SOM', db_column='NO_INSCRIPTION') 
@@ -543,6 +575,7 @@ class UnitesSommaires(models.Model):
 
     class Meta:
         db_table = 'UNITES_SOMMAIRES'
+
 
 class VisitesLibres(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
@@ -558,7 +591,7 @@ class VisitesLibres(models.Model):
     lien_visite_virt = models.CharField(db_column='LIEN_VISITE_VIRT', max_length=255, blank=True, null=True)  
 
     class Meta:
-        db_table = 'VISITES_LIBRES' 
+        db_table = 'VISITES_LIBRES'
 
     @property
     def date_debut_as_date(self):
@@ -571,3 +604,42 @@ class VisitesLibres(models.Model):
         if self.date_fin:
             return datetime.strptime(self.date_fin, "%Y/%m/%d").date()
         return None
+
+    @property
+    def heure_debut_as_time(self):
+        if self.heure_debut:
+            return datetime.strptime(self.heure_debut, "%H:%M").time()
+        return None
+
+    @property
+    def heure_fin_as_time(self):
+        if self.heure_fin:
+            return datetime.strptime(self.heure_fin, "%H:%M").time()
+        return None
+    
+    @property
+    def is_active_now(self):
+        if not all([
+            self.date_debut_as_date,
+            self.date_fin_as_date,
+            self.heure_debut_as_time,
+            self.heure_fin_as_time
+        ]):
+            return False
+
+        now = timezone.localtime()
+
+        start = datetime.combine(
+            self.date_debut_as_date,
+            self.heure_debut_as_time
+        )
+
+        end = datetime.combine(
+            self.date_fin_as_date,
+            self.heure_fin_as_time
+        )
+
+        start = timezone.make_aware(start)
+        end = timezone.make_aware(end)
+
+        return start <= now <= end

@@ -173,4 +173,5 @@ docs/
 web_imgs/
 upload_images
 
-canada.bat
+activar_venv.bat
+canada.code-workspace

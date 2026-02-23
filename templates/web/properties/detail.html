@@ -74,11 +74,13 @@
 	<article>
         <div class="close">+</div>
 		<div id="confirm_message" class="confirm_message"></div>
-		<form method="post" id="formfiche" name="formfiche" action="{% url 'web:contact_messages' %}">
+		<form method="post" id="formfiche_detail" name="formfiche_detail" action="{% url 'web:contact_messages' %}">
             {% csrf_token %}
 			<h2 class="h2def" style="font-weight: 600;"></h2>
 			<input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" value="">
             <input type="hidden" id="sujet-2" name="sujet" value="">
+            <input type="hidden" id="tag" name="tag" value="{% if inscription.prix_demande %}Buyer{% else %}Rental{% endif %}">
+            <input type="hidden" id="broker" name="broker" value="{% if inscription.courtier_inscripteur_1 and inscription.courtier_inscripteur_1.code != '96839' %}{{ inscription.courtier_inscripteur_1 }}{% endif %}{% if inscription.courtier_inscripteur_2 and inscription.courtier_inscripteur_2.code != '96839' %}{{ inscription.courtier_inscripteur_2 }}{% endif %}">
 			<input type="text" name="prenom" placeholder="Full name" required="required" class="champs_tem">
 			<input type="tel" name="tel" placeholder="Phone" required="required" class="champs_tem">
 			<input type="email" name="email" placeholder="E-mail" required="required" class="champs_tem">
@@ -190,7 +192,29 @@
 				{{inscription.no_civique_debut}}{% if inscription.no_civique_fin %} - {{inscription.no_civique_fin}}{%endif%}, {{inscription.nom_rue_complet}}{% if inscription.appartement %}, apt. {{inscription.appartement}}{%endif%},
                 {{inscription.mun_code.description}}
 				<br />
-				<span>
+                {% with visites_actives=inscription.no_inscription_visites_libres.all %}
+                    {% for visite in visites_actives %}
+                        {% if visite.is_active_now %}
+                            <br>
+                            <span class="visit">
+                                <strong>
+                                    {% if language == 'en' %}Open house{% else %}Visite libre{% endif %}
+                                </strong>
+                            </span>
+
+                            {% if language == 'en' %}
+                                &nbsp;{% language 'en' %}
+                                {{ visite.date_debut_as_date|date:"l j F"|capfirst }}
+                                - {{ visite.heure_debut }} to {{ visite.heure_fin }}
+                                {% endlanguage %}
+                            {% else %}
+                                &nbsp;{{ visite.date_debut_as_date|date:"l j F"|capfirst }}
+                                - {{ visite.heure_debut }} à {{ visite.heure_fin }}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endwith %}
+				<!-- <span>
 					{% if language == "en" %}Centris No. {% else %}No Centris {%endif%}{{inscription.no_inscription}}
 					{% if inscription.no_inscription_visites_libres.all %}
                         </br>
@@ -205,7 +229,7 @@
                             {%endif%}
                         {% endfor %}
                     {%endif%}
-				</span>
+				</span> -->
 			</p>
 			<a href="{% url 'web:properties' language 'properties' %}" class="btn teal_btn">{% if language == "en" %}Back to properties{% else %}RETOUR AUX PROPRIÉTÉS{% endif %}</a>
 		</div>
@@ -2942,7 +2966,7 @@
 </section>
 
 <div id="load_spinner" style="position: fixed; z-index: 99999; left: 50%; top: 50%; width: 120px; height: 120px; display: none;">
-<div id="load_spinner" class="loader-container">
+<div id="load_spinner_" class="loader-container">
     <div class="loader"></div>
         <div class="row mt-4">
             <!-- <p class="font-weight-bold" style="font-size:2rem; color: #0095a2;">Processing</p> -->
@@ -3107,13 +3131,17 @@
 </script>
 <script>
     $(document).ready(function () {
-        $("#formfiche").on('submit', function (e) {
+        $("#formfiche_detail").on('submit', function (e) {
             e.preventDefault();
-            var form = $("#formfiche");
+            var form = $("#formfiche_detail");
             $.ajax({
                 type: "POST",
                 url: form.attr("action"),
                 data: form.serialize(),
+
+                beforeSend: function () {
+                    $("#load_spinner").fadeIn(200);
+                },
                 success: function (response) {
                     if (response.response == 1) {
                         var language = "{{ language }}";
@@ -3123,8 +3151,8 @@
                             var message = "Merci, votre message a bien été envoyé";
                         }
                         $("#confirm_message").html("<p>" + message + "</p>");
-                        $('#formfiche').hide();
-                        $('#formfiche')[0].reset();
+                        $('#formfiche_detail').hide();
+                        $('#formfiche_detail')[0].reset();
                     }
                     else {
                         var language = "{{ language }}";
@@ -3135,6 +3163,10 @@
                         }
                         $("#err").html(message);
                     }
+                },
+
+                complete: function () {
+                    $("#load_spinner").fadeOut(200);
                 }
             });
         });

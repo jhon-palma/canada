@@ -2,7 +2,7 @@ asgiref==3.8.1
 #backports.zoneinfo==0.2.1
 cachetools==5.4.0
 certifi==2024.6.2
-chardet==5.2.0
+# chardet==5.2.0
 charset-normalizer==3.3.2
 Django==5.1.1
 google-api-core==2.19.1
@@ -33,7 +33,8 @@ uritemplate==4.1.1
 urllib3==2.0.7
 django_ckeditor_5==0.2.13
 django-allauth==64.2.1
-googletrans==3.0.0
+# googletrans==3.0.0
+googletrans==4.0.0rc1
 requests-oauthlib==2.0.0
 jwt==1.3.1
 boto3==1.34.117

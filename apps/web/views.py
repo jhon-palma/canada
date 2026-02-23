@@ -25,7 +25,6 @@ from googleapiclient.discovery import build
 from django.utils.dateparse import parse_datetime
 
 
-
 class WebCalculator(TemplateView):
     template_name = 'web/calculator.html'
 
@@ -68,7 +67,6 @@ class WebIndex(View):
         }
         
         return render(request, self.template_name, context)
-
 
 
 class WebProperties(View):
@@ -178,7 +176,6 @@ def searchpropriete(request):
 
     json_data = {str(i + 1): val for i, val in enumerate(list(filtered_data["regions"].values()) + list(filtered_data["municipalites"].values()) + list(filtered_data["inscriptions"].values()))}
     return JsonResponse(json_data, safe=False)
-
 
 
 class SearchView(View):
@@ -358,8 +355,6 @@ class WebDetailProperty(View):
         except:
             redirect_option = 'properties' if language == 'en' else 'proprietes'
             return redirect("web:properties", language=language, option=redirect_option)
-        
-
 
 
 class WebPropertyRedirect(View):
@@ -374,7 +369,6 @@ class WebPropertyRedirect(View):
         except:
             propertie = False
             return redirect("web:properties", language=language, option=option+"s")
-            
 
 
 class WebVideos(View):
@@ -400,6 +394,7 @@ class WebVideos(View):
         }
         return render(request, self.template_name, context)
 
+
 def search_videos(request):
     print("entro")
     query = request.GET.get("q", "")
@@ -420,6 +415,7 @@ def search_videos(request):
     
     print(results)
     return JsonResponse({"videos": results})
+
 
 class WebContact(View):
     template_name = 'web/contact.html'
@@ -446,6 +442,7 @@ class WebContact(View):
 
         return render(request, self.template_name, context)
 
+
 class WebPolicy(View):
     template_name = 'web/policy.html'
 
@@ -466,6 +463,7 @@ class WebPolicy(View):
             'images':images_dict,
         }
         return render(request, self.template_name, context)
+
 
 class WebTeam(View):
     template_name = 'web/team.html'
@@ -490,6 +488,7 @@ class WebTeam(View):
             'data_meta':data_meta,
         }
         return render(request, self.template_name, context)
+
 
 class WebMemberDetail(View):
     template_name = 'web/member.html'
@@ -574,6 +573,8 @@ def contact_messages(request):
         new.nom = request.POST.get('prenom')
         new.courriel = request.POST.get('email')
         new.sujet = request.POST.get('sujet')
+        new.tag = request.POST.get('tag')
+        new.broker = request.POST.get('broker')
         new.message = request.POST.get('comment')
         new.adresse = request.POST.get('adresse')
         new.telephone = request.POST.get('tel')
@@ -581,6 +582,7 @@ def contact_messages(request):
         return JsonResponse({'response': 1})
     else:
         return JsonResponse({'response': 0})
+
 
 def searchMember(request):
     query = request.GET.get('term')
@@ -665,6 +667,7 @@ def statistics(request):
     }
     return render(request, 'statistics.html', context)
 
+
 class SearchProperties(ListView):
     template_name = 'web/properties/list.html'
     
@@ -705,8 +708,6 @@ class SearchProperties(ListView):
         return render(request, self.template_name, context)
 
 
-
-
 def metadata(request):
     objects = MetaDataWeb.objects.all()
     return render(request, 'web/metadata/list.html',{'objects':objects})
@@ -726,4 +727,3 @@ def update_metadata(request, pk):
         meta_form = MetadataForm(instance=meta)
     
     return render(request, 'web/metadata/update.html', {'meta_form': meta_form})
-

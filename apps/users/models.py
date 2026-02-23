@@ -20,8 +20,8 @@ class Profile(models.Model):
     order = models.SmallIntegerField(blank=True, null=True)
     membre = models.ForeignKey(Membres, on_delete=models.CASCADE, blank=True, null=True)
     type = models.ManyToManyField(TypeUser, through='ProfileTypeUser', related_name='type_users', blank=True)
-    occupation = models.CharField(blank=True, max_length=60, null=True)
-    occupation_anglaise = models.CharField(blank=True, max_length=60, null=True)
+    occupation = models.CharField(blank=True, max_length=100, null=True)
+    occupation_anglaise = models.CharField(blank=True, max_length=100, null=True)
     facebook  = models.CharField(blank=True, null=False, max_length=60)
     instagram = models.CharField(blank=True, null=False, max_length=60)
     linkedin = models.CharField(blank=True, null=False, max_length=60)
@@ -49,7 +49,6 @@ class ProfileTypeUser(models.Model):
     class Meta:
         db_table = 'profile_type_user'
         verbose_name = 'profile_type_user'
-
 
 
 class Log(models.Model):

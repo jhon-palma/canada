@@ -8,6 +8,39 @@
 	.__fijocont{
 		background-image: url("{{ images.contact_team_background.image.url }}");
 	}
+
+    .loader-container {
+        position: fixed;
+        z-index: 1001;
+        background: rgba(0, 0, 0, 0.6);
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+    }
+  
+    .loader {
+        border: 16px solid #f3f3f3; /* Light grey */
+        border-top: 16px solid #1194A1; /* Blue */
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+        0% {
+        transform: rotate(0deg);
+        }
+        100% {
+        transform: rotate(360deg);
+        }
+    }
 </style>
 
 <section class="banner nothome">
@@ -25,6 +58,7 @@
 				<p class="__txoform"><span style="font-weight: 200; color: black;">{{ labels.contact.text.one.upper }}</span><br><span> {{ labels.contact.text.two.upper }}</span></p>
 				<input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" value="" />
 				<input type="hidden" id="sujet" name="sujet" value="Contact">
+                <input type="hidden" id="tag" name="tag" value="Contact Us">
 				<div class="ligne_calcul half">
 					<div class="box_ctem">
 						<input type="text" name="prenom" id="prenom" class="champs_tem" required="required" placeholder="*{{ labels.contact.text.three }}"/>
@@ -131,6 +165,7 @@
 			<p class="h2def"><strong>{{ labels.work.button.three }}</strong></p>
 			<input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" value="" />
             <input type="hidden" id="sujet" name="sujet" value="Book a Call with Us">
+            <input type="hidden" id="tag" name="tag" value="Contact">
 			<input type="text" name="prenom" id="prenom" class="champs_tem" placeholder="{{ labels.work.placeholder.one }} *" required="required" />
 			<input type="email" name="email" id="email" class="champs_tem"  placeholder="{{ labels.work.placeholder.two }} *" required="required" />
 			<input type="tel" name="tel" id="tel" class="champs_tem" placeholder="{{ labels.work.placeholder.three }} *" onKeyPress="return scanTouche(event)" required="required" />
@@ -165,6 +200,14 @@
 </section>
 
 <div style="clear:both;"></div>
+<div id="load_spinner" style="position: fixed; z-index: 99999; left: 50%; top: 50%; width: 120px; height: 120px; display: none;">
+<div id="load_spinner_" class="loader-container">
+    <div class="loader"></div>
+        <div class="row mt-4">
+            <!-- <p class="font-weight-bold" style="font-size:2rem; color: #0095a2;">Processing</p> -->
+        </div>
+    </div>
+</div>
 <script>
     $(document).ready(function () {
 		$("#formContact").on('submit', function (e) {
@@ -174,6 +217,9 @@
                 type: "POST",
                 url: form.attr("action"),
                 data: form.serialize(),
+                beforeSend: function () {
+                    $("#load_spinner").fadeIn(200);
+                },
                 success: function (response) {
                     console.log(response);
                     if (response.response == 1) {
@@ -196,6 +242,9 @@
                         }
                         $("#err").html(message);
                     }
+                },
+                complete: function () {
+                    $("#load_spinner").fadeOut(200);
                 }
             });
         });
@@ -210,6 +259,9 @@
                 type: "POST",
                 url: form.attr("action"),
                 data: form.serialize(),
+                beforeSend: function () {
+                    $("#load_spinner").fadeIn(200);
+                },
                 success: function (response) {
                     console.log(response);
                     if (response.response == 1) {
@@ -232,6 +284,9 @@
                         }
                         $("#err").html(message);
                     }
+                },
+                complete: function () {
+                    $("#load_spinner").fadeOut(200);
                 }
             });
         });

@@ -12,6 +12,38 @@
         background-image: url("{{ images.work_next_steps.image.url }}");
         
     }
+    .loader-container {
+        position: fixed;
+        z-index: 1001;
+        background: rgba(0, 0, 0, 0.6);
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+    }
+  
+    .loader {
+        border: 16px solid #f3f3f3; /* Light grey */
+        border-top: 16px solid #1194A1; /* Blue */
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+        0% {
+        transform: rotate(0deg);
+        }
+        100% {
+        transform: rotate(360deg);
+        }
+    }
 </style>
 
 <section class="banner nothome">
@@ -158,6 +190,8 @@
 			<p class="link_download">{{ labels.work.text.nine }}</p>
 			<input type="hidden" id="g-recaptcha-response-buyers" name="g-recaptcha-response-buyers" value="" />
             <input type="hidden" id="sujet" name="sujet" value="I Want to Buy">
+            <input type="hidden" id="tag" name="tag" value="Buyer">
+            <input type="hidden" id="broker" name="broker" value="Booklet Download">
 			<input type="text" name="prenom" id="prenom-buyers" class="champs_tem" placeholder="{{ labels.work.placeholder.one }} *" required="required" />
 			<input type="email" name="email" id="email-buyers" class="champs_tem" placeholder="{{ labels.work.placeholder.two }} *" required="required" />
 			<input type="tel" name="tel" id="tel-buyers" class="champs_tem" placeholder="{{ labels.work.placeholder.three }} *" onKeyPress="return scanTouche(event)" required="required" />
@@ -188,6 +222,8 @@
 			<p class="link_download">{{ labels.work.text.nine }}</p>
 			<input type="hidden" id="g-recaptcha-response-listing" name="g-recaptcha-response-listing" value="" />
             <input type="hidden" id="sujet" name="sujet" value="I Want to Sell">
+            <input type="hidden" id="tag" name="tag" value="Seller">
+            <input type="hidden" id="broker" name="broker" value="Booklet Download">
 			<input type="text" name="prenom" id="prenom-listing" class="champs_tem" placeholder="{{ labels.work.placeholder.one }} *" required="required" />
 			<input type="email" name="email" id="email-listing" class="champs_tem" placeholder="{{ labels.work.placeholder.two }} *" required="required" />
 			<input type="tel" name="tel" id="tel-listing" class="champs_tem" placeholder="{{ labels.work.placeholder.three }} *" onKeyPress="return scanTouche(event)" required="required" />
@@ -215,6 +251,8 @@
 			<p class="h2def"><strong>{{ labels.work.button.three }}</strong></p>
 			<input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" value="" />
             <input type="hidden" id="sujet" name="sujet" value="Book a Call with Us">
+            <input type="hidden" id="tag" name="tag" value="{% if type_option == 'one' %}Buyer{% else %}Seller{% endif %}">
+            <input type="hidden" id="broker" name="broker" value="Book a Call">
 			<input type="text" name="prenom" id="prenom" class="champs_tem" placeholder="{{ labels.work.placeholder.one }} *" required="required" />
 			<input type="email" name="email" id="email" class="champs_tem" placeholder="{{ labels.work.placeholder.two }} *" required="required" />
 			<input type="tel" name="tel" id="tel" class="champs_tem" placeholder="{{ labels.work.placeholder.three }} *" onKeyPress="return scanTouche(event)" required="required" />
@@ -242,6 +280,8 @@
 			<p class="h2def"><strong>{{ labels.work.button.six }}</strong></p>
 			<input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" value="" />
             <input type="hidden" id="sujet" name="sujet" value="Book a Call with Us">
+            <input type="hidden" id="tag" name="tag" value="Buyer">
+            <input type="hidden" id="broker" name="broker" value="Consultation Request">
 			<input type="text" name="prenom" id="prenom" class="champs_tem" placeholder="{{ labels.work.placeholder.one }} *" required="required" />
 			<input type="email" name="email" id="email" class="champs_tem" placeholder="{{ labels.work.placeholder.two }} *" required="required" />
 			<input type="tel" name="tel" id="tel" class="champs_tem" placeholder="{{ labels.work.placeholder.three }} *" onKeyPress="return scanTouche(event)" required="required" />
@@ -262,7 +302,14 @@
         <span class="close">+</span>
 	</article>
 </section>
-
+<div id="load_spinner" style="position: fixed; z-index: 99999; left: 50%; top: 50%; width: 120px; height: 120px; display: none;">
+<div id="load_spinner_" class="loader-container">
+    <div class="loader"></div>
+        <div class="row mt-4">
+            <!-- <p class="font-weight-bold" style="font-size:2rem; color: #0095a2;">Processing</p> -->
+        </div>
+    </div>
+</div>
 <script>
 
     $(document).ready(function () {
@@ -274,6 +321,9 @@
                 type: "POST",
                 url: form.attr("action"),
                 data: form.serialize(),
+                beforeSend: function () {
+                    $("#load_spinner").fadeIn(200);
+                },
                 success: function (response) {
                     if (response.response == 1) {
                         var language = "{{ language }}";
@@ -295,6 +345,9 @@
                         }
                         $("#err").html(message);
                     }
+                },
+                complete: function () {
+                    $("#load_spinner").fadeOut(200);
                 }
             });
         });
@@ -306,6 +359,9 @@
                 type: "POST",
                 url: form.attr("action"),
                 data: form.serialize(),
+                beforeSend: function () {
+                    $("#load_spinner").fadeIn(200);
+                },
                 success: function (response) {
                     console.log(response);
                     if (response.response == 1) {
@@ -315,9 +371,9 @@
                         } else {
                             var link = '<a target="_blank" href="{% static "web/pdf/Buyers booklet FR - LJ Immobilier - ORIENTATION EN MATIERE ACHAT IMMOBILIER 2026.pdf" %}" download>Cliquez ici pour télécharger la brochure de l\'acheteur</a>';
                         }
+						$('#formBuyers').hide();
                         $("#confirmationBuyers").html("<p><p>" + link + "</p></p>");
 						// $('#formBuyers')[0].reset();
-						$('#formBuyers').hide();
                     }
                     else {
                         var language = "{{ language }}";
@@ -328,6 +384,9 @@
                         }
                         $("#errBuyers").html(message);
                     }
+                },
+                complete: function () {
+                    $("#load_spinner").fadeOut(200);
                 }
             });
         });
@@ -339,6 +398,9 @@
                 type: "POST",
                 url: form.attr("action"),
                 data: form.serialize(),
+                beforeSend: function () {
+                    $("#load_spinner").fadeIn(200);
+                },
                 success: function (response) {
                     if (response.response == 1) {
                         var language = "{{ language }}";
@@ -347,9 +409,9 @@
                         } else {
                             var link = '<a target="_blank" href="{% static "web/pdf/Listing booklet FR - LJ Immobilier - ORIENTATION EN MATIERE DE VENTE IMMOBILIERE 2026.pdf" %}" download>Cliquez ici pour télécharger la brochure du vendeur</a>';
                         }
+						$('#formListing').hide();
                         $("#confirmationListing").html("<p>" + link + "</p>");
 						$('#formListing')[0].reset();
-						$('#formListing').hide();
                     }
                     else {
                         var language = "{{ language }}";
@@ -360,6 +422,9 @@
                         }
                         $("#errListing").html(message);
                     }
+                },
+                complete: function () {
+                    $("#load_spinner").fadeOut(200);
                 }
             });
         });
@@ -371,6 +436,9 @@
                 type: "POST",
                 url: form.attr("action"),
                 data: form.serialize(),
+                beforeSend: function () {
+                    $("#load_spinner").fadeIn(200);
+                },
                 success: function (response) {
                     if (response.response == 1) {
                         var language = "{{ language }}";
@@ -392,6 +460,9 @@
                         }
                         $("#err").html(message);
                     }
+                },
+                complete: function () {
+                    $("#load_spinner").fadeOut(200);
                 }
             });
         });

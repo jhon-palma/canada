@@ -1,4 +1,5 @@
 {% extends 'users/base.html' %}
+{% load tz %}
 {% block title %}Solicitudes WEB{% endblock %}
 {% block head_page %}
     {% load static %}
@@ -231,6 +232,8 @@
                                 <th>Teléfono</th>
                                 <th>Mensaje</th>
                                 <th>Origen</th>
+                                <th>Tag</th>
+                                <th>Broker</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -241,8 +244,10 @@
                                     <td class="text-capitalize">{{ message.nom|default_if_none:'' }}</td>
                                     <td class="text-lowercase">{{ message.courriel }}</td>
                                     <td>{{ message.telephone|default_if_none:'' }}</td>
-                                    <td>{{ message.message|default_if_none:'Sin mensaje'|truncatechars:80 }}</td>
+                                    <td>{{ message.message|default_if_none:'Sin mensaje'|truncatechars:40 }}</td>
                                     <td><strong>{{ message.sujet.upper }}</strong></td>
+                                    <td>{{ message.tag.upper }}</td>
+                                    <td>{{ message.broker.upper }}</td>
                                     <td>
                                         <a href="#" class="action-icon icon-view" 
                                            data-id="{{ message.id }}"
@@ -252,6 +257,8 @@
                                            data-mensaje="{{ message.message|default:'Sin mensaje' }}"
                                            data-direccion="{{ message.adresse|default:'' }}"
                                            data-origen="{{ message.sujet }}"
+                                           data-tag="{{ message.tag }}"
+                                           data-broker="{{ message.broker }}"
                                            data-fecha="{{ message.date_creation|date:'d/m/Y H:i' }}"
                                            data-leido="{{ message.read|yesno:'Sí,No' }}"
                                            title="Ver detalles">
@@ -356,6 +363,14 @@
                             <span id="detailOrigen" style="color: #333; font-weight: 600;"></span>
                         </div>
                         <div class="detail-row">
+                            <strong style="color: #555; display: inline-block; width: 120px;">Tag:</strong>
+                            <span id="detailTag" style="color: #333; font-weight: 600;"></span>
+                        </div>
+                        <div class="detail-row">
+                            <strong style="color: #555; display: inline-block; width: 120px;">Broker:</strong>
+                            <span id="detailBroker" style="color: #333; font-weight: 600;"></span>
+                        </div>
+                        <div class="detail-row">
                             <strong style="color: #555; display: inline-block; width: 120px;">Fecha:</strong>
                             <span id="detailFecha" style="color: #666;"></span>
                         </div>
@@ -412,6 +427,8 @@
                 const mensaje = $(this).data('mensaje');
                 const direccion = $(this).data('direccion');
                 const origen = $(this).data('origen');
+                const tag = $(this).data('tag');
+                const broker = $(this).data('broker');
                 const fecha = $(this).data('fecha');
                 
                 // Guardar el ID del mensaje actual en el modal de detalle
@@ -424,6 +441,8 @@
                 $('#detailTelefono').text(telefono);
                 $('#detailDireccion').text(direccion);
                 $('#detailOrigen').text(origen);
+                $('#detailTag').text(tag);
+                $('#detailBroker').text(broker);
                 $('#detailFecha').text(fecha);
                 $('#detailMensaje').text(mensaje);
                 $('#detailModal').modal('show');

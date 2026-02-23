@@ -17,6 +17,8 @@ class Formulaire_contact(models.Model):
     read = models.BooleanField(default=False)
     date_creation = models.DateTimeField(auto_now_add=True)
     date_lecture = models.DateTimeField(null=True, blank=True)
+    tag = models.CharField(max_length=50, blank=True, null=True)
+    broker = models.CharField(max_length=100, blank=True, null=True)
     
     def save(self, *args, **kwargs):
         if not self.no_formulaire:
@@ -26,7 +28,6 @@ class Formulaire_contact(models.Model):
             else:
                 self.no_formulaire = 1
         super(Formulaire_contact, self).save(*args, **kwargs)
-
 
 
 class Statistics(models.Model):
@@ -40,7 +41,6 @@ class Statistics(models.Model):
     class Meta:
         db_table = 'web_statistics'
         verbose_name = 'web_statistics'
-    
 
 
 class ImagesWeb(models.Model):
