@@ -125,7 +125,6 @@ USE_HTTPS = True
 
 LANGUAGE_CODE = 'fr-FR'
 TIME_ZONE = 'America/Toronto'
-USE_TZ = True
 USE_I18N = True
 USE_TZ = True
 USE_L10N = True

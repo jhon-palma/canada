@@ -333,30 +333,67 @@ $(document).ready(function(){
 
 	});
 
-	
+	function YTid(url) {
+		var regExp = /(?:youtube\.com\/(?:.*v=|shorts\/)|youtu\.be\/)([^#&?]{11})/;
+		var match = url.match(regExp);
+		return match ? match[1] : null;
+	}
+
 
 	$('.capsule .bouton, .capsule .img, .capswrap .img, .videoshomecont a').click(function(e){
 
 		e.preventDefault();
 
 		var url = $(this).attr('href');
+		if(!url) return;
 
-		var yt = "youtube";
+		var isYoutube = url.includes("youtube") || url.includes("youtu.be");
+		var isVimeo   = url.includes("vimeo");
 
-		var vim = "vimeo";
+		var iframe = "";
 
-		if(url.indexOf(yt) != -1){
+		if(isYoutube){
 
-			$('.poppod article').html("<iframe width='560' height='315' src='https://www.youtube.com/embed/"+YTid(url)+"' frameborder='0' allow='autoplay; encrypted-media' allowfullscreen></iframe>");
+			var videoId = YTid(url);
 
-		}else if(url.indexOf(vim) != -1){
+			if(!videoId){
+				console.error("ID de YouTube inválido:", url);
+				return;
+			}
 
-			$('.poppod article').html("<iframe src='https://player.vimeo.com/video/"+GetVimeoIDbyUrl(url)+"' width='640' height='360' frameborder='0' webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>");
+			iframe = `
+				<iframe width="560" height="315"
+					src="https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1"
+					referrerpolicy="strict-origin-when-cross-origin"
+					frameborder="0"
+					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+					allowfullscreen>
+				</iframe>
+			`;
 
+		} else if(isVimeo){
+
+			var vimeoId = GetVimeoIDbyUrl(url);
+
+			if(!vimeoId){
+				console.error("ID de Vimeo inválido:", url);
+				return;
+			}
+
+			iframe = `
+				<iframe src="https://player.vimeo.com/video/${vimeoId}"
+					width="640" height="360"
+					frameborder="0"
+					allow="autoplay; fullscreen; picture-in-picture"
+					allowfullscreen>
+				</iframe>
+			`;
 		}
 
-
-		$('.poppod').fadeIn();
+		if(iframe){
+			$('.poppod article').html(iframe);
+			$('.poppod').fadeIn();
+		}
 
 	});
 
