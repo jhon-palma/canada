@@ -175,13 +175,23 @@
                                                             <img loading="lazy" decoding="async" src="{{ photo.photourl }}" loading="lazy" decoding="async" alt="{% if language == 'en' %}{{ inscription.genre_propriete.description_anglaise }}{% else %}{{ inscription.genre_propriete.description_francaise }}{% endif %}
                                                             {% if inscription.prix_demande %}{% if language == 'en' %} for sale{% else %}à vendre {% endif %}{% endif %}{% if inscription.prix_location_demande %}
                                                             {% if language == 'en' %}for rent{% else %}à louer{% endif %}{% endif %} {{ inscription.mun_code.description }}" title="{% if language == 'en' %}{{ inscription.genre_propriete.description_anglaise }}{% else %}{{ inscription.genre_propriete.description_francaise }}{% endif %}{% if inscription.prix_demande %}{% if language == 'en' %} for sale{% else %}à vendre{% endif %}{% endif %}{% if inscription.prix_location_demande %}{% if language == 'en' %} for rent{% else %}à louer{% endif %}{% endif %} {{ inscription.mun_code.description }}" />
-                                                            {% for visite in inscription.no_inscription_visites_libres.all %}
-                                                                {% if language == 'en' %}
-                                                                    <img src="{% static 'web/images/newicons/visite_libreen.png' %}" alt="Vendu" class="marq_vendu">
-                                                                {% else %}
-                                                                    <img src="{% static 'web/images/newicons/visite_libre.png' %}" alt="Vendu" class="marq_vendu">
-                                                                {%endif%}
-                                                            {% endfor %}
+                                                            {% with visites_actives=inscription.no_inscription_visites_libres.all %}
+                                                                {% for visite in visites_actives %}
+                                                                    {% if visite.is_active_now %}
+                                                                        <br>
+                                                                        <span class="visit">
+                                                                            <strong>
+                                                                                {% if language == 'en' %}Open house{% else %}Visite libre{% endif %}
+                                                                            </strong>
+                                                                        </span>
+                                                                        {% if language == 'en' %}
+                                                                            <img src="{% static 'web/images/newicons/visite_libreen.png' %}" alt="Vendu" class="marq_vendu">
+                                                                        {% else %}
+                                                                            <img src="{% static 'web/images/newicons/visite_libre.png' %}" alt="Vendu" class="marq_vendu">
+                                                                        {% endif %}
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            {% endwith %}
                                                             {% if inscription.code_statut.valeur == "VE" %}
                                                                 {% if language == 'en' %}
                                                                     <img src="{% static 'web/images/newicons/venduen.png' %}" alt="Vendu" class="marq_vendu">

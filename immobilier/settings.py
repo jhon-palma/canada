@@ -124,7 +124,7 @@ USE_HTTPS = True
 # --------- CONFIGURACION DE LENGUAJE ----------------
 
 LANGUAGE_CODE = 'fr-FR'
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Toronto'
 USE_I18N = True
 USE_TZ = True
 USE_L10N = True

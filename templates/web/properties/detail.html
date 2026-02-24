@@ -239,10 +239,10 @@
 <section class="piecesbloc">
 	<div class="fichewrap wrap">
         {% if inscription.nb_pieces %}
-		<div class="piece">
-			<img src="{% static 'web/images/pieceico.png' %}" alt="Room(s)" style="width:55px;height:55px;" />
-			<p>{{inscription.nb_pieces}} {% if language == "en" %}Room(s){% else %}Pièce(s){% endif %}</p>
-		</div>
+            <div class="piece">
+                <img src="{% static 'web/images/pieceico.png' %}" alt="Room(s)" style="width:55px;height:55px;" />
+                <p>{{inscription.nb_pieces}} {% if language == "en" %}Room(s){% else %}Pièce(s){% endif %}</p>
+            </div>
         {% endif %}
         {% if inscription.nb_chambres %}
             <div class="piece">
@@ -272,6 +272,12 @@
                 </p>
             </div>
         {%endif%}
+        {% if inscription.type_copropriete %}
+            <div class="piece">
+                <img src="{% static 'web/images/Divided_Undivided.png' %}" alt="Room(s)" style="width:55px;height:55px;" />
+                <p>{% if language == "en" %}{{ inscription.type_copropriete.description_anglaise }}{% else %}{{ inscription.type_copropriete.description_francaise }}{% endif %}</p>
+            </div>
+        {% endif %}
 	</div>
 </section>
 
