@@ -1,7 +1,54 @@
 {% load tags %}{% load static %}
+<style>
+	.banner{
+		background-image: url("{{ images.contact_banner.image.url }}");
+	}
+	.__fijocont{
+		background-image: url("{{ images.contact_team_background.image.url }}");
+	}
 
+    .loader-container {
+        position: fixed;
+        z-index: 1001;
+        background: rgba(0, 0, 0, 0.6);
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+    }
+  
+    .loader {
+        border: 16px solid #f3f3f3; /* Light grey */
+        border-top: 16px solid #1194A1; /* Blue */
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+        0% {
+        transform: rotate(0deg);
+        }
+        100% {
+        transform: rotate(360deg);
+        }
+    }
+</style>
 {% include 'web/free_evaluation.html' %}
-
+<div id="load_spinner" style="position: fixed; z-index: 99999; left: 50%; top: 50%; width: 120px; height: 120px; display: none;">
+<div id="load_spinner_" class="loader-container">
+    <div class="loader"></div>
+        <div class="row mt-4">
+            <!-- <p class="font-weight-bold" style="font-size:2rem; color: #0095a2;">Processing</p> -->
+        </div>
+    </div>
+</div>
 <div id="privacy-policies-message" class="displayed">
     <div class="close" onclick="acceptCookies()"><i class="fa fa-times"></i></div>
     <div class="content">
@@ -125,7 +172,10 @@
                             type: "POST",                
                             url: form.attr("action"),                
                             data: form.serialize(), 
-                            dataType: 'json',               
+                            dataType: 'json',
+                            beforeSend: function () {
+                                $("#load_spinner").fadeIn(200);
+                            },
                             success: function (response) {  
                                 if (response.response == 1) { 
                                     var language = "{{ language }}";
@@ -134,20 +184,23 @@
                                     } else {
                                         var message = "Merci, votre message a bien été envoyé";
                                     }                       
-                                    $("#formContactFooter").html(message);                    
-                                    }                   
-                                    else {
-                                        var language = "{{ language }}";
-                                        if (language === "en") {
-                                            var message = "Required fields";
-                                        } else {
-                                            var message = "Champs obligatoires";
-                                        }
-                                        $("#errFooter").html(message);                    
-                                    }                
-                                }            
-                            });        
-                        });		
+                                        $("#formContactFooter").html(message);                    
+                                }                   
+                                else {
+                                    var language = "{{ language }}";
+                                    if (language === "en") {
+                                        var message = "Required fields";
+                                    } else {
+                                        var message = "Champs obligatoires";
+                                    }
+                                    $("#errFooter").html(message);                    
+                                }                
+                            },
+                            complete: function () {
+                                $("#load_spinner").fadeOut(200);
+                            }
+                        });        
+                    });		
                     $("#mc-embedded-subscribe-form").on('submit', function (e) {            
                         e.preventDefault();            
                         var form = $("#mc-embedded-subscribe-form");            

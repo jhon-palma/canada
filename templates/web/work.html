@@ -279,8 +279,8 @@
 		<form id="formContactBook" method="post" action="{% url 'web:contact_messages' %}">{% csrf_token %}
 			<p class="h2def"><strong>{{ labels.work.button.six }}</strong></p>
 			<input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" value="" />
-            <input type="hidden" id="sujet" name="sujet" value="Book a Call with Us">
-            <input type="hidden" id="tag" name="tag" value="Buyer">
+            <input type="hidden" id="sujet" name="sujet" value="Book a buyers consultation">
+            <input type="hidden" id="tag" name="tag" value="{% if type_option == 'one' %}Buyer{% else %}Seller{% endif %}">
             <input type="hidden" id="broker" name="broker" value="Consultation Request">
 			<input type="text" name="prenom" id="prenom" class="champs_tem" placeholder="{{ labels.work.placeholder.one }} *" required="required" />
 			<input type="email" name="email" id="email" class="champs_tem" placeholder="{{ labels.work.placeholder.two }} *" required="required" />

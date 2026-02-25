@@ -244,7 +244,7 @@
                                     <td class="text-capitalize">{{ message.nom|default_if_none:'' }}</td>
                                     <td class="text-lowercase">{{ message.courriel }}</td>
                                     <td>{{ message.telephone|default_if_none:'' }}</td>
-                                    <td>{{ message.message|default_if_none:'Sin mensaje'|truncatechars:40 }}</td>
+                                    <td>{{ message.message|default_if_none:'Sin mensaje'|truncatechars:30 }}</td>
                                     <td><strong>{{ message.sujet.upper }}</strong></td>
                                     <td>{{ message.tag.upper }}</td>
                                     <td>{{ message.broker.upper }}</td>

@@ -24,7 +24,7 @@
                                     {% if language == "en" %}<a href="{% url 'blog:post_detail' language=language slug=article.slug_anglaise %}">{{ article.title_anglaise }}{% else %}<a href="{% url 'blog:post_detail' language=language  slug=article.slug_francaise %}">{{ article.title_francaise }}{% endif %}</a>
                                 </h3>
                                 <div class="bwp-post-excerpt entry-content">
-                                    <p>{% if language == "en" %}{{ article.content_anglaise|slice:":150"|safe }}{% else %}{{ article.content_anglaise|slice:":150"|safe }}{% endif %}...</p>
+                                    <p>{% if language == "en" %}{{ article.content_anglaise|striptags|safe|truncatechars:150 }}{% else %}{{ article.content_francaise|striptags|safe|truncatechars:150 }}{% endif %}...</p>
                                 </div>
                                 {% if language == "en" %}<a href="{% url 'blog:post_detail' language=language slug=article.slug_anglaise %}" class="bouton">Read{% else %}<a href="{% url 'blog:post_detail' language=language slug=article.slug_francaise %}" class="bouton">Lire{% endif %}</a>
                             </article>
