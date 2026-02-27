@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.db.models import Q
 from django.db import transaction
-
+import re
 from apps.web.models import Formulaire_contact
 
 
@@ -10,6 +10,25 @@ class Command(BaseCommand):
 
     @transaction.atomic
     def handle(self, *args, **options):
+
+        self.stdout.write(self.style.WARNING("Limpiando campo sujet..."))
+
+        records = Formulaire_contact.objects.all().only("id", "sujet")
+
+        cleaned_count = 0
+
+        for obj in records.iterator():
+            original = obj.sujet or ""
+
+            cleaned = re.sub(r"[^a-zA-Z0-9\s]", "", original)
+
+            cleaned = re.sub(r"\s+", " ", cleaned).strip()
+
+            if cleaned != original:
+                Formulaire_contact.objects.filter(id=obj.id).update(sujet=cleaned)
+                cleaned_count += 1
+
+        self.stdout.write(self.style.SUCCESS(f"Registros limpiados: {cleaned_count}"))
 
         self.stdout.write(self.style.WARNING("Iniciando actualización masiva..."))
 
@@ -24,6 +43,18 @@ class Command(BaseCommand):
         total_updates += updated
         self.stdout.write(f"Footer Web actualizados: {updated}")
 
+        updated_tag = Formulaire_contact.objects.filter(
+            sujet__iexact="Book a Call with Us"
+        ).filter(
+            Q(tag__isnull=True) | Q(tag__exact="")
+        ).update(tag="Buyer")
+
+        updated_broker = Formulaire_contact.objects.filter(
+            sujet__iexact="Book a Call with Us"
+        ).filter(
+            Q(broker__isnull=True) | Q(broker__exact="")
+        ).update(broker="Consultation Request")
+        
         updated_tag = Formulaire_contact.objects.filter(
             sujet__iexact="I Want to Buy"
         ).filter(
@@ -62,12 +93,48 @@ class Command(BaseCommand):
 
         total_updates += updated
         self.stdout.write(f"Schedule a visit actualizados: {updated}")
+        
+        updated = Formulaire_contact.objects.filter(
+            sujet__iexact="Schedule a visit"
+        ).filter(
+            Q(broker__isnull=True) | Q(broker__exact="")
+        ).update(broker="LJ Aguinaga")
+
+        total_updates += updated
+        self.stdout.write(f"Schedule a visit actualizados: {updated}")
+
+        updated = Formulaire_contact.objects.filter(
+            sujet__iexact="Button properties"
+        ).filter(
+            Q(tag__isnull=True) | Q(tag__exact="")
+        ).update(tag="Buyer")
+
+        total_updates += updated
+        self.stdout.write(f"Schedule a visit actualizados: {updated}")
+        
+        updated = Formulaire_contact.objects.filter(
+            sujet__iexact="Button properties"
+        ).filter(
+            Q(broker__isnull=True) | Q(broker__exact="")
+        ).update(broker="LJ Aguinaga")
+
+        total_updates += updated
+        self.stdout.write(f"Schedule a visit actualizados: {updated}")
 
         updated = Formulaire_contact.objects.filter(
             sujet__iexact="Ask more information"
         ).filter(
             Q(tag__isnull=True) | Q(tag__exact="")
         ).update(tag="Buyer")
+
+        total_updates += updated
+        self.stdout.write(f"Ask more information actualizados: {updated}")
+       
+        updated = Formulaire_contact.objects.filter(
+            sujet__iexact="Ask more information"
+        ).filter(
+            Q(broker__isnull=True) | Q(broker__exact="")
+        ).update(broker="LJ Aguinaga")
 
         total_updates += updated
         self.stdout.write(f"Ask more information actualizados: {updated}")

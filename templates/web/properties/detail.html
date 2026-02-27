@@ -2950,6 +2950,8 @@
 			<p class="h2def"><strong>{{ labels.index.button.eleven }}</strong></p>
 			<input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response" value="" />
             <input type="hidden" id="sujet" name="sujet" value="Button properties">
+            <input type="hidden" id="tag" name="tag" value="{% if inscription.prix_demande %}Buyer{% else %}Rental{% endif %}">
+            <input type="hidden" id="broker" name="broker" value="{% if inscription.courtier_inscripteur_1 and inscription.courtier_inscripteur_1.code != '96839' %}{{ inscription.courtier_inscripteur_1 }}{% endif %}{% if inscription.courtier_inscripteur_2 and inscription.courtier_inscripteur_2.code != '96839' %}{{ inscription.courtier_inscripteur_2 }}{% endif %}">
 			<input type="text" name="prenom" id="prenom" class="champs_tem" placeholder="{{ labels.work.placeholder.one }} *" required="required" />
 			<input type="email" name="email" id="email" class="champs_tem" placeholder="{{ labels.work.placeholder.two }} *" required="required" />
 			<input type="tel" name="tel" id="tel" class="champs_tem" placeholder="{{ labels.work.placeholder.three }} *" onKeyPress="return scanTouche(event)" required="required" />

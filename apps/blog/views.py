@@ -67,7 +67,6 @@ def new_post(request):
             try:
                 post = form.save(commit=False)
                 post.authors = request.user
-                post.created_at = timezone.now() 
                 post.save()
                 messages.success(request, 'Post creado correctamente', 'succesful')
                 return redirect('blog:list_articles')

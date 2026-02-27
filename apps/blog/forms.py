@@ -3,7 +3,7 @@ from .models import Category, Comment
 from django_ckeditor_5.widgets import CKEditor5Widget
 from .models import Article
 from .validators import *
-
+from django.utils import timezone
 
 
 class CategoryAdminForm(forms.ModelForm):
@@ -35,10 +35,12 @@ class ArticleForm(forms.ModelForm):
         self.fields["m_title_f"].widget.attrs.update({"class": "form-control"})
         self.fields["m_description_a"].widget.attrs.update({"class": "form-control"})
         self.fields["m_description_f"].widget.attrs.update({"class": "form-control"})
+        if not self.instance.pk:
+            self.initial['date_hour'] = timezone.localtime().strftime('%Y-%m-%dT%H:%M')
 
     class Meta:
         model = Article
-        fields = ['title_francaise', 'title_anglaise', 'category','content_francaise', 'content_anglaise', 'image_francaise', 'image_anglaise', 'slug_francaise', 'slug_anglaise', 'm_title_a','m_title_f','m_description_a','m_description_f']
+        fields = ['title_francaise', 'title_anglaise', 'category','content_francaise', 'content_anglaise', 'image_francaise', 'image_anglaise', 'slug_francaise', 'slug_anglaise', 'm_title_a', 'm_title_f', 'date_hour', 'm_description_a', 'm_description_f']
         widgets = {
             "content_francaise": CKEditor5Widget(
                 attrs={"class": "django_ckeditor_5"}, config_name="extends"
@@ -46,11 +48,26 @@ class ArticleForm(forms.ModelForm):
             "content_anglaise": CKEditor5Widget(
                 attrs={"class": "django_ckeditor_5"}, config_name="extends"
             ),
+            'date_hour': forms.DateTimeInput(
+                attrs={"class": "form-control datetimepicker"},
+                format='%Y-%m-%dT%H:%M'
+            ),
         }
 
 
-
 class ArticleUpdateForm(forms.ModelForm):
+
+    date_hour = forms.DateTimeField(
+        input_formats=["%Y-%m-%d %H:%M"],
+        widget=forms.DateTimeInput(
+            format="%Y-%m-%d %H:%M",
+            attrs={
+                "class": "form-control datetimepicker",
+                "autocomplete": "off",
+            }
+        ),
+        required=False
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -68,10 +85,9 @@ class ArticleUpdateForm(forms.ModelForm):
         self.fields["m_description_a"].widget.attrs.update({"class": "form-control"})
         self.fields["m_description_f"].widget.attrs.update({"class": "form-control"})
 
-
     class Meta:
         model = Article
-        fields = ['title_francaise', 'title_anglaise', 'category','content_francaise', 'content_anglaise', 'image_francaise', 'image_anglaise', 'slug_francaise', 'slug_anglaise', 'm_title_a','m_title_f','m_description_a','m_description_f']
+        fields = ['title_francaise', 'title_anglaise', 'category','content_francaise', 'content_anglaise', 'image_francaise', 'image_anglaise', 'slug_francaise', 'slug_anglaise', 'm_title_a', 'm_title_f', 'date_hour', 'm_description_a', 'm_description_f']
         widgets = {
             "content_francaise": CKEditor5Widget(
                 attrs={"class": "django_ckeditor_5"}, config_name="extends"
