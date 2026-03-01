@@ -1,8 +1,11 @@
+from PIL import Image
 import uuid
+
+from django.contrib.postgres.fields import ArrayField
 from django.db import models
+
 from apps.web.files_path import web_images_path
 from apps.web.choices import *
-from PIL import Image
 
 
 class Formulaire_contact(models.Model):
@@ -18,8 +21,12 @@ class Formulaire_contact(models.Model):
     date_creation = models.DateTimeField(auto_now_add=True)
     date_lecture = models.DateTimeField(null=True, blank=True)
     tag = models.CharField(max_length=50, blank=True, null=True)
+    tags = ArrayField(models.CharField(max_length=50), blank=True, default=list)
     broker = models.CharField(max_length=100, blank=True, null=True)
-    
+    is_synced = models.BooleanField(default=False)
+    sync_error = models.TextField(blank=True, null=True)
+    person_fub_id = models.CharField(max_length=100, blank=True, null=True)
+
     def save(self, *args, **kwargs):
         if not self.no_formulaire:
             last_instance = Formulaire_contact.objects.order_by('-no_formulaire').first()

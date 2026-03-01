@@ -174,6 +174,56 @@
             font-size: 13px;
             border-radius: 3px;
         }
+        .loader-container {
+            position: fixed;
+            z-index: 1001;
+            background: rgba(0, 0, 0, 0.6);
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+        }
+    
+        .loader {
+            border: 16px solid #f3f3f3; /* Light grey */
+            border-top: 16px solid #1194A1; /* Blue */
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+        }
+
+        .visit{
+            color: #fff !important;
+            border: 1px solid #00AAAE;
+            background-color: #00AAAE;
+            padding: 10px 30px;
+            border-radius: 4px;
+            display: inline-block;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: all .4s;
+            text-transform: uppercase;
+            outline: none;
+            font-family: 'Roboto Condensed', sans-serif;
+            }
+    
+        @keyframes spin {
+            0% {
+            transform: rotate(0deg);
+            }
+            100% {
+            transform: rotate(360deg);
+            }
+        }
+        .banner{
+            background-image: url("{{ images.properties_banner.image.url }}");
+        }
     </style>
 {% endblock %}
     
@@ -232,8 +282,9 @@
                                 <th>Teléfono</th>
                                 <th>Mensaje</th>
                                 <th>Origen</th>
-                                <th>Tag</th>
+                                <th>Tags</th>
                                 <th>Broker</th>
+                                <th>Sync</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -246,8 +297,21 @@
                                     <td>{{ message.telephone|default_if_none:'' }}</td>
                                     <td>{{ message.message|default_if_none:'Sin mensaje'|truncatechars:30 }}</td>
                                     <td><strong>{{ message.sujet.upper }}</strong></td>
-                                    <td>{{ message.tag.upper }}</td>
+                                    <td>
+                                        {% for tag in message.tags %}
+                                            <span class="badge bg-primary">{{ tag.upper }}</span>
+                                        {% empty %}
+                                            -
+                                        {% endfor %}
+                                    </td>
                                     <td>{{ message.broker.upper }}</td>
+                                    <td>
+                                        {% if message.is_synced %}
+                                            <span class="badge bg-success">Enviado</span>
+                                        {% else %}
+                                            <span class="badge bg-danger">Pendiente</span>
+                                        {% endif %}
+                                    </td>
                                     <td>
                                         <a href="#" class="action-icon icon-view" 
                                            data-id="{{ message.id }}"
@@ -257,8 +321,8 @@
                                            data-mensaje="{{ message.message|default:'Sin mensaje' }}"
                                            data-direccion="{{ message.adresse|default:'' }}"
                                            data-origen="{{ message.sujet }}"
-                                           data-tag="{{ message.tag }}"
-                                           data-broker="{{ message.broker }}"
+                                           data-tags='{{ message.tags|join:" , " }}'
+                                           data-broker="{{ message.broker|default:'' }}"
                                            data-fecha="{{ message.date_creation|date:'d/m/Y H:i' }}"
                                            data-leido="{{ message.read|yesno:'Sí,No' }}"
                                            title="Ver detalles">
@@ -270,6 +334,14 @@
                                            title="Eliminar mensaje">
                                             <i class="icon-trash"></i>
                                         </a>
+                                        {% if not message.is_synced %}
+                                            <a href="#"
+                                            class="action-icon icon-sync resend-fub"
+                                            data-id="{{ message.id }}"
+                                            title="Reenviar a FUB">
+                                                <i class="icon-refresh"></i>
+                                            </a>
+                                        {% endif %}
                                     </td>
                                 </tr>
                             {% empty %}
@@ -392,6 +464,11 @@
             </div>
         </div>
     </div>
+    <div id="load_spinner" style="position: fixed; z-index: 99999; left: 50%; top: 50%; width: 120px; height: 120px; display: none;">
+        <div id="load_spinner_" class="loader-container">
+            <div class="loader"></div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block javascript %}
@@ -427,7 +504,7 @@
                 const mensaje = $(this).data('mensaje');
                 const direccion = $(this).data('direccion');
                 const origen = $(this).data('origen');
-                const tag = $(this).data('tag');
+                const tag = $(this).data('tags');
                 const broker = $(this).data('broker');
                 const fecha = $(this).data('fecha');
                 
@@ -507,6 +584,34 @@
             $('#deleteModal').on('hidden.bs.modal', function () {
                 messageIdToDelete = null;
                 $('#messageName').text('');
+            });
+
+            $(document).on("click", ".resend-fub", function(e) {
+                e.preventDefault();
+
+                const id = $(this).data("id");
+                $("#load_spinner").show();
+                $.ajax({
+                    url: "/resend-to-fub/",
+                    type: "POST",
+                    data: {
+                        id: id,
+                        csrfmiddlewaretoken: "{{ csrf_token }}"
+                    },
+                    success: function(response) {
+                        if (response.status === "ok") {
+                            location.reload();
+                        } else {
+                            alert("Error reenviando a FUB");
+                        }
+                    },
+                    error: function() {
+                        alert("Error de conexión");
+                    },
+                    complete: function() {
+                        $("#load_spinner").hide();
+                    }
+                });
             });
         });
     </script>

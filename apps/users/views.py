@@ -10,8 +10,9 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db import transaction
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_POST
 from django.views.generic import *
 
 from apps.properties.models import Membres, MembresMediasSociaux
@@ -19,6 +20,7 @@ from apps.accounts.models import CustomUser
 from apps.users.form import ImageEditForm, ProfileEditForm, UserEditForm, CustomUserCreationForm
 from apps.users.models import Profile
 from apps.web.models import *
+from apps.web.services.followupboss import FollowUpBossService
 from scripts.upload_data import get_id_bureau, get_id_valeurs
 
 
@@ -252,6 +254,29 @@ def list_messages(request):
         'messages_list': page_obj,
         'page_obj': page_obj
     })
+
+
+@require_POST
+def resend_to_fub(request):
+    message_id = request.POST.get("id")
+    try:
+        message = Formulaire_contact.objects.get(id=message_id)
+
+        response = FollowUpBossService.send_event(message)
+
+        if response.status_code in [200, 201]:
+            message.is_synced = True
+            message.sync_error = None
+            message.save(update_fields=["is_synced", "sync_error"])
+            return JsonResponse({"status": "ok"})
+
+        else:
+            message.sync_error = response.text
+            message.save(update_fields=["sync_error"])
+            return JsonResponse({"status": "error"})
+
+    except Exception as e:
+        return JsonResponse({"status": "error", "message": str(e)})
 
 
 def detail_message(request, id):

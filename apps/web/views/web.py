@@ -1,33 +1,21 @@
-import pdb
-from django.http import *
-from django.shortcuts import *
-from django.template import *
-from django.contrib import *
+from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import *
-from django.contrib import auth,messages
 from django.core.paginator import Paginator
-from django.db.models import Value, CharField, Q
-from django.template.loader import *
-from django.urls import reverse
-from django.views.decorators.csrf import *
-from django.views.generic import *
-from django.shortcuts import get_object_or_404
-from django.db.models import Case, When, Value, IntegerField
+from django.db.models import Value, CharField, Q, Case, When, Value, IntegerField
+from django.db import models
+from django.http import JsonResponse, Http404
+from django.shortcuts import get_object_or_404, render, redirect
+from django.views.generic import ListView, TemplateView, View
 
-from datetime import *
+from apps.labels import DICT_LABELS
+from apps.properties.models import Addenda, GenresProprietes, Inscriptions, Municipalites, Regions
 from apps.users.models import Profile
-from apps.web.models import *
-from apps.web.forms import *
-from ..properties.models import *
-from ..labels import DICT_LABELS
-from googleapiclient.discovery import build
-from django.utils.dateparse import parse_datetime
+from apps.web.forms import MetadataForm
+from apps.web.models import ImagesWeb, MetaDataWeb, Statistics, VideosWeb
 
 
 class WebCalculator(TemplateView):
     template_name = 'web/calculator.html'
-
 
 class WebIndex(View):
     template_name = 'web/index.html'
@@ -565,24 +553,6 @@ def calc_monthly_payment(P, r_anual, n_anos):
     n_meses = n_anos * 12
     M = P * (r_mensual * (1 + r_mensual) ** n_meses) / ((1 + r_mensual) ** n_meses - 1)
     return M
-
-
-def contact_messages(request):
-    if request.method == 'POST':
-        new = Formulaire_contact()
-        new.nom = request.POST.get('prenom')
-        new.courriel = request.POST.get('email')
-        new.sujet = request.POST.get('sujet')
-        new.tag = request.POST.get('tag')
-        new.broker = request.POST.get('broker')
-        new.message = request.POST.get('comment')
-        new.adresse = request.POST.get('adresse')
-        new.telephone = request.POST.get('tel')
-        new.save()
-        return JsonResponse({'response': 1})
-    else:
-        return JsonResponse({'response': 0})
-
 
 def searchMember(request):
     query = request.GET.get('term')
