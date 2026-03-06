@@ -21,6 +21,8 @@ def contact_messages(request):
             message=request.POST.get('comment'),
             adresse=request.POST.get('adresse'),
             telephone=request.POST.get('tel'),
+            no_inscription=request.POST.get('no_inscription'),
+            url_inscription=request.POST.get('url_inscription'),
         )
         response = FollowUpBossService.send_event(new)
 

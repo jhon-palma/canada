@@ -26,6 +26,8 @@ class Formulaire_contact(models.Model):
     is_synced = models.BooleanField(default=False)
     sync_error = models.TextField(blank=True, null=True)
     person_fub_id = models.CharField(max_length=100, blank=True, null=True)
+    no_inscription = models.CharField(max_length=14, blank=True, null=True)
+    url_inscription = models.CharField(max_length=255, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         if not self.no_formulaire:

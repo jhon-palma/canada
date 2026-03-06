@@ -82,11 +82,13 @@
             <input type="hidden" id="tag" name="tag" value="{% if inscription.prix_demande %}Buyer{% else %}Rental{% endif %}">
             <input type="hidden" name="tag" value="Web LJ Realties">
             <input type="hidden" id="broker" name="broker" value="{% if inscription.courtier_inscripteur_1 and inscription.courtier_inscripteur_1.code != '96839' %}{{ inscription.courtier_inscripteur_1 }}{% endif %}{% if inscription.courtier_inscripteur_2 and inscription.courtier_inscripteur_2.code != '96839' %}{{ inscription.courtier_inscripteur_2 }}{% endif %}">
+            <input type="hidden" id="no_inscription" name="no_inscription" value="{{inscription.no_inscription}}">
+            <input type="hidden" id="url_inscription" name="url_inscription" value="">
 			<input type="text" name="prenom" placeholder="Full name" required="required" class="champs_tem">
 			<input type="tel" name="tel" placeholder="Phone" required="required" class="champs_tem">
 			<input type="email" name="email" placeholder="E-mail" required="required" class="champs_tem">
 			<textarea name="comment" placeholder="Your message" required="required" class="champs_tem"></textarea>
-			<input type="hidden" name="adresse" value="{{inscription.no_civique_debut}}{% if inscription.no_civique_fin %} - {{inscription.no_civique_fin}}{%endif%}, {{inscription.nom_rue_complet}}{% if inscription.appartement %}, apt. {{inscription.appartement}}{%endif%}, {{inscription.mun_code.description}}">
+			<input type="hidden" name="adresse" value="{{inscription.no_civique_debut}}{% if inscription.no_civique_fin %} - {{inscription.no_civique_fin}}{%endif%}, {{inscription.nom_rue_complet}}{% if inscription.appartement %}, apt. {{inscription.appartement}}{%endif%},{{inscription.mun_code.description}}">
 			<input type="hidden" name="maison" value="27135293">
 			<input type="hidden" name="objet" value="">
             <div class="politique">
@@ -3141,6 +3143,7 @@
 </script>
 <script>
     $(document).ready(function () {
+        $("#url_inscription").val(window.location.href);
         $("#formfiche_detail").on('submit', function (e) {
             e.preventDefault();
             var form = $("#formfiche_detail");

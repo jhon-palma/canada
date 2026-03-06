@@ -32,7 +32,12 @@ class FollowUpBossService:
                     [{"value": message.telephone}]
                     if message.telephone else []
                 ),
-                "tags": message.tags
+                "tags": message.tags,
+            },
+            "property": {
+                "street": message.adresse,
+                "url": message.url_inscription,
+                "mlsNumber": message.no_inscription,
             }
         }
 
@@ -42,7 +47,7 @@ class FollowUpBossService:
         
         endpoint = f"events"
         url = f"{FollowUpBossService.BASE_URL}{endpoint.lstrip('/')}"
-
+        print("payload: ", payload)
         response = requests.post(
             url,
             json=payload,
@@ -51,7 +56,7 @@ class FollowUpBossService:
         )
         
         data = response.json()
-
+        print("🚩data: ", data)
         if response.status_code in [200, 201] and "id" in data:
             message.person_fub_id = data["id"]
             message.save(update_fields=["person_fub_id"])
