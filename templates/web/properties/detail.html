@@ -195,6 +195,8 @@
 				{{inscription.no_civique_debut}}{% if inscription.no_civique_fin %} - {{inscription.no_civique_fin}}{%endif%}, {{inscription.nom_rue_complet}}{% if inscription.appartement %}, apt. {{inscription.appartement}}{%endif%},
                 {{inscription.mun_code.description}}
 				<br />
+                <span>{% if language == "en" %}Centris No. {% else %}No Centris {%endif%}{{inscription.no_inscription}}</span>
+                <br>
                 {% with visites_actives=inscription.no_inscription_visites_libres.all %}
                     {% for visite in visites_actives %}
                         {% if visite.is_active_now %}
