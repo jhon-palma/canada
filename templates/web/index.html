@@ -216,6 +216,7 @@
                                 {% endif %}
                             {% endif %}</p></strong>
                             <p class="text-capitalize">{{inscription.mun_code.description}}</p>
+                            <p>{% if language == "en" %}Centris No. {% else %}No. Centris {%endif%}{{inscription.no_inscription}}</p>
                         </div>
                     </a>
                 {% endfor %}
