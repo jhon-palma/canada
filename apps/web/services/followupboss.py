@@ -38,9 +38,17 @@ class FollowUpBossService:
                 "street": message.adresse,
                 "url": message.url_inscription,
                 "mlsNumber": message.no_inscription,
-            }
+            },
         }
 
+        if message.no_inscription:
+            desc = f"No centris: {message.no_inscription}\n"
+
+            if message.url_inscription:
+                desc += f" {message.url_inscription}"
+
+            payload["description"] = desc
+            
         assigned_user_id = BROKER_ID_MAP.get(message.broker)
         if assigned_user_id:
             payload["assignedUserId"] = assigned_user_id
