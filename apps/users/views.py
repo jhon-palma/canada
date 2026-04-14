@@ -30,7 +30,7 @@ def update_profile(request):
         existing_orders = list(existing_orders)
         existing_orders.remove(request.user.profile.order)
 
-    available_orders = [i for i in range(1, 11) if i not in existing_orders]
+    available_orders = [i for i in range(1, 41) if i not in existing_orders]
     
     user_membre = request.user.profile.membre
     available_membres = Membres.objects.filter(profile__isnull=True)
@@ -70,7 +70,7 @@ def update_profile_users(request, user_id):
         existing_orders = list(existing_orders)
         existing_orders.remove(user.profile.order)
 
-    available_orders = [i for i in range(1, 11) if i not in existing_orders]
+    available_orders = [i for i in range(1, 41) if i not in existing_orders]
     user_membre = user.profile.membre
     available_membres = Membres.objects.filter(profile__isnull=True)
     membres = available_membres | Membres.objects.filter(pk=user_membre.pk) if user_membre else available_membres
