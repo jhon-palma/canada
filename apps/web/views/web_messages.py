@@ -1,5 +1,3 @@
-import pdb
-
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 
@@ -12,8 +10,12 @@ def contact_messages(request):
     try:
         tags_list = request.POST.getlist('tag')
 
+        prenom = (request.POST.get('prenom') or '').strip()
+        apellido = (request.POST.get('nom') or '').strip()
+        nombre_completo = f"{prenom} {apellido}".strip()
+
         new = Formulaire_contact.objects.create(
-            nom=request.POST.get('prenom'),
+            nom=nombre_completo,
             courriel=request.POST.get('email'),
             sujet=request.POST.get('sujet'),
             tags=tags_list if tags_list else [],

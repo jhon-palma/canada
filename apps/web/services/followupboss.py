@@ -1,5 +1,3 @@
-import pdb
-
 import requests
 from django.conf import settings
 
@@ -19,12 +17,18 @@ class FollowUpBossService:
 
     @staticmethod
     def send_event(message):
+        full_name = (message.nom or "").strip()
+        name_parts = full_name.split(" ", 1)
+        first_name = name_parts[0] if name_parts and name_parts[0] else ""
+        last_name = name_parts[1] if len(name_parts) > 1 else ""
+
         payload = {
             "source": "Web LJ Realties",
             "type": "General Inquiry",
             "message": message.message,
             "person": {
-                "firstName": message.nom,
+                "firstName": first_name,
+                "lastName": last_name,
                 "emails": [
                     {"value": message.courriel}
                 ],
@@ -55,7 +59,6 @@ class FollowUpBossService:
         
         endpoint = f"events"
         url = f"{FollowUpBossService.BASE_URL}{endpoint.lstrip('/')}"
-        print("payload: ", payload)
         response = requests.post(
             url,
             json=payload,
@@ -64,7 +67,6 @@ class FollowUpBossService:
         )
         
         data = response.json()
-        print("🚩data: ", data)
         if response.status_code in [200, 201] and "id" in data:
             message.person_fub_id = data["id"]
             message.save(update_fields=["person_fub_id"])
