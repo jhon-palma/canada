@@ -2,6 +2,7 @@ import uuid
 from datetime import datetime
 
 from django.db import models
+from django.db.models import Prefetch
 from django.utils.text import slugify
 from django.utils import timezone
 
@@ -204,6 +205,33 @@ class Membres(models.Model):
         return self.full_name
 
 
+class InscriptionsQuerySet(models.QuerySet):
+
+    def with_card_data(self):
+        """Precarga lo que necesitan las tarjetas de propiedad.
+
+        Las tarjetas (portada, listados, busquedas y "mismo sector") leen
+        cuatro claves foraneas y tres relaciones inversas por ficha. Sin esto
+        Django hace una consulta por ficha y por relacion: el listado de 36
+        fichas disparaba 313 consultas.
+
+        Las fotos se filtran a seq=1 porque la tarjeta solo muestra la
+        portada; antes se traian todas las filas (1332 para mostrar 36) y se
+        descartaba el 97% en la plantilla. No usar en la ficha de detalle ni
+        en el PDF, que si necesitan la galeria completa.
+        """
+        return self.select_related(
+            'mun_code',
+            'genre_propriete',
+            'frequence_prix_location',
+            'code_statut',
+        ).prefetch_related(
+            Prefetch('photos', queryset=Photos.objects.filter(seq=1)),
+            'no_inscription_visites_libres',
+            Prefetch('remarques', queryset=Remarques.objects.select_related('code_langue')),
+        )
+
+
 class Inscriptions(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     no_inscription = models.CharField(db_column='NO_INSCRIPTION', max_length=14, unique=True)  
@@ -366,6 +394,8 @@ class Inscriptions(models.Model):
     addenda_complet_f = models.TextField(db_column='ADDENDA_COMPLET_F', blank=True, null=True)
     addenda_complet_a = models.TextField(db_column='ADDENDA_COMPLET_A', blank=True, null=True)
     status = models.BooleanField(default=True)
+
+    objects = InscriptionsQuerySet.as_manager()
 
     class Meta:
         db_table = 'INSCRIPTIONS'

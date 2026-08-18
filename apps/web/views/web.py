@@ -26,7 +26,7 @@ class WebIndex(View):
         option = kwargs.get('option', 'proprietes')
         labels = DICT_LABELS.get(language).get('web')
         data_meta = MetaDataWeb.objects.get(origin='index')
-        inscriptions = Inscriptions.objects.filter(prix_demande__isnull=False, status=True).exclude(code_statut__valeur="VE").annotate(
+        inscriptions = Inscriptions.objects.with_card_data().filter(prix_demande__isnull=False, status=True).exclude(code_statut__valeur="VE").annotate(
             usa_last=Case(
                 When(mun_code__description__icontains="USA", then=Value(1)),
                 default=Value(0),
@@ -67,7 +67,7 @@ class WebProperties(View):
         option = kwargs.get('option', 'proprietes')
         labels = DICT_LABELS.get(language).get('web')
         data_meta = MetaDataWeb.objects.get(origin='properties')
-        base_inscriptions = Inscriptions.objects.filter(status=True).exclude(code_statut__valeur="VE").annotate(
+        base_inscriptions = Inscriptions.objects.with_card_data().filter(status=True).exclude(code_statut__valeur="VE").annotate(
             usa_last=Case(
                 When(mun_code__description__icontains="USA", then=Value(1)),
                 default=Value(0),
@@ -235,7 +235,7 @@ class SearchView(View):
         if adress_region:
             query &= Q(mun_code__region_code__in=adress_region)
 
-        inscriptions_all = Inscriptions.objects.exclude(code_statut__valeur="VE").filter(query).annotate(
+        inscriptions_all = Inscriptions.objects.with_card_data().exclude(code_statut__valeur="VE").filter(query).annotate(
             usa_last=Case(
                 When(mun_code__description__icontains="USA", then=Value(1)),
                 default=Value(0),
@@ -283,7 +283,7 @@ class WebDetailProperty(View):
             flag = kwargs.get('flag', 'detail')
             self.template_name = 'web/properties/{}.html'.format(flag)
             mun_code = propertie.mun_code
-            same_district = Inscriptions.objects.filter(mun_code=mun_code, status=True).exclude(id=propertie.id)[:4]
+            same_district = Inscriptions.objects.with_card_data().filter(mun_code=mun_code, status=True).exclude(id=propertie.id)[:4]
             url_pdf = '{}/{}/{}/pdf/'.format(language, option, propertie_id)
             
             taxsco = propertie.depenses.filter(tdep_code__valeur='TAXSCO').first()
@@ -650,10 +650,10 @@ class SearchProperties(ListView):
         filter = parts[-1]
         code = parts[-2]
         if filter== "quartier":
-            inscriptions_all = Inscriptions.objects.filter(mun_code=code)
+            inscriptions_all = Inscriptions.objects.with_card_data().filter(mun_code=code)
         if filter== "categorie":
             code = code.upper()
-            inscriptions_all = Inscriptions.objects.filter(genre_propriete=code)
+            inscriptions_all = Inscriptions.objects.with_card_data().filter(genre_propriete=code)
 
         labels = DICT_LABELS.get(language).get('web')
         
