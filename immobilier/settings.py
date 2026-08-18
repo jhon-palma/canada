@@ -1,4 +1,5 @@
 from pathlib import Path
+from urllib.parse import urlsplit
 from .local_settings import *
 import os
 # import boto3
@@ -14,6 +15,15 @@ else:
     ALLOWED_HOSTS = ['www.ljrealties.com', 'ljrealties.com']
 
 CSRF_TRUSTED_ORIGINS = ['https://www.ljrealties.com', 'https://ljrealties.com']
+
+# Dominio canonico de robots.txt, sitemap.xml y las etiquetas og/absolutas.
+# Se deriva de SERVER (local_settings) para tener una sola fuente de verdad:
+# es el mismo valor que devuelve el filtro `server_url` en las plantillas.
+_server = urlsplit(SERVER if '//' in SERVER else '//' + SERVER)
+SITE_PROTOCOL = _server.scheme or ('http' if DEBUG else 'https')
+SITE_DOMAIN = _server.netloc or ('localhost:8000' if DEBUG else 'www.ljrealties.com')
+SITE_URL = '{}://{}'.format(SITE_PROTOCOL, SITE_DOMAIN)
+
 AUTH_USER_MODEL = 'accounts.CustomUser'
 X_FRAME_OPTIONS = 'ALLOWALL'
 
@@ -35,6 +45,7 @@ INSTALLED_APPS = [
     'apps.blog',
     'django_ckeditor_5',
     'django.contrib.sites',
+    'django.contrib.sitemaps',
     'storages',
     'allauth',
     'allauth.account',

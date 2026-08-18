@@ -1,0 +1,43 @@
+User-agent: *
+Allow: /
+
+# Administration / edition
+Disallow: /admin
+Disallow: /grappelli/
+Disallow: /ckeditor5/
+Disallow: /accounts/
+Disallow: /metadata/
+Disallow: /properties/
+Disallow: /statistics/
+Disallow: /contact_messages/
+Disallow: /list_articles/
+Disallow: /categories/
+Disallow: /new-post
+Disallow: /new-category
+Disallow: /update_article/
+Disallow: /list_comment_article/
+Disallow: /category/update/
+Disallow: /update_status_ajax/
+Disallow: /update_status_comment/
+
+# Points d'entree AJAX / fragments
+Disallow: /searchpropriete/
+Disallow: /searchMember/
+Disallow: /search-videos/
+Disallow: /calc_monthly_payment/
+Disallow: /calculator/
+Disallow: /comment/
+Disallow: /signup/
+Disallow: /signupComment/
+Disallow: /login/
+Disallow: /loginComments/
+
+# Versions PDF des fiches (contenu duplique)
+Disallow: /fr/propriete/*/pdf/
+Disallow: /en/propertie/*/pdf/
+
+# Resultats de recherche interne (les landings /search/<lang>/<slug>/ restent indexables)
+Disallow: /fr/search/
+Disallow: /en/search/
+
+Sitemap: {{ site_url }}/sitemap.xml
