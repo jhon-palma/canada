@@ -93,6 +93,17 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
+# URLs de S3 sin firmar. django-storages firma por defecto
+# (AWS_QUERYSTRING_AUTH=True), y el almacenamiento staticfiles no lo
+# declaraba, asi que cada CSS y JS salia como
+# .../stylesheet.css?AWSAccessKeyId=...&Signature=...&Expires=...
+# La firma cambia en cada renderizado, de modo que la URL cambia y ni el
+# navegador ni ningun CDN podian cachear nada; ademas caduca en una hora.
+# Requiere que los objetos del bucket sean public-read (ver el comando
+# fix_static_acl). El almacenamiento de media ya lo declara en sus OPTIONS,
+# asi que este ajuste no lo altera.
+AWS_QUERYSTRING_AUTH = False
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
