@@ -184,26 +184,26 @@
 	<div class="fichewrap wrap">
         {% if inscription.nb_pieces %}
 		<div class="piece">
-			<img width="111" height="112" src="{% static 'web/images/pieceico.png' %}" alt="Room(s)" style="width:55px;height:55px;" />
+			<img src="{% static 'web/images/pieceico.png' %}" alt="Room(s)" style="width:55px;height:55px;" />
 			<p>{{inscription.nb_pieces}} {% if language == "en" %}Room(s){% else %}Pièce(s){% endif %}</p>
 		</div>
         {% endif %}
         {% if inscription.nb_chambres %}
             <div class="piece">
-                <img width="112" height="112" src="{% static 'web/images/chambreico.png' %}" alt="Bedroom(s)" style="width:56px;height:56px;" />
+                <img src="{% static 'web/images/chambreico.png' %}" alt="Bedroom(s)" style="width:56px;height:56px;" />
                 <p>{{inscription.nb_chambres}} {% if language == "en" %}Bedroom(s){% else %}Chambre(s){% endif %}</p>
             </div>
             {%endif%}
         {% if inscription.nb_salles_bains %}
         <div class="piece">
-            <img width="116" height="124" src="{% static 'web/images/sdbico.png' %}" alt="Bathroom(s)" style="width:58px;height:62px;" />
+            <img src="{% static 'web/images/sdbico.png' %}" alt="Bathroom(s)" style="width:58px;height:62px;" />
             <p>{{inscription.nb_salles_bains}} {% if language == "en" %}Bathroom(s){% else %}Salle(s) de bains{% endif %}</p>
         </div>
         {%endif%}
 		<hr class="hbig" />
         {% if inscription.superficie_habitable %}
 		<div class="piece">
-            <img width="124" height="124" src="{% static 'web/images/picaico.png' %}" alt="pi. ca." style="width:58px;height:62px;" />
+            <img src="{% static 'web/images/picaico.png' %}" alt="pi. ca." style="width:58px;height:62px;" />
 			<p>{{inscription.superficie_habitable}} {% if language == "en" %}sq. ft.{% else %}pi. ca.{% endif %}</p>fichewrap wrap
 		</div>
         {%endif%}
