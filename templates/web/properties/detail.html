@@ -184,7 +184,7 @@
 				<div class="thumslist">
 					<div class="thumbpager">
                         {% for photo in inscription.photos.all %}
-						    <a class="thumbitm" href="" data-slide-index="{{ forloop.counter }}"><img loading="lazy" decoding="async" src="{{ photo.photourl }}" alt="{% if photo.code_description_photo %}{% if language == 'en' %}{{ photo.code_description_photo.description_anglaise }}{% else %}{{ photo.code_description_photo.description_francaise }}{% endif %}{% endif %}" /> </a>
+						    <a class="thumbitm" href="" data-slide-index="{{ forloop.counter }}"><img src="{{ photo.photourl }}" alt="{% if photo.code_description_photo %}{% if language == 'en' %}{{ photo.code_description_photo.description_anglaise }}{% else %}{{ photo.code_description_photo.description_francaise }}{% endif %}{% endif %}" /> </a>
                         {% endfor %}
 					</div>
 				</div>

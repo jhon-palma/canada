@@ -598,15 +598,17 @@ $(window).load(function(){
 
 		if($(window).width() > 700){
 
-			var slideimgH = $(".ficheslide>img").height();
-
-		
+			// Solo se miden las fotos ya cargadas: una imagen diferida aun sin
+			// cargar devuelve 0 y dejaba las miniaturas en (0+20)/5 = 4px.
+			var slideimgH = 0;
 
 			$(".ficheslide>img").each(function(){
 
-				if($(this).height() < slideimgH){
+				var h = $(this).height();
 
-					slideimgH = $(this).height();
+				if(h > 0 && (slideimgH === 0 || h < slideimgH)){
+
+					slideimgH = h;
 
 				}
 
@@ -614,7 +616,11 @@ $(window).load(function(){
 
 
 
-			$(".thumslist img").height((slideimgH+20) / 5);
+			if(slideimgH > 0){
+
+				$(".thumslist img").height((slideimgH+20) / 5);
+
+			}
 
 
 
