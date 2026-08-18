@@ -69,7 +69,7 @@
 		<div class="statscont">
 			<div class="statblock">
 				<div class="img">
-                    <img src="{% static 'web/images2/1.svg' %}" alt="Icon" />
+                    <img width="187" height="187" loading="lazy" decoding="async" src="{% static 'web/images2/1.svg' %}" alt="Icon" />
                 </div>
 				<h3 class="h2def">{{ labels.index.text.three }} <span>{{ labels.index.text.four }}</span></h3>
 				<div class="statels">
@@ -85,7 +85,7 @@
                 </div>
 			</div>
 			<div class="statblock">
-				<div class="img"><img src="{% static 'web/images2/2.svg' %}" alt="Icon" /></div>
+				<div class="img"><img width="187" height="187" loading="lazy" decoding="async" src="{% static 'web/images2/2.svg' %}" alt="Icon" /></div>
 				<h3 class="h2def">{{ labels.index.text.five }} <span>{{ labels.index.text.six }}</span></h3>
 				<div class="statels">
                     <div class="statel">
@@ -100,7 +100,7 @@
 				</div>
 			</div>
 			<div class="statblock">
-				<div class="img"><img src="{% static 'web/images2/3.svg' %}" alt="Icon" /></div>
+				<div class="img"><img width="187" height="187" loading="lazy" decoding="async" src="{% static 'web/images2/3.svg' %}" alt="Icon" /></div>
 				<h3 class="h2def">{{ labels.index.text.seven }} <span>{{ labels.index.text.eight }}</span></h3>
 				<div class="statels">
                     <div class="statel">
@@ -241,7 +241,7 @@
             <a target="_blank" href='{% if language == "en" %}https://autisme-montreal.com/en/{% else %}https://autisme-montreal.com{% endif %}' class="bouton boutonnre3">{{ labels.index.button.five }}</a>
         </div>
         <div class="img">
-            <img src="{{ images.index_donate_image.image.url }}" alt="LJ Immobilier">
+            <img loading="lazy" decoding="async" src="{{ images.index_donate_image.image.url }}" alt="LJ Immobilier">
         </div>
     </div>
 </section>
@@ -262,17 +262,17 @@
         <div class="row">
             <div class="col-4">
                 <a {% if language == 'fr' %}href="https://www.oaciq.com/fr"{% else %}href="https://www.oaciq.com/en"{% endif %} target="_blank">
-                    <img src="{% static 'web/images/logos/OACIQ_idK3ObVObf_1.svg' %}" alt="Association courtiers de Quebec">
+                    <img width="792" height="288" loading="lazy" decoding="async" src="{% static 'web/images/logos/OACIQ_idK3ObVObf_1.svg' %}" alt="Association courtiers de Quebec">
                 </a>
             </div>
             <div class="col-4">
                 <a {% if language == 'fr' %}href="https://apciq.ca/"{% else %}href="https://apciq.ca/en/"{% endif %} target="_blank">
-                    <img src="{% static 'web/images/logos/apciq-Logo.svg' %}" alt="OACIQ">
+                    <img width="534" height="270" loading="lazy" decoding="async" src="{% static 'web/images/logos/apciq-Logo.svg' %}" alt="OACIQ">
                 </a>
             </div>
             <div class="col-4">
                 <a {% if language == 'fr' %}href="https://www.corpiq.com/"{% else %}href="https://www.corpiq.com/en/"{% endif %} target="_blank">
-                    <img src="{% static 'web/images/logos/CORPIQ_Logo.svg' %}" alt="CORPIQ">
+                    <img width="443" height="160" loading="lazy" decoding="async" src="{% static 'web/images/logos/CORPIQ_Logo.svg' %}" alt="CORPIQ">
                 </a>
             </div>
         </div>
@@ -284,7 +284,7 @@
         <div class="videoshomecont">
             {% for video in video_urls %}
                 <a href="https://www.youtube.com/watch?v={{ video.videoId }}" class="thumbhome">
-                    <img src="https://img.youtube.com/vi/{{ video.videoId }}/hqdefault.jpg" alt="{{ video.tittle }}">
+                    <img loading="lazy" decoding="async" src="https://img.youtube.com/vi/{{ video.videoId }}/hqdefault.jpg" alt="{{ video.tittle }}">
                 </a>
             {% endfor %}
         </div>

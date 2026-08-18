@@ -18,7 +18,7 @@
           <form class="form-login" action="{% url 'accounts:login' %}" method="post">{% csrf_token %}
             <div class="sombras panel panel-body login-form">
               <div class="text-center">
-                <img id="foto_usuario" style="width: 60%; height: 100%" src="{% static 'web/images/logo.png' %}"/>
+                <img width="240" height="105" id="foto_usuario" style="width: 60%; height: 100%" src="{% static 'web/images/logo.png' %}"/>
                  <h5 class="content-group">Ingreso al Sistema<small class="display-block">Introduzca sus credenciales abajo</small></h5>
               </div>
               {% if error %}

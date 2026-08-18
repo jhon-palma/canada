@@ -172,7 +172,7 @@
                                                 <a href="{% url 'web:detail-propertie' language=language option=url_propertie propertie_id=inscription.id flag='detail' %}">
                                                     {% for photo in inscription.photos.all %}
                                                         {% if photo.seq == 1 %}
-                                                            <img loading="lazy" decoding="async" src="{{ photo.photourl }}" loading="lazy" decoding="async" alt="{% if language == 'en' %}{{ inscription.genre_propriete.description_anglaise }}{% else %}{{ inscription.genre_propriete.description_francaise }}{% endif %}
+                                                            <img loading="lazy" decoding="async" src="{{ photo.photourl }}"  alt="{% if language == 'en' %}{{ inscription.genre_propriete.description_anglaise }}{% else %}{{ inscription.genre_propriete.description_francaise }}{% endif %}
                                                             {% if inscription.prix_demande %}{% if language == 'en' %} for sale{% else %}à vendre {% endif %}{% endif %}{% if inscription.prix_location_demande %}
                                                             {% if language == 'en' %}for rent{% else %}à louer{% endif %}{% endif %} {{ inscription.mun_code.description }}" title="{% if language == 'en' %}{{ inscription.genre_propriete.description_anglaise }}{% else %}{{ inscription.genre_propriete.description_francaise }}{% endif %}{% if inscription.prix_demande %}{% if language == 'en' %} for sale{% else %}à vendre{% endif %}{% endif %}{% if inscription.prix_location_demande %}{% if language == 'en' %} for rent{% else %}à louer{% endif %}{% endif %} {{ inscription.mun_code.description }}" />
                                                             {% with visites_actives=inscription.no_inscription_visites_libres.all %}
@@ -185,23 +185,23 @@
                                                                             </strong>
                                                                         </span>
                                                                         {% if language == 'en' %}
-                                                                            <img src="{% static 'web/images/newicons/visite_libreen.png' %}" alt="Vendu" class="marq_vendu">
+                                                                            <img width="373" height="72" loading="lazy" decoding="async" src="{% static 'web/images/newicons/visite_libreen.png' %}" alt="Vendu" class="marq_vendu">
                                                                         {% else %}
-                                                                            <img src="{% static 'web/images/newicons/visite_libre.png' %}" alt="Vendu" class="marq_vendu">
+                                                                            <img width="373" height="72" loading="lazy" decoding="async" src="{% static 'web/images/newicons/visite_libre.png' %}" alt="Vendu" class="marq_vendu">
                                                                         {% endif %}
                                                                     {% endif %}
                                                                 {% endfor %}
                                                             {% endwith %}
                                                             {% if inscription.code_statut.valeur == "VE" %}
                                                                 {% if language == 'en' %}
-                                                                    <img src="{% static 'web/images/newicons/venduen.png' %}" alt="Vendu" class="marq_vendu">
+                                                                    <img width="373" height="72" loading="lazy" decoding="async" src="{% static 'web/images/newicons/venduen.png' %}" alt="Vendu" class="marq_vendu">
                                                                 {% else %}
-                                                                    <img src="{% static 'web/images/newicons/vendu.png' %}" alt="Vendu" class="marq_vendu">
+                                                                    <img width="373" height="72" loading="lazy" decoding="async" src="{% static 'web/images/newicons/vendu.png' %}" alt="Vendu" class="marq_vendu">
                                                                 {%endif%}
                                                             {% endif %}
                                                         {%endif%}
                                                     {% endfor %}
-                                                    <!-- <img src="{{inscription.no_inscription}}" alt="maison à vendre Montréal (Le Plateau-Mont-Royal)" title="maison à vendre Montréal (Le Plateau-Mont-Royal)" /> -->
+                                                    <!-- <img loading="lazy" decoding="async" src="{{inscription.no_inscription}}" alt="maison à vendre Montréal (Le Plateau-Mont-Royal)" title="maison à vendre Montréal (Le Plateau-Mont-Royal)" /> -->
                                                 </a>
                                             </div>
                                             

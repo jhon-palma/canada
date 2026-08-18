@@ -184,7 +184,7 @@
 				<div class="thumslist">
 					<div class="thumbpager">
                         {% for photo in inscription.photos.all %}
-						    <a class="thumbitm" href="" data-slide-index="{{ forloop.counter }}"><img src="{{ photo.photourl }}" alt="{% if photo.code_description_photo %}{% if language == 'en' %}{{ photo.code_description_photo.description_anglaise }}{% else %}{{ photo.code_description_photo.description_francaise }}{% endif %}{% endif %}" /> </a>
+						    <a class="thumbitm" href="" data-slide-index="{{ forloop.counter }}"><img loading="lazy" decoding="async" src="{{ photo.photourl }}" alt="{% if photo.code_description_photo %}{% if language == 'en' %}{{ photo.code_description_photo.description_anglaise }}{% else %}{{ photo.code_description_photo.description_francaise }}{% endif %}{% endif %}" /> </a>
                         {% endfor %}
 					</div>
 				</div>
@@ -245,20 +245,20 @@
 	<div class="fichewrap wrap">
         {% if inscription.nb_pieces %}
             <div class="piece">
-                <img src="{% static 'web/images/pieceico.png' %}" alt="Room(s)" style="width:55px;height:55px;" />
+                <img width="111" height="112" loading="lazy" decoding="async" src="{% static 'web/images/pieceico.png' %}" alt="Room(s)" style="width:55px;height:55px;" />
                 <p>{{inscription.nb_pieces}} {% if language == "en" %}Room(s){% else %}Pièce(s){% endif %}</p>
             </div>
         {% endif %}
         {% if inscription.nb_chambres %}
             <div class="piece">
-                <img src="{% static 'web/images/chambreico.png' %}" alt="Bedroom(s)" style="width:56px;height:56px;" />
+                <img width="112" height="112" loading="lazy" decoding="async" src="{% static 'web/images/chambreico.png' %}" alt="Bedroom(s)" style="width:56px;height:56px;" />
                 <p>{{inscription.nb_chambres}} {% if language == "en" %}Bedroom(s){% else %}Chambre(s){% endif %} {% if inscription.nb_chambres_sous_sol %}<br>
                     ({{ inscription.nb_chambres_sous_sol }} {% if language == "en" %}in basement{% else %}au sous-sol{% endif %}){% endif %}</p>
             </div>
         {% endif %}
         {% if inscription.nb_salles_bains %}
         <div class="piece">
-            <img src="{% static 'web/images/sdbico.png' %}" alt="Bathroom(s)" style="width:58px;height:62px;" />
+            <img width="116" height="124" loading="lazy" decoding="async" src="{% static 'web/images/sdbico.png' %}" alt="Bathroom(s)" style="width:58px;height:62px;" />
             <p>{{inscription.nb_salles_bains}} {% if language == "en" %}Bathroom(s){% else %}Salle(s) de bains{% endif %}{% if inscription.nb_salles_eau %}<br>
                 {% if language == "en" %} and {{ inscription.nb_salles_eau }} powder room{% else %}et {{ inscription.nb_salles_eau }}salle d'eau {% endif %}{% endif %}</p>
         </div>
@@ -266,7 +266,7 @@
 		<hr class="hbig" />
         {% if inscription.superficie_habitable %}
             <div class="piece">
-                <img src="{% static 'web/images/picaico.png' %}" alt="pi. ca." style="width:58px;height:62px;" />
+                <img width="124" height="124" loading="lazy" decoding="async" src="{% static 'web/images/picaico.png' %}" alt="pi. ca." style="width:58px;height:62px;" />
                 <p>
                 {% if inscription.um_superficie_habitable.description_abregee_anglaise == "SM" %}
                     {{ inscription.superficie_habitable|multiply:10.7639|floatformat:0|intcomma }}
@@ -279,7 +279,7 @@
         {%endif%}
         {% if inscription.type_copropriete %}
             <div class="piece">
-                <img src="{% static 'web/images/Divided_Undivided.png' %}" alt="Room(s)" style="width:55px;height:55px;" />
+                <img width="112" height="112" loading="lazy" decoding="async" src="{% static 'web/images/Divided_Undivided.png' %}" alt="Room(s)" style="width:55px;height:55px;" />
                 <p>{% if language == "en" %}{{ inscription.type_copropriete.description_anglaise }}{% else %}{{ inscription.type_copropriete.description_francaise }}{% endif %}</p>
             </div>
         {% endif %}
@@ -2873,21 +2873,21 @@
                                 <a href="{% url 'web:detail-propertie' language=language option='propriete' propertie_id=same.id flag='detail' %}">
                                     {% for photo in same.photos.all %}
                                         {% if photo.seq == 1 %}
-                                            <img src="{{ photo.photourl }}" alt="{% if language == 'en' %}{{ same.genre_propriete.description_anglaise }}{% else %}{{ same.genre_propriete.description_francaise }}{% endif %}
+                                            <img loading="lazy" decoding="async" src="{{ photo.photourl }}" alt="{% if language == 'en' %}{{ same.genre_propriete.description_anglaise }}{% else %}{{ same.genre_propriete.description_francaise }}{% endif %}
                                             {% if same.prix_demande %}{% if language == 'en' %} for sale{% else %}à vendre {% endif %}{% endif %}{% if same.prix_location_demande %}
                                             {% if language == 'en' %}for rent{% else %}à louer{% endif %}{% endif %} {{ same.mun_code.description}}" title="{% if language == 'en' %}{{ same.genre_propriete.description_anglaise }}{% else %}{{ same.genre_propriete.description_francaise }}{% endif %}{% if same.prix_demande %}{% if language == 'en' %} for sale{% else %}à vendre{% endif %}{% endif %}{% if same.prix_location_demande %}{% if language == 'en' %} for rent{% else %}à louer{% endif %}{% endif %} {{ same.mun_code.description }}" />
                                             {% for visite in same.no_inscription_visites_libres.all %}
                                                 {% if language == 'en' %}
-                                                    <img src="{% static 'web/images/newicons/visite_libreen.png' %}" alt="Vendu" class="marq_vendu">
+                                                    <img width="373" height="72" loading="lazy" decoding="async" src="{% static 'web/images/newicons/visite_libreen.png' %}" alt="Vendu" class="marq_vendu">
                                                 {% else %}
-                                                    <img src="{% static 'web/images/newicons/visite_libre.png' %}" alt="Vendu" class="marq_vendu">
+                                                    <img width="373" height="72" loading="lazy" decoding="async" src="{% static 'web/images/newicons/visite_libre.png' %}" alt="Vendu" class="marq_vendu">
                                                 {%endif%}
                                             {% endfor %}
                                             {% if same.code_statut.valeur == "VE" %}
                                                 {% if language == 'en' %}
-                                                    <img src="{% static 'web/images/newicons/venduen.png' %}" alt="Vendu" class="marq_vendu">
+                                                    <img width="373" height="72" loading="lazy" decoding="async" src="{% static 'web/images/newicons/venduen.png' %}" alt="Vendu" class="marq_vendu">
                                                 {% else %}
-                                                    <img src="{% static 'web/images/newicons/vendu.png' %}" alt="Vendu" class="marq_vendu">
+                                                    <img width="373" height="72" loading="lazy" decoding="async" src="{% static 'web/images/newicons/vendu.png' %}" alt="Vendu" class="marq_vendu">
                                                 {%endif%}
                                             {% endif %}
                                         {%endif%}
