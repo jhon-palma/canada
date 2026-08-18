@@ -15,24 +15,25 @@
                                 <div class="col-md-7">
                                     <div class="bwp-single-share-wrap">
                                         <span>{% if language == "en" %}Share:{% else %}Partager:{% endif %}</span>
+                                        {% if language == 'en' %}{% url 'blog:post_detail' language='en' slug=post.slug_anglaise as post_path %}{% else %}{% url 'blog:post_detail' language='fr' slug=post.slug_francaise as post_path %}{% endif %}
                                         <ul class="bwp-single-share list-unstyled">
                                             <li>
-                                                <a href="https://www.facebook.com/sharer.php?u={{ post.get_absolute_url }}" rel="nofollow noopener" target="_blank" class="bwp-share-link bwp-facebook-share" onclick="window.open('https://www.facebook.com/sharer.php?u={{ post.get_absolute_url }}', 'Facebook', 'width=700,height=500,left='+(screen.availWidth/2-350)+',top='+(screen.availHeight/2-250)+''); return false;">
+                                                <a href="https://www.facebook.com/sharer.php?u={{ post_path|absolute }}" rel="nofollow noopener" target="_blank" class="bwp-share-link bwp-facebook-share" onclick="window.open('https://www.facebook.com/sharer.php?u={{ post_path|absolute }}', 'Facebook', 'width=700,height=500,left='+(screen.availWidth/2-350)+',top='+(screen.availHeight/2-250)+''); return false;">
                                                     <i class="fa fa-facebook"></i>
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="https://twitter.com/share?url={{ post.get_absolute_url }}" rel="nofollow noopener" target="_blank" class="bwp-share-link bwp-twitter-share" onclick="window.open('https://twitter.com/share?url={{ post.get_absolute_url }}', 'Twitter', 'width=700,height=500,left='+(screen.availWidth/2-350)+',top='+(screen.availHeight/2-250)+''); return false;">
+                                                <a href="https://twitter.com/share?url={{ post_path|absolute }}" rel="nofollow noopener" target="_blank" class="bwp-share-link bwp-twitter-share" onclick="window.open('https://twitter.com/share?url={{ post_path|absolute }}', 'Twitter', 'width=700,height=500,left='+(screen.availWidth/2-350)+',top='+(screen.availHeight/2-250)+''); return false;">
                                                     <i class="fa fa-twitter"></i>
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ post.get_absolute_url }}" rel="nofollow noopener" target="_blank" class="bwp-share-link bwp-vk-share" onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url={{ post.get_absolute_url }}', 'LinkedIn', 'width=600,height=300,left='+(screen.availWidth/2-300)+',top='+(screen.availHeight/2-150)+''); return false;">
+                                                <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ post_path|absolute }}" rel="nofollow noopener" target="_blank" class="bwp-share-link bwp-vk-share" onclick="window.open('https://www.linkedin.com/sharing/share-offsite/?url={{ post_path|absolute }}', 'LinkedIn', 'width=600,height=300,left='+(screen.availWidth/2-300)+',top='+(screen.availHeight/2-150)+''); return false;">
                                                     <i class="fa fa-linkedin"></i>
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="http://pinterest.com/pin/create/button/?url={{ post.get_absolute_url }}&media=&description=Les%20crit%C3%A8res%20%C3%A0%20prendre%20en%20compte%20lors%20de%20la%20recherche%20d%E2%80%99une%20maison%20en%20hiver" rel="nofollow noopener" target="_blank" class="bwp-share-link bwp-pinterest-share" onclick="window.open('http://pinterest.com/pin/create/button/?url={{ post.get_absolute_url }}&media=&description=Les%20crit%C3%A8res%20%C3%A0%20prendre%20en%20compte%20lors%20de%20la%20recherche%20d%E2%80%99une%20maison%20en%20hiver', 'Pinterest', 'width=800,height=700,left='+(screen.availWidth/2-400)+',top='+(screen.availHeight/2-350)+''); return false;">
+                                                <a href="http://pinterest.com/pin/create/button/?url={{ post_path|absolute }}&media=&description=Les%20crit%C3%A8res%20%C3%A0%20prendre%20en%20compte%20lors%20de%20la%20recherche%20d%E2%80%99une%20maison%20en%20hiver" rel="nofollow noopener" target="_blank" class="bwp-share-link bwp-pinterest-share" onclick="window.open('http://pinterest.com/pin/create/button/?url={{ post_path|absolute }}&media=&description=Les%20crit%C3%A8res%20%C3%A0%20prendre%20en%20compte%20lors%20de%20la%20recherche%20d%E2%80%99une%20maison%20en%20hiver', 'Pinterest', 'width=800,height=700,left='+(screen.availWidth/2-400)+',top='+(screen.availHeight/2-350)+''); return false;">
                                                     <i class="fa fa-pinterest-p"></i>
                                                 </a>
                                             </li>

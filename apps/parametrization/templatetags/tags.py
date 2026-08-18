@@ -1,5 +1,6 @@
 from django import template
 from immobilier.settings import SERVER
+from apps.seo import absolute_url
 import ast, json
 
 
@@ -19,6 +20,12 @@ def get_item(dictionary, key):
 @register.filter
 def server_url(server):
     return SERVER
+
+
+@register.filter
+def absolute(path):
+    """Convierte una ruta relativa en absoluta sobre el dominio canonico."""
+    return absolute_url(path)
 
 
 @register.filter

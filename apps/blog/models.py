@@ -1,14 +1,13 @@
-from django.conf import settings
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 from datetime import datetime
 from django.utils.text import slugify
-from django.utils.translation import get_language
 from googletrans import Translator
 import uuid
 from django_ckeditor_5.fields import CKEditor5Field
-from django.contrib.sites.models import Site
 from apps.accounts.models import CustomUser
+from apps.seo import absolute_url, current_language, normalize_language
 
 
 
@@ -27,14 +26,10 @@ class Category(models.Model):
         title = '{} | {}'.format(self.title_francaise, self.title_anglaise)
         return title
 
-    def get_absolute_url(self):
-        language = get_language()
-        if language == 'fr':
-            return '/%s/' % self.slug_francaise
-        elif language == 'en':
-            return '/%s/' % self.slug_anglaise
-        else:
-            return '/%s/' % self.slug_francaise
+    def get_absolute_url(self, language=None):
+        language = normalize_language(language) if language else current_language()
+        slug = self.slug_anglaise if language == 'en' else self.slug_francaise
+        return reverse('blog:category_detail', kwargs={'language': language, 'slug': slug})
 
     def save(self, *args, **kwargs):
         self.slug_francaise = slugify(self.title_francaise)
@@ -68,21 +63,17 @@ class Article(models.Model):
     class Meta:
         ordering = ('-created_at',)
 
-    def get_absolute_url(self):
-        language = get_language()
-        if language == 'fr':
-            relative_url = '/blog/%s/%s/' % (self.category.slug_francaise, self.slug_francaise)
-        elif language == 'en':
-            relative_url = '/blog/%s/%s/' % (self.category.slug_anglaise, self.slug_anglaise)
-        else:
-            relative_url = '/blog/%s/%s/' % (self.category.slug_francaise, self.slug_francaise)
+    def get_absolute_url(self, language=None):
+        """URL absoluta del articulo: <SITE_URL>/<lang>/blog/<slug>/.
 
-        current_site = Site.objects.get_current()
-        domain = current_site.domain
+        Se usa en los botones de compartir de blog/detail.html, por eso es
+        absoluta. Sin argumento toma el idioma activo normalizado.
+        """
+        language = normalize_language(language) if language else current_language()
+        slug = self.slug_anglaise if language == 'en' else self.slug_francaise
+        relative_url = reverse('blog:post_detail', kwargs={'language': language, 'slug': slug})
+        return absolute_url(relative_url)
 
-        scheme = 'https' if settings.USE_HTTPS else 'http'
-        return f'{scheme}://{domain}{relative_url}'
-    
     def was_published_recently(self):
         """Checks if the post was published recently.
 

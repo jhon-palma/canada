@@ -145,10 +145,33 @@ def detail(request, language, slug):
    
   
 
-def category(request, slug):
-    category = get_object_or_404(Category, slug_francaise=slug)
-    articles = category.posts.filter(status=Article.ACTIVE)
-    return render(request, 'blog/post_list.html', {'category': category, 'articles': articles})
+def category(request, language, slug):
+    """Listado publico de articulos de una categoria, en fr o en.
+
+    Mismo contrato de contexto que `articles` para poder reutilizar
+    blog/blog.html (que incluye web/header_web.html y pagina con `articles`).
+    """
+    slug_field = 'slug_anglaise' if language == 'en' else 'slug_francaise'
+    category = get_object_or_404(Category, **{slug_field: slug})
+
+    articles_list = category.posts.filter(active=True)
+    paginator = Paginator(articles_list, 12)
+    try:
+        articles = paginator.page(request.GET.get('page'))
+    except PageNotAnInteger:
+        articles = paginator.page(1)
+    except EmptyPage:
+        articles = paginator.page(paginator.num_pages)
+
+    context = {
+        'language': language,
+        'labels': DICT_LABELS.get(language, {}).get('web', {}),
+        'articles': articles,
+        'paginator': paginator,
+        'data_meta': MetaDataWeb.objects.get(origin='blog'),
+        'category': category,
+    }
+    return render(request, 'blog/blog.html', context)
 
 
 
