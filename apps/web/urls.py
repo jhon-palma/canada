@@ -2,6 +2,7 @@
 from django.contrib.auth.decorators import login_required
 from django.urls import path, include, re_path
 
+from apps.decorators import staff_required
 from apps.web.views import web, web_messages
 
 urlpatterns = [
@@ -22,7 +23,7 @@ urlpatterns = [
     path("search-videos/", web.search_videos, name="search_videos"),
     re_path(r'^(?P<language>fr|en)/search/', web.SearchView.as_view(), name='search'),
     path('contact_messages/', web_messages.contact_messages, name='contact_messages'),
-    path('statistics/', web.statistics, name='statistics'),
+    path('statistics/', staff_required(web.statistics), name='statistics'),
     re_path(r'^search/(?P<language>fr|en)/(?P<option>[\w-]+)/$', web.SearchProperties.as_view(), name='search_properties'),
     path('calculator/', web.WebCalculator.as_view(), name='calculator'),
     path('metadata/',login_required(web.metadata), name='list-metadata'),
