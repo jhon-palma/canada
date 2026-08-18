@@ -104,6 +104,20 @@ STATICFILES_FINDERS = (
 # asi que este ajuste no lo altera.
 AWS_QUERYSTRING_AUTH = False
 
+# Los estaticos se sirven desde el edge del CDN de Spaces en vez del origen
+# del bucket. Mismas rutas y mismos archivos, pero el edge responde en ~0,05s
+# frente a ~0,95s del origen (esta en San Francisco) y anade
+# Cache-Control: max-age=604800, que el origen no manda.
+# Se aplica SOLO al almacenamiento staticfiles: el de media (las imagenes)
+# se deja intacto a proposito, para que sus URLs sigan sin caducidad.
+if not DEBUG and isinstance(globals().get('STORAGES'), dict):
+    _spaces_region = urlsplit(AWS_S3_ENDPOINT_URL).netloc.split('.')[0]
+    STATIC_CDN_DOMAIN = '{}.{}.cdn.digitaloceanspaces.com'.format(
+        AWS_STORAGE_BUCKET_NAME, _spaces_region)
+    _staticfiles = STORAGES.get('staticfiles')
+    if _staticfiles is not None:
+        _staticfiles.setdefault('OPTIONS', {})['custom_domain'] = STATIC_CDN_DOMAIN
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
