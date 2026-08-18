@@ -17,9 +17,16 @@
 	{% define 'properties-for-rent' as url_rent %}
 {% endif %}
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="{{ language|default:'fr' }}" xmlns="http://www.w3.org/1999/xhtml">
 <head>
 
+	<link rel="preconnect" href="https://ajax.googleapis.com" crossorigin>
+	<link rel="preconnect" href="https://code.jquery.com" crossorigin>
+	<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+	<link rel="preconnect" href="https://maxcdn.bootstrapcdn.com" crossorigin>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
 	<meta name="google-site-verification" content="AvHB9jrAI_R9deiYsxfhtNu9JckA8TxbLRot8MnB7-o" />
 	
 	{% if data_meta.m_description_f and data_meta.m_description_a and data_meta.m_title_f and data_meta.m_title_a %}
@@ -48,7 +55,7 @@
 	<meta name="msapplication-TileColor" content="#00AAAE">
 	<meta name="msapplication-config" content="{% static 'web/images2/favicons/browserconfig.xml' %}">
 	<meta name="theme-color" content="#ffffff">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta property="og:title" content="{{ labels.index.header.one }}"/>
 	<meta property="og:site_name" content="{{ labels.index.header.two }}"/>
 	<meta property="og:url" content="{{ server|server_url }}{{ request.path }}"/>
@@ -179,9 +186,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 			<a href="https://www.tiktok.com/@ljaguinaga" class="btnsoc" target="_blank"><img width="88" height="100" src="{% static 'web/images2/tiktok.png' %}" alt="Tik tok"></a>
 			<a href="tel:+1514-500-4040" class="telh"><i class="fa fa-phone"></i>514-500-4040</a>
             {% if post %}
-                <a class="btn_language" style="cursor: pointer" onclick="changeParameterInURLBlog('{{ language }}','{{ new_language }}');">{{ new_language_name }}</a>
+                {% if new_language == 'en' %}{% alternate_url new_language post.slug_francaise post.slug_anglaise as alt_href %}{% else %}{% alternate_url new_language post.slug_anglaise post.slug_francaise as alt_href %}{% endif %}
+                <a class="btn_language" href="{{ alt_href }}" hreflang="{{ new_language }}" onclick="changeParameterInURLBlog('{{ language }}','{{ new_language }}'); return false;">{{ new_language_name }}</a>
             {% else %}
-			    <a class="btn_language" style="cursor: pointer" onclick="changeParameterInURL('{{ language }}','{{ new_language }}');">{{ new_language_name }}</a>
+                {% alternate_url new_language as alt_href %}
+			    <a class="btn_language" href="{{ alt_href }}" hreflang="{{ new_language }}" onclick="changeParameterInURL('{{ language }}','{{ new_language }}'); return false;">{{ new_language_name }}</a>
             {% endif %}
 		</div>
 	</div>

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap');
+/* La fuente Roboto Condensed se carga con <link rel=preconnect> + <link rel=stylesheet> en header_web.html */
 
 /* font-family: 'Roboto Condensed', sans-serif; */
 .tac.mt10{text-align: center;margin-top: 10px;clear: both;}

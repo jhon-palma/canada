@@ -1,6 +1,6 @@
 from django import template
 from immobilier.settings import SERVER
-from apps.seo import absolute_url
+from apps.seo import absolute_url, alternate_path
 import ast, json
 
 
@@ -26,6 +26,20 @@ def server_url(server):
 def absolute(path):
     """Convierte una ruta relativa en absoluta sobre el dominio canonico."""
     return absolute_url(path)
+
+
+@register.simple_tag(takes_context=True)
+def alternate_url(context, target_language, current_slug=None, translated_slug=None):
+    """href de la misma pagina en el otro idioma.
+
+    El selector de idioma solo tenia onclick, asi que Google no podia
+    seguirlo y no descubria la version en el otro idioma.
+    """
+    request = context.get('request')
+    if request is None:
+        return '/%s/' % target_language
+    extra = [(current_slug, translated_slug)] if current_slug and translated_slug else None
+    return alternate_path(request.path, target_language, extra_slugs=extra)
 
 
 @register.filter

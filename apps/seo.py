@@ -42,3 +42,48 @@ def site_url():
 def absolute_url(path):
     """Convierte una ruta relativa en absoluta sobre el dominio canonico."""
     return '{}{}'.format(site_url(), path)
+
+
+# Pares de slug equivalentes entre idiomas. Es la misma tabla que usa
+# changeParameterInURL() en static/app/js/functions/master.js; se replica
+# aqui para poder emitir el enlace real en el HTML y no solo por JavaScript.
+SLUG_TRANSLATIONS = [
+    ('proprietes', 'properties'),
+    ('propriete', 'propertie'),
+    ('proprietes-a-vendre', 'properties-for-sale'),
+    ('proprietes-a-louer', 'properties-for-rent'),
+    ('courtier-immobilier', 'real-estate-broker'),
+    ('acheter', 'buying'),
+    ('vendre', 'selling'),
+    ('contact-courtier-immobilier', 'contact-realestate-broker'),
+    ('politique-confidentialite', 'privacy-policy'),
+]
+
+
+def alternate_path(path, target_language, extra_slugs=None):
+    """Ruta equivalente a `path` en el otro idioma.
+
+    Sustituye el segmento de idioma y los slugs traducibles. `extra_slugs`
+    permite anadir pares (actual, traducido) propios de la pagina, como el
+    slug de un articulo del blog.
+
+    Se usa para dar un href real al selector de idioma: sin el, Google no
+    puede seguir el enlace y no descubre la version en el otro idioma.
+    """
+    target_language = normalize_language(target_language)
+    source_language = 'en' if target_language == 'fr' else 'fr'
+
+    pares = list(extra_slugs or [])
+    for fr, en in SLUG_TRANSLATIONS:
+        pares.append((fr, en) if target_language == 'en' else (en, fr))
+    pares.append((source_language, target_language))
+
+    nueva = path
+    for actual, traducido in pares:
+        if actual and traducido:
+            nueva = nueva.replace('/%s/' % actual, '/%s/' % traducido)
+
+    # La portada se sirve tanto en / como en /<lang>/.
+    if nueva == path and '/%s/' % target_language not in nueva:
+        nueva = '/%s/' % target_language
+    return nueva
