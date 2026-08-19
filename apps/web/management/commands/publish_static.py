@@ -73,7 +73,15 @@ class Command(BaseCommand):
             call_command('build_bundles')
 
             self.stdout.write(self.style.MIGRATE_HEADING('2/3 Subiendo a Spaces'))
-            call_command('collectstatic', interactive=False, verbosity=1)
+            self.stdout.write(
+                '  La primera vez sube los 2142 archivos (unos 68 MB): tras'
+                ' un git pull todas las fechas son nuevas y ninguno se da'
+                ' por actualizado. Tarda, y se puede cortar y repetir sin'
+                ' riesgo.')
+            # verbosity=2 y no 1: collectstatic registra cada "Copying" a nivel
+            # 2, asi que a nivel 1 se queda mudo durante toda la subida y
+            # parece colgado.
+            call_command('collectstatic', interactive=False, verbosity=2)
 
         self.stdout.write(self.style.MIGRATE_HEADING(
             '3/3 Verificando lo que se sirve' if not solo_comprobar
