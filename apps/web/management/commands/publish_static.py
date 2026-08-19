@@ -47,42 +47,6 @@ CRITICOS = [
 ]
 
 
-class _SalidaFiltrada:
-    """Deja ver lo que sube y resume lo que omite.
-
-    collectstatic solo informa archivo a archivo a partir de verbosity=2,
-    pero ahi escribe una linea por CADA archivo sin cambios. En la segunda
-    ejecucion eso son 2142 lineas de "Skipping" desfilando por la terminal,
-    indistinguibles de una subida entera: parece que vuelve a subirlo todo
-    cuando en realidad no sube nada. Se cuentan y se resumen.
-    """
-
-    def __init__(self, destino):
-        self.destino = destino
-        self.omitidos = 0
-        self.subidos = 0
-
-    def write(self, texto):
-        for linea in texto.splitlines():
-            if not linea.strip():
-                continue
-            if linea.startswith('Skipping'):
-                self.omitidos += 1
-                if self.omitidos % 500 == 0:
-                    self.destino.write('  %d sin cambios, omitidos' % self.omitidos)
-            elif linea.startswith(('Copying', 'Deleting')):
-                self.subidos += 1
-                self.destino.write('  ' + linea)
-            else:
-                self.destino.write(linea)
-
-    def flush(self):
-        pass
-
-    def isatty(self):
-        return False
-
-
 class Command(BaseCommand):
     help = 'Genera los bundles, sube los estaticos a Spaces y verifica que se sirven.'
 
@@ -93,35 +57,24 @@ class Command(BaseCommand):
         parser.add_argument(
             '--verificar', dest='extra', action='append', default=[],
             help='Ruta estatica adicional a verificar. Se puede repetir.')
+        parser.add_argument(
+            '--workers', type=int, default=16,
+            help='Subidas simultaneas en el paso 2 (por defecto 16).')
+        parser.add_argument(
+            '--dry-run', action='store_true',
+            help='Ensayo: dice que subiria el paso 2, pero no sube nada.')
 
     def handle(self, *args, **options):
         solo_comprobar = options['check']
         rutas = CRITICOS + options['extra']
 
         if not solo_comprobar:
-            if settings.DEBUG:
-                raise CommandError(
-                    'Con DEBUG=True el almacenamiento de estaticos es el disco '
-                    'local, no Spaces: collectstatic no subiria nada al bucket. '
-                    'Ejecutelo en el servidor, o use --check para solo verificar.')
-
             self.stdout.write(self.style.MIGRATE_HEADING('1/3 Generando los bundles'))
             call_command('build_bundles')
 
             self.stdout.write(self.style.MIGRATE_HEADING('2/3 Subiendo a Spaces'))
-            self.stdout.write(
-                '  Solo sube lo que cambio. Aun asi tarda unos minutos: para'
-                ' decidir que puede omitir, consulta en Spaces la fecha de'
-                ' cada uno de los 2142 archivos. Se puede cortar y repetir'
-                ' sin riesgo.')
-            # verbosity=2 y no 1: collectstatic registra cada "Copying" a nivel
-            # 2, asi que a nivel 1 se queda mudo durante toda la subida y
-            # parece colgado.
-            salida = _SalidaFiltrada(self.stdout)
-            call_command('collectstatic', interactive=False, verbosity=2,
-                         stdout=salida)
-            self.stdout.write('  %d subidos, %d sin cambios'
-                              % (salida.subidos, salida.omitidos))
+            call_command('sync_static', workers=options['workers'],
+                         dry_run=options['dry_run'])
 
         self.stdout.write(self.style.MIGRATE_HEADING(
             '3/3 Verificando lo que se sirve' if not solo_comprobar
