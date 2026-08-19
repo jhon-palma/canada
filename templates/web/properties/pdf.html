@@ -261,7 +261,7 @@
                     <div class="td">{% if inscription.facade_terrain %}{{ inscription.facade_terrain|floatformat:2 }} {% if language == "en" %}ft.{% else %}pi.{% endif %} x {{ inscription.profondeur_terrain|floatformat:2 }} {% if language == "en" %}ft.{% else %}pi.{% endif %}{% if inscription.ind_irregulier_batiment %} - Irr{% endif %}{% endif %}</div>
                 </div>
                 <div class="tr">
-                    <div class="td">{% if language == "en" %}Deed of Sale Signature{% else %}Prise de possession{% endif %}</div>
+                    <div class="td">{% if language == "en" %}Move-in date{% else %}Date d’emménagement{% endif %}</div>
                     <div class="td">{% if language == "en" %}{{inscription.delai_occupation_anglais|default:"" }}{% else %}{{inscription.delai_occupation_francais|default:"" }}{% endif %}</div>
                 </div>
                 <div class="tr">

@@ -781,9 +781,10 @@ def uploadInscriptions(data):
         addenda_complet_a = row[158] if row[158] else None
 
         try:
-            inscription = Inscriptions.objects.get(no_inscription = no_inscription)
 
+            inscription = Inscriptions.objects.get(no_inscription=no_inscription)
             cambios = []
+
             if inscription.champ_inutilise_1 != champ_inutilise_1:
                 inscription.champ_inutilise_1 = champ_inutilise_1
                 cambios.append('champ_inutilise_1')
