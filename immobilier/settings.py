@@ -93,6 +93,26 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
+# collectstatic no copia una carpeta: recoge lo que encuentran los finders, o
+# sea STATICFILES_DIRS y las subcarpetas static/ de las apps instaladas.
+# Ninguna app de este proyecto tiene una: los 2142 archivos del sitio viven en
+# BASE_DIR/static. En desarrollo esa carpeta esta en STATICFILES_DIRS y el
+# runserver la sirve sola, pero en produccion local_settings solo la declara
+# como STATIC_ROOT, que es el DESTINO y nunca una fuente. Resultado:
+# collectstatic subia los estaticos del admin y de terceros, y ni uno solo del
+# sitio. Por eso web/css/bundle.css y web/js/bundle.js llegaron al repositorio
+# y no al bucket, dejando la portada sin hoja de estilos y sin el JS del
+# header. Se declara aqui, y no en local_settings, porque local_settings no
+# esta versionado y el arreglo tiene que viajar con el repositorio.
+if not DEBUG and not globals().get('STATICFILES_DIRS'):
+    STATICFILES_DIRS = [BASE_DIR / 'static']
+    # FileSystemFinder aborta si STATIC_ROOT coincide con una entrada de
+    # STATICFILES_DIRS. Con el almacenamiento en Spaces collectstatic escribe
+    # en el bucket y STATIC_ROOT no llega a usarse, asi que se le da una ruta
+    # aparte para que ambos ajustes convivan.
+    if globals().get('STATIC_ROOT') and Path(STATIC_ROOT) == BASE_DIR / 'static':
+        STATIC_ROOT = BASE_DIR / '.staticfiles'
+
 # URLs de S3 sin firmar. django-storages firma por defecto
 # (AWS_QUERYSTRING_AUTH=True), y el almacenamiento staticfiles no lo
 # declaraba, asi que cada CSS y JS salia como
