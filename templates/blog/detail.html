@@ -3,6 +3,19 @@
     <link href="{% static 'blog/css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'blog/css/styles.css' %}" rel="stylesheet">
 {% endblock %}
+    {% if vista_previa %}
+        {# Solo lo ve el equipo: para el resto este articulo todavia es un 404. #}
+        <div style="background:#1194A1;color:#fff;padding:14px 20px;text-align:center;font-size:15px;">
+            {% if language == 'en' %}
+                <strong>Preview</strong> &middot; This article is not public yet. It goes live on
+                {{ post.date_hour|date:"d F Y" }} at {{ post.date_hour|date:"H:i" }}.
+            {% else %}
+                <strong>Aperçu</strong> &middot; Cet article n'est pas encore public. Il sera publié le
+                {{ post.date_hour|date:"d F Y" }} à {{ post.date_hour|date:"H:i" }}.
+            {% endif %}
+        </div>
+    {% endif %}
+
     <section class="bwp-single-page-wrap">
         <div class="container">
             <div class="bwp-single-page-container mt-4" role="main">

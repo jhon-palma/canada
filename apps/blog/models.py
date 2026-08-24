@@ -54,6 +54,19 @@ class ArticleQuerySet(models.QuerySet):
         return self.filter(active=True).filter(
             models.Q(date_hour__isnull=True) | models.Q(date_hour__lte=timezone.now()))
 
+    def visibles_para(self, user):
+        """Lo mismo, mas los programados si quien mira es del equipo.
+
+        Sirve para que se pueda revisar como queda un articulo en la web antes
+        de que salga. Solo aplica al entrar por su URL: los listados, las
+        categorias y el sitemap siguen usando publicados(), para que el equipo
+        vea el sitio tal cual lo ve el visitante y el articulo no se escape a
+        Google antes de tiempo.
+        """
+        if getattr(user, 'is_staff', False):
+            return self.filter(active=True)
+        return self.publicados()
+
 
 class Article(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)

@@ -114,7 +114,11 @@ def detail(request, language, slug):
     # fecha. get_object_or_404 devuelve el 404 que corresponde -- no un 410,
     # porque un articulo programado si va a existir -- y un error de verdad se
     # ve en el log en lugar de disfrazarse de redireccion.
-    post = get_object_or_404(Article.objects.publicados(), **{slug_field: slug})
+    post = get_object_or_404(Article.objects.visibles_para(request.user), **{slug_field: slug})
+
+    # Un articulo con fecha futura que se esta viendo: solo llega aqui alguien
+    # del equipo, porque para el resto visibles_para() no lo devuelve.
+    vista_previa = bool(post.date_hour and post.date_hour > timezone.now())
 
     # Con update() en vez de save(): un save() aqui reescribia la fila
     # completa -- los dos campos de contenido del editor incluidos -- en
@@ -122,8 +126,11 @@ def detail(request, language, slug):
     # <lastmod> del sitemap cambiaria cada vez que alguien abre el
     # articulo. update() tampoco pierde incrementos si entran dos
     # visitas a la vez, porque suma en la base y no en memoria.
-    Article.objects.filter(pk=post.pk).update(visites=F('visites') + 1)
-    post.visites += 1
+    # Las revisiones previas no cuentan como visitas: el articulo todavia no
+    # lo ha visto nadie de fuera.
+    if not vista_previa:
+        Article.objects.filter(pk=post.pk).update(visites=F('visites') + 1)
+        post.visites += 1
  
     user_liked = False
     if request.user.is_authenticated:
@@ -151,9 +158,16 @@ def detail(request, language, slug):
         'previous_post': previous_post,
         'next_post': next_post,
         'data_meta':post,
+        'vista_previa': vista_previa,
     }
 
-    return render(request, 'blog/detail.html', context)
+    respuesta = render(request, 'blog/detail.html', context)
+    if vista_previa:
+        # Por si alguien del equipo comparte el enlace de la revision. Google
+        # no deberia poder llegar -- sin sesion de staff esto es un 404 --,
+        # pero la cabecera lo deja dicho explicitamente.
+        respuesta['X-Robots-Tag'] = 'noindex, nofollow'
+    return respuesta
 
    
   
