@@ -1,10 +1,10 @@
 {% load static %}{% load tags %}{% include 'web/header_web.html' %}
 
-{# Se sirve con codigo 404 desde articulo_no_encontrado(). El codigo es el que
+{% comment %} Se sirve con codigo 404 desde articulo_no_encontrado(). El codigo es el que
    corresponde -- la URL no existe, o el articulo todavia no ha salido -- y
    redirigir al listado en su lugar seria un soft 404 para Google. Lo que se
    evita es el callejon sin salida: aqui esta el listado y los ultimos
-   articulos, que es lo que la persona venia buscando. #}
+   articulos, que es lo que la persona venia buscando. {% endcomment %}
 
 {% block header_page %}
     <link href="{% static 'blog/css/bootstrap.min.css' %}" rel="stylesheet">

@@ -17,9 +17,9 @@
                 <td style="text-align: center;">{{ article.title_francaise }}</td>
                 <td style="text-align: center;">{{ article.title_anglaise }}</td>
                 <td style="text-align: center;">{{ article.category }}</td>
-                {# active y date_hour son dos interruptores distintos y el listado
+                {% comment %} active y date_hour son dos interruptores distintos y el listado
                    no mostraba ninguno: habia que deducir el estado del icono del
-                   boton, y un articulo programado no se distinguia de uno vivo. #}
+                   boton, y un articulo programado no se distinguia de uno vivo. {% endcomment %}
                 <td style="text-align: center; white-space: nowrap;">
                     {% if article.estado == 'publicado' %}
                         <span class="label label-success">Published</span>
