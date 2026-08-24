@@ -1,0 +1,57 @@
+{% load static %}{% load tags %}{% include 'web/header_web.html' %}
+
+{# Se sirve con codigo 410 desde propiedad_retirada(): la ficha existio y no
+   vuelve. La pagina es para la persona que llega desde un enlace viejo o
+   desde un resultado de Google que aun no se ha actualizado; Google se queda
+   con el 410 y retira la URL. #}
+
+<style>
+	.banner{
+		background-image: url("{{ images.properties_banner.image.url }}");
+	}
+	.gone .wrap{ padding: 60px 0 80px; text-align: center; }
+	.gone h1{ margin-bottom: 20px; }
+	.gone p{ max-width: 640px; margin: 0 auto 34px; }
+	.gone .gone_links{ display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
+</style>
+
+<section class="banner nothome">
+	<div class="baninfo">
+		<h2>
+			{% if language == 'en' %}Property <span>no longer available</span>
+			{% else %}Propriété <span>non disponible</span>{% endif %}
+		</h2>
+	</div>
+</section>
+
+<section class="pol gone">
+	<div class="wrap">
+		{% if language == 'en' %}
+			<h1>This property is no longer available</h1>
+			<p>
+				The listing you are looking for has been taken off the market. It may have been
+				sold, rented or withdrawn by its owner. Here is where to continue your search.
+			</p>
+			<div class="gone_links">
+				<a href="{% url 'web:properties' language 'properties' %}" class="btn teal_btn">All our properties</a>
+				<a href="{% url 'web:properties' language 'properties-for-sale' %}" class="btn teal_btn">Properties for sale</a>
+				<a href="{% url 'web:properties' language 'properties-for-rent' %}" class="btn teal_btn">Properties for rent</a>
+				<a href="{% url 'web:contact' language 'contact-realestate-broker' %}" class="btn teal_btn">Contact us</a>
+			</div>
+		{% else %}
+			<h1>Cette propriété n'est plus disponible</h1>
+			<p>
+				L'inscription que vous recherchez a été retirée du marché. Elle a pu être vendue,
+				louée ou retirée par son propriétaire. Voici par où poursuivre votre recherche.
+			</p>
+			<div class="gone_links">
+				<a href="{% url 'web:properties' language 'proprietes' %}" class="btn teal_btn">Toutes nos propriétés</a>
+				<a href="{% url 'web:properties' language 'proprietes-a-vendre' %}" class="btn teal_btn">Propriétés à vendre</a>
+				<a href="{% url 'web:properties' language 'proprietes-a-louer' %}" class="btn teal_btn">Propriétés à louer</a>
+				<a href="{% url 'web:contact' language 'contact-courtier-immobilier' %}" class="btn teal_btn">Nous joindre</a>
+			</div>
+		{% endif %}
+	</div>
+</section>
+
+{% load static %}{% include 'web/footer_web.html' %}

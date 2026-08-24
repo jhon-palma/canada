@@ -1,5 +1,6 @@
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator
 from django.db.models import Value, CharField, Q, Case, When, Value, IntegerField
 from django.db import models
@@ -268,81 +269,112 @@ class SearchView(View):
         return render(request, self.template_name, context)
 
 
+def propiedad_retirada(request, language):
+    """410 Gone para la ficha de una propiedad que ya no esta en el mercado.
+
+    Antes esto era un redirect() al listado. Google no lee esa redireccion como
+    "la pagina ya no existe" sino como un soft 404: la URL se queda en el limbo
+    del indice, se sigue rastreando y aparece en Search Console como error, que
+    es justo lo que se queria evitar. Y al ser 302 -- temporal -- ni siquiera
+    llega a retirarla.
+
+    410 es la respuesta que corresponde: la pagina existio y no va a volver.
+    Google la retira del indice en semanas y deja de pedirla. Se devuelve con
+    una pagina util, no con el 410 pelado de Django, para que quien llegue
+    desde un enlace viejo tenga por donde seguir.
+    """
+    labels = DICT_LABELS.get(language, {}).get('web', {})
+    images_query = ImagesWeb.objects.filter(reference__in=['properties_banner'])
+    context = {
+        'municipalites': Municipalites.objects.filter(municipalite_code__isnull=False).distinct(),
+        'genres': GenresProprietes.objects.filter(genre_proprietes__isnull=False).distinct(),
+        'language': language,
+        'option': 'properties' if language == 'en' else 'proprietes',
+        'labels': labels,
+        'images': {image.reference: image for image in images_query},
+    }
+    return render(request, 'web/properties/gone.html', context, status=410)
+
+
 class WebDetailProperty(View):
 
     def get(self, request, *args, **kwargs):
         propertie_id = kwargs.get('propertie_id')
         language = kwargs.get('language', 'fr')
 
-        try: 
+        # El try envuelve solo la busqueda. Antes abarcaba la vista entera con
+        # un except desnudo, asi que cualquier fallo al construir la ficha se
+        # confundia con una propiedad inexistente. Con la respuesta 410 eso
+        # seria grave: un error de renderizado le estaria diciendo a Google
+        # que retire del indice una ficha que sigue viva.
+        try:
             propertie = Inscriptions.objects.get(id=propertie_id, status=True)
-            municipalites = Municipalites.objects.filter(municipalite_code__isnull=False).distinct()
-            genres = GenresProprietes.objects.filter(genre_proprietes__isnull=False).distinct()
-            labels = DICT_LABELS.get(language).get('web')
-            option = kwargs.get('option', 'detail-propertie')
-            flag = kwargs.get('flag', 'detail')
-            self.template_name = 'web/properties/{}.html'.format(flag)
-            mun_code = propertie.mun_code
-            same_district = Inscriptions.objects.with_card_data().filter(mun_code=mun_code, status=True).exclude(id=propertie.id)[:4]
-            url_pdf = '{}/{}/{}/pdf/'.format(language, option, propertie_id)
-            
-            taxsco = propertie.depenses.filter(tdep_code__valeur='TAXSCO').first()
-            taxmun = propertie.depenses.filter(tdep_code__valeur='TAXMUN').first()
-            try:
-                total_fees = taxsco.montant_depense + taxmun.montant_depense
-            except:
-                total_fees = 0
-            total_municipal = 0
-            addenda_list = Addenda.objects.filter(no_inscription__id=propertie_id)
-            addenda_f_list = addenda_list.filter(code_langue__valeur="F")
-            addenda_f_texts = []
-            for addenda in addenda_f_list:
-                if addenda.texte:
-                    if addenda.texte.startswith('-'):
-                        addenda_f_texts.append('<br>' + addenda.texte)
-                    else:
-                        if addenda.texte[0].isupper():
-                            addenda_f_texts.append('<br><br>')
-                            addenda_f_texts.append(addenda.texte)
-                        else:
-                            addenda_f_texts.append(addenda.texte)
-            addenda_f = ' '.join(addenda_f_texts)
-            addenda_a_list = addenda_list.filter(code_langue__valeur="A")
-            addenda_a_texts = []
-            for addenda in addenda_a_list:
-                if addenda.texte:
-                    if addenda.texte.startswith('-'):
-                        addenda_a_texts.append('<br>' + addenda.texte)
-                    else:
-                        if addenda.texte[0].isupper():
-                            addenda_a_texts.append('<br><br>')
-                            addenda_a_texts.append(addenda.texte)
-                        else:
-                            addenda_a_texts.append(addenda.texte)
-            addenda_a = ' '.join(addenda_a_texts)
-            images_query = ImagesWeb.objects.filter(reference__in=['properties_banner'])
-            images_dict = {image.reference: image for image in images_query}
+        except (Inscriptions.DoesNotExist, ValidationError, ValueError, TypeError):
+            return propiedad_retirada(request, language)
 
-            context = {
-                'municipalites':municipalites,
-                'genres':genres,
-                'language':language,
-                'option':option,
-                'flag':flag,
-                'labels':labels,
-                'inscription': propertie,
-                'same_district': same_district,
-                'total_fees':total_fees,
-                'addenda_f':addenda_f,
-                'addenda_a':addenda_a,
-                'images':images_dict,
-                'url_pdf':url_pdf,
-            }
-            return render(request, self.template_name, context)
-            
+        municipalites = Municipalites.objects.filter(municipalite_code__isnull=False).distinct()
+        genres = GenresProprietes.objects.filter(genre_proprietes__isnull=False).distinct()
+        labels = DICT_LABELS.get(language).get('web')
+        option = kwargs.get('option', 'detail-propertie')
+        flag = kwargs.get('flag', 'detail')
+        self.template_name = 'web/properties/{}.html'.format(flag)
+        mun_code = propertie.mun_code
+        same_district = Inscriptions.objects.with_card_data().filter(mun_code=mun_code, status=True).exclude(id=propertie.id)[:4]
+        url_pdf = '{}/{}/{}/pdf/'.format(language, option, propertie_id)
+        
+        taxsco = propertie.depenses.filter(tdep_code__valeur='TAXSCO').first()
+        taxmun = propertie.depenses.filter(tdep_code__valeur='TAXMUN').first()
+        try:
+            total_fees = taxsco.montant_depense + taxmun.montant_depense
         except:
-            redirect_option = 'properties' if language == 'en' else 'proprietes'
-            return redirect("web:properties", language=language, option=redirect_option)
+            total_fees = 0
+        total_municipal = 0
+        addenda_list = Addenda.objects.filter(no_inscription__id=propertie_id)
+        addenda_f_list = addenda_list.filter(code_langue__valeur="F")
+        addenda_f_texts = []
+        for addenda in addenda_f_list:
+            if addenda.texte:
+                if addenda.texte.startswith('-'):
+                    addenda_f_texts.append('<br>' + addenda.texte)
+                else:
+                    if addenda.texte[0].isupper():
+                        addenda_f_texts.append('<br><br>')
+                        addenda_f_texts.append(addenda.texte)
+                    else:
+                        addenda_f_texts.append(addenda.texte)
+        addenda_f = ' '.join(addenda_f_texts)
+        addenda_a_list = addenda_list.filter(code_langue__valeur="A")
+        addenda_a_texts = []
+        for addenda in addenda_a_list:
+            if addenda.texte:
+                if addenda.texte.startswith('-'):
+                    addenda_a_texts.append('<br>' + addenda.texte)
+                else:
+                    if addenda.texte[0].isupper():
+                        addenda_a_texts.append('<br><br>')
+                        addenda_a_texts.append(addenda.texte)
+                    else:
+                        addenda_a_texts.append(addenda.texte)
+        addenda_a = ' '.join(addenda_a_texts)
+        images_query = ImagesWeb.objects.filter(reference__in=['properties_banner'])
+        images_dict = {image.reference: image for image in images_query}
+
+        context = {
+            'municipalites':municipalites,
+            'genres':genres,
+            'language':language,
+            'option':option,
+            'flag':flag,
+            'labels':labels,
+            'inscription': propertie,
+            'same_district': same_district,
+            'total_fees':total_fees,
+            'addenda_f':addenda_f,
+            'addenda_a':addenda_a,
+            'images':images_dict,
+            'url_pdf':url_pdf,
+        }
+        return render(request, self.template_name, context)
 
 
 class WebPropertyRedirect(View):
@@ -351,12 +383,14 @@ class WebPropertyRedirect(View):
         language = kwargs.get('language', 'fr')
         flag = kwargs.get('flag', 'detail')
         option = kwargs.get('option', 'proprietes')
-        try: 
+        try:
             propertie = Inscriptions.objects.get(no_inscription=propertie_code, status=True)
-            return redirect( "web:detail-propertie", language=language, option=option, propertie_id=propertie.id, flag=flag)
-        except:
-            propertie = False
-            return redirect("web:properties", language=language, option=option+"s")
+        except (Inscriptions.DoesNotExist, Inscriptions.MultipleObjectsReturned,
+                ValidationError, ValueError, TypeError):
+            return propiedad_retirada(request, language)
+
+        return redirect("web:detail-propertie", language=language, option=option,
+                        propertie_id=propertie.id, flag=flag)
 
 
 class WebVideos(View):
