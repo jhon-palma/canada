@@ -2,6 +2,13 @@
 {% block header_page %}
     <link href="{% static 'blog/css/styles.css' %}" rel="stylesheet">
     <link href="{% static 'blog/css/styleBlog.css' %}" rel="stylesheet">
+    <style>
+        /* styles.css alinea el paginado a la izquierda con
+           .pagination .nav-links{text-align:left}. Se corrige aqui y no alli
+           para que baste con desplegar: un cambio en static/ exigiria ademas
+           subirlo al bucket con publish_static. */
+        .pagination .nav-links{ text-align: center; }
+    </style>
 {% endblock %}
 <div class="home blog wp-embed-responsive">
     <section id="bwp-blog-posts-wrap mt-4">
@@ -16,7 +23,7 @@
                                 <div class="img">
                                     <div class="cattag">{% if language == "en" %}{{ article.category.title_anglaise }}{% else %}{{ article.category.title_francaise }}{% endif %}</div>
                                     {% if language == "en" %}<a href="{% url 'blog:post_detail' language=language slug=article.slug_anglaise %}">{% else %}<a href="{% url 'blog:post_detail' language=language slug=article.slug_francaise %}">{% endif %}
-                                        {% if language == "en" %}{% if article.image_anglaise %}<img loading="lazy" decoding="async" src="{{ article.image_anglaise.url }}" alt="{{ article.title_anglaise }}">{% endif %}{% else %}{% if article.image_francaise %}<img loading="lazy" decoding="async" src="{{ article.image_francaise.url }}" alt="{{ article.title_francaise }}">{% endif %}{% endif %}
+                                        {% if language == "en" %}{% if article.image_anglaise %}<img loading="lazy" decoding="async" src="{{ article.image_anglaise.url }}" alt="{{ article.title_anglaise }}">{% else %}<span class="sinfoto"></span>{% endif %}{% else %}{% if article.image_francaise %}<img loading="lazy" decoding="async" src="{{ article.image_francaise.url }}" alt="{{ article.title_francaise }}">{% else %}<span class="sinfoto"></span>{% endif %}{% endif %}
                                     </a>
                                 </div>
                                 <p class="date">{{ article.formatted_date }}</p>

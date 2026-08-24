@@ -3,18 +3,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+<style>
+	/* Relleno para cuando no hay foto: ni el icono de imagen rota ni un hueco
+	   de cero alto que descuadre la fila. Lo usan tanto las plantillas, cuando
+	   el articulo no tiene imagen, como el script de aqui abajo cuando el
+	   archivo existe en la base pero no en el bucket. */
+	.sinfoto{ display: block; width: 100%; min-height: 120px; background: #eceff1; }
+</style>
 <script>
-	/* Una foto que falta deja el hueco limpio, no el icono de imagen rota.
-	   Pasa, por ejemplo, con los articulos que apuntan al default.png del
-	   modelo, que no esta en el bucket. Se oculta con visibility para
-	   conservar el sitio que ocupaba y no descuadrar la fila. El listener va
-	   en captura porque el evento error de <img> no burbujea, y aqui arriba
-	   para estar puesto antes de que empiecen a cargar. */
+	/* Una imagen que no carga se convierte en ese relleno. Se le pone un pixel
+	   transparente en vez de quitarla, para no tocar la estructura de la
+	   pagina -- hay galerias que dependen de sus <img> -- y que sea la caja
+	   gris la que se vea. El listener va en captura porque el evento error de
+	   <img> no burbujea, y aqui arriba para estar puesto antes de que las
+	   imagenes empiecen a cargar. */
 	document.addEventListener('error', function (evento) {
 		var el = evento.target;
-		if (el.tagName === 'IMG' && el.style.visibility !== 'hidden') {
-			el.style.visibility = 'hidden';
-		}
+		if (el.tagName !== 'IMG' || el.dataset.sinfoto) { return; }
+		el.dataset.sinfoto = '1';
+		el.classList.add('sinfoto');
+		el.src = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
 	}, true);
 </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

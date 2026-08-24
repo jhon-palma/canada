@@ -59,9 +59,9 @@
                                 <span class="foto">
                                     {% if language == 'en' %}{% if articulo.image_anglaise %}
                                         <img loading="lazy" decoding="async" alt="" src="{{ articulo.image_anglaise.url }}">
-                                    {% endif %}{% else %}{% if articulo.image_francaise %}
+                                    {% else %}<span class="sinfoto"></span>{% endif %}{% else %}{% if articulo.image_francaise %}
                                         <img loading="lazy" decoding="async" alt="" src="{{ articulo.image_francaise.url }}">
-                                    {% endif %}{% endif %}
+                                    {% else %}<span class="sinfoto"></span>{% endif %}{% endif %}
                                 </span>
                                 <span class="titulo">
                                     {% if language == 'en' %}{{ articulo.title_anglaise }}{% else %}{{ articulo.title_francaise }}{% endif %}
