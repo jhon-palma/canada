@@ -5,6 +5,7 @@
             <th style="text-align: center;">Title Francaise</th>
             <th style="text-align: center;">Title Anglaise</th>
             <th style="text-align: center;">Category</th>
+            <th style="text-align: center;">Publication</th>
             <th style="text-align: center;">Image Francaise</th>
             <th style="text-align: center;">Image Anglaise</th>
             <th style="text-align: center;">Acciones</th>
@@ -16,6 +17,19 @@
                 <td style="text-align: center;">{{ article.title_francaise }}</td>
                 <td style="text-align: center;">{{ article.title_anglaise }}</td>
                 <td style="text-align: center;">{{ article.category }}</td>
+                {# active y date_hour son dos interruptores distintos y el listado
+                   no mostraba ninguno: habia que deducir el estado del icono del
+                   boton, y un articulo programado no se distinguia de uno vivo. #}
+                <td style="text-align: center; white-space: nowrap;">
+                    {% if article.estado == 'publicado' %}
+                        <span class="label label-success">Publicado</span>
+                    {% elif article.estado == 'programado' %}
+                        <span class="label label-warning">Programado</span>
+                    {% else %}
+                        <span class="label label-default">Retirado</span>
+                    {% endif %}
+                    <br><small>{{ article.date_hour|date:"d/m/Y H:i"|default:"&mdash;" }}</small>
+                </td>
                 <td style="text-align: center;"><a title="CLICK PARA VER" href="{{ article.image_francaise.url }}" target="_blank"><img loading="lazy" decoding="async" width="80" height="70" src="{{ article.image_francaise.url }}"></a></td>
                 <td style="text-align: center;"><a title="CLICK PARA VER" href="{{ article.image_anglaise.url }}" target="_blank"><img loading="lazy" decoding="async" width="80" height="70" src="{{ article.image_anglaise.url }}"></a></td>
                 <td style="text-align: center;">

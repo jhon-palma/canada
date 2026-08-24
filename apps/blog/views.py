@@ -139,9 +139,11 @@ def detail(request, language, slug):
     if post is None:
         return articulo_no_encontrado(request, language)
 
-    # Un articulo con fecha futura que se esta viendo: solo llega aqui alguien
-    # del equipo, porque para el resto visibles_para() no lo devuelve.
-    vista_previa = bool(post.date_hour and post.date_hour > timezone.now())
+    # Un articulo que no es publico y aun asi se esta viendo: solo llega aqui
+    # alguien del equipo, porque para el resto visibles_para() no lo devuelve.
+    # Son dos casos y el aviso los distingue: 'programado' -- todavia no le
+    # toca -- y 'retirado' -- lo desactivaron a mano.
+    vista_previa = not post.esta_publicado
 
     # Con update() en vez de save(): un save() aqui reescribia la fila
     # completa -- los dos campos de contenido del editor incluidos -- en
@@ -182,6 +184,7 @@ def detail(request, language, slug):
         'next_post': next_post,
         'data_meta':post,
         'vista_previa': vista_previa,
+        'estado': post.estado,
     }
 
     respuesta = render(request, 'blog/detail.html', context)

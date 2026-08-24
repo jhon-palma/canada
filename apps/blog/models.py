@@ -60,13 +60,15 @@ class ArticleQuerySet(models.QuerySet):
 
         Del equipo es cualquier cuenta con userBlog=False, el mismo criterio
         que abre las vistas de gestion: quien puede escribir un articulo puede
-        revisarlo. Sirve para ver como queda en la web antes de que salga. Solo aplica al entrar por su URL: los listados, las
+        verlo. Cubre los dos motivos por los que un articulo no es publico --
+        que aun no le toque por fecha y que este retirado --, porque en ambos
+        hace falta poder mirar como queda antes de sacarlo. Solo aplica al entrar por su URL: los listados, las
         categorias y el sitemap siguen usando publicados(), para que el equipo
         vea el sitio tal cual lo ve el visitante y el articulo no se escape a
         Google antes de tiempo.
         """
         if is_internal_user(user):
-            return self.filter(active=True)
+            return self.all()
         return self.publicados()
 
 
@@ -102,6 +104,31 @@ class Article(models.Model):
         # Por fecha de publicacion, que es la que el redactor controla.
         # created_at queda de desempate para los que no tengan date_hour.
         ordering = ('-date_hour', '-created_at')
+
+    @property
+    def esta_publicado(self):
+        """Si un visitante cualquiera puede verlo ahora mismo.
+
+        Mismo criterio que ArticleQuerySet.publicados(), en una sola ficha.
+        """
+        return self.active and (self.date_hour is None or self.date_hour <= timezone.now())
+
+    @property
+    def estado(self):
+        """'publicado', 'programado' o 'retirado'.
+
+        active y date_hour son dos interruptores distintos: active es
+        "retirado a mano" y date_hour es "todavia no le toca". active manda,
+        asi que un articulo desactivado sigue retirado aunque le llegue su
+        fecha. Esto los resume en una palabra para el listado de gestion, que
+        antes no mostraba ni la fecha ni el estado y obligaba a deducirlo del
+        icono del boton.
+        """
+        if not self.active:
+            return 'retirado'
+        if self.date_hour and self.date_hour > timezone.now():
+            return 'programado'
+        return 'publicado'
 
     def get_absolute_url(self, language=None):
         """URL absoluta del articulo: <SITE_URL>/<lang>/blog/<slug>/.

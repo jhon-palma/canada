@@ -7,11 +7,21 @@
         {# Solo lo ve el equipo: para el resto este articulo todavia es un 404. #}
         <div style="background:#1194A1;color:#fff;padding:14px 20px;text-align:center;font-size:15px;">
             {% if language == 'en' %}
-                <strong>Preview</strong> &middot; This article is not public yet. It goes live on
-                {{ post.date_hour|date:"d F Y" }} at {{ post.date_hour|date:"H:i" }}.
+                <strong>Preview</strong> &middot;
+                {% if estado == 'retirado' %}
+                    This article has been taken offline. Only the team can see it.
+                {% else %}
+                    This article is not public yet. It goes live on
+                    {{ post.date_hour|date:"d F Y" }} at {{ post.date_hour|date:"H:i" }}.
+                {% endif %}
             {% else %}
-                <strong>Aperçu</strong> &middot; Cet article n'est pas encore public. Il sera publié le
-                {{ post.date_hour|date:"d F Y" }} à {{ post.date_hour|date:"H:i" }}.
+                <strong>Aperçu</strong> &middot;
+                {% if estado == 'retirado' %}
+                    Cet article a été retiré. Seule l'équipe peut le voir.
+                {% else %}
+                    Cet article n'est pas encore public. Il sera publié le
+                    {{ post.date_hour|date:"d F Y" }} à {{ post.date_hour|date:"H:i" }}.
+                {% endif %}
             {% endif %}
         </div>
     {% endif %}
