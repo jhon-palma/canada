@@ -11,39 +11,58 @@
     <link href="{% static 'blog/css/styles.css' %}" rel="stylesheet">
 {% endblock %}
 
-<section class="bwp-single-page-wrap">
+<style>
+    /* La barra turquesa de la cabecera va pegada al contenido, y aqui debajo
+       no hay banner de imagen como en el resto del sitio: sin este aire el
+       titulo queda pegado a la franja. */
+    .noenc{ padding: 95px 0 100px; }
+    .noenc h1{ margin: 0 0 18px; }
+    .noenc .intro{ max-width: 640px; margin: 0 0 34px; }
+    .noenc .volver{ display: inline-block; margin: 0 0 64px; }
+    .noenc h2{ margin: 0 0 26px; font-size: 26px; }
+    .noenc .tarjeta{ margin-bottom: 34px; }
+    /* Caja de proporcion fija: si a un articulo le falta la imagen, la fila
+       no se descuadra y el hueco queda gris en lugar de estirar la columna. */
+    .noenc .foto{
+        display: block; width: 100%; aspect-ratio: 16 / 10; min-height: 140px;
+        background: #eceff1; overflow: hidden;
+    }
+    .noenc .foto img{ width: 100%; height: 100%; object-fit: cover; }
+    .noenc .titulo{ display: block; margin-top: 12px; line-height: 1.35; }
+</style>
+
+<section class="bwp-single-page-wrap noenc">
     <div class="container">
-        <div class="bwp-single-page-container mt-4" role="main" style="padding:50px 0 70px;">
+        <div role="main">
             {% if language == 'en' %}
                 <h1>This article is not available</h1>
-                <p>
+                <p class="intro">
                     The article you are looking for does not exist, or has not been published yet.
                     Here is everything else on our blog.
                 </p>
-                <p><a href="{% url 'blog:articles' language='en' %}" class="btn teal_btn">See all articles</a></p>
+                <a href="{% url 'blog:articles' language='en' %}" class="btn teal_btn volver">See all articles</a>
             {% else %}
                 <h1>Cet article n'est pas disponible</h1>
-                <p>
+                <p class="intro">
                     L'article que vous cherchez n'existe pas ou n'a pas encore été publié.
                     Voici le reste de notre blogue.
                 </p>
-                <p><a href="{% url 'blog:articles' language='fr' %}" class="btn teal_btn">Voir tous les articles</a></p>
+                <a href="{% url 'blog:articles' language='fr' %}" class="btn teal_btn volver">Voir tous les articles</a>
             {% endif %}
 
             {% if ultimos %}
-                <h3 style="margin-top:40px;">
-                    {% if language == 'en' %}Latest articles{% else %}Derniers articles{% endif %}
-                </h3>
+                <h2>{% if language == 'en' %}Latest articles{% else %}Derniers articles{% endif %}</h2>
                 <div class="row">
                     {% for articulo in ultimos %}
-                        <div class="col-md-3 col-sm-6" style="margin-bottom:24px;">
+                        <div class="col-md-3 col-sm-6 tarjeta">
                             <a href="{{ articulo.get_absolute_url }}">
-                                <img loading="lazy" decoding="async" style="width:100%;height:auto;"
-                                     src="{% if language == 'en' %}{{ articulo.image_anglaise.url }}{% else %}{{ articulo.image_francaise.url }}{% endif %}"
-                                     alt="{% if language == 'en' %}{{ articulo.title_anglaise }}{% else %}{{ articulo.title_francaise }}{% endif %}">
-                                <p style="margin-top:10px;">
+                                <span class="foto">
+                                    <img loading="lazy" decoding="async" alt=""
+                                         src="{% if language == 'en' %}{{ articulo.image_anglaise.url }}{% else %}{{ articulo.image_francaise.url }}{% endif %}">
+                                </span>
+                                <span class="titulo">
                                     {% if language == 'en' %}{{ articulo.title_anglaise }}{% else %}{{ articulo.title_francaise }}{% endif %}
-                                </p>
+                                </span>
                             </a>
                         </div>
                     {% endfor %}

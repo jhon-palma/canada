@@ -33,7 +33,7 @@
                 <td style="text-align: center;"><a title="CLICK PARA VER" href="{{ article.image_francaise.url }}" target="_blank"><img loading="lazy" decoding="async" width="80" height="70" src="{{ article.image_francaise.url }}"></a></td>
                 <td style="text-align: center;"><a title="CLICK PARA VER" href="{{ article.image_anglaise.url }}" target="_blank"><img loading="lazy" decoding="async" width="80" height="70" src="{{ article.image_anglaise.url }}"></a></td>
                 <td style="text-align: center;">
-                    <a href="{% url 'blog:post_detail' language='en' slug=article.slug_anglaise %}" title="Ver"><i class="icon-new-tab"></i></a> | 
+                    <a href="{% url 'blog:post_detail' language='en' slug=article.slug_anglaise %}{% if article.estado != 'publicado' %}?preview=1{% endif %}" title="Ver"><i class="icon-new-tab"></i></a> | 
                     <a href="{% url 'blog:update_article' article_id=article.id %}" title="Editar"><i class="icon-pencil7"></i></a> | 
                     <a href="#" class="open-modal" data-toggle="modal" data-target="#confirmModal" data-title="{{ article.title_francaise }}" data-id="{{ article.id }}" {% if article.active %} title="Desactivar">
                         <i class="icon-blocked"></i>{% else %}title="Activar"><i class="icon-checkmark-circle2"></i>{% endif %}

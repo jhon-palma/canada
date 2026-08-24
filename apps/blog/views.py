@@ -135,7 +135,17 @@ def detail(request, language, slug):
     # fecha. Ahora responde el 404 que corresponde -- no un 410, porque un
     # articulo programado si va a existir -- y un error de verdad se ve en el
     # log en lugar de disfrazarse de redireccion.
-    post = Article.objects.visibles_para(request.user).filter(**{slug_field: slug}).first()
+    # La revision hay que pedirla a proposito, con ?preview=1. Sin ese
+    # parametro el sitio se comporta igual para todo el mundo, tambien para el
+    # equipo con la sesion abierta: navegando normal nadie ve un articulo que
+    # no esta publicado. Antes bastaba con estar dentro, y eso hacia creer que
+    # un articulo programado seguia publicado.
+    if request.GET.get('preview'):
+        candidatos = Article.objects.visibles_para(request.user)
+    else:
+        candidatos = Article.objects.publicados()
+
+    post = candidatos.filter(**{slug_field: slug}).first()
     if post is None:
         return articulo_no_encontrado(request, language)
 
