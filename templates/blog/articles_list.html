@@ -30,8 +30,8 @@
                     {% endif %}
                     <br><small>{{ article.date_hour|date:"d/m/Y H:i"|default:"&mdash;" }}</small>
                 </td>
-                <td style="text-align: center;"><a title="CLICK PARA VER" href="{{ article.image_francaise.url }}" target="_blank"><img loading="lazy" decoding="async" width="80" height="70" src="{{ article.image_francaise.url }}"></a></td>
-                <td style="text-align: center;"><a title="CLICK PARA VER" href="{{ article.image_anglaise.url }}" target="_blank"><img loading="lazy" decoding="async" width="80" height="70" src="{{ article.image_anglaise.url }}"></a></td>
+                <td style="text-align: center;">{% if article.image_francaise %}<a title="CLICK PARA VER" href="{{ article.image_francaise.url }}" target="_blank"><img loading="lazy" decoding="async" width="80" height="70" src="{{ article.image_francaise.url }}"></a>{% else %}&mdash;{% endif %}</td>
+                <td style="text-align: center;">{% if article.image_anglaise %}<a title="CLICK PARA VER" href="{{ article.image_anglaise.url }}" target="_blank"><img loading="lazy" decoding="async" width="80" height="70" src="{{ article.image_anglaise.url }}"></a>{% else %}&mdash;{% endif %}</td>
                 <td style="text-align: center;">
                     <a href="{% url 'blog:post_detail' language='en' slug=article.slug_anglaise %}{% if article.estado != 'publicado' %}?preview=1{% endif %}" title="Ver"><i class="icon-new-tab"></i></a> | 
                     <a href="{% url 'blog:update_article' article_id=article.id %}" title="Editar"><i class="icon-pencil7"></i></a> | 

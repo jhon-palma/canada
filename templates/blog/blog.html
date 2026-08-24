@@ -16,7 +16,7 @@
                                 <div class="img">
                                     <div class="cattag">{% if language == "en" %}{{ article.category.title_anglaise }}{% else %}{{ article.category.title_francaise }}{% endif %}</div>
                                     {% if language == "en" %}<a href="{% url 'blog:post_detail' language=language slug=article.slug_anglaise %}">{% else %}<a href="{% url 'blog:post_detail' language=language slug=article.slug_francaise %}">{% endif %}
-                                        {% if language == "en" %}<img loading="lazy" decoding="async" src="{{ article.image_anglaise.url }}" alt="{{ article.title_anglaise }}">{% else %}<img loading="lazy" decoding="async" src="{{ article.image_francaise.url }}" alt="{{ article.title_francaise }}">{% endif %}
+                                        {% if language == "en" %}{% if article.image_anglaise %}<img loading="lazy" decoding="async" src="{{ article.image_anglaise.url }}" alt="{{ article.title_anglaise }}">{% endif %}{% else %}{% if article.image_francaise %}<img loading="lazy" decoding="async" src="{{ article.image_francaise.url }}" alt="{{ article.title_francaise }}">{% endif %}{% endif %}
                                     </a>
                                 </div>
                                 <p class="date">{{ article.formatted_date }}</p>

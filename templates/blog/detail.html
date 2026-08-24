@@ -32,7 +32,7 @@
                 <article id="post-921" class="bwp-single-article bwp-transition-3">
                     <div class="bwp-single-content">
                         <div class="bwp-content entry-content clearfix">
-                            <p><img class="aligncenter size-full" src="{% if language == 'en' %}{{ post.image_anglaise.url }}{% else %}{{ post.image_francaise.url }}{% endif %}"></p>
+                            {% if language == 'en' %}{% if post.image_anglaise %}<p><img class="aligncenter size-full" src="{{ post.image_anglaise.url }}"></p>{% endif %}{% else %}{% if post.image_francaise %}<p><img class="aligncenter size-full" src="{{ post.image_francaise.url }}"></p>{% endif %}{% endif %}
                             <p>{% if language == "en" %}{{ post.content_anglaise|safe }}{% else %}{{ post.content_francaise|safe }}{% endif %}</p>
                             <div class="row">
                                 <div class="col-md-7">

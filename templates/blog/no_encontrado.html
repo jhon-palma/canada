@@ -57,8 +57,11 @@
                         <div class="col-md-3 col-sm-6 tarjeta">
                             <a href="{{ articulo.get_absolute_url }}">
                                 <span class="foto">
-                                    <img loading="lazy" decoding="async" alt=""
-                                         src="{% if language == 'en' %}{{ articulo.image_anglaise.url }}{% else %}{{ articulo.image_francaise.url }}{% endif %}">
+                                    {% if language == 'en' %}{% if articulo.image_anglaise %}
+                                        <img loading="lazy" decoding="async" alt="" src="{{ articulo.image_anglaise.url }}">
+                                    {% endif %}{% else %}{% if articulo.image_francaise %}
+                                        <img loading="lazy" decoding="async" alt="" src="{{ articulo.image_francaise.url }}">
+                                    {% endif %}{% endif %}
                                 </span>
                                 <span class="titulo">
                                     {% if language == 'en' %}{{ articulo.title_anglaise }}{% else %}{{ articulo.title_francaise }}{% endif %}

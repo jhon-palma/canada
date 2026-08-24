@@ -3,6 +3,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+<script>
+	/* Una foto que falta deja el hueco limpio, no el icono de imagen rota.
+	   Pasa, por ejemplo, con los articulos que apuntan al default.png del
+	   modelo, que no esta en el bucket. Se oculta con visibility para
+	   conservar el sitio que ocupaba y no descuadrar la fila. El listener va
+	   en captura porque el evento error de <img> no burbujea, y aqui arriba
+	   para estar puesto antes de que empiecen a cargar. */
+	document.addEventListener('error', function (evento) {
+		var el = evento.target;
+		if (el.tagName === 'IMG' && el.style.visibility !== 'hidden') {
+			el.style.visibility = 'hidden';
+		}
+	}, true);
+</script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %}</title>
     {% include "apps/head.html" %}
