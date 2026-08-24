@@ -25,7 +25,7 @@ class WebIndex(View):
         language = kwargs.get('language', 'fr')
         option = kwargs.get('option', 'proprietes')
         labels = DICT_LABELS.get(language).get('web')
-        data_meta = MetaDataWeb.objects.get(origin='index')
+        data_meta = MetaDataWeb.for_origin('index')
         inscriptions = Inscriptions.objects.with_card_data().filter(prix_demande__isnull=False, status=True).exclude(code_statut__valeur="VE").annotate(
             usa_last=Case(
                 When(mun_code__description__icontains="USA", then=Value(1)),
@@ -66,7 +66,7 @@ class WebProperties(View):
         language = kwargs.get('language', 'fr')
         option = kwargs.get('option', 'proprietes')
         labels = DICT_LABELS.get(language).get('web')
-        data_meta = MetaDataWeb.objects.get(origin='properties')
+        data_meta = MetaDataWeb.for_origin('properties')
         base_inscriptions = Inscriptions.objects.with_card_data().filter(status=True).exclude(code_statut__valeur="VE").annotate(
             usa_last=Case(
                 When(mun_code__description__icontains="USA", then=Value(1)),
@@ -86,11 +86,11 @@ class WebProperties(View):
 
         if option == "properties-for-sale" or option == "proprietes-a-vendre":
             inscriptions = base_inscriptions.filter(prix_demande__isnull=False).order_by('usa_last','-prix_demande')
-            data_meta = MetaDataWeb.objects.get(origin='sale')
+            data_meta = MetaDataWeb.for_origin('sale')
             
         if option == "properties-for-rent" or option == "proprietes-a-louer":
             inscriptions = base_inscriptions.filter(prix_location_demande__isnull=False).order_by('usa_last','-prix_location_demande')
-            data_meta = MetaDataWeb.objects.get(origin='rent')
+            data_meta = MetaDataWeb.for_origin('rent')
 
         paginator = Paginator(inscriptions, 36)
         page_number = request.GET.get('page')
@@ -183,7 +183,7 @@ class SearchView(View):
         maxamount = request.GET.get('maxamount', '')
         propriete = request.GET.getlist('propriete[]')
         query = Q(status=True)
-        data_meta = MetaDataWeb.objects.get(origin='properties')
+        data_meta = MetaDataWeb.for_origin('properties')
 
         if propriete:
             proprietes = [item.split('-')[1] for item in propriete]
@@ -368,7 +368,7 @@ class WebVideos(View):
         language = kwargs.get('language', 'fr')
         labels = DICT_LABELS.get(language).get('web')
         videos = VideosWeb.objects.all().order_by('-publishedAt')
-        data_meta = MetaDataWeb.objects.get(origin='video')
+        data_meta = MetaDataWeb.for_origin('video')
         images_query = ImagesWeb.objects.filter(reference__in=['videos_banner'])
         images_dict = {image.reference: image for image in images_query}
         context = {
@@ -416,7 +416,7 @@ class WebContact(View):
         option = kwargs.get('option', 'contact-courtier-immobilier')
         images_query = ImagesWeb.objects.filter(reference__in=['contact_banner','contact_team_background','contact_team'])
         images_dict = {image.reference: image for image in images_query}
-        data_meta = MetaDataWeb.objects.get(origin='contact')
+        data_meta = MetaDataWeb.for_origin('contact')
 
         context = {
             'municipalites':municipalites,
@@ -464,7 +464,7 @@ class WebTeam(View):
         option = kwargs.get('option', 'courtier-immobilier')
         images_query = ImagesWeb.objects.filter(reference__in=['team_banner'])
         images_dict = {image.reference: image for image in images_query}
-        data_meta = MetaDataWeb.objects.get(origin='team')
+        data_meta = MetaDataWeb.for_origin('team')
         context = {
             'municipalites':municipalites,
             'genres':genres,
@@ -516,7 +516,7 @@ class WebWork(View):
         images_query = ImagesWeb.objects.filter(reference__in=['work_banner','work_buy','work_sell','work_next_steps'])
         images_dict = {image.reference: image for image in images_query}
         origin = 'buy' if type_option == 'one' else 'sell'
-        data_meta = MetaDataWeb.objects.get(origin=origin)
+        data_meta = MetaDataWeb.for_origin(origin)
 
         context = {
             'municipalites':municipalites,
@@ -662,7 +662,7 @@ class SearchProperties(ListView):
         inscriptions = paginator.get_page(page_number)
         images_query = ImagesWeb.objects.filter(reference__in=['properties_banner'])
         images_dict = {image.reference: image for image in images_query}
-        data_meta = MetaDataWeb.objects.get(origin='properties')
+        data_meta = MetaDataWeb.for_origin('properties')
         
         context = {
             'municipalites':municipalites,

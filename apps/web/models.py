@@ -91,7 +91,10 @@ class VideosWeb(models.Model):
 
 class MetaDataWeb(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
-    origin = models.CharField(choices=WEB_META_ORIGIN_CHOICES, max_length=10, null=False, default='index')
+    # unique: origin es la clave con la que las vistas buscan la fila. Sin la
+    # restriccion, dos filas con el mismo origin tumban la pagina entera con
+    # MultipleObjectsReturned, y la que se queda sin fila con DoesNotExist.
+    origin = models.CharField(choices=WEB_META_ORIGIN_CHOICES, max_length=10, null=False, default='index', unique=True)
     m_title_a = models.TextField(blank=False, null=True)
     m_title_f = models.TextField(blank=False, null=True)
     m_description_a = models.TextField(blank=False, null=True)
@@ -103,5 +106,17 @@ class MetaDataWeb(models.Model):
     
     def __str__(self):
         return self.origin
+
+    @classmethod
+    def for_origin(cls, origin):
+        """Los metadatos de una pagina, sin tumbarla si la fila no esta.
+
+        Estos campos solo alimentan el <title> y el <meta description>, y
+        header_web.html ya tiene texto de reserva para cuando faltan. Un
+        objects.get() convertia esa ausencia en un 500 de la pagina completa:
+        paso con 'sell' (sin fila) y 'properties' (con dos). Se devuelve una
+        instancia vacia y sin guardar para que la plantilla tome la reserva.
+        """
+        return cls.objects.filter(origin=origin).first() or cls(origin=origin)
     
     

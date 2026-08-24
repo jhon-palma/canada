@@ -31,7 +31,7 @@ def articles(request, language='fr'):
     articles_list  = Article.objects.filter(active=True)
     paginator = Paginator(articles_list, 12)
     page_number = request.GET.get('page')
-    data_meta = MetaDataWeb.objects.get(origin='blog')
+    data_meta = MetaDataWeb.for_origin('blog')
     try:
         articles = paginator.page(page_number)
     except PageNotAnInteger:
@@ -168,7 +168,7 @@ def category(request, language, slug):
         'labels': DICT_LABELS.get(language, {}).get('web', {}),
         'articles': articles,
         'paginator': paginator,
-        'data_meta': MetaDataWeb.objects.get(origin='blog'),
+        'data_meta': MetaDataWeb.for_origin('blog'),
         'category': category,
     }
     return render(request, 'blog/blog.html', context)
