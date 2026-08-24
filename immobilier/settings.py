@@ -252,8 +252,17 @@ CKEDITOR_5_FILE_STORAGE = "apps.blog.storage.CustomStorage"
 #         } 
 #     }
 # }
-CKEDITOR_5_UPLOAD_FILE_TYPES = ['jpeg', 'jpg', 'png']
-CKEDITOR_5_CUSTOM_CSS = '/static/blog/css/editor.css'
+# Este ajuste hace dos cosas a la vez: valida la extension en el servidor
+# (FileExtensionValidator) y viaja al navegador como image.upload.types, que es
+# lo que CKEditor consulta para decidir que archivos acepta. Un formato que no
+# este aqui lo descarta el editor sin llegar a hacer la peticion, sin decir por
+# que. Se deja fuera svg a proposito: es XML ejecutable y se guarda en un
+# bucket publico.
+CKEDITOR_5_UPLOAD_FILE_TYPES = ['jpeg', 'jpg', 'png', 'gif', 'webp', 'bmp', 'tiff']
+# Ruta relativa, no '/static/...': forms.Media deja intacto lo que empieza por
+# '/' y solo pasa por static() lo relativo. Con la ruta absoluta el editor
+# pedia el CSS al propio dominio en vez de al CDN, y ahi responde 403.
+CKEDITOR_5_CUSTOM_CSS = 'blog/css/editor.css'
 CKEDITOR_5_CONFIGS = {
     'default': {
         'toolbar': ['heading', '|', 'bold', 'italic', 'link','bulletedList', 'numberedList', 'blockQuote', 'imageUpload'],
