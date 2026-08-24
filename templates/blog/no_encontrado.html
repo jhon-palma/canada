@@ -1,0 +1,56 @@
+{% load static %}{% load tags %}{% include 'web/header_web.html' %}
+
+{# Se sirve con codigo 404 desde articulo_no_encontrado(). El codigo es el que
+   corresponde -- la URL no existe, o el articulo todavia no ha salido -- y
+   redirigir al listado en su lugar seria un soft 404 para Google. Lo que se
+   evita es el callejon sin salida: aqui esta el listado y los ultimos
+   articulos, que es lo que la persona venia buscando. #}
+
+{% block header_page %}
+    <link href="{% static 'blog/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'blog/css/styles.css' %}" rel="stylesheet">
+{% endblock %}
+
+<section class="bwp-single-page-wrap">
+    <div class="container">
+        <div class="bwp-single-page-container mt-4" role="main" style="padding:50px 0 70px;">
+            {% if language == 'en' %}
+                <h1>This article is not available</h1>
+                <p>
+                    The article you are looking for does not exist, or has not been published yet.
+                    Here is everything else on our blog.
+                </p>
+                <p><a href="{% url 'blog:articles' language='en' %}" class="btn teal_btn">See all articles</a></p>
+            {% else %}
+                <h1>Cet article n'est pas disponible</h1>
+                <p>
+                    L'article que vous cherchez n'existe pas ou n'a pas encore été publié.
+                    Voici le reste de notre blogue.
+                </p>
+                <p><a href="{% url 'blog:articles' language='fr' %}" class="btn teal_btn">Voir tous les articles</a></p>
+            {% endif %}
+
+            {% if ultimos %}
+                <h3 style="margin-top:40px;">
+                    {% if language == 'en' %}Latest articles{% else %}Derniers articles{% endif %}
+                </h3>
+                <div class="row">
+                    {% for articulo in ultimos %}
+                        <div class="col-md-3 col-sm-6" style="margin-bottom:24px;">
+                            <a href="{{ articulo.get_absolute_url }}">
+                                <img loading="lazy" decoding="async" style="width:100%;height:auto;"
+                                     src="{% if language == 'en' %}{{ articulo.image_anglaise.url }}{% else %}{{ articulo.image_francaise.url }}{% endif %}"
+                                     alt="{% if language == 'en' %}{{ articulo.title_anglaise }}{% else %}{{ articulo.title_francaise }}{% endif %}">
+                                <p style="margin-top:10px;">
+                                    {% if language == 'en' %}{{ articulo.title_anglaise }}{% else %}{{ articulo.title_francaise }}{% endif %}
+                                </p>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+{% load static %}{% include 'web/footer_web.html' %}

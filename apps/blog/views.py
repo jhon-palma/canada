@@ -103,6 +103,27 @@ def categories(request):
 
 
 
+def articulo_no_encontrado(request, language):
+    """404 con salida, para un articulo que no existe o que aun no ha salido.
+
+    Devolver 404 es lo correcto: la URL no lleva a ningun contenido. Redirigir
+    al listado en su lugar es lo que Google llama soft 404 -- una redireccion
+    a una pagina que no es la pedida -- y en vez de conservar la URL la deja
+    en el limbo del indice; es el mismo patron que se quito de las fichas de
+    propiedades.
+
+    Lo que si hacia falta arreglar es el callejon sin salida: antes esto era
+    el 404 pelado de Django. Ahora la pagina lleva al listado del blog y
+    muestra los ultimos articulos, que es lo que la persona venia a leer.
+    """
+    return render(request, 'blog/no_encontrado.html', {
+        'language': language,
+        'labels': DICT_LABELS.get(language, {}).get('web', {}),
+        'ultimos': Article.objects.publicados()[:4],
+        'data_meta': MetaDataWeb.for_origin('blog'),
+    }, status=404)
+
+
 def detail(request, language, slug):
     labels = DICT_LABELS.get(language).get('web')
     slug_field = 'slug_anglaise' if language == 'en' else 'slug_francaise'
@@ -111,10 +132,12 @@ def detail(request, language, slug):
     # que se tragaba cualquier cosa: un articulo inexistente y un fallo de
     # plantilla acababan los dos en un 302 a la portada. Para Google eso es un
     # soft 404, y ahora ademas afectaria a cada articulo programado hasta su
-    # fecha. get_object_or_404 devuelve el 404 que corresponde -- no un 410,
-    # porque un articulo programado si va a existir -- y un error de verdad se
-    # ve en el log en lugar de disfrazarse de redireccion.
-    post = get_object_or_404(Article.objects.visibles_para(request.user), **{slug_field: slug})
+    # fecha. Ahora responde el 404 que corresponde -- no un 410, porque un
+    # articulo programado si va a existir -- y un error de verdad se ve en el
+    # log en lugar de disfrazarse de redireccion.
+    post = Article.objects.visibles_para(request.user).filter(**{slug_field: slug}).first()
+    if post is None:
+        return articulo_no_encontrado(request, language)
 
     # Un articulo con fecha futura que se esta viendo: solo llega aqui alguien
     # del equipo, porque para el resto visibles_para() no lo devuelve.
@@ -333,7 +356,10 @@ def signup_blog(request):
             return JsonResponse({'success': False, 'error_message': 'Las contraseñas no coinciden.'})
 
         try:
-            user = CustomUser.objects.create_user(username=email, email=email, password=password)
+            # userBlog=True: sin esto el registro publico creaba cuentas
+            # indistinguibles de las del equipo, y son las que decide
+            # interno_required. signup_blog_comment ya lo hacia.
+            user = CustomUser.objects.create_user(username=email, email=email, password=password, userBlog=True)
             if user:
                 login(request, user, backend='django.contrib.auth.backends.ModelBackend')
                 if language == 'en':

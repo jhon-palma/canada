@@ -7,6 +7,7 @@ from googletrans import Translator
 import uuid
 from django_ckeditor_5.fields import CKEditor5Field
 from apps.accounts.models import CustomUser
+from apps.decorators import is_internal_user
 from apps.seo import absolute_url, current_language, normalize_language
 
 
@@ -57,13 +58,14 @@ class ArticleQuerySet(models.QuerySet):
     def visibles_para(self, user):
         """Lo mismo, mas los programados si quien mira es del equipo.
 
-        Sirve para que se pueda revisar como queda un articulo en la web antes
-        de que salga. Solo aplica al entrar por su URL: los listados, las
+        Del equipo es cualquier cuenta con userBlog=False, el mismo criterio
+        que abre las vistas de gestion: quien puede escribir un articulo puede
+        revisarlo. Sirve para ver como queda en la web antes de que salga. Solo aplica al entrar por su URL: los listados, las
         categorias y el sitemap siguen usando publicados(), para que el equipo
         vea el sitio tal cual lo ve el visitante y el articulo no se escape a
         Google antes de tiempo.
         """
-        if getattr(user, 'is_staff', False):
+        if is_internal_user(user):
             return self.filter(active=True)
         return self.publicados()
 

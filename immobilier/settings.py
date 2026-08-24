@@ -218,6 +218,10 @@ customColorPalette = [
 ]
 
 CKEDITOR_5_FILE_STORAGE = "apps.blog.storage.CustomStorage"
+# La vista del paquete solo acepta la subida de un is_staff, y del equipo
+# casi nadie lo es. apps.blog.ckeditor aplica el mismo permiso que el resto
+# de la gestion del blog y reutiliza el resto de la maquinaria del paquete.
+CK_EDITOR_5_UPLOAD_FILE_VIEW_NAME = "blog:ckeditor_upload"
 # CKEDITOR_5_CONFIGS = {
 #     'default': {
 #         'toolbar': ['heading', '|', 'bold', 'italic', 'link',

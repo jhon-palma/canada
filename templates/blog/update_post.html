@@ -79,16 +79,19 @@
                                 {% endif %}
                                 <div role="tabpanel">
                                     <div class="row">
-                                        <div class="col-md-12">
+                                        <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>{{ form.category.label_tag }} <span class="form-text text-danger">*</span></label>
                                                 {{ form.category }}
                                             </div>
-                                            <div class="col-md-3">
-                                                <div class="form-group">
-                                                    <label>{{ form.date_hour.label_tag }} <span class="form-text text-danger">*</span></label>
-                                                    {{ form.date_hour }}
-                                                </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Publication date | Date de publication : <span class="form-text text-danger">*</span></label>
+                                                {{ form.date_hour }}
+                                                <span class="help-block" style="font-size:12px;">
+                                                    A future date schedules the article &mdash; Une date future programme l'article
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
