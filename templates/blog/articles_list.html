@@ -22,11 +22,11 @@
                    boton, y un articulo programado no se distinguia de uno vivo. #}
                 <td style="text-align: center; white-space: nowrap;">
                     {% if article.estado == 'publicado' %}
-                        <span class="label label-success">Publicado</span>
+                        <span class="label label-success">Published</span>
                     {% elif article.estado == 'programado' %}
-                        <span class="label label-warning">Programado</span>
+                        <span class="label label-warning">Scheduled</span>
                     {% else %}
-                        <span class="label label-default">Retirado</span>
+                        <span class="label label-default">Withdrawn</span>
                     {% endif %}
                     <br><small>{{ article.date_hour|date:"d/m/Y H:i"|default:"&mdash;" }}</small>
                 </td>
