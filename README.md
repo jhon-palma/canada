@@ -2,6 +2,57 @@
 
 Sitio de LJ Realties (Django).
 
+## Desplegar
+
+```bash
+cd /home/doadmin/canada
+git pull
+python3 manage.py migrate          # solo si el cambio trae migraciones
+pkill -HUP -f 'gunicorn immobilier.wsgi'
+```
+
+### Reiniciar la aplicacion
+
+**`systemctl restart gunicorn` no sirve: no hay ninguna unidad de systemd.**
+La aplicacion la sirve gunicorn arrancado por fuera, como el usuario `doadmin`
+y escuchando en un socket unix, y nginx le hace `proxy_pass`:
+
+```
+gunicorn immobilier.wsgi:application --name canada --workers 3
+         --bind=unix:/home/doadmin/run/gunicorn.sock
+```
+
+Para que tome el codigo nuevo se le manda HUP al proceso maestro, que recarga
+los workers sin cortar peticiones:
+
+```bash
+pkill -HUP -f 'gunicorn immobilier.wsgi'
+```
+
+Sin ese paso el `git pull` no cambia nada: los workers siguen con el codigo
+que tenian en memoria.
+
+### La cache de Cloudflare
+
+El sitio esta detras de Cloudflare, y si hay una regla que cachea HTML
+(*Cache Everything* en Page Rules o en Cache Rules) el navegador sigue viendo
+la version anterior aunque el origen ya responda otra cosa. Para saber que
+esta contestando de verdad el servidor, saltandose Cloudflare:
+
+```bash
+curl -sk --resolve www.ljrealties.com:443:127.0.0.1   -o /dev/null -w "origen -> %{http_code}
+"   "https://www.ljrealties.com/fr/blog/<slug>/"
+```
+
+Si el origen y el navegador no coinciden, la diferencia es la cache: se purga
+en Caching -> Configuration -> Purge Everything.
+
+Cachear HTML choca con la publicacion programada del blog en las dos
+direcciones: un articulo retirado sigue visible hasta que caduque la cache, y
+uno programado sigue dando 404 despues de su hora de salida. Lo segundo es
+peor porque no se nota. Conviene dejar el HTML fuera de la cache del edge; los
+estaticos, que son el peso real, ya vienen del CDN de Spaces.
+
 ## Despliegue de estaticos
 
 Los CSS y JS del sitio viven en `static/` y se **sirven desde Spaces**, no
