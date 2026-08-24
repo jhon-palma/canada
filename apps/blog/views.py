@@ -274,7 +274,6 @@ def update_categorys(request, category_id):
 
 
 
-@csrf_exempt
 def update_status_ajax(request):
     if request.method == 'POST':
         record_id = request.POST.get('record_id')
@@ -531,7 +530,6 @@ def list_comment_article(request, article_id):
     comments = article.comments.all()
     return render(request, 'blog/list_comment_article.html',{'article':article, 'comments': comments,})
 
-@csrf_exempt
 def update_status_comment(request):
     if request.method == 'POST':
         record_id = request.POST.get('record_id')
