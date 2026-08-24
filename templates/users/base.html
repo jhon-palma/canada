@@ -8,7 +8,10 @@
 	   de cero alto que descuadre la fila. Lo usan tanto las plantillas, cuando
 	   el articulo no tiene imagen, como el script de aqui abajo cuando el
 	   archivo existe en la base pero no en el bucket. */
-	.sinfoto{ display: block; width: 100%; min-height: 120px; background: #eceff1; }
+	.sinfoto{
+		display: block; width: 100%; aspect-ratio: 16 / 9; min-height: 120px;
+		background: #eceff1;
+	}
 </style>
 <script>
 	/* Una imagen que no carga se convierte en ese relleno. Se le pone un pixel
