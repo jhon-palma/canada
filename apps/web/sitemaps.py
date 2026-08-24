@@ -216,8 +216,7 @@ class ArticleSitemap(BaseSitemap):
     slugs = {'fr': 'slug_francaise', 'en': 'slug_anglaise'}
 
     def items(self):
-        return Article.objects.filter(
-            active=True,
+        return Article.objects.publicados().filter(
             slug_francaise__isnull=False,
             slug_anglaise__isnull=False,
         )
@@ -230,12 +229,17 @@ class ArticleSitemap(BaseSitemap):
         })
 
     def lastmod(self, item):
-        return item.date_hour or item.created_at
+        # updated_at, no date_hour: <lastmod> es "cuando cambio por ultima
+        # vez", no "cuando se publico". Con date_hour los 144 articulos
+        # declaraban la misma fecha -- la del dia en que se aplico la
+        # migracion que creo el campo -- y ademas no se movia al editar,
+        # asi que Google no se enteraba de los cambios.
+        return item.updated_at or item.date_hour or item.created_at
 
     def get_latest_lastmod(self):
         # Misma expresion que lastmod() para que el <lastmod> del indice no
         # quede por debajo del de sus propias entradas.
-        return self.items().annotate(last=Coalesce('date_hour', 'created_at')) \
+        return self.items().annotate(last=Coalesce('updated_at', 'date_hour', 'created_at')) \
             .order_by('-last').values_list('last', flat=True).first()
 
 

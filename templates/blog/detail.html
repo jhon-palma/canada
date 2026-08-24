@@ -81,7 +81,7 @@
                                     </li>
                                     <li>
                                         <span class="date updated">
-                                            <i class="fa fa-clock-o"></i><a href="#">{{ post.created_at|date:"d F Y" }}</a>
+                                            <i class="fa fa-clock-o"></i><a href="#">{{ post.date_hour|default:post.created_at|date:"d F Y" }}</a>
                                         </span>
                                         <span class="bwp-metadata-slash">/</span>
                                     </li>

@@ -38,6 +38,23 @@ class Category(models.Model):
 
 
 
+class ArticleQuerySet(models.QuerySet):
+
+    def publicados(self):
+        """Los articulos que un visitante puede ver.
+
+        Activos y con la fecha de publicacion ya cumplida. Antes bastaba con
+        active=True y date_hour no filtraba nada, asi que poner una fecha
+        futura en el formulario publicaba el articulo al instante igualmente.
+
+        Los que tengan date_hour a nulo cuentan como publicados: el campo
+        admite nulos y no hay motivo para esconder un articulo por no tener
+        fecha.
+        """
+        return self.filter(active=True).filter(
+            models.Q(date_hour__isnull=True) | models.Q(date_hour__lte=timezone.now()))
+
+
 class Article(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     category = models.ForeignKey(Category, related_name='posts', on_delete=models.CASCADE, blank=False, null=False)
@@ -45,6 +62,10 @@ class Article(models.Model):
     title_anglaise = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     date_hour = models.DateTimeField(default=timezone.now, null=True, blank=True)
+    # created_at es auto_now_add: no se mueve al editar, asi que no servia
+    # para el <lastmod> del sitemap. Y date_hour es la fecha de publicacion,
+    # que es otra cosa. Este si registra la ultima modificacion real.
+    updated_at = models.DateTimeField(auto_now=True, null=True)
     active = models.BooleanField(default=True)
     image_francaise = models.ImageField(default='public/web/blog/images/default.png', upload_to='public/web/blog/images/', blank=True, null=True)
     image_anglaise = models.ImageField(default='public/web/blog/images/default.png', upload_to='public/web/blog/images/', blank=True, null=True)
@@ -60,8 +81,12 @@ class Article(models.Model):
     m_description_a = models.CharField(max_length=100, blank=True, null=True)
     m_description_f = models.CharField(max_length=100, blank=True, null=True)
 
+    objects = ArticleQuerySet.as_manager()
+
     class Meta:
-        ordering = ('-created_at',)
+        # Por fecha de publicacion, que es la que el redactor controla.
+        # created_at queda de desempate para los que no tengan date_hour.
+        ordering = ('-date_hour', '-created_at')
 
     def get_absolute_url(self, language=None):
         """URL absoluta del articulo: <SITE_URL>/<lang>/blog/<slug>/.

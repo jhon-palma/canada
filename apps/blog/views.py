@@ -9,7 +9,7 @@ from apps.users.models import Profile
 from apps.web.models import MetaDataWeb
 from .models import Article, Category, Like, Comment
 from .forms import ArticleForm, ArticleUpdateForm, CategoryAdminForm
-from django.db.models import Q
+from django.db.models import F, Q
 from django.views.generic import ListView
 from django.conf import settings
 from django.contrib import messages
@@ -28,7 +28,7 @@ from django.utils import timezone
 
 
 def articles(request, language='fr'):
-    articles_list  = Article.objects.filter(active=True)
+    articles_list  = Article.objects.publicados()
     paginator = Paginator(articles_list, 12)
     page_number = request.GET.get('page')
     data_meta = MetaDataWeb.for_origin('blog')
@@ -107,41 +107,54 @@ def detail(request, language, slug):
     labels = DICT_LABELS.get(language).get('web')
     slug_field = 'slug_anglaise' if language == 'en' else 'slug_francaise'
 
-    try:
-        post = get_object_or_404(Article, **{slug_field: slug, 'active': True})
-        post.visites += 1
-        post.save()
+    # Sin try/except alrededor de todo. Habia un `except: return redirect('/')`
+    # que se tragaba cualquier cosa: un articulo inexistente y un fallo de
+    # plantilla acababan los dos en un 302 a la portada. Para Google eso es un
+    # soft 404, y ahora ademas afectaria a cada articulo programado hasta su
+    # fecha. get_object_or_404 devuelve el 404 que corresponde -- no un 410,
+    # porque un articulo programado si va a existir -- y un error de verdad se
+    # ve en el log en lugar de disfrazarse de redireccion.
+    post = get_object_or_404(Article.objects.publicados(), **{slug_field: slug})
+
+    # Con update() en vez de save(): un save() aqui reescribia la fila
+    # completa -- los dos campos de contenido del editor incluidos -- en
+    # cada visita, y ahora ademas movería updated_at, de modo que el
+    # <lastmod> del sitemap cambiaria cada vez que alguien abre el
+    # articulo. update() tampoco pierde incrementos si entran dos
+    # visitas a la vez, porque suma en la base y no en memoria.
+    Article.objects.filter(pk=post.pk).update(visites=F('visites') + 1)
+    post.visites += 1
  
-        user_liked = False
-        if request.user.is_authenticated:
-            user_liked = Like.objects.filter(user=request.user, post=post).exists()
+    user_liked = False
+    if request.user.is_authenticated:
+        user_liked = Like.objects.filter(user=request.user, post=post).exists()
 
-        previous_post = Article.objects.filter(
-            active=True,
-            created_at__lt=post.created_at
-        ).order_by('-created_at').first()
-        
-        next_post = Article.objects.filter(
-            active=True,
-            created_at__gt=post.created_at
-        ).order_by('created_at').first()
-        
-        if request.method == 'POST':
-            return redirect('post_detail', slug=slug)
+    # Por date_hour, para que seguir la flecha lleve al articulo que de
+    # verdad esta al lado en el listado.
+    referencia = post.date_hour or post.created_at
+    previous_post = Article.objects.publicados().filter(
+        date_hour__lt=referencia
+    ).order_by('-date_hour').first()
 
-        context = {
-            'language':language,
-            'labels':labels,
-            'post': post,
-            'user_liked': user_liked,
-            'previous_post': previous_post,
-            'next_post': next_post,
-            'data_meta':post,
-        }
+    next_post = Article.objects.publicados().filter(
+        date_hour__gt=referencia
+    ).order_by('date_hour').first()
+    
+    if request.method == 'POST':
+        return redirect('post_detail', slug=slug)
 
-        return render(request, 'blog/detail.html', context)
+    context = {
+        'language':language,
+        'labels':labels,
+        'post': post,
+        'user_liked': user_liked,
+        'previous_post': previous_post,
+        'next_post': next_post,
+        'data_meta':post,
+    }
 
-    except: return redirect('/')
+    return render(request, 'blog/detail.html', context)
+
    
   
 
@@ -154,7 +167,7 @@ def category(request, language, slug):
     slug_field = 'slug_anglaise' if language == 'en' else 'slug_francaise'
     category = get_object_or_404(Category, **{slug_field: slug})
 
-    articles_list = category.posts.filter(active=True)
+    articles_list = category.posts.publicados()
     paginator = Paginator(articles_list, 12)
     try:
         articles = paginator.page(request.GET.get('page'))
