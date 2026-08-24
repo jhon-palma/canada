@@ -231,6 +231,50 @@ class InscriptionsQuerySet(models.QuerySet):
             Prefetch('remarques', queryset=Remarques.objects.select_related('code_langue')),
         )
 
+    def with_detail_data(self):
+        """Precarga lo que necesita la ficha de detalle y el PDF.
+
+        La ficha disparaba 702 consultas para una sola propiedad. El grueso
+        venia de la plantilla: recorre inscription.caracteristiques.all 33
+        veces y en cada vuelta resolvia scarac_code y su tcar_code fila a fila
+        (210 + 210 consultas), y algo parecido pasaba con las fotos (59) y con
+        las claves foraneas a VALEURS_FIXES (170). En local, con la base al
+        lado, eso son 311 ms de SQL; en produccion son 702 idas y vueltas por
+        red contra el Postgres gestionado, que es donde de verdad se nota.
+
+        Con prefetch_related las llamadas repetidas a .all() reutilizan la
+        cache, asi que las 33 vueltas del bucle cuestan una sola consulta.
+
+        No sirve with_card_data() aqui: aquella filtra las fotos a seq=1
+        porque la tarjeta solo muestra la portada, y la ficha necesita la
+        galeria entera.
+        """
+        return self.select_related(
+            'categorie_propriete',
+            'code_statut',
+            'courtier_inscripteur_1',
+            'courtier_inscripteur_2',
+            'frequence_prix_location',
+            'genre_propriete',
+            'ind_vente_sans_garantie_legale',
+            'mun_code',
+            'type_batiment',
+            'type_copropriete',
+            'um_superficie_habitable',
+        ).prefetch_related(
+            Prefetch('photos', queryset=Photos.objects.select_related(
+                'code_description_photo').order_by('seq')),
+            Prefetch('caracteristiques', queryset=Caracteristiques.objects.select_related(
+                'scarac_code', 'scarac_code__tcar_code')),
+            Prefetch('depenses', queryset=Depenses.objects.select_related('tdep_code')),
+            Prefetch('piecesUnites', queryset=PiecesUnites.objects.select_related(
+                'piece_code', 'niveau', 'couvre_plancher_code')),
+            Prefetch('remarques', queryset=Remarques.objects.select_related('code_langue')),
+            Prefetch('no_inscription_addenda', queryset=Addenda.objects.select_related('code_langue')),
+            'no_inscription_visites_libres',
+        )
+
+
 
 class Inscriptions(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)

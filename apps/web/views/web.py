@@ -308,7 +308,7 @@ class WebDetailProperty(View):
         # seria grave: un error de renderizado le estaria diciendo a Google
         # que retire del indice una ficha que sigue viva.
         try:
-            propertie = Inscriptions.objects.get(id=propertie_id, status=True)
+            propertie = Inscriptions.objects.with_detail_data().get(id=propertie_id, status=True)
         except (Inscriptions.DoesNotExist, ValidationError, ValueError, TypeError):
             return propiedad_retirada(request, language)
 
@@ -322,15 +322,18 @@ class WebDetailProperty(View):
         same_district = Inscriptions.objects.with_card_data().filter(mun_code=mun_code, status=True).exclude(id=propertie.id)[:4]
         url_pdf = '{}/{}/{}/pdf/'.format(language, option, propertie_id)
         
-        taxsco = propertie.depenses.filter(tdep_code__valeur='TAXSCO').first()
-        taxmun = propertie.depenses.filter(tdep_code__valeur='TAXMUN').first()
+        # Sobre la lista ya precargada. Un .filter() aqui esquivaria la cache
+        # de prefetch_related y volveria a consultar la tabla.
+        depenses = list(propertie.depenses.all())
+        taxsco = next((d for d in depenses if d.tdep_code and d.tdep_code.valeur == 'TAXSCO'), None)
+        taxmun = next((d for d in depenses if d.tdep_code and d.tdep_code.valeur == 'TAXMUN'), None)
         try:
             total_fees = taxsco.montant_depense + taxmun.montant_depense
         except:
             total_fees = 0
         total_municipal = 0
-        addenda_list = Addenda.objects.filter(no_inscription__id=propertie_id)
-        addenda_f_list = addenda_list.filter(code_langue__valeur="F")
+        addenda_list = list(propertie.no_inscription_addenda.all())
+        addenda_f_list = [a for a in addenda_list if a.code_langue and a.code_langue.valeur == "F"]
         addenda_f_texts = []
         for addenda in addenda_f_list:
             if addenda.texte:
@@ -343,7 +346,7 @@ class WebDetailProperty(View):
                     else:
                         addenda_f_texts.append(addenda.texte)
         addenda_f = ' '.join(addenda_f_texts)
-        addenda_a_list = addenda_list.filter(code_langue__valeur="A")
+        addenda_a_list = [a for a in addenda_list if a.code_langue and a.code_langue.valeur == "A"]
         addenda_a_texts = []
         for addenda in addenda_a_list:
             if addenda.texte:
