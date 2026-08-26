@@ -1,7 +1,9 @@
 from django import template
+from django.contrib.staticfiles import finders
+from django.templatetags.static import static
 from immobilier.settings import SERVER
 from apps.seo import absolute_url, alternate_path
-import ast, json
+import ast, hashlib, json, os
 
 
 register = template.Library()
@@ -103,3 +105,54 @@ def multiply(value, arg):
         return float(value_str) * float(arg)
     except (ValueError, TypeError):
         return ''
+
+
+# Version calculada de cada estatico, para no releer el archivo en cada
+# peticion. La clave lleva mtime y tamano, asi que un despliegue que cambie el
+# archivo entra por una clave nueva y no hace falta reiniciar nada.
+_VERSIONES = {}
+
+
+@register.simple_tag
+def static_v(ruta):
+    """Como {% static %}, pero anadiendo ?v=<sha1> a la URL.
+
+    Los estaticos se sirven desde el edge del CDN de Spaces con
+    Cache-Control: max-age=604800. Subir el archivo al bucket no invalida lo
+    que el edge ya tiene guardado: sigue entregando la copia vieja hasta que
+    caducan los siete dias. Purgar desde el panel es un paso manual, fuera del
+    despliegue, y basta con que falle o se olvide para que un arreglo de CSS no
+    llegue a nadie durante una semana -- que es exactamente lo que paso con el
+    paginado del blog.
+
+    Con la version en la query cada contenido nuevo es una URL nueva, asi que
+    el edge la trata como un archivo que no tiene y la pide al origen. Se
+    comprobo contra produccion que esas URLs se siguen cacheando (primera
+    peticion MISS, segunda HIT), de modo que no se pierde el edge: solo se deja
+    de depender de la purga.
+
+    La marca es el sha1 del contenido, no la fecha, para que solo cambie cuando
+    cambia el archivo de verdad. Si el estatico no aparece en disco se devuelve
+    la URL tal cual: quedarse sin marca es peor que quedarse sin hoja de
+    estilos.
+    """
+    url = static(ruta)
+
+    local = finders.find(ruta)
+    if not local:
+        return url
+
+    try:
+        estado = os.stat(local)
+    except OSError:
+        return url
+
+    clave = (local, estado.st_mtime, estado.st_size)
+    version = _VERSIONES.get(clave)
+    if version is None:
+        with open(local, 'rb') as archivo:
+            version = hashlib.sha1(archivo.read()).hexdigest()[:8]
+        _VERSIONES[clave] = version
+
+    separador = '&' if '?' in url else '?'
+    return '%s%sv=%s' % (url, separador, version)
