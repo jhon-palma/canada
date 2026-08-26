@@ -8745,7 +8745,7 @@ position: relative;color: #fff !important;}
 .capsules .wrap{
     display: flex;
     flex-wrap: wrap;
-    align-items: flex-start;
+    align-items: stretch;
     justify-content: space-between;
     margin-top: 60px;
     margin-bottom: 60px;
