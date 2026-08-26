@@ -39,6 +39,8 @@ from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.management import call_command
 from django.core.management.base import BaseCommand, CommandError
 
+from apps.estaticos import versionar
+
 # Lo que el header carga en todas las paginas: si alguno de estos falta, el
 # sitio se ve roto entero, no solo una seccion.
 CRITICOS = [
@@ -89,8 +91,9 @@ class Command(BaseCommand):
         if fallos:
             raise CommandError(
                 'Los estaticos NO se estan sirviendo correctamente:\n  - %s\n'
-                'Si acaba de subirlos, el edge del CDN puede tardar en refrescar; '
-                'vuelva a ejecutar con --check antes de dar nada por roto.'
+                'Las URLs llevan la version del contenido, asi que el edge no las '
+                'tiene cacheadas y las pide al origen: esto no se arregla '
+                'esperando. Revise que el paso 2 subiera el archivo al bucket.'
                 % '\n  - '.join(fallos))
 
         self.stdout.write(self.style.SUCCESS(
@@ -130,14 +133,20 @@ class Command(BaseCommand):
         Con DEBUG=True devuelve /static/..., que no sirve para comprobar nada,
         asi que se compone la de produccion: verificar desde la maquina de
         desarrollo si el bucket esta al dia es justo para lo que hace falta.
+
+        Lleva la misma marca ?v= que emite el tag static_v en las plantillas.
+        Sin ella este paso comprobaba una URL que ya nadie pide y que el edge
+        conserva cacheada hasta siete dias, de modo que fallaba en cada
+        despliegue aunque la subida hubiese ido bien. Un paso que existe para
+        dar la cara no puede dar rojo siempre: se aprende a ignorarlo.
         """
         url = staticfiles_storage.url(ruta)
-        if url.startswith('http'):
-            return url
+        if not url.startswith('http'):
+            region = urlsplit(settings.AWS_S3_ENDPOINT_URL).netloc.split('.')[0]
+            url = 'https://{}.{}.cdn.digitaloceanspaces.com/static/{}'.format(
+                settings.AWS_STORAGE_BUCKET_NAME, region, ruta)
 
-        region = urlsplit(settings.AWS_S3_ENDPOINT_URL).netloc.split('.')[0]
-        return 'https://{}.{}.cdn.digitaloceanspaces.com/static/{}'.format(
-            settings.AWS_STORAGE_BUCKET_NAME, region, ruta)
+        return versionar(url, ruta)
 
     def _en_disco(self, ruta):
         """Respaldo para cuando los finders no miran BASE_DIR/static (DEBUG=False)."""
