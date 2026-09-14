@@ -947,7 +947,13 @@
         point.push(new Array("45.45685300","-73.78268900"));
         point.push(new Array("45.52895500","-73.43909656"));
 
-		var tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {});
+		// Los servidores de OpenStreetMap bloquearon las teselas de este sitio (403 "Access blocked").
+		// CARTO sirve el mismo mapa de OSM y si admite este uso, siempre con la atribucion visible.
+		var tiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+			subdomains: 'abcd',
+			maxZoom: 20,
+			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a>'
+		});
 		latlng = L.latLng(45.503121, -73.589550);
 		var map = L.map('map', {center: latlng, zoom: 11, layers: [tiles],dragging: !L.Browser.mobile, tap: !L.Browser.mobile, zoomControl: false });
 		var markers = L.markerClusterGroup();
@@ -963,6 +969,9 @@
         L.control.zoom({
             position: 'bottomright'
         }).addTo(map);
+
+        // La atribucion va a la izquierda para no taparse con los botones de zoom.
+        map.attributionControl.setPosition('bottomleft');
 
         window.onload = checkForModalParameter;
           
