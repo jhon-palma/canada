@@ -947,12 +947,12 @@
         point.push(new Array("45.45685300","-73.78268900"));
         point.push(new Array("45.52895500","-73.43909656"));
 
-		// Los servidores de OpenStreetMap bloquearon las teselas de este sitio (403 "Access blocked").
-		// CARTO sirve el mismo mapa de OSM y si admite este uso, siempre con la atribucion visible.
-		var tiles = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-			subdomains: 'abcd',
-			maxZoom: 20,
-			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a>'
+		// OpenStreetMap bloqueo las teselas de este sitio y CARTO las marca con "API KEY
+		// REQUIRED", asi que el mapa se sirve desde Esri, que no pide clave. Ojo al orden
+		// {z}/{y}/{x}: Esri invierte y/x respecto al esquema habitual de teselas.
+		var tiles = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+			maxZoom: 19,
+			attribution: 'Teselas &copy; <a href="https://www.esri.com/" target="_blank" rel="noopener">Esri</a> &mdash; Esri, HERE, Garmin, NRCan, USGS, NGA, EPA'
 		});
 		latlng = L.latLng(45.503121, -73.589550);
 		var map = L.map('map', {center: latlng, zoom: 11, layers: [tiles],dragging: !L.Browser.mobile, tap: !L.Browser.mobile, zoomControl: false });
