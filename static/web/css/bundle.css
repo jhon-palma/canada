@@ -8186,14 +8186,18 @@ img.bannerimg{
 .banner h1 span, .banner>p span{
 	color: #32ccc4;
 }
-.banner h2 span, .banner>p span{
+.banner h2 span, .banner h1.bannergranso span, .banner>p span{
 	color: #32ccc4;
 }
 
 .banner>.baninfo h1{text-align: center;}
 .banner>.baninfo h2{text-align: center;}
 
-.banner h2, .banner>p{
+/* .bannergranso era un h2 porque el h1 del banner esta pensado como
+   antetitulo, a 24px. Al pasar a h1 -- las paginas interiores no tenian
+   ninguno -- hace falta que conserve el tamano grande, y por especificidad
+   esta regla gana a .banner h1 este donde este en el archivo. */
+.banner h2, .banner h1.bannergranso, .banner>p{
 	color: #fff;
 	text-align: center;
 	text-transform: uppercase;

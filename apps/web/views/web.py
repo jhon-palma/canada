@@ -10,7 +10,7 @@ from django.views.generic import ListView, TemplateView, View
 
 from apps.blog.models import Article
 from apps.labels import DICT_LABELS
-from apps.seo import normalize_language
+from apps.seo import meta_de_landing, normalize_language
 from apps.properties.models import Addenda, GenresProprietes, Inscriptions, Municipalites, Regions
 from apps.users.models import Profile
 from apps.web.forms import MetadataForm
@@ -735,13 +735,20 @@ class SearchProperties(ListView):
         # desde una landing francesa producia /search/en/maisons-a-vendre-...
         # -- ingles por fuera y frances por dentro. Son las URLs que Search
         # Console cuenta como duplicadas.
+        # Mismo filtro que WebProperties: activas y sin vender. La landing no
+        # lo tenia, asi que listaba todas las fichas que hubiera en la base --
+        # 392 frente a las 47 reales --, y cada tarjeta de una retirada
+        # enlazaba a una ficha que responde 410. Ademas de ensenar propiedades
+        # que ya no estan, era una fuente de errores de rastreo.
+        disponibles = Inscriptions.objects.with_card_data().filter(status=True) \
+            .exclude(code_statut__valeur="VE")
         fila = None
         if filter== "quartier":
-            inscriptions_all = Inscriptions.objects.with_card_data().filter(mun_code=code)
+            inscriptions_all = disponibles.filter(mun_code=code)
             fila = Municipalites.objects.filter(code=code).first()
         if filter== "categorie":
             code = code.upper()
-            inscriptions_all = Inscriptions.objects.with_card_data().filter(genre_propriete=code)
+            inscriptions_all = disponibles.filter(genre_propriete=code)
             fila = GenresProprietes.objects.filter(genre_propriete=code).first()
 
         slug_actual = slug_traducido = None
@@ -768,7 +775,15 @@ class SearchProperties(ListView):
         inscriptions = paginator.get_page(page_number)
         images_query = ImagesWeb.objects.filter(reference__in=['properties_banner'])
         images_dict = {image.reference: image for image in images_query}
-        data_meta = MetaDataWeb.for_origin('properties')
+        # Titulo, descripcion y encabezado propios de esta landing. Antes
+        # todas cargaban la misma fila 'properties', asi que cientos de
+        # paginas compartian las tres cosas.
+        if fila:
+            data_meta = meta_de_landing(fila, filter, paginator.count)
+            encabezado = data_meta.encabezado_a if language == 'en' else data_meta.encabezado_f
+        else:
+            data_meta = MetaDataWeb.for_origin('properties')
+            encabezado = None
         # Estas landings son de las paginas con mejor CTR del sitio, asi que
         # son buen sitio desde donde senalar el blog. No se filtran por
         # municipio porque no hay relacion entre articulo y municipalidad en
@@ -779,6 +794,7 @@ class SearchProperties(ListView):
             'ultimos_articulos':ultimos_articulos,
             'slug_actual':slug_actual,
             'slug_traducido':slug_traducido,
+            'encabezado':encabezado,
             'municipalites':municipalites,
             'genres':genres,
             'language':language,

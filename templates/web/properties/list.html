@@ -124,7 +124,17 @@
 
         <section class="banner nothome">
             <div class="baninfo">
-                <h2 class="bannergranso">{{ labels.index.title.one }}<span> {{ labels.index.title.two }}</span></h2>
+                {% comment %}
+                h1 y no h2: esta plantilla sirve el listado y las cientos de
+                landings de barrio y de categoria, y ninguna tenia encabezado
+                de primer nivel. El texto sale del municipio o de la categoria
+                cuando los hay, para que no sean todas el mismo titular.
+                {% endcomment %}
+                {% if encabezado %}
+                    <h1 class="bannergranso">{{ encabezado }}</h1>
+                {% else %}
+                    <h1 class="bannergranso">{{ labels.index.title.one }}<span> {{ labels.index.title.two }}</span></h1>
+                {% endif %}
                 <a class="bouton btn-wwu boutonnre2 boutonnre2gra pointer" data-pop="popcontactBook">{{ labels.index.button.fourteen }}</a>
             </div>
         </section>
