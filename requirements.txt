@@ -1,7 +1,19 @@
-amqp==5.3.1
-anyio==4.12.1
+# Dependencias del proyecto.
+#
+# Lo comentado se reviso el 7 de octubre de 2026 y no lo necesita nadie: ni el
+# codigo lo importa, ni figura en INSTALLED_APPS, ni es dependencia de nada que
+# si se use. Se deja escrito en vez de borrado para que se vea que la ausencia
+# es deliberada y no un olvido, y por si algo de fuera del repositorio tira de
+# ello.
+
+
+# celery ya no se usa: no esta en INSTALLED_APPS, no hay ajuste CELERY_* y el propio celery ni figura aqui. Esto es lo que quedo de su arbol de dependencias.
+# amqp==5.3.1
+
+# no esta instalado en el entorno y nada lo reclama.
+# anyio==4.12.1
 asgiref==3.8.1
-billiard==4.2.4
+# billiard==4.2.4
 boto3==1.34.117
 botocore==1.34.162
 cachetools==5.4.0
@@ -9,11 +21,11 @@ certifi==2024.6.2
 cffi==2.0.0
 chardet==3.0.4
 charset-normalizer==3.3.2
-click==8.3.1
-click-didyoumean==0.3.1
-click-plugins==1.1.1.2
-click-repl==0.3.0
-colorama==0.4.6
+# click==8.3.1
+# click-didyoumean==0.3.1
+# click-plugins==1.1.1.2
+# click-repl==0.3.0
+# colorama==0.4.6
 cryptography==46.0.5
 Django==5.1.1
 django-allauth==64.2.1
@@ -39,13 +51,18 @@ hyperframe==5.2.0
 idna==2.10
 isodate==0.6.1
 jmespath==1.1.0
-jwt==1.3.1
-kombu==5.6.2
-legacy-cgi==2.6.4
+# jwt==1.3.1  <- NO era PyJWT. django-allauth necesita jwt.decode y
+#                jwt.algorithms, que ese paquete no tiene: el acceso con
+#                Google fallaba al verificar el token.
+PyJWT[crypto]==2.10.1
+# kombu==5.6.2
+# legacy-cgi==2.6.4
 oauthlib==3.3.1
-packaging==26.0
+
+# no lo importa el codigo ni lo pide ninguna otra dependencia.
+# packaging==26.0
 pillow==10.4.0
-prompt_toolkit==3.0.52
+# prompt_toolkit==3.0.52
 proto-plus==1.24.0
 protobuf==4.24.4
 psycopg2-binary==2.9.11
@@ -53,7 +70,7 @@ pyasn1==0.5.1
 pyasn1-modules==0.3.0
 pycparser==3.0
 pyparsing==3.1.2
-pypyodbc==1.3.6
+# pypyodbc==1.3.6
 python-dateutil==2.9.0.post0
 requests==2.31.0
 requests-oauthlib==2.0.0
@@ -66,8 +83,8 @@ sniffio==1.3.1
 sqlparse==0.4.4
 typing_extensions==4.7.1
 tzdata==2025.3
-tzlocal==5.3.1
+# tzlocal==5.3.1
 uritemplate==4.1.1
 urllib3==2.0.7
-vine==5.1.0
-wcwidth==0.6.0
+# vine==5.1.0
+# wcwidth==0.6.0
