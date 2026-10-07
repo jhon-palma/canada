@@ -40,6 +40,10 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
 ]
 
-if settings.DEBUG:
+# Por USE_SPACES y no por DEBUG: lo que decide si Django tiene que servir los
+# archivos es donde esten, no si se esta depurando. Con el bucket encendido las
+# URLs apuntan al CDN y estas rutas no se usarian nunca; sin el, hacen falta
+# aunque DEBUG este apagado.
+if not settings.USE_SPACES:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
