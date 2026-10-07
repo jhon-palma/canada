@@ -3,7 +3,6 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 import environ
-from django.core.exceptions import ImproperlyConfigured
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -18,9 +17,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Lo que ya exista en el entorno del proceso manda sobre el archivo, asi que un
 # secreto se puede inyectar desde el panel del servidor sin dejarlo escrito.
 env = environ.Env()
-env.read_env(os.environ.get('ENV_FILE')
-             or BASE_DIR / '.env.{}'.format(os.environ.get('DJANGO_ENV', 'dev')))
-
+env.read_env(os.environ.get('ENV_FILE') or BASE_DIR / '.env.{}'.format(os.environ.get('DJANGO_ENV', 'dev')))
 
 DEBUG = env.bool('DEBUG')
 
@@ -30,15 +27,12 @@ DEBUG = env.bool('DEBUG')
 SECRET_KEY = env.str('SECRET_KEY')
 
 # Raiz publica del sitio. De aqui salen el dominio canonico de robots.txt y el
-# sitemap, las URLs absolutas y las etiquetas og.
+# sitemap, las URLs absolutas y las etiquetas og. Se desempaqueta en dos
+# porque asi un SERVER sin esquema revienta aqui: con urlsplit se quedaba en
+# cadena vacia y SITE_URL salia '://', que no falla pero deja el canonical y el
+# sitemap del sitio entero apuntando a ninguna parte.
 SERVER = env.str('SERVER')
-_server = urlsplit(SERVER)
-if not _server.scheme or not _server.netloc:
-    raise ImproperlyConfigured(
-        'SERVER tiene que ser una URL completa con esquema, como '
-        'https://www.ljrealties.com, y vale {!r}.'.format(SERVER))
-SITE_PROTOCOL = _server.scheme
-SITE_DOMAIN = _server.netloc
+SITE_PROTOCOL, SITE_DOMAIN = SERVER.rstrip('/').split('://')
 SITE_URL = '{}://{}'.format(SITE_PROTOCOL, SITE_DOMAIN)
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
