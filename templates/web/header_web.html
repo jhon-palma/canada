@@ -54,21 +54,30 @@
 	<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
 	<meta name="google-site-verification" content="AvHB9jrAI_R9deiYsxfhtNu9JckA8TxbLRot8MnB7-o" />
 	
+	{% comment %}
+	El titulo y la descripcion se resuelven una sola vez y de ahi salen tanto
+	la etiqueta de titulo y la de descripcion como las og:. Antes las og: no
+	miraban data_meta: llevaban las etiquetas de la portada en todas las
+	paginas del sitio, asi que cualquier ficha o articulo compartido en
+	WhatsApp o Facebook salia con el titulo de la home.
+	{% endcomment %}
 	{% if data_meta.m_description_f and data_meta.m_description_a and data_meta.m_title_f and data_meta.m_title_a %}
 		{% if language == 'fr' %}
-			<title>{{ data_meta.m_title_f }}</title>
-			<meta name="description" content="{{ data_meta.m_description_f }}"/>
+			{% define data_meta.m_title_f as titulo_pagina %}
+			{% define data_meta.m_description_f as descripcion_pagina %}
 		{% else %}
-			<title>{{ data_meta.m_title_a }}</title>
-			<meta name="description" content="{{ data_meta.m_description_a }}"/>
+			{% define data_meta.m_title_a as titulo_pagina %}
+			{% define data_meta.m_description_a as descripcion_pagina %}
 		{% endif %}
 	{% else %}
-		<title>{{ labels.index.header.one }}</title>
-		<meta name="description" content="{{ labels.index.header.two }}"/>
+		{% define labels.index.header.one as titulo_pagina %}
+		{% define labels.index.header.two as descripcion_pagina %}
 	{% endif %}
-	
+
+	<title>{{ titulo_pagina }}</title>
+	<meta name="description" content="{{ descripcion_pagina }}"/>
+
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-	<meta http-equiv="Content-Language" content="fr, ca"/>
 	<meta name="google" content="notranslate"/>
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 	<link rel="apple-touch-icon" sizes="180x180" href="{% static 'web/images2/favicons/apple-touch-icon.png' %}">
@@ -81,15 +90,20 @@
 	<meta name="msapplication-config" content="{% static 'web/images2/favicons/browserconfig.xml' %}">
 	<meta name="theme-color" content="#ffffff">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<meta property="og:title" content="{{ labels.index.header.one }}"/>
-	<meta property="og:site_name" content="{{ labels.index.header.two }}"/>
+	<meta property="og:title" content="{{ titulo_pagina }}"/>
+	<meta property="og:site_name" content="LJ Realties"/>
 	<meta property="og:url" content="{{ server|server_url }}{{ request.path }}"/>
-	<meta property="og:description" content="{{ labels.index.header.two }}"/>
+	<meta property="og:description" content="{{ descripcion_pagina }}"/>
 	<meta property="og:image" content="{{ server|server_url }}/images/facebook_ban.jpg"/>
 	<meta property="og:image:width" content="600"/>
 	<meta property="og:image:height" content="315"/>
-	<meta property="og:locale" content="fr_CA"/>
-	<meta property="og:locale:alternate" content="fr_FR"/>
+	{% comment %}
+	El idioma de la pagina, no uno fijo. El alterno declaraba fr_FR, que es
+	Francia: el sitio no tiene version francesa de Francia, tiene inglesa de
+	Canada.
+	{% endcomment %}
+	<meta property="og:locale" content="{% if language == 'en' %}en_CA{% else %}fr_CA{% endif %}"/>
+	<meta property="og:locale:alternate" content="{% if language == 'en' %}fr_CA{% else %}en_CA{% endif %}"/>
 	<meta property="article:author" content="https://www.facebook.com/LJRealties/?ref=br_rs"/>
 	<meta property="article:publisher" content="https://www.facebook.com/LJRealties/?ref=br_rs"/>
 	<noscript><img height="1" width="1" src="https://www.facebook.com/tr?id=1494417464404515&ev=PageView&noscript=1"/></noscript>
@@ -113,23 +127,23 @@
 		{
 		"@context": "https://schema.org",
 		"@type": "RealEstateAgent",
-		"name": "LJ Realities - Real Estate Broker in Montreal",
+		"name": "LJ Realties",
 		"image": "https://sfo3.digitaloceanspaces.com/media-canada/media/public/app/profile_imgs/LJ_RateMyAgent.jpg",
 		"@id": "https://www.ljrealties.com/#free_evaluation",
 		"url": "https://www.ljrealties.com/",
 		"telephone": "+1-514-500-4040",
 		"address": {
 			"@type": "PostalAddress",
-			"streetAddress": "1275 Av. des Canadiens-de-Montréal 5th floor",
+			"streetAddress": "1117 rue Charlevoix",
 			"addressLocality": "Montreal",
 			"addressRegion": "QC",
-			"postalCode": "H3C 0G4",
+			"postalCode": "H3K 2Z4",
 			"addressCountry": "CA"
 		},
 		"geo": {
 			"@type": "GeoCoordinates",
-			"latitude": 45.496799641469494,
-			"longitude": -73.5706337096632
+			"latitude": 45.477902,
+			"longitude": -73.568056
 		},
 		"openingHoursSpecification": [{
 			"@type": "OpeningHoursSpecification",
