@@ -21,7 +21,7 @@ from .forms import UploadFileForm
 from .models import *
 from datetime import datetime
 from apps.users.models import Log
-from immobilier.local_settings import PYTHON, PATH_BASE
+from django.conf import settings
 
 import subprocess
 
@@ -95,7 +95,7 @@ def upload_data_auto(request):
             'PIECES_UNITES',
             'CARACTERISTIQUES',
         ]
-        folder_path = PATH_BASE
+        folder_path = settings.PATH_BASE
 
         models_base = [
             'GENRES_PROPRIETES',
@@ -157,7 +157,7 @@ def download_files(request):
     if request.method == 'POST':
         try:
             print('download_files')
-            resultado = subprocess.run([PYTHON, "scripts/download_data.py"], capture_output=True, text=True, check=True)
+            resultado = subprocess.run([settings.PYTHON, "scripts/download_data.py"], capture_output=True, text=True, check=True)
             salida_del_script = resultado.stderr
             if salida_del_script:
                 mensaje = f"Error al ejecutar el script: {salida_del_script}"
@@ -222,7 +222,7 @@ def update_video_list(request):
             #print(script_path_str)
             #command = f"{venv_path_str} && python {script_path_str}"
             #print(command)
-            resultado = subprocess.run([PYTHON, "scripts/download_videos.py"], capture_output=True, text=True, check=True)
+            resultado = subprocess.run([settings.PYTHON, "scripts/download_videos.py"], capture_output=True, text=True, check=True)
             #resultado = subprocess.run(command, shell=True, capture_output=True, text=True, check=True)
             salida_del_script = resultado.stderr
             print("==================================")

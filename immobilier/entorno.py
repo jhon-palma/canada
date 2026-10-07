@@ -1,13 +1,13 @@
 """Lectura de la configuracion desde un archivo .env.
 
-Antes todo esto vivia en immobilier/local_settings.py: un modulo de Python con
-las contrasenas escritas dentro que settings.py importaba con `import *`. Tenia
+Antes esto vivia en immobilier/local_settings.py: un modulo de Python con las
+contrasenas escritas dentro que settings.py importaba con `import *`. Tenia
 tres problemas. Las credenciales estaban en codigo fuente, a un despiste de
-acabar en git -- y el sitio recibe cada dia miles de peticiones que van
-buscando justamente un archivo con secretos. Mezclaba configuracion con logica,
-porque el mismo archivo decidia tambien los STORAGES y las rutas de estaticos.
-Y al ser `import *` no habia manera de saber que define cada cual sin abrir los
-dos archivos.
+acabar publicadas -- y no es un riesgo teorico: de las peticiones maliciosas
+que recibe este sitio cada dia, una de cada cuatro va buscando justamente un
+archivo con secretos. Mezclaba configuracion con logica, porque el mismo
+archivo decidia tambien los STORAGES y las rutas de estaticos. Y al entrar con
+`import *` no habia manera de saber que define cada cual sin abrir los dos.
 
 Que archivo se lee, por orden:
 
@@ -17,25 +17,21 @@ Que archivo se lee, por orden:
    escribir la variable en cada comando.
 3. .env
 
-Que el valor por defecto sea 'dev' no es un riesgo para produccion: los
-archivos .env estan fuera de git, asi que en el servidor no hay ningun
-.env.dev que leer por descuido. Si alguien olvida DJANGO_ENV=prod alli, no
-encuentra archivo y falla a la vista en vez de arrancar con la configuracion
-equivocada.
+Las variables que ya existan en el entorno del proceso mandan sobre el
+archivo, que es lo que permite inyectar un secreto desde el panel del servidor
+sin dejarlo escrito en ningun sitio.
 
-Las variables que ya existan en el entorno del proceso mandan sobre el archivo,
-que es lo que permite inyectar un secreto desde el panel del servidor sin
-tocar ningun archivo.
+Si no aparece ninguno de esos archivos, el proyecto no arranca. Es a proposito:
+una configuracion a medias es peor que no arrancar, porque falla mas tarde y
+mas lejos del motivo.
 
-Si no aparece ninguno de esos archivos pero si local_settings.py, se usa ese y
-se avisa por stderr. Es a proposito: el sitio esta en produccion y un
-despliegue no puede quedarse sin configuracion por el orden en que se suban
-los archivos. Cuando produccion tenga su .env, local_settings.py se puede
-borrar y esa rama desaparece.
+Que el valor por defecto de DJANGO_ENV sea 'dev' no abre un agujero en
+produccion: los .env estan fuera de git, asi que en el servidor no hay ningun
+.env.dev que leer por descuido, y si alli se olvida DJANGO_ENV=prod el arranque
+se para en seco en vez de levantar con la configuracion de otro sitio.
 """
 
 import os
-import sys
 from pathlib import Path
 
 from django.core.exceptions import ImproperlyConfigured
@@ -44,32 +40,32 @@ RAIZ = Path(__file__).resolve().parent.parent
 
 _FALTA = object()
 
+_AYUDA = (
+    'Copia .env.example a .env.dev (o a .env.prod en el servidor) y rellenalo. '
+    'En produccion acuerdate de DJANGO_ENV=prod.'
+)
 
-def _ruta_del_archivo():
-    """El .env que toca leer, o None si no hay ninguno."""
+
+def _candidatos():
+    """Las rutas donde se busca el archivo, en orden de preferencia."""
     explicito = os.environ.get('ENV_FILE')
     if explicito:
-        return Path(explicito)
-
-    entorno = os.environ.get('DJANGO_ENV', 'dev')
-    candidatos = [RAIZ / '.env.{}'.format(entorno), RAIZ / '.env']
-
-    for candidato in candidatos:
-        if candidato.is_file():
-            return candidato
-    return None
+        return [Path(explicito)]
+    nombre = os.environ.get('DJANGO_ENV', 'dev')
+    return [RAIZ / '.env.{}'.format(nombre), RAIZ / '.env']
 
 
 def cargar():
-    """Mete en os.environ lo que haya en el archivo. Devuelve su ruta o None.
+    """Mete en os.environ lo que haya en el archivo y devuelve su ruta.
 
     No pisa lo que ya este definido: el entorno del proceso tiene prioridad.
     """
-    ruta = _ruta_del_archivo()
+    rutas = _candidatos()
+    ruta = next((r for r in rutas if r.is_file()), None)
     if ruta is None:
-        return None
-    if not ruta.is_file():
-        raise ImproperlyConfigured('ENV_FILE apunta a {}, que no existe.'.format(ruta))
+        raise ImproperlyConfigured(
+            'No se encontro ningun archivo de configuracion. Se busco en: {}. {}'.format(
+                ', '.join(str(r) for r in rutas), _AYUDA))
 
     with ruta.open(encoding='utf-8') as archivo:
         for numero, linea in enumerate(archivo, 1):
@@ -82,28 +78,14 @@ def cargar():
                 raise ImproperlyConfigured(
                     '{}, linea {}: se esperaba CLAVE=valor.'.format(ruta.name, numero))
             clave, _, valor = linea.partition('=')
-            clave = clave.strip()
             valor = valor.strip()
-            # Las comillas son para que un valor pueda llevar espacios al
+            # Las comillas sirven para que un valor pueda llevar espacios al
             # principio o al final; no forman parte del valor.
             if len(valor) >= 2 and valor[0] == valor[-1] and valor[0] in '\'"':
                 valor = valor[1:-1]
-            os.environ.setdefault(clave, valor)
+            os.environ.setdefault(clave.strip(), valor)
 
     return ruta
-
-
-def hay_local_settings():
-    return (RAIZ / 'immobilier' / 'local_settings.py').is_file()
-
-
-def avisar_de_local_settings(ruta_env):
-    """Un aviso por stderr si se sigue tirando del modulo antiguo."""
-    if ruta_env is None and hay_local_settings():
-        sys.stderr.write(
-            'AVISO: no se encontro ningun .env y se esta usando '
-            'immobilier/local_settings.py. Copia .env.example a .env, '
-            'rellenalo y borra local_settings.py.\n')
 
 
 def texto(clave, defecto=_FALTA):
@@ -111,7 +93,7 @@ def texto(clave, defecto=_FALTA):
     if valor is None or valor == '':
         if defecto is _FALTA:
             raise ImproperlyConfigured(
-                'Falta {} en el .env (ni en el entorno del proceso).'.format(clave))
+                'Falta {} en la configuracion. {}'.format(clave, _AYUDA))
         return defecto
     return valor
 
@@ -121,7 +103,8 @@ def entero(clave, defecto=_FALTA):
     try:
         return int(valor)
     except (TypeError, ValueError):
-        raise ImproperlyConfigured('{} tiene que ser un numero, y vale {!r}.'.format(clave, valor))
+        raise ImproperlyConfigured(
+            '{} tiene que ser un numero, y vale {!r}.'.format(clave, valor))
 
 
 def booleano(clave, defecto=_FALTA):

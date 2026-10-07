@@ -11,7 +11,7 @@ no puede servirlos con una URL limpia y recurre a URLs firmadas
   - Obliga a servir desde el origen del bucket, no desde el edge.
 
 Una vez todo es publico se puede anadir "querystring_auth": False al
-almacenamiento staticfiles de local_settings.py y las URLs quedan limpias y
+almacenamiento staticfiles de settings.py y las URLs quedan limpias y
 cacheables. Hazlo en este orden: primero los permisos, luego la opcion; al
 reves el sitio se queda sin estilos.
 
@@ -23,6 +23,7 @@ Uso:
 
 import boto3
 
+from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 
 PUBLIC_URI = 'http://acs.amazonaws.com/groups/global/AllUsers'
@@ -41,12 +42,17 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         try:
-            from immobilier.local_settings import (
-                AWS_S3_ACCESS_KEY_ID, AWS_S3_SECRET_ACCESS_KEY,
-                AWS_STORAGE_BUCKET_NAME, AWS_S3_ENDPOINT_URL,
-            )
-        except ImportError as exc:
-            raise CommandError('Faltan las credenciales de S3 en local_settings: %s' % exc)
+            AWS_S3_ACCESS_KEY_ID = settings.AWS_S3_ACCESS_KEY_ID
+            AWS_S3_SECRET_ACCESS_KEY = settings.AWS_S3_SECRET_ACCESS_KEY
+            AWS_STORAGE_BUCKET_NAME = settings.AWS_STORAGE_BUCKET_NAME
+            AWS_S3_ENDPOINT_URL = settings.AWS_S3_ENDPOINT_URL
+        except AttributeError as exc:
+            raise CommandError('Faltan las credenciales de Spaces en el .env: %s' % exc)
+        if not all((AWS_S3_ACCESS_KEY_ID, AWS_S3_SECRET_ACCESS_KEY,
+                    AWS_STORAGE_BUCKET_NAME, AWS_S3_ENDPOINT_URL)):
+            raise CommandError(
+                'Las credenciales de Spaces estan vacias. Este comando solo tiene '
+                'sentido contra el bucket, o sea con la configuracion de produccion.')
 
         apply_changes = options['apply']
         prefix = options['prefix']

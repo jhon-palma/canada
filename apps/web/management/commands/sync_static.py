@@ -112,7 +112,7 @@ class Command(BaseCommand):
             }
         except AttributeError as error:
             raise CommandError(
-                'Falta la configuracion de Spaces en local_settings: %s' % error)
+                'Falta la configuracion de Spaces en el .env: %s' % error)
 
         # El prefijo sale de STORAGES si esta definido (produccion); en
         # desarrollo ese bloque no existe y el valor es el mismo de siempre.

@@ -5,55 +5,62 @@ from . import entorno
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# La configuracion viene de un .env. Mientras produccion no tenga el suyo se
-# sigue aceptando el local_settings.py de antes, avisando; ver immobilier/entorno.py.
-_ARCHIVO_ENV = entorno.cargar()
-entorno.avisar_de_local_settings(_ARCHIVO_ENV)
-if _ARCHIVO_ENV is None and entorno.hay_local_settings():
-    from .local_settings import *  # noqa: F401,F403
+# Toda la configuracion sale de un .env; ver immobilier/entorno.py. Si no hay
+# archivo, el proyecto no arranca: una configuracion a medias falla mas tarde y
+# mas lejos del motivo que un error al arrancar.
+entorno.cargar()
 
-SECRET_KEY = entorno.texto('SECRET_KEY', globals().get(
-    'SECRET_KEY', 'django-insecure-46l99m0=n-fxom7f-7-q9ia8rt9-sh$c^vmz7dcjy9-#$v1j2w'))
 FILE_CHARSET = 'utf-8'
 
-# ---------------------------------------------------------------- del entorno
-# Cada valor con su reserva en lo que trajera local_settings, para que la
-# transicion no dependa del orden en que se suban los archivos.
-DEBUG = entorno.booleano('DEBUG', globals().get('DEBUG', False))
-SERVER = entorno.texto('SERVER', globals().get('SERVER', 'http://localhost:8000'))
+DEBUG = entorno.booleano('DEBUG', False)
+SERVER = entorno.texto('SERVER')
 
-NAME = entorno.texto('DB_NAME', globals().get('NAME', ''))
-USER = entorno.texto('DB_USER', globals().get('USER', ''))
-PASSWORD = entorno.texto('DB_PASSWORD', globals().get('PASSWORD', ''))
-HOST = entorno.texto('DB_HOST', globals().get('HOST', '127.0.0.1'))
-PORT = entorno.entero('DB_PORT', globals().get('PORT', 5432))
+# Firma las sesiones y los tokens CSRF. En produccion es obligatoria y no tiene
+# reserva a proposito: la que habia escrita aqui esta en el historial de git,
+# asi que cualquiera con acceso al repositorio podia firmar sesiones validas.
+# En desarrollo basta una cualquiera, porque no protege nada real.
+if DEBUG:
+    SECRET_KEY = entorno.texto('SECRET_KEY', 'django-insecure-solo-para-desarrollo')
+else:
+    SECRET_KEY = entorno.texto('SECRET_KEY')
 
-BASE_URL = entorno.texto('FOLLOWUPBOSS_BASE_URL',
-                         globals().get('BASE_URL', 'https://api.followupboss.com/v1/'))
-FOLLOWUPBOSS_API_KEY = entorno.texto('FOLLOWUPBOSS_API_KEY',
-                                     globals().get('FOLLOWUPBOSS_API_KEY', ''))
+# ---------------------------------------------------------------- base de datos
+NAME = entorno.texto('DB_NAME')
+USER = entorno.texto('DB_USER')
+PASSWORD = entorno.texto('DB_PASSWORD')
+HOST = entorno.texto('DB_HOST')
+PORT = entorno.entero('DB_PORT', 5432)
 
-KEY_API_YB = entorno.texto('YOUTUBE_API_KEY', globals().get('KEY_API_YB', ''))
-CHANNEL_ID = entorno.texto('YOUTUBE_CHANNEL_ID', globals().get('CHANNEL_ID', ''))
+# --------------------------------------------------------------- integraciones
+BASE_URL = entorno.texto('FOLLOWUPBOSS_BASE_URL', 'https://api.followupboss.com/v1/')
+FOLLOWUPBOSS_API_KEY = entorno.texto('FOLLOWUPBOSS_API_KEY', '')
 
-AWS_S3_ACCESS_KEY_ID = entorno.texto('AWS_S3_ACCESS_KEY_ID',
-                                     globals().get('AWS_S3_ACCESS_KEY_ID', ''))
-AWS_S3_SECRET_ACCESS_KEY = entorno.texto('AWS_S3_SECRET_ACCESS_KEY',
-                                         globals().get('AWS_S3_SECRET_ACCESS_KEY', ''))
-AWS_STORAGE_BUCKET_NAME = entorno.texto('AWS_STORAGE_BUCKET_NAME',
-                                        globals().get('AWS_STORAGE_BUCKET_NAME', ''))
-AWS_S3_ENDPOINT_URL = entorno.texto('AWS_S3_ENDPOINT_URL',
-                                    globals().get('AWS_S3_ENDPOINT_URL', ''))
+KEY_API_YB = entorno.texto('YOUTUBE_API_KEY', '')
+CHANNEL_ID = entorno.texto('YOUTUBE_CHANNEL_ID', '')
 
-# Las usa el importador de Centris para lanzar el script de descarga.
-PYTHON = entorno.texto('PYTHON_BIN', globals().get('PYTHON', 'python3'))
-PATH_BASE = entorno.texto('PATH_BASE', globals().get('PATH_BASE', str(BASE_DIR / 'data')))
-PATH_BACKUP = entorno.texto('PATH_BACKUP', globals().get('PATH_BACKUP', PATH_BASE + '/backups'))
+# --------------------------------------------- almacenamiento en Spaces
+# En desarrollo los archivos salen del disco y estas cuatro no hacen falta. En
+# produccion son el almacenamiento entero del sitio, asi que son obligatorias:
+# vacias, los STORAGES se construirian igual y los fallos apareceran mas tarde,
+# al subir una foto, en vez de al arrancar.
+def _de_spaces(clave):
+    return entorno.texto(clave, '') if DEBUG else entorno.texto(clave)
+
+
+AWS_S3_ACCESS_KEY_ID = _de_spaces('AWS_S3_ACCESS_KEY_ID')
+AWS_S3_SECRET_ACCESS_KEY = _de_spaces('AWS_S3_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = _de_spaces('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_ENDPOINT_URL = _de_spaces('AWS_S3_ENDPOINT_URL')
+
+# ------------------------------------------------ importador de fichas (Centris)
+PYTHON = entorno.texto('PYTHON_BIN', 'python3')
+PATH_BASE = entorno.texto('PATH_BASE', str(BASE_DIR / 'data'))
+PATH_BACKUP = entorno.texto('PATH_BACKUP', PATH_BASE + '/backups')
 
 # Sin uso en el repositorio; se conservan por si los lee algo de fuera.
-FTP_IP = entorno.texto('FTP_IP', globals().get('FTP_IP', ''))
-FTP_USER = entorno.texto('FTP_USER', globals().get('FTP_USER', ''))
-FTP_PASSWORD = entorno.texto('FTP_PASSWORD', globals().get('FTP_PASSWORD', ''))
+FTP_IP = entorno.texto('FTP_IP', '')
+FTP_USER = entorno.texto('FTP_USER', '')
+FTP_PASSWORD = entorno.texto('FTP_PASSWORD', '')
 
 if DEBUG:
     ALLOWED_HOSTS = ['*']
@@ -63,7 +70,7 @@ else:
 CSRF_TRUSTED_ORIGINS = ['https://www.ljrealties.com', 'https://ljrealties.com']
 
 # Dominio canonico de robots.txt, sitemap.xml y las etiquetas og/absolutas.
-# Se deriva de SERVER (local_settings) para tener una sola fuente de verdad:
+# Se deriva de SERVER para tener una sola fuente de verdad:
 # es el mismo valor que devuelve el filtro `server_url` en las plantillas.
 _server = urlsplit(SERVER if '//' in SERVER else '//' + SERVER)
 SITE_PROTOCOL = _server.scheme or ('http' if DEBUG else 'https')
@@ -141,7 +148,7 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
-# Estaticos y media. Esto estaba en local_settings.py, que no esta versionado:
+# Estaticos y media. Esto estaba en local_settings.py, que no se versionaba:
 # o sea que la decision de donde se guardan los archivos del sitio viajaba
 # fuera del repositorio, maquina por maquina. No es configuracion -- no cambia
 # por entorno mas alla del propio DEBUG -- sino logica, y le toca estar aqui.

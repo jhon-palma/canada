@@ -12,9 +12,13 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'immobilier.settings')
 django.setup()
 
+from django.conf import settings
+
 from apps.web.models import VideosWeb
-from immobilier.local_settings import CHANNEL_ID, KEY_API_YB
 from scripts.send_email import sendEmail
+
+CHANNEL_ID = settings.CHANNEL_ID
+KEY_API_YB = settings.KEY_API_YB
 
 
 FRAGMENTOS_A_ELIMINAR = [
