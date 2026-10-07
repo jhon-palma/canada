@@ -87,9 +87,12 @@ AWS_STORAGE_BUCKET_NAME = _de_spaces('AWS_STORAGE_BUCKET_NAME')
 AWS_S3_ENDPOINT_URL = _de_spaces('AWS_S3_ENDPOINT_URL')
 
 # ------------------------------------------------ importador de fichas (Centris)
+# PATH_BASE normalmente se deja sin poner: por defecto es la carpeta data/ del
+# propio proyecto, que es donde deja los archivos scripts/download_data.py y
+# resuelve bien en cualquier maquina. Ponerlo a mano en el .env fue lo que hizo
+# que la configuracion de produccion llevase una ruta de Windows.
 PYTHON = env.str('PYTHON_BIN', default='python3')
 PATH_BASE = env.str('PATH_BASE', default=str(BASE_DIR / 'data'))
-PATH_BACKUP = env.str('PATH_BACKUP', default=PATH_BASE + '/backups')
 
 # Sin uso en el repositorio; se conservan por si los lee algo de fuera.
 FTP_IP = env.str('FTP_IP', default='')
@@ -253,6 +256,12 @@ if not DEBUG and isinstance(globals().get('STORAGES'), dict):
     if _staticfiles is not None:
         _staticfiles.setdefault('OPTIONS', {})['custom_domain'] = STATIC_CDN_DOMAIN
 
+# sslmode a 'require' en produccion. La base esta en DigitalOcean y se llega a
+# ella por internet; el valor por defecto de psycopg2 es 'prefer', que intenta
+# cifrar pero acepta seguir en claro si el servidor no ofrece TLS, asi que una
+# contrasena de administrador podria viajar sin cifrar sin que nada avise. En
+# desarrollo se queda en 'prefer' porque el Postgres local no suele tener
+# certificado.
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -261,6 +270,9 @@ DATABASES = {
         'PASSWORD': PASSWORD,
         'HOST': HOST,
         'PORT': PORT,
+        'OPTIONS': {
+            'sslmode': env.str('DB_SSLMODE', default='prefer' if DEBUG else 'require'),
+        },
     }
 }
 
