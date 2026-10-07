@@ -98,12 +98,17 @@ else:
     AWS_S3_ENDPOINT_URL = ''
 
 # --------------------------------------------------------------------- correo
-# Las usa scripts/send_email.py, que las tenia escritas dentro junto con dos
+# Dos cuentas, como habia: la de LJ para los avisos de negocio y otra para los
+# tecnicos -- que la importacion de fichas acabo, que la descarga de videos
+# fallo --, que van al buzon de soporte. Quien llama a sendEmail elige pasando
+# el remitente. Estaban escritas dentro de scripts/send_email.py, con sus dos
 # contrasenas de aplicacion de Gmail, en un archivo versionado.
 EMAIL_HOST = env.str('EMAIL_HOST', default='smtp.gmail.com')
 EMAIL_PORT = env.int('EMAIL_PORT', default=587)
 EMAIL_HOST_USER = env.str('EMAIL_HOST_USER', default='')
 EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD', default='')
+EMAIL_ALERTS_USER = env.str('EMAIL_ALERTS_USER', default='')
+EMAIL_ALERTS_PASSWORD = env.str('EMAIL_ALERTS_PASSWORD', default='')
 # Con esto puesto, todo el correo va a esa direccion en vez de a su
 # destinatario. Es lo que antes hacia la rama de DEBUG, pero dicho a proposito:
 # en desarrollo se pone, en produccion se deja vacio.
