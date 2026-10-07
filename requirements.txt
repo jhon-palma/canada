@@ -18,6 +18,7 @@ cryptography==46.0.5
 Django==5.1.1
 django-allauth==64.2.1
 django-ckeditor-5==0.2.13
+django-environ==0.14.0
 django-grappelli==4.0.3
 django-related-admin==1.0.1
 django-storages==1.14.4

@@ -1,42 +1,76 @@
+import os
 from pathlib import Path
 from urllib.parse import urlsplit
 
-from . import entorno
+import environ
+from django.core.exceptions import ImproperlyConfigured
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Toda la configuracion sale de un .env; ver immobilier/entorno.py. Si no hay
-# archivo, el proyecto no arranca: una configuracion a medias falla mas tarde y
-# mas lejos del motivo que un error al arrancar.
-entorno.cargar()
+# Toda la configuracion sale de un .env. Antes vivia en local_settings.py, un
+# modulo de Python con las contrasenas escritas dentro que entraba aqui con
+# `import *`: las credenciales en codigo fuente, mezcladas con la logica de los
+# STORAGES, y sin forma de saber que definia cada archivo sin abrir los dos.
+#
+# Que archivo se lee, por orden: ENV_FILE si esta puesta, si no
+# .env.<DJANGO_ENV> con 'dev' por defecto, si no .env. Lo que ya exista en el
+# entorno del proceso manda sobre el archivo, que es lo que permite inyectar un
+# secreto desde el panel del servidor sin dejarlo escrito en ningun sitio.
+#
+# Que el valor por defecto sea 'dev' no abre un agujero en produccion: los .env
+# estan fuera de git, asi que en el servidor no hay ningun .env.dev que leer
+# por descuido, y si alli se olvida DJANGO_ENV=prod el arranque se para en
+# seco en vez de levantar con la configuracion de otro sitio.
+env = environ.Env()
+
+
+def _archivo_de_entorno():
+    explicito = os.environ.get('ENV_FILE')
+    if explicito:
+        return [Path(explicito)]
+    nombre = os.environ.get('DJANGO_ENV', 'dev')
+    return [BASE_DIR / '.env.{}'.format(nombre), BASE_DIR / '.env']
+
+
+_CANDIDATOS = _archivo_de_entorno()
+_ARCHIVO_ENV = next((ruta for ruta in _CANDIDATOS if ruta.is_file()), None)
+if _ARCHIVO_ENV is None:
+    # Sin archivo no se arranca. Una configuracion a medias es peor: falla mas
+    # tarde y mas lejos del motivo.
+    raise ImproperlyConfigured(
+        'No se encontro ningun archivo de configuracion. Se busco en: {}. Copia '
+        '.env.example a .env.dev (o a .env.prod en el servidor) y rellenalo. En '
+        'produccion acuerdate de DJANGO_ENV=prod.'.format(
+            ', '.join(str(ruta) for ruta in _CANDIDATOS)))
+env.read_env(_ARCHIVO_ENV)
 
 FILE_CHARSET = 'utf-8'
 
-DEBUG = entorno.booleano('DEBUG', False)
-SERVER = entorno.texto('SERVER')
+DEBUG = env.bool('DEBUG', default=False)
+SERVER = env.str('SERVER')
 
 # Firma las sesiones y los tokens CSRF. En produccion es obligatoria y no tiene
 # reserva a proposito: la que habia escrita aqui esta en el historial de git,
 # asi que cualquiera con acceso al repositorio podia firmar sesiones validas.
 # En desarrollo basta una cualquiera, porque no protege nada real.
 if DEBUG:
-    SECRET_KEY = entorno.texto('SECRET_KEY', 'django-insecure-solo-para-desarrollo')
+    SECRET_KEY = env.str('SECRET_KEY', default='django-insecure-solo-para-desarrollo')
 else:
-    SECRET_KEY = entorno.texto('SECRET_KEY')
+    SECRET_KEY = env.str('SECRET_KEY')
 
 # ---------------------------------------------------------------- base de datos
-NAME = entorno.texto('DB_NAME')
-USER = entorno.texto('DB_USER')
-PASSWORD = entorno.texto('DB_PASSWORD')
-HOST = entorno.texto('DB_HOST')
-PORT = entorno.entero('DB_PORT', 5432)
+NAME = env.str('DB_NAME')
+USER = env.str('DB_USER')
+PASSWORD = env.str('DB_PASSWORD')
+HOST = env.str('DB_HOST')
+PORT = env.int('DB_PORT', default=5432)
 
 # --------------------------------------------------------------- integraciones
-BASE_URL = entorno.texto('FOLLOWUPBOSS_BASE_URL', 'https://api.followupboss.com/v1/')
-FOLLOWUPBOSS_API_KEY = entorno.texto('FOLLOWUPBOSS_API_KEY', '')
+BASE_URL = env.str('FOLLOWUPBOSS_BASE_URL', default='https://api.followupboss.com/v1/')
+FOLLOWUPBOSS_API_KEY = env.str('FOLLOWUPBOSS_API_KEY', default='')
 
-KEY_API_YB = entorno.texto('YOUTUBE_API_KEY', '')
-CHANNEL_ID = entorno.texto('YOUTUBE_CHANNEL_ID', '')
+KEY_API_YB = env.str('YOUTUBE_API_KEY', default='')
+CHANNEL_ID = env.str('YOUTUBE_CHANNEL_ID', default='')
 
 # --------------------------------------------- almacenamiento en Spaces
 # En desarrollo los archivos salen del disco y estas cuatro no hacen falta. En
@@ -44,7 +78,7 @@ CHANNEL_ID = entorno.texto('YOUTUBE_CHANNEL_ID', '')
 # vacias, los STORAGES se construirian igual y los fallos apareceran mas tarde,
 # al subir una foto, en vez de al arrancar.
 def _de_spaces(clave):
-    return entorno.texto(clave, '') if DEBUG else entorno.texto(clave)
+    return env.str(clave, default='') if DEBUG else env.str(clave)
 
 
 AWS_S3_ACCESS_KEY_ID = _de_spaces('AWS_S3_ACCESS_KEY_ID')
@@ -53,14 +87,14 @@ AWS_STORAGE_BUCKET_NAME = _de_spaces('AWS_STORAGE_BUCKET_NAME')
 AWS_S3_ENDPOINT_URL = _de_spaces('AWS_S3_ENDPOINT_URL')
 
 # ------------------------------------------------ importador de fichas (Centris)
-PYTHON = entorno.texto('PYTHON_BIN', 'python3')
-PATH_BASE = entorno.texto('PATH_BASE', str(BASE_DIR / 'data'))
-PATH_BACKUP = entorno.texto('PATH_BACKUP', PATH_BASE + '/backups')
+PYTHON = env.str('PYTHON_BIN', default='python3')
+PATH_BASE = env.str('PATH_BASE', default=str(BASE_DIR / 'data'))
+PATH_BACKUP = env.str('PATH_BACKUP', default=PATH_BASE + '/backups')
 
 # Sin uso en el repositorio; se conservan por si los lee algo de fuera.
-FTP_IP = entorno.texto('FTP_IP', '')
-FTP_USER = entorno.texto('FTP_USER', '')
-FTP_PASSWORD = entorno.texto('FTP_PASSWORD', '')
+FTP_IP = env.str('FTP_IP', default='')
+FTP_USER = env.str('FTP_USER', default='')
+FTP_PASSWORD = env.str('FTP_PASSWORD', default='')
 
 if DEBUG:
     ALLOWED_HOSTS = ['*']
