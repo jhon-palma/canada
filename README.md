@@ -112,3 +112,41 @@ que no sube los `.DS_Store`.
 - `fix_static_acl --apply` — devuelve a `public-read` los objetos del bucket
   que quedaron privados. Sin eso, django-storages recurre a URLs firmadas, que
   caducan y no se pueden cachear.
+
+## La base de datos de desarrollo
+
+Desarrollar contra una base vacia esconde la mitad de los problemas: las
+fichas reales traen campos a medias, barrios con tildes y cientos de
+propiedades donde el entorno limpio tiene tres. `clonar_db_produccion` trae
+una copia de produccion y la restaura encima de la base local.
+
+```bash
+python manage.py clonar_db_produccion            # muestra el plan, no escribe
+python manage.py clonar_db_produccion --aplicar  # vuelca y restaura
+```
+
+El origen sale de `.env.prod` y el destino de la configuracion cargada. Antes
+de tocar nada comprueba que el destino esta en esta maquina y que no coincide
+con el origen, porque el primer paso de la restauracion es destruir el esquema
+`public`: con un `DJANGO_ENV=prod` de mas, lo que se borraria es produccion.
+
+La base de DigitalOcean solo admite las IP que figuran en Trusted Sources, asi
+que desde una maquina de casa el volcado no conecta. O se anade la IP en el
+panel, o se parte en dos:
+
+```bash
+# en el servidor
+python manage.py clonar_db_produccion --aplicar --solo-descargar
+# en la maquina de desarrollo, con el archivo ya copiado
+python manage.py clonar_db_produccion --aplicar --desde data/backups/produccion-....dump
+```
+
+Usa `pg_dump` y `pg_restore`, no `dumpdata`/`loaddata`: estos pasan por el ORM,
+tardan muchisimo mas, se atragantan con las referencias circulares y no
+reproducen secuencias ni indices. Si el cliente de PostgreSQL no esta en el
+PATH —lo normal en Windows— se busca en `C:/Program Files/PostgreSQL/*/bin`,
+o se indica con `--pg-bin`.
+
+El volcado queda en `data/backups/`, que no se versiona. **Contiene los datos
+reales de los clientes**: correos, telefonos y hashes de contrasena. No sale de
+la maquina y se borra cuando deja de hacer falta.
