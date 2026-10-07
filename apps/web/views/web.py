@@ -10,6 +10,7 @@ from django.views.generic import ListView, TemplateView, View
 
 from apps.blog.models import Article
 from apps.labels import DICT_LABELS
+from apps.seo import normalize_language
 from apps.properties.models import Addenda, GenresProprietes, Inscriptions, Municipalites, Regions
 from apps.users.models import Profile
 from apps.web.forms import MetadataForm
@@ -280,6 +281,36 @@ class SearchView(View):
         }
 
         return render(request, self.template_name, context)
+
+
+def pagina_no_encontrada(request, exception=None):
+    """404 del sitio, con cabecera, menu y salidas.
+
+    Django servia su 404 pelado, que es una pagina en blanco con una linea de
+    texto: sin menu, sin idioma y sin ningun sitio adonde ir. Search Console
+    cuenta 178 URLs en ese estado -- fichas antiguas, rutas mal escritas,
+    enlaces viejos de fuera -- y cada una era un callejon sin salida.
+
+    El 404 en si es la respuesta correcta y no se toca: la URL no lleva a
+    ningun contenido y decirlo es lo que hace que Google acabe retirandola.
+    Lo que cambia es que la persona que llega pueda seguir.
+
+    El idioma sale del primer segmento de la ruta porque aqui no hay vista
+    que lo pase; si la URL no empieza por /fr/ o /en/ se queda en frances,
+    que es el idioma por defecto del sitio.
+    """
+    language = normalize_language(request.path.split('/')[1] if '/' in request.path[1:] else None)
+    images_query = ImagesWeb.objects.filter(reference__in=['properties_banner'])
+    context = {
+        'municipalites': Municipalites.objects.filter(municipalite_code__isnull=False).distinct(),
+        'genres': GenresProprietes.objects.filter(genre_proprietes__isnull=False).distinct(),
+        'language': language,
+        'option': 'properties' if language == 'en' else 'proprietes',
+        'labels': DICT_LABELS.get(language, {}).get('web', {}),
+        'images': {image.reference: image for image in images_query},
+        'ultimos_articulos': Article.objects.publicados().select_related('category')[:3],
+    }
+    return render(request, '404.html', context, status=404)
 
 
 def propiedad_retirada(request, language):
@@ -699,11 +730,36 @@ class SearchProperties(ListView):
         parts = option.split('-')
         filter = parts[-1]
         code = parts[-2]
+        # La fila de la que sale el slug en el otro idioma. El conmutador solo
+        # cambiaba el segmento fr/en y dejaba el slug como estaba, asi que
+        # desde una landing francesa producia /search/en/maisons-a-vendre-...
+        # -- ingles por fuera y frances por dentro. Son las URLs que Search
+        # Console cuenta como duplicadas.
+        fila = None
         if filter== "quartier":
             inscriptions_all = Inscriptions.objects.with_card_data().filter(mun_code=code)
+            fila = Municipalites.objects.filter(code=code).first()
         if filter== "categorie":
             code = code.upper()
             inscriptions_all = Inscriptions.objects.with_card_data().filter(genre_propriete=code)
+            fila = GenresProprietes.objects.filter(genre_propriete=code).first()
+
+        slug_actual = slug_traducido = None
+        if fila:
+            if language == 'en':
+                slug_actual, slug_traducido = fila.slug_anglaise, fila.slug_francaise
+            else:
+                slug_actual, slug_traducido = fila.slug_francaise, fila.slug_anglaise
+
+        # El slug de la URL no es el del idioma de la URL: es una de las
+        # mezcladas que fabricaba el conmutador, del estilo
+        # /search/en/maisons-a-vendre-... Responder 200 reparte la autoridad
+        # entre las dos; el 301 la junta en la buena. El middleware hace lo
+        # mismo con los slugs fijos, pero estos estan en la base y aqui ya
+        # estan consultados.
+        if slug_actual and option != slug_actual:
+            return redirect('web:search_properties', permanent=True,
+                            language=language, option=slug_actual)
 
         labels = DICT_LABELS.get(language).get('web')
         
@@ -721,6 +777,8 @@ class SearchProperties(ListView):
 
         context = {
             'ultimos_articulos':ultimos_articulos,
+            'slug_actual':slug_actual,
+            'slug_traducido':slug_traducido,
             'municipalites':municipalites,
             'genres':genres,
             'language':language,

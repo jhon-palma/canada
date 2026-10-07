@@ -36,12 +36,18 @@ def alternate_url(context, target_language, current_slug=None, translated_slug=N
 
     El selector de idioma solo tenia onclick, asi que Google no podia
     seguirlo y no descubria la version en el otro idioma.
+
+    Conserva la cadena de consulta porque este enlace sustituyo al onclick,
+    que reescribia window.location.href entero: sin ella, cambiar de idioma
+    en una pagina paginada devolvia a la primera pagina.
     """
     request = context.get('request')
     if request is None:
         return '/%s/' % target_language
     extra = [(current_slug, translated_slug)] if current_slug and translated_slug else None
-    return alternate_path(request.path, target_language, extra_slugs=extra)
+    ruta = alternate_path(request.path, target_language, extra_slugs=extra)
+    consulta = request.GET.urlencode()
+    return '{}?{}'.format(ruta, consulta) if consulta else ruta
 
 
 @register.filter

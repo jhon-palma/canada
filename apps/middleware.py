@@ -1,5 +1,9 @@
 """Middleware propio del proyecto."""
 
+from django.shortcuts import redirect
+
+from apps.seo import LANGUAGES, SLUG_TRANSLATIONS
+
 
 class RevalidarHTML:
     """Pide al navegador que compruebe siempre si la pagina cambio.
@@ -51,3 +55,57 @@ class RevalidarHTML:
 
         respuesta['Cache-Control'] = 'private, no-cache'
         return respuesta
+
+
+class RedirigirURLsMezcladas:
+    """301 cuando el idioma de la URL no concuerda con el del slug.
+
+    Los patrones de apps/web/urls.py aceptan el producto cartesiano de los dos
+    segmentos: /en/propriete/<id>/detail/ responde 200 igual que
+    /en/propertie/<id>/detail/, y lo mismo pasa con properties, acheter,
+    vendre y el resto de la tabla. Son URLs distintas que devuelven byte a
+    byte el mismo contenido, y Search Console las cuenta como duplicadas.
+
+    Quien las fabricaba era el conmutador de idioma, que reescribia la URL en
+    el navegador cambiando solo el segmento fr/en. Eso ya no ocurre, pero las
+    que se generaron durante meses siguen en el indice y se siguen pidiendo,
+    asi que hace falta decir que la buena es la otra. Un 301 lo dice y ademas
+    traspasa la autoridad; dejarlas respondiendo 200 la reparte.
+
+    Solo mira el segundo segmento de la ruta y solo contra una tabla en
+    memoria: ninguna consulta. Las landings de busqueda tienen el mismo
+    problema con los slugs de municipio y categoria, pero esos estan en la
+    base y los resuelve SearchProperties, que ya los consulta de todos modos.
+    """
+
+    # slug -> (idioma al que pertenece, equivalente en el otro)
+    PERTENENCIA = {}
+    for _fr, _en in SLUG_TRANSLATIONS:
+        PERTENENCIA[_fr] = ('fr', _en)
+        PERTENENCIA[_en] = ('en', _fr)
+    del _fr, _en
+
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        destino = self.ruta_corregida(request.path)
+        if destino:
+            consulta = request.META.get('QUERY_STRING')
+            return redirect('{}?{}'.format(destino, consulta) if consulta else destino,
+                            permanent=True)
+        return self.get_response(request)
+
+    @classmethod
+    def ruta_corregida(cls, ruta):
+        """La ruta con el slug del idioma que toca, o None si ya esta bien."""
+        partes = ruta.split('/')
+        # ['', idioma, slug, ...]: hacen falta los dos primeros segmentos.
+        if len(partes) < 3 or partes[1] not in LANGUAGES:
+            return None
+        idioma, slug = partes[1], partes[2]
+        pertenencia = cls.PERTENENCIA.get(slug)
+        if not pertenencia or pertenencia[0] == idioma:
+            return None
+        partes[2] = pertenencia[1]
+        return '/'.join(partes)

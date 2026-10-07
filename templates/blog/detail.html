@@ -219,13 +219,9 @@
     {% if language == 'en' %}
         <input type="hidden" id="category_slug" value="{{ post.category.slug_anglaise }}">
         <input type="hidden" id="post_slug" value="{{ post.slug_anglaise }}">
-        <input type="hidden" id="category_slug_traslate" value="{{ post.category.slug_francaise }}">
-        <input type="hidden" id="post_slug_traslate" value="{{ post.slug_francaise }}">
     {% else %}
         <input type="hidden" id="category_slug" value="{{ post.category.slug_francaise }}">
         <input type="hidden" id="post_slug" value="{{ post.slug_francaise }}">
-        <input type="hidden" id="category_slug_traslate" value="{{ post.category.slug_anglaise }}">
-        <input type="hidden" id="post_slug_traslate" value="{{ post.slug_anglaise }}">
     {% endif %}
     <hr>
     <section class="popnews" id="loginModal">
@@ -686,31 +682,4 @@
                 });
             });
         </script>
-    <script>
-        function changeParameterInURLBlog(search, param) {
-            var categorySlug = $('#category_slug').val();
-            var postSlug = $('#post_slug').val();
-            var categorySlugTraslate = $('#category_slug_traslate').val();
-            var postSlugTraslate = $('#post_slug_traslate').val();
-            var currentUrl = window.location.href;
-            var newUrl = currentUrl;
-
-            var categorySlugSearch = '/' + categorySlug + '/';
-            var categorySlugReplace = '/' + categorySlugTraslate + '/';
-            newUrl = newUrl.split(categorySlugSearch).join(categorySlugReplace);
-            var postSlugSearch = '/' + postSlug + '/';
-            var postSlugReplace = '/' + postSlugTraslate + '/';
-            newUrl = newUrl.split(postSlugSearch).join(postSlugReplace);
-            var languageSearch = '/' + search + '/';
-            var languageReplace = '/' + param + '/';
-            newUrl = newUrl.split(languageSearch).join(languageReplace);
-
-            if (newUrl !== currentUrl) {
-                window.location.href = newUrl;
-            } else {
-                window.location.href = newUrl + param+'/';
-            }
-        }
-
-    </script>
 {% include 'web/footer_web.html' %}

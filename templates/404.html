@@ -1,0 +1,80 @@
+{% load static %}{% load tags %}{% include 'web/header_web.html' %}
+
+{% comment %} Se sirve con codigo 404 desde pagina_no_encontrada(): la URL no lleva a
+   ningun contenido y eso es lo que hay que decir. La pagina existe para que
+   quien llegue desde un enlace viejo tenga por donde seguir, que es lo que
+   faltaba: antes esto era el 404 pelado de Django. {% endcomment %}
+
+<style>
+	.nf .wrap{ padding: 60px 0 80px; text-align: center; }
+	.nf h1{ margin-bottom: 20px; }
+	.nf > .wrap > p{ max-width: 640px; margin: 0 auto 34px; }
+	.nf_links{ display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
+</style>
+
+<section class="banner nothome">
+	<div class="baninfo">
+		<h2>
+			{% if language == 'en' %}Page <span>not found</span>
+			{% else %}Page <span>introuvable</span>{% endif %}
+		</h2>
+	</div>
+</section>
+
+<section class="pol nf">
+	<div class="wrap">
+		{% if language == 'en' %}
+			<h1>We could not find that page</h1>
+			<p>
+				The address may be mistyped, or the page may have been moved or removed.
+				Here is where to pick up again.
+			</p>
+			<div class="nf_links">
+				<a href="{% url 'web:index' language %}" class="btn teal_btn">Home</a>
+				<a href="{% url 'web:properties' language 'properties' %}" class="btn teal_btn">All our properties</a>
+				<a href="{% url 'blog:articles' language %}" class="btn teal_btn">Blog</a>
+				<a href="{% url 'web:contact' language 'contact-realestate-broker' %}" class="btn teal_btn">Contact us</a>
+			</div>
+		{% else %}
+			<h1>Nous n'avons pas trouvé cette page</h1>
+			<p>
+				L'adresse comporte peut-être une erreur, ou la page a été déplacée ou retirée.
+				Voici par où reprendre.
+			</p>
+			<div class="nf_links">
+				<a href="{% url 'web:index' language %}" class="btn teal_btn">Accueil</a>
+				<a href="{% url 'web:properties' language 'proprietes' %}" class="btn teal_btn">Toutes nos propriétés</a>
+				<a href="{% url 'blog:articles' language %}" class="btn teal_btn">Blogue</a>
+				<a href="{% url 'web:contact' language 'contact-courtier-immobilier' %}" class="btn teal_btn">Nous joindre</a>
+			</div>
+		{% endif %}
+	</div>
+</section>
+
+{% if ultimos_articulos %}
+<section class="prophome">
+	<div class="wrap">
+		<h2 class="h2def"><span class="text-span">{{ labels.index.text.forty_four }}</span> <strong>{{ labels.index.text.forty_five }}</strong></h2>
+		<div class="propcont">
+			{% for articulo in ultimos_articulos %}
+				{% if language == 'en' %}{% url 'blog:post_detail' language=language slug=articulo.slug_anglaise as articulo_url %}{% else %}{% url 'blog:post_detail' language=language slug=articulo.slug_francaise as articulo_url %}{% endif %}
+				<a href="{{ articulo_url }}" class="propa">
+					<span class="img">
+						{% if language == 'en' %}
+							{% if articulo.image_anglaise %}<img loading="lazy" decoding="async" src="{{ articulo.image_anglaise.url }}" alt="{{ articulo.title_anglaise }}" class="propimg" />{% else %}<span class="sinfoto"></span>{% endif %}
+						{% else %}
+							{% if articulo.image_francaise %}<img loading="lazy" decoding="async" src="{{ articulo.image_francaise.url }}" alt="{{ articulo.title_francaise }}" class="propimg" />{% else %}<span class="sinfoto"></span>{% endif %}
+						{% endif %}
+					</span>
+					<div class="rollprop">
+						<strong><p class="text-uppercase">{% if language == 'en' %}{{ articulo.category.title_anglaise }}{% else %}{{ articulo.category.title_francaise }}{% endif %}</p></strong>
+						<p>{% if language == 'en' %}{{ articulo.title_anglaise }}{% else %}{{ articulo.title_francaise }}{% endif %}</p>
+					</div>
+				</a>
+			{% endfor %}
+		</div>
+	</div>
+</section>
+{% endif %}
+
+{% load static %}{% include 'web/footer_web.html' %}

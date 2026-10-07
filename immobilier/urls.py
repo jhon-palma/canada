@@ -8,6 +8,9 @@ from django.conf import settings
 from apps.web.sitemaps import SITEMAPS
 from apps.web.views.seo import RobotsTxtView, sitemap_index
 
+# El 404 del sitio, con cabecera y salidas, en vez del de Django.
+handler404 = 'apps.web.views.web.pagina_no_encontrada'
+
 class UUIDConverter:
     regex = '[a-fA-F0-9\-]{36}'
 

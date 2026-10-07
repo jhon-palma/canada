@@ -215,13 +215,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 			<a href="https://www.youtube.com/@ljaguinaga" class="btnsoc" target="_blank"><img src="{% static 'web/images2/youtube.png' %}" alt="YouTube"></a>
 			<a href="https://www.tiktok.com/@ljaguinaga" class="btnsoc" target="_blank"><img src="{% static 'web/images2/tiktok.png' %}" alt="Tik tok"></a>
 			<a href="tel:+1514-500-4040" class="telh"><i class="fa fa-phone"></i>514-500-4040</a>
+            {% comment %}
+            El enlace ya no lleva onclick. Habia dos funciones de JavaScript
+            que reescribian window.location.href por su cuenta, cada una con
+            su propia tabla de slugs, y ninguna de las dos traducia los de
+            municipio ni los de categoria: desde una landing producian
+            /search/en/maisons-a-vendre-..., ingles por fuera y frances por
+            dentro. Con el href calculado en el servidor hay una sola tabla y
+            la persona y el buscador van al mismo sitio.
+
+            post cubre la ficha del articulo y slug_actual las landings de
+            busqueda; el resto de paginas las resuelve alternate_path sola.
+            {% endcomment %}
             {% if post %}
                 {% if new_language == 'en' %}{% alternate_url new_language post.slug_francaise post.slug_anglaise as alt_href %}{% else %}{% alternate_url new_language post.slug_anglaise post.slug_francaise as alt_href %}{% endif %}
-                <a class="btn_language" href="{{ alt_href }}" hreflang="{{ new_language }}" onclick="changeParameterInURLBlog('{{ language }}','{{ new_language }}'); return false;">{{ new_language_name }}</a>
+            {% elif slug_actual and slug_traducido %}
+                {% alternate_url new_language slug_actual slug_traducido as alt_href %}
             {% else %}
                 {% alternate_url new_language as alt_href %}
-			    <a class="btn_language" href="{{ alt_href }}" hreflang="{{ new_language }}" onclick="changeParameterInURL('{{ language }}','{{ new_language }}'); return false;">{{ new_language_name }}</a>
             {% endif %}
+            <a class="btn_language" href="{{ alt_href }}" hreflang="{{ new_language }}">{{ new_language_name }}</a>
 		</div>
 	</div>
 	<div class="wrap">
