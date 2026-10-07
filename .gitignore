@@ -105,11 +105,10 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-# .env lleva las credenciales reales; .env.dev y .env.prod son las variantes
-# por entorno. Solo .env.example, que va con valores de mentira, se versiona.
+# Las credenciales reales viven en .env.dev y .env.prod, uno por entorno.
+# Ninguno se versiona: la plantilla seria otro archivo que mantener al dia.
 .env
 .env.*
-!.env.example
 .venv
 env/
 venv/

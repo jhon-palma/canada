@@ -7,41 +7,39 @@ from django.core.exceptions import ImproperlyConfigured
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Toda la configuracion sale de un .env. Antes vivia en local_settings.py, un
-# modulo de Python con las contrasenas escritas dentro que entraba aqui con
-# `import *`: las credenciales en codigo fuente, mezcladas con la logica de los
-# STORAGES, y sin forma de saber que definia cada archivo sin abrir los dos.
+# Toda la configuracion sale de .env.dev o .env.prod, segun DJANGO_ENV. Antes
+# vivia en local_settings.py, un modulo de Python con las contrasenas escritas
+# dentro que entraba aqui con `import *`: las credenciales en codigo fuente,
+# mezcladas con la logica de los STORAGES, y sin forma de saber que definia
+# cada archivo sin abrir los dos.
 #
-# Que archivo se lee, por orden: ENV_FILE si esta puesta, si no
-# .env.<DJANGO_ENV> con 'dev' por defecto, si no .env. Lo que ya exista en el
-# entorno del proceso manda sobre el archivo, que es lo que permite inyectar un
-# secreto desde el panel del servidor sin dejarlo escrito en ningun sitio.
+# Ninguna clave tiene valor por defecto: el archivo las declara todas, aunque
+# alguna vaya vacia. Un defecto escondido en el codigo es una decision que no
+# se ve al leer la configuracion, y la que se acaba olvidando.
 #
-# Que el valor por defecto sea 'dev' no abre un agujero en produccion: los .env
-# estan fuera de git, asi que en el servidor no hay ningun .env.dev que leer
-# por descuido, y si alli se olvida DJANGO_ENV=prod el arranque se para en
+# Lo que ya exista en el entorno del proceso manda sobre el archivo, que es lo
+# que permite inyectar un secreto desde el panel del servidor sin dejarlo
+# escrito en ningun sitio. ENV_FILE apunta a otra ruta y sirve para probar una
+# configuracion sin renombrar archivos.
+#
+# Que DJANGO_ENV valga 'dev' por defecto no abre un agujero en produccion: los
+# .env estan fuera de git, asi que en el servidor no hay ningun .env.dev que
+# leer por descuido, y si alli se olvida DJANGO_ENV=prod el arranque se para en
 # seco en vez de levantar con la configuracion de otro sitio.
 env = environ.Env()
 
-if os.environ.get('ENV_FILE'):
-    _CANDIDATOS = [Path(os.environ['ENV_FILE'])]
-else:
-    _CANDIDATOS = [BASE_DIR / '.env.{}'.format(os.environ.get('DJANGO_ENV', 'dev')),
-                   BASE_DIR / '.env']
-
-_ARCHIVO_ENV = next((ruta for ruta in _CANDIDATOS if ruta.is_file()), None)
-if _ARCHIVO_ENV is None:
+_ARCHIVO_ENV = Path(os.environ['ENV_FILE']) if os.environ.get('ENV_FILE') else (
+    BASE_DIR / '.env.{}'.format(os.environ.get('DJANGO_ENV', 'dev')))
+if not _ARCHIVO_ENV.is_file():
     # Sin archivo no se arranca. Una configuracion a medias es peor: falla mas
     # tarde y mas lejos del motivo.
     raise ImproperlyConfigured(
-        'No se encontro ningun archivo de configuracion. Se busco en: {}. Copia '
-        '.env.example a .env.dev (o a .env.prod en el servidor) y rellenalo. En '
-        'produccion acuerdate de DJANGO_ENV=prod.'.format(
-            ', '.join(str(ruta) for ruta in _CANDIDATOS)))
+        'No existe {}. En el servidor hace falta .env.prod y DJANGO_ENV=prod; '
+        'en local, .env.dev.'.format(_ARCHIVO_ENV))
 env.read_env(_ARCHIVO_ENV)
 
 
-DEBUG = env.bool('DEBUG', default=False)
+DEBUG = env.bool('DEBUG')
 
 # Firma las sesiones y los tokens CSRF. Obligatoria en los dos entornos y sin
 # reserva: la que habia escrita en este archivo esta en el historial de git,
@@ -61,21 +59,21 @@ SITE_DOMAIN = _server.netloc
 SITE_URL = '{}://{}'.format(SITE_PROTOCOL, SITE_DOMAIN)
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
-CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS', default=[])
+CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS')
 
 # ---------------------------------------------------------------- base de datos
 NAME = env.str('DB_NAME')
 USER = env.str('DB_USER')
 PASSWORD = env.str('DB_PASSWORD')
 HOST = env.str('DB_HOST')
-PORT = env.int('DB_PORT', default=5432)
+PORT = env.int('DB_PORT')
 
 # --------------------------------------------------------------- integraciones
-BASE_URL = env.str('FOLLOWUPBOSS_BASE_URL', default='https://api.followupboss.com/v1/')
-FOLLOWUPBOSS_API_KEY = env.str('FOLLOWUPBOSS_API_KEY', default='')
+BASE_URL = env.str('FOLLOWUPBOSS_BASE_URL')
+FOLLOWUPBOSS_API_KEY = env.str('FOLLOWUPBOSS_API_KEY')
 
-KEY_API_YB = env.str('YOUTUBE_API_KEY', default='')
-CHANNEL_ID = env.str('YOUTUBE_CHANNEL_ID', default='')
+KEY_API_YB = env.str('YOUTUBE_API_KEY')
+CHANNEL_ID = env.str('YOUTUBE_CHANNEL_ID')
 
 # --------------------------------------------- almacenamiento en Spaces
 # USE_SPACES decide donde viven los archivos del sitio, y es un eje propio: no
@@ -103,29 +101,30 @@ else:
 # fallo --, que van al buzon de soporte. Quien llama a sendEmail elige pasando
 # el remitente. Estaban escritas dentro de scripts/send_email.py, con sus dos
 # contrasenas de aplicacion de Gmail, en un archivo versionado.
-EMAIL_HOST = env.str('EMAIL_HOST', default='smtp.gmail.com')
-EMAIL_PORT = env.int('EMAIL_PORT', default=587)
-EMAIL_HOST_USER = env.str('EMAIL_HOST_USER', default='')
-EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD', default='')
-EMAIL_ALERTS_USER = env.str('EMAIL_ALERTS_USER', default='')
-EMAIL_ALERTS_PASSWORD = env.str('EMAIL_ALERTS_PASSWORD', default='')
+EMAIL_HOST = env.str('EMAIL_HOST')
+EMAIL_PORT = env.int('EMAIL_PORT')
+EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD')
+EMAIL_ALERTS_USER = env.str('EMAIL_ALERTS_USER')
+EMAIL_ALERTS_PASSWORD = env.str('EMAIL_ALERTS_PASSWORD')
 # Con esto puesto, todo el correo va a esa direccion en vez de a su
 # destinatario. Es lo que antes hacia la rama de DEBUG, pero dicho a proposito:
 # en desarrollo se pone, en produccion se deja vacio.
-EMAIL_REDIRECT_TO = env.str('EMAIL_REDIRECT_TO', default='')
+EMAIL_REDIRECT_TO = env.str('EMAIL_REDIRECT_TO')
 
 # ------------------------------------------------ importador de fichas (Centris)
-# PATH_BASE normalmente se deja sin poner: por defecto es la carpeta data/ del
-# propio proyecto, que es donde deja los archivos scripts/download_data.py y
-# resuelve bien en cualquier maquina. Ponerlo a mano en el .env fue lo que hizo
-# que la configuracion de produccion llevase una ruta de Windows.
-PYTHON = env.str('PYTHON_BIN', default='python3')
-PATH_BASE = env.str('PATH_BASE', default=str(BASE_DIR / 'data'))
+PYTHON = env.str('PYTHON_BIN')
+
+# No sale del .env a proposito: es la carpeta data/ del propio proyecto, que es
+# donde deja los archivos scripts/download_data.py, y asi resuelve sola en
+# cualquier maquina. Cuando era una clave mas, la configuracion de produccion
+# acabo con una ruta de Windows y el importador no habria encontrado nada.
+PATH_BASE = str(BASE_DIR / 'data')
 
 # Sin uso en el repositorio; se conservan por si los lee algo de fuera.
-FTP_IP = env.str('FTP_IP', default='')
-FTP_USER = env.str('FTP_USER', default='')
-FTP_PASSWORD = env.str('FTP_PASSWORD', default='')
+FTP_IP = env.str('FTP_IP')
+FTP_USER = env.str('FTP_USER')
+FTP_PASSWORD = env.str('FTP_PASSWORD')
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
 X_FRAME_OPTIONS = 'ALLOWALL'
@@ -276,7 +275,7 @@ DATABASES = {
         'HOST': HOST,
         'PORT': PORT,
         'OPTIONS': {
-            'sslmode': env.str('DB_SSLMODE', default='require'),
+            'sslmode': env.str('DB_SSLMODE'),
         },
     }
 }
