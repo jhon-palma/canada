@@ -7,36 +7,19 @@ from django.core.exceptions import ImproperlyConfigured
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Toda la configuracion sale de .env.dev o .env.prod, segun DJANGO_ENV. Antes
-# vivia en local_settings.py, un modulo de Python con las contrasenas escritas
-# dentro que entraba aqui con `import *`: las credenciales en codigo fuente,
-# mezcladas con la logica de los STORAGES, y sin forma de saber que definia
-# cada archivo sin abrir los dos.
+# Toda la configuracion sale de .env.dev o .env.prod, segun DJANGO_ENV; el
+# servidor pone DJANGO_ENV=prod. ENV_FILE apunta a otra ruta y sirve para
+# probar una configuracion sin renombrar archivos.
 #
 # Ninguna clave tiene valor por defecto: el archivo las declara todas, aunque
 # alguna vaya vacia. Un defecto escondido en el codigo es una decision que no
 # se ve al leer la configuracion, y la que se acaba olvidando.
 #
-# Lo que ya exista en el entorno del proceso manda sobre el archivo, que es lo
-# que permite inyectar un secreto desde el panel del servidor sin dejarlo
-# escrito en ningun sitio. ENV_FILE apunta a otra ruta y sirve para probar una
-# configuracion sin renombrar archivos.
-#
-# Que DJANGO_ENV valga 'dev' por defecto no abre un agujero en produccion: los
-# .env estan fuera de git, asi que en el servidor no hay ningun .env.dev que
-# leer por descuido, y si alli se olvida DJANGO_ENV=prod el arranque se para en
-# seco en vez de levantar con la configuracion de otro sitio.
+# Lo que ya exista en el entorno del proceso manda sobre el archivo, asi que un
+# secreto se puede inyectar desde el panel del servidor sin dejarlo escrito.
 env = environ.Env()
-
-_ARCHIVO_ENV = Path(os.environ['ENV_FILE']) if os.environ.get('ENV_FILE') else (
-    BASE_DIR / '.env.{}'.format(os.environ.get('DJANGO_ENV', 'dev')))
-if not _ARCHIVO_ENV.is_file():
-    # Sin archivo no se arranca. Una configuracion a medias es peor: falla mas
-    # tarde y mas lejos del motivo.
-    raise ImproperlyConfigured(
-        'No existe {}. En el servidor hace falta .env.prod y DJANGO_ENV=prod; '
-        'en local, .env.dev.'.format(_ARCHIVO_ENV))
-env.read_env(_ARCHIVO_ENV)
+env.read_env(os.environ.get('ENV_FILE')
+             or BASE_DIR / '.env.{}'.format(os.environ.get('DJANGO_ENV', 'dev')))
 
 
 DEBUG = env.bool('DEBUG')
