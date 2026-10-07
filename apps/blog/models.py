@@ -2,14 +2,36 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from datetime import datetime
-from django.utils.text import slugify
+from django.utils.html import strip_tags
+from django.utils.text import slugify, Truncator
 from googletrans import Translator
+from html import unescape
+from types import SimpleNamespace
+import re
 import uuid
 from django_ckeditor_5.fields import CKEditor5Field
 from apps.accounts.models import CustomUser
 from apps.decorators import is_internal_user
 from apps.seo import absolute_url, current_language, normalize_language
 
+
+def resumen_de(contenido):
+    """El principio de un texto del editor, servible como meta description.
+
+    Quita las etiquetas, deshace las entidades -- el editor deja &nbsp; por
+    todas partes -- y junta los espacios: sin eso la descripcion sale con los
+    saltos de linea y los huecos del HTML dentro. Se corta en 155 caracteres,
+    que es por donde Google suele cortar.
+
+    Los cierres de bloque se cambian por un espacio antes de quitar el resto.
+    strip_tags() a secas no separa: un titular seguido de su parrafo salia
+    como "...vraiment?Le texto", con las dos frases pegadas. Solo los bloques,
+    para no partir una palabra que lleve un <strong> en medio.
+    """
+    separado = re.sub(r'(?i)</?(p|div|br|h[1-6]|li|ul|ol|tr|td|th|blockquote)[^>]*>',
+                      ' ', contenido or '')
+    limpio = ' '.join(unescape(strip_tags(separado)).split())
+    return Truncator(limpio).chars(155, truncate='…')
 
 
 class Category(models.Model):
@@ -112,6 +134,33 @@ class Article(models.Model):
         Mismo criterio que ArticleQuerySet.publicados(), en una sola ficha.
         """
         return self.active and (self.date_hour is None or self.date_hour <= timezone.now())
+
+    def meta_seo(self):
+        """Los cuatro campos que la cabecera lee de data_meta, con reserva.
+
+        header_web.html solo usa los metadatos si los cuatro estan rellenos y,
+        si falta alguno, cae a las etiquetas de la portada. Ninguno de los 144
+        articulos publicados tenia los cuatro puestos -- ni uno --, asi que
+        todos salian con el mismo <title> y la misma descripcion que la home.
+        Para Google eran 144 URLs indistinguibles entre si, y es la
+        explicacion mas probable de que esten en "Descubierta: actualmente sin
+        indexar": no es que no las encuentre, es que no ve motivo para
+        guardarlas.
+
+        La reserva sale del propio articulo: su titulo con la marca detras, y
+        como descripcion el principio del texto sin etiquetas. Lo que el
+        redactor escriba a mano en el formulario sigue mandando sobre esto.
+        """
+        return SimpleNamespace(
+            m_title_f=self.m_title_f or self._titulo_seo(self.title_francaise),
+            m_title_a=self.m_title_a or self._titulo_seo(self.title_anglaise),
+            m_description_f=self.m_description_f or resumen_de(self.content_francaise),
+            m_description_a=self.m_description_a or resumen_de(self.content_anglaise),
+        )
+
+    @staticmethod
+    def _titulo_seo(titulo):
+        return '{} | LJ Realties'.format((titulo or '').strip()) if titulo else ''
 
     @property
     def estado(self):

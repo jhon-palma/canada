@@ -202,7 +202,7 @@ def detail(request, language, slug):
         'previous_post': previous_post,
         'next_post': next_post,
         'relacionados': relacionados,
-        'data_meta':post,
+        'data_meta':post.meta_seo(),
         'vista_previa': vista_previa,
         'estado': post.estado,
     }
