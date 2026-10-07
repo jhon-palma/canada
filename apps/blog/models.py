@@ -117,8 +117,10 @@ class Article(models.Model):
     likes = models.ManyToManyField(CustomUser, related_name='likes', through='Like')
     m_title_a = models.CharField(max_length=100, blank=True, null=True)
     m_title_f = models.CharField(max_length=100, blank=True, null=True)
-    m_description_a = models.CharField(max_length=100, blank=True, null=True)
-    m_description_f = models.CharField(max_length=100, blank=True, null=True)
+    # 100 caracteres cortaba la descripcion antes de donde la corta Google,
+    # que ronda los 155, asi que lo que escribia el redactor nacia truncado.
+    m_description_a = models.CharField(max_length=200, blank=True, null=True)
+    m_description_f = models.CharField(max_length=200, blank=True, null=True)
 
     objects = ArticleQuerySet.as_manager()
 
