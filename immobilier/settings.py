@@ -1,13 +1,59 @@
 from pathlib import Path
 from urllib.parse import urlsplit
-from .local_settings import *
-import os
-# import boto3
 
+from . import entorno
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = 'django-insecure-46l99m0=n-fxom7f-7-q9ia8rt9-sh$c^vmz7dcjy9-#$v1j2w'
+
+# La configuracion viene de un .env. Mientras produccion no tenga el suyo se
+# sigue aceptando el local_settings.py de antes, avisando; ver immobilier/entorno.py.
+_ARCHIVO_ENV = entorno.cargar()
+entorno.avisar_de_local_settings(_ARCHIVO_ENV)
+if _ARCHIVO_ENV is None and entorno.hay_local_settings():
+    from .local_settings import *  # noqa: F401,F403
+
+SECRET_KEY = entorno.texto('SECRET_KEY', globals().get(
+    'SECRET_KEY', 'django-insecure-46l99m0=n-fxom7f-7-q9ia8rt9-sh$c^vmz7dcjy9-#$v1j2w'))
 FILE_CHARSET = 'utf-8'
+
+# ---------------------------------------------------------------- del entorno
+# Cada valor con su reserva en lo que trajera local_settings, para que la
+# transicion no dependa del orden en que se suban los archivos.
+DEBUG = entorno.booleano('DEBUG', globals().get('DEBUG', False))
+SERVER = entorno.texto('SERVER', globals().get('SERVER', 'http://localhost:8000'))
+
+NAME = entorno.texto('DB_NAME', globals().get('NAME', ''))
+USER = entorno.texto('DB_USER', globals().get('USER', ''))
+PASSWORD = entorno.texto('DB_PASSWORD', globals().get('PASSWORD', ''))
+HOST = entorno.texto('DB_HOST', globals().get('HOST', '127.0.0.1'))
+PORT = entorno.entero('DB_PORT', globals().get('PORT', 5432))
+
+BASE_URL = entorno.texto('FOLLOWUPBOSS_BASE_URL',
+                         globals().get('BASE_URL', 'https://api.followupboss.com/v1/'))
+FOLLOWUPBOSS_API_KEY = entorno.texto('FOLLOWUPBOSS_API_KEY',
+                                     globals().get('FOLLOWUPBOSS_API_KEY', ''))
+
+KEY_API_YB = entorno.texto('YOUTUBE_API_KEY', globals().get('KEY_API_YB', ''))
+CHANNEL_ID = entorno.texto('YOUTUBE_CHANNEL_ID', globals().get('CHANNEL_ID', ''))
+
+AWS_S3_ACCESS_KEY_ID = entorno.texto('AWS_S3_ACCESS_KEY_ID',
+                                     globals().get('AWS_S3_ACCESS_KEY_ID', ''))
+AWS_S3_SECRET_ACCESS_KEY = entorno.texto('AWS_S3_SECRET_ACCESS_KEY',
+                                         globals().get('AWS_S3_SECRET_ACCESS_KEY', ''))
+AWS_STORAGE_BUCKET_NAME = entorno.texto('AWS_STORAGE_BUCKET_NAME',
+                                        globals().get('AWS_STORAGE_BUCKET_NAME', ''))
+AWS_S3_ENDPOINT_URL = entorno.texto('AWS_S3_ENDPOINT_URL',
+                                    globals().get('AWS_S3_ENDPOINT_URL', ''))
+
+# Las usa el importador de Centris para lanzar el script de descarga.
+PYTHON = entorno.texto('PYTHON_BIN', globals().get('PYTHON', 'python3'))
+PATH_BASE = entorno.texto('PATH_BASE', globals().get('PATH_BASE', str(BASE_DIR / 'data')))
+PATH_BACKUP = entorno.texto('PATH_BACKUP', globals().get('PATH_BACKUP', PATH_BASE + '/backups'))
+
+# Sin uso en el repositorio; se conservan por si los lee algo de fuera.
+FTP_IP = entorno.texto('FTP_IP', globals().get('FTP_IP', ''))
+FTP_USER = entorno.texto('FTP_USER', globals().get('FTP_USER', ''))
+FTP_PASSWORD = entorno.texto('FTP_PASSWORD', globals().get('FTP_PASSWORD', ''))
 
 if DEBUG:
     ALLOWED_HOSTS = ['*']
@@ -95,25 +141,51 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
+# Estaticos y media. Esto estaba en local_settings.py, que no esta versionado:
+# o sea que la decision de donde se guardan los archivos del sitio viajaba
+# fuera del repositorio, maquina por maquina. No es configuracion -- no cambia
+# por entorno mas alla del propio DEBUG -- sino logica, y le toca estar aqui.
+STATIC_URL = 'static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 # collectstatic no copia una carpeta: recoge lo que encuentran los finders, o
 # sea STATICFILES_DIRS y las subcarpetas static/ de las apps instaladas.
 # Ninguna app de este proyecto tiene una: los 2142 archivos del sitio viven en
-# BASE_DIR/static. En desarrollo esa carpeta esta en STATICFILES_DIRS y el
-# runserver la sirve sola, pero en produccion local_settings solo la declara
-# como STATIC_ROOT, que es el DESTINO y nunca una fuente. Resultado:
-# collectstatic subia los estaticos del admin y de terceros, y ni uno solo del
-# sitio. Por eso web/css/bundle.css y web/js/bundle.js llegaron al repositorio
-# y no al bucket, dejando la portada sin hoja de estilos y sin el JS del
-# header. Se declara aqui, y no en local_settings, porque local_settings no
-# esta versionado y el arreglo tiene que viajar con el repositorio.
-if not DEBUG and not globals().get('STATICFILES_DIRS'):
-    STATICFILES_DIRS = [BASE_DIR / 'static']
-    # FileSystemFinder aborta si STATIC_ROOT coincide con una entrada de
-    # STATICFILES_DIRS. Con el almacenamiento en Spaces collectstatic escribe
-    # en el bucket y STATIC_ROOT no llega a usarse, asi que se le da una ruta
-    # aparte para que ambos ajustes convivan.
-    if globals().get('STATIC_ROOT') and Path(STATIC_ROOT) == BASE_DIR / 'static':
-        STATIC_ROOT = BASE_DIR / '.staticfiles'
+# BASE_DIR/static, asi que esa carpeta tiene que ser una FUENTE en los dos
+# entornos. Declararla solo como STATIC_ROOT -- que es el DESTINO -- hacia que
+# collectstatic subiera los estaticos del admin y de terceros y ni uno del
+# sitio, y por eso bundle.css y bundle.js acabaron en el repositorio en vez de
+# en el bucket, dejando la portada sin hoja de estilos.
+STATICFILES_DIRS = [BASE_DIR / 'static']
+
+# FileSystemFinder aborta si STATIC_ROOT coincide con una entrada de
+# STATICFILES_DIRS. Con el almacenamiento en Spaces collectstatic escribe en el
+# bucket y STATIC_ROOT no llega a usarse, asi que se le da una ruta aparte para
+# que los dos ajustes convivan.
+STATIC_ROOT = BASE_DIR / '.staticfiles'
+
+if DEBUG:
+    CORS_ALLOW_ALL_ORIGINS = False
+    CORS_ALLOWED_ORIGINS = []
+    CORS_ALLOW_CREDENTIALS = False
+else:
+    _OPCIONES_SPACES = {
+        'access_key': AWS_S3_ACCESS_KEY_ID,
+        'secret_key': AWS_S3_SECRET_ACCESS_KEY,
+        'bucket_name': AWS_STORAGE_BUCKET_NAME,
+        'endpoint_url': AWS_S3_ENDPOINT_URL,
+    }
+    STORAGES = {
+        'default': {
+            'BACKEND': 'immobilier.storage.MediaS3Boto3Storage',
+            'OPTIONS': dict(_OPCIONES_SPACES, querystring_auth=False, location='media'),
+        },
+        'staticfiles': {
+            'BACKEND': 'storages.backends.s3.S3Storage',
+            'OPTIONS': dict(_OPCIONES_SPACES, location='static', default_acl='public-read'),
+        },
+    }
 
 # URLs de S3 sin firmar. django-storages firma por defecto
 # (AWS_QUERYSTRING_AUTH=True), y el almacenamiento staticfiles no lo
