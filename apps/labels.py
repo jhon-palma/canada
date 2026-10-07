@@ -37,6 +37,7 @@ DICT_LABELS = {
                     'twelve':'Contact Us',
                     'thirteen':'Price',
                     'fourteen':'Free Buyers Consultation',
+                    'fifteen':'See All Articles',
                 },
                 'placeholder':{
                     'one':'Search by city, neighbourhood, region, address or Centris No.',
@@ -92,6 +93,9 @@ DICT_LABELS = {
                     'forty_one': 'Why are you considered one of the best real estate brokers in Montreal?',
                     'forty_two': 'How much does it cost to hire a real estate broker in Montreal?',
                     'forty_three': 'How do I find the best real estate agent in Montreal?',
+                    'forty_four': 'read our',
+                    'forty_five': 'latest articles',
+                    'forty_six': 'Related articles',
                 }
             },
             'menu':{
@@ -329,6 +333,7 @@ DICT_LABELS = {
                     'twelve':'Contactez-nous',
                     'thirteen':'Prix',
                     'fourteen':'Consultation gratuite pour les acheteurs',
+                    'fifteen':'Voir Tous Les Articles',
                 },
                 'placeholder':{
                     'one':'Recherche par ville, quartier, région, adresse ou No Centris.',
@@ -384,6 +389,9 @@ DICT_LABELS = {
                     'forty_one': "Qu’est-ce qui vous permet d’affirmer votre positionnement comme meilleure agence de courtage immobilier à Montréal?",
                     'forty_two': "Combien cela coûterait d’engager une agence immobilière/ courtier immobilier à Montréal?",
                     'forty_three': "Comment trouver le meilleur agent/courtier immobilier à Montréal?",
+                    'forty_four': 'Lisez nos',
+                    'forty_five': 'derniers articles',
+                    'forty_six': 'Articles similaires',
                 }
             },
             'menu':{

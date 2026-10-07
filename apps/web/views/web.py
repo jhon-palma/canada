@@ -8,6 +8,7 @@ from django.http import JsonResponse, Http404
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.generic import ListView, TemplateView, View
 
+from apps.blog.models import Article
 from apps.labels import DICT_LABELS
 from apps.properties.models import Addenda, GenresProprietes, Inscriptions, Municipalites, Regions
 from apps.users.models import Profile
@@ -42,6 +43,13 @@ class WebIndex(View):
         images_dict = {image.reference: image for image in images_query}
         staticts_dict = {statics.name: statics for statics in staticts_query}
         videos = VideosWeb.objects.filter(is_short=False).order_by('-publishedAt')[:3]
+        # Los tres ultimos articulos. Hasta ahora el unico enlace del sitio al
+        # blog era el del menu y apuntaba al indice, asi que los articulos
+        # colgaban todos de una sola pagina paginada de doce en doce: Google
+        # los descubria por el sitemap y luego no los rastreaba. Sin orden
+        # explicito porque el Meta del modelo ya ordena por fecha de
+        # publicacion, que es la misma que usa el listado del blog.
+        ultimos_articulos = Article.objects.publicados().select_related('category')[:3]
         context = {
             'municipalites':municipalites,
             'genres':genres,
@@ -50,6 +58,7 @@ class WebIndex(View):
             'labels':labels,
             'inscriptions':inscriptions,
             'video_urls':videos,
+            'ultimos_articulos':ultimos_articulos,
             'images':images_dict,
             'data_meta':data_meta,
             'staticts':staticts_dict,
@@ -107,8 +116,12 @@ class WebProperties(View):
             'data_meta':data_meta,
             'inscriptions':inscriptions,
             'images':images_dict,
+            # El listado comparte plantilla con las landings de busqueda, asi
+            # que si no se pasan aqui el bloque del blog desaparece en la
+            # mitad de las paginas que usan list.html.
+            'ultimos_articulos': Article.objects.publicados().select_related('category')[:3],
         }
-        
+
         return render(request, self.template_name, context)
 
 
@@ -700,8 +713,14 @@ class SearchProperties(ListView):
         images_query = ImagesWeb.objects.filter(reference__in=['properties_banner'])
         images_dict = {image.reference: image for image in images_query}
         data_meta = MetaDataWeb.for_origin('properties')
-        
+        # Estas landings son de las paginas con mejor CTR del sitio, asi que
+        # son buen sitio desde donde senalar el blog. No se filtran por
+        # municipio porque no hay relacion entre articulo y municipalidad en
+        # la base: son los ultimos, como en la portada.
+        ultimos_articulos = Article.objects.publicados().select_related('category')[:3]
+
         context = {
+            'ultimos_articulos':ultimos_articulos,
             'municipalites':municipalites,
             'genres':genres,
             'language':language,

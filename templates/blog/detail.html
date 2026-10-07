@@ -2,6 +2,23 @@
 {% block header_page %}
     <link href="{% static_v 'blog/css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static_v 'blog/css/styles.css' %}" rel="stylesheet">
+    <style>
+        /* Los articulos relacionados. Van con estilo propio y no con las clases
+           del listado porque aquellas dependen del script de masonry, que esta
+           pagina no carga: reutilizarlas dejaba las tarjetas apiladas. */
+        .relacionados{margin:50px auto 0;max-width:1170px;padding:0 15px;box-sizing:border-box;}
+        .relacionados > h2{font-size:24px;margin:0 0 25px;}
+        .relacionados-cont{display:grid;grid-template-columns:repeat(3,1fr);gap:25px;}
+        .relacionados-cont a{display:block;color:inherit;text-decoration:none;}
+        .relacionados-cont img,.relacionados-cont .sinfoto{display:block;width:100%;
+            aspect-ratio:16/9;object-fit:cover;}
+        .relacionados .cat{display:block;font-size:12px;text-transform:uppercase;
+            letter-spacing:.05em;color:#00AAAE;margin:12px 0 4px;}
+        .relacionados .tit{display:block;font-size:16px;font-weight:600;line-height:1.35;}
+        .relacionados-cont a:hover .tit{text-decoration:underline;}
+        @media (max-width:900px){.relacionados-cont{grid-template-columns:1fr 1fr;}}
+        @media (max-width:560px){.relacionados-cont{grid-template-columns:1fr;}}
+    </style>
 {% endblock %}
     {% if vista_previa %}
         {# Solo lo ve el equipo: para el resto este articulo todavia es un 404. #}
@@ -177,6 +194,25 @@
                     {% endif %}
                 </div>
             </nav>
+            {% if relacionados %}
+                <section class="relacionados">
+                    <h2>{{ labels.index.text.forty_six }}</h2>
+                    <div class="relacionados-cont">
+                        {% for articulo in relacionados %}
+                            {% if language == 'en' %}{% url 'blog:post_detail' language=language slug=articulo.slug_anglaise as articulo_url %}{% else %}{% url 'blog:post_detail' language=language slug=articulo.slug_francaise as articulo_url %}{% endif %}
+                            <a href="{{ articulo_url }}">
+                                {% if language == 'en' %}
+                                    {% if articulo.image_anglaise %}<img loading="lazy" decoding="async" src="{{ articulo.image_anglaise.url }}" alt="{{ articulo.title_anglaise }}">{% else %}<span class="sinfoto"></span>{% endif %}
+                                {% else %}
+                                    {% if articulo.image_francaise %}<img loading="lazy" decoding="async" src="{{ articulo.image_francaise.url }}" alt="{{ articulo.title_francaise }}">{% else %}<span class="sinfoto"></span>{% endif %}
+                                {% endif %}
+                                <span class="cat">{% if language == 'en' %}{{ articulo.category.title_anglaise }}{% else %}{{ articulo.category.title_francaise }}{% endif %}</span>
+                                <span class="tit">{% if language == 'en' %}{{ articulo.title_anglaise }}{% else %}{{ articulo.title_francaise }}{% endif %}</span>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </section>
+            {% endif %}
         </div>
     </section>
     <input type="hidden" id="language" value="{{ language }}">

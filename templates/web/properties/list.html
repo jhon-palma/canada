@@ -352,6 +352,33 @@
 			</script>
 		</div>
 
+    {% if ultimos_articulos %}
+    <section class="prophome">
+        <div class="wrap">
+            <h2 class="h2def"><span class="text-span">{{ labels.index.text.forty_four }}</span> <strong>{{ labels.index.text.forty_five }}</strong></h2>
+            <div class="propcont">
+                {% for articulo in ultimos_articulos %}
+                    {% if language == 'en' %}{% url 'blog:post_detail' language=language slug=articulo.slug_anglaise as articulo_url %}{% else %}{% url 'blog:post_detail' language=language slug=articulo.slug_francaise as articulo_url %}{% endif %}
+                    <a href="{{ articulo_url }}" class="propa">
+                        <span class="img">
+                            {% if language == 'en' %}
+                                {% if articulo.image_anglaise %}<img loading="lazy" decoding="async" src="{{ articulo.image_anglaise.url }}" alt="{{ articulo.title_anglaise }}" class="propimg" />{% else %}<span class="sinfoto"></span>{% endif %}
+                            {% else %}
+                                {% if articulo.image_francaise %}<img loading="lazy" decoding="async" src="{{ articulo.image_francaise.url }}" alt="{{ articulo.title_francaise }}" class="propimg" />{% else %}<span class="sinfoto"></span>{% endif %}
+                            {% endif %}
+                        </span>
+                        <div class="rollprop">
+                            <strong><p class="text-uppercase">{% if language == 'en' %}{{ articulo.category.title_anglaise }}{% else %}{{ articulo.category.title_francaise }}{% endif %}</p></strong>
+                            <p>{% if language == 'en' %}{{ articulo.title_anglaise }}{% else %}{{ articulo.title_francaise }}{% endif %}</p>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+            <a href="{{ server|server_url }}/{{ language }}/blog/" class="bouton">{{ labels.index.button.fifteen }}</a>
+        </div>
+    </section>
+    {% endif %}
+
     {% load static %}{% include 'web/footer_web.html' %}
 
 

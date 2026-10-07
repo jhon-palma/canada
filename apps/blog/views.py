@@ -181,7 +181,16 @@ def detail(request, language, slug):
     next_post = Article.objects.publicados().filter(
         date_hour__gt=referencia
     ).order_by('date_hour').first()
-    
+
+    # Otros articulos de la misma categoria. Anterior/siguiente encadenan los
+    # articulos en fila, asi que para llegar al numero 300 hay que pasar por
+    # los 299 de antes; es la razon de que Google descubra los articulos por
+    # el sitemap y no llegue a rastrearlos. Estos enlaces cruzan la cadena y
+    # ademas mandan la senal de que los articulos de un tema se agrupan.
+    relacionados = Article.objects.publicados().filter(
+        category_id=post.category_id
+    ).exclude(pk=post.pk).select_related('category')[:3]
+
     if request.method == 'POST':
         return redirect('post_detail', slug=slug)
 
@@ -192,6 +201,7 @@ def detail(request, language, slug):
         'user_liked': user_liked,
         'previous_post': previous_post,
         'next_post': next_post,
+        'relacionados': relacionados,
         'data_meta':post,
         'vista_previa': vista_previa,
         'estado': post.estado,
