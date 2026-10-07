@@ -162,7 +162,20 @@ python
 .zip
 
 # Carpeta de SCRIPTS
-scripts/
+# Se ignora el contenido y no la carpeta. Cinco de estos archivos son parte de
+# la aplicacion -- signals.py importa send_email, dos vistas importan
+# upload_data, y download_data es lo que alimenta data/ en el servidor -- pero
+# estaban versionados *y* ignorados a la vez, que es una trampa: no aparecen en
+# git status, asi que un cambio en ellos pasa desapercibido, y al empezar un
+# repo limpio se quedan fuera sin que nadie se entere. Una regla sobre el
+# directorio no se puede deshacer despues con una negacion; sobre el contenido
+# si.
+scripts/*
+!scripts/download_data.py
+!scripts/download_videos.py
+!scripts/send_email.py
+!scripts/update_slug.py
+!scripts/upload_data.py
 
 database/
 data/
@@ -170,7 +183,6 @@ data/backups/
 !data/generic/
 
 profile_imgs/
-download_data.py
 
 docs/
 web_imgs/
