@@ -8,6 +8,7 @@ from googletrans import Translator
 from html import unescape
 from types import SimpleNamespace
 import re
+import unicodedata
 import uuid
 from django_ckeditor_5.fields import CKEditor5Field
 from apps.accounts.models import CustomUser
@@ -15,7 +16,46 @@ from apps.decorators import is_internal_user
 from apps.seo import absolute_url, current_language, normalize_language
 
 
-def resumen_de(contenido):
+def _comparable(texto):
+    """El texto reducido a letras y numeros, para comparar dos titulos.
+
+    El titular que el editor deja dentro del cuerpo y el campo del titulo casi
+    nunca coinciden caracter a caracter: cambia una coma, un guion, un
+    apostrofo recto por uno tipografico. Comparar sin acentos ni puntuacion
+    los hace coincidir igual.
+    """
+    descompuesto = unicodedata.normalize('NFKD', texto or '')
+    sin_acentos = ''.join(c for c in descompuesto if not unicodedata.combining(c))
+    return re.sub(r'[^a-z0-9]+', '', sin_acentos.lower())
+
+
+def _sin_el_titulo(limpio, titulo):
+    """Quita el titulo del principio del texto, si lo repite.
+
+    Casi todos los articulos empiezan el cuerpo repitiendo su titular, asi que
+    la descripcion salia duplicando el <title> en los primeros sesenta
+    caracteres del fragmento, que es donde se decide si alguien hace clic. En
+    los 201 articulos publicados pasaba en 48 de las descripciones francesas y
+    43 de las inglesas.
+
+    Si al quitarlo no queda texto util se devuelve el original: una
+    descripcion repetida sigue siendo mejor que ninguna.
+    """
+    objetivo = _comparable(titulo)
+    if not objetivo:
+        return limpio
+    acumulado = ''
+    for corte, caracter in enumerate(limpio, start=1):
+        acumulado += _comparable(caracter)
+        if not objetivo.startswith(acumulado):
+            return limpio
+        if acumulado == objetivo:
+            resto = limpio[corte:].lstrip(' –—-:·|.,')
+            return resto if len(resto) >= 40 else limpio
+    return limpio
+
+
+def resumen_de(contenido, titulo=None):
     """El principio de un texto del editor, servible como meta description.
 
     Quita las etiquetas, deshace las entidades -- el editor deja &nbsp; por
@@ -27,10 +67,14 @@ def resumen_de(contenido):
     strip_tags() a secas no separa: un titular seguido de su parrafo salia
     como "...vraiment?Le texto", con las dos frases pegadas. Solo los bloques,
     para no partir una palabra que lleve un <strong> en medio.
+
+    Con el titulo puesto, se descarta del principio si el texto lo repite.
     """
     separado = re.sub(r'(?i)</?(p|div|br|h[1-6]|li|ul|ol|tr|td|th|blockquote)[^>]*>',
                       ' ', contenido or '')
     limpio = ' '.join(unescape(strip_tags(separado)).split())
+    if titulo:
+        limpio = _sin_el_titulo(limpio, titulo)
     return Truncator(limpio).chars(155, truncate='…')
 
 
@@ -141,23 +185,32 @@ class Article(models.Model):
         """Los cuatro campos que la cabecera lee de data_meta, con reserva.
 
         header_web.html solo usa los metadatos si los cuatro estan rellenos y,
-        si falta alguno, cae a las etiquetas de la portada. Ninguno de los 144
-        articulos publicados tenia los cuatro puestos -- ni uno --, asi que
-        todos salian con el mismo <title> y la misma descripcion que la home.
-        Para Google eran 144 URLs indistinguibles entre si, y es la
-        explicacion mas probable de que esten en "Descubierta: actualmente sin
-        indexar": no es que no las encuentre, es que no ve motivo para
-        guardarlas.
+        si falta alguno, cae a las etiquetas de la portada. Contado sobre la
+        base de produccion, de 201 articulos solo 25 tienen los cuatro: 144 no
+        tienen ni titulo propio y 176 no tienen descripcion. Todos esos salian
+        con el mismo <title> y la misma descripcion, los de la fila 'blog' de
+        web_metadata, que ademas repite la misma cadena inglesa en el campo
+        frances y en el ingles. Para Google eran casi doscientas URLs
+        indistinguibles entre si, y es la explicacion mas probable de que
+        esten en "Descubierta: actualmente sin indexar": no es que no las
+        encuentre, es que no ve motivo para guardarlas.
 
         La reserva sale del propio articulo: su titulo con la marca detras, y
-        como descripcion el principio del texto sin etiquetas. Lo que el
-        redactor escriba a mano en el formulario sigue mandando sobre esto.
+        como descripcion el principio del texto sin etiquetas. Con eso salen
+        199 titulos distintos de 201 y ninguno vacio; los dos que se repiten
+        son articulos de verdad casi iguales. Lo que el redactor escriba a
+        mano en el formulario sigue mandando sobre esto, aunque hoy eso juegue
+        en contra: las 25 descripciones guardadas se quedaron en 52-76
+        caracteres porque la columna era varchar(100), y 47 de ellas son el
+        titulo cortado. La migracion 0028 la ensancha a 200.
         """
         return SimpleNamespace(
             m_title_f=self.m_title_f or self._titulo_seo(self.title_francaise),
             m_title_a=self.m_title_a or self._titulo_seo(self.title_anglaise),
-            m_description_f=self.m_description_f or resumen_de(self.content_francaise),
-            m_description_a=self.m_description_a or resumen_de(self.content_anglaise),
+            m_description_f=(self.m_description_f
+                             or resumen_de(self.content_francaise, self.title_francaise)),
+            m_description_a=(self.m_description_a
+                             or resumen_de(self.content_anglaise, self.title_anglaise)),
         )
 
     @staticmethod
