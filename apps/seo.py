@@ -45,6 +45,30 @@ def absolute_url(path):
     return '{}{}'.format(site_url(), path)
 
 
+# La portada francesa se sirve con el mismo HTML en / y en /fr/, y Google
+# tiene las dos indexadas repartiendose la autoridad. Esta constante dice cual
+# de las dos es la buena, y de ella salen a la vez el canonical, el hreflang y
+# la redireccion, para que no puedan contradecirse.
+#
+# Esta en '/' porque es la que Google ya posiciona -- en la revision de
+# septiembre aparecia en el puesto 4,4 mientras /fr/ no aparecia --, asi que
+# mover el canonical a /fr/ tiraria esa posicion. Cambiar esta linea a '/fr/'
+# invierte las tres cosas; lo unico que habria que revisar aparte son los
+# enlaces del logo y del menu, que hoy apuntan a /<idioma>/.
+PORTADA_FRANCESA = '/'
+
+PORTADAS_FRANCESAS = ('/', '/fr/')
+
+
+def canonical_path(path):
+    """La ruta canonica de `path`.
+
+    Solo cambia algo en la portada francesa, que es la unica pagina que el
+    sitio sirve en dos direcciones. El resto ya es unica y se devuelve igual.
+    """
+    return PORTADA_FRANCESA if path in PORTADAS_FRANCESAS else path
+
+
 # Pares de slug equivalentes entre idiomas. Es la misma tabla que usa
 # changeParameterInURL() en static/app/js/functions/master.js; se replica
 # aqui para poder emitir el enlace real en el HTML y no solo por JavaScript.

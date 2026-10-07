@@ -65,7 +65,11 @@
 <section class="banner nothome">
     <div class="baninfo">
         <h2 >{{ labels.index.title.one }}<span> {{ labels.index.title.two }}</span></h2>
-        <h1>{{ labels.index.title.three }}</h1><br>
+        {% comment %} Parrafo y no h1: esto es un reclamo, el mismo en todas las fichas.
+           Siendo h1 cada ficha declaraba como encabezado principal una llamada a la
+           accion generica en vez del titulo de la propiedad, que es el h1 de mas
+           abajo. La clase le conserva el aspecto que tenia. {% endcomment %}
+        <p class="banbaja">{{ labels.index.title.three }}</p><br>
         <a class="bouton btn-wwu boutonnre2 boutonnre2gra pointer" data-pop="popcontactBook">{{ labels.index.button.eleven }}</a>
     </div>
 </section>

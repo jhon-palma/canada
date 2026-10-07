@@ -6,7 +6,10 @@
 <div class="home blog wp-embed-responsive">
     <section id="bwp-blog-posts-wrap mt-4">
         <div class="container">
-            <h2 class="bwp-hidden-section-heading">Blog posts</h2>
+            {% comment %} h1 y no h2: el indice del blog no tenia encabezado de primer
+               nivel. Sigue oculto a la vista, que es para lo que esta la clase, pero
+               ahora la pagina declara de que es. {% endcomment %}
+            <h1 class="bwp-hidden-section-heading">{% if language == 'en' %}LJ Realties blog: Montreal real estate{% else %}Blogue LJ Realties : l'immobilier à Montréal{% endif %}</h1>
             <div class="bwp-masonry-o-hidden">
                 <div id="bwp-masonry-container" class="masonry" role="main">
                     <div class="bwp-blog-col-3-default"></div>

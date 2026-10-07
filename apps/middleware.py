@@ -2,7 +2,8 @@
 
 from django.shortcuts import redirect
 
-from apps.seo import LANGUAGES, SLUG_TRANSLATIONS
+from apps.seo import (LANGUAGES, PORTADA_FRANCESA, PORTADAS_FRANCESAS,
+                      SLUG_TRANSLATIONS)
 
 
 class RevalidarHTML:
@@ -98,7 +99,14 @@ class RedirigirURLsMezcladas:
 
     @classmethod
     def ruta_corregida(cls, ruta):
-        """La ruta con el slug del idioma que toca, o None si ya esta bien."""
+        """La ruta canonica equivalente, o None si la pedida ya lo es."""
+        # La portada francesa se sirve con el mismo HTML en / y en /fr/, y
+        # Google tiene las dos indexadas repartiendose la autoridad. Cual es
+        # la buena lo decide PORTADA_FRANCESA, de donde salen tambien el
+        # canonical y el hreflang.
+        if ruta in PORTADAS_FRANCESAS and ruta != PORTADA_FRANCESA:
+            return PORTADA_FRANCESA
+
         partes = ruta.split('/')
         # ['', idioma, slug, ...]: hacen falta los dos primeros segmentos.
         if len(partes) < 3 or partes[1] not in LANGUAGES:

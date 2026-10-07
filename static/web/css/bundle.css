@@ -8171,7 +8171,7 @@ img.bannerimg{
     }
 }
 
-.banner h1, .banner>p{
+.banner h1, .banner p.banbaja, .banner>p{
 	color: #fff;
 	text-align: center;
 	text-transform: uppercase;
@@ -8183,14 +8183,14 @@ img.bannerimg{
 	text-shadow: 0px 0px 25px #000;
 }
 
-.banner h1 span, .banner>p span{
+.banner h1 span, .banner p.banbaja span, .banner>p span{
 	color: #32ccc4;
 }
 .banner h2 span, .banner h1.bannergranso span, .banner>p span{
 	color: #32ccc4;
 }
 
-.banner>.baninfo h1{text-align: center;}
+.banner>.baninfo h1, .banner>.baninfo p.banbaja{text-align: center;}
 .banner>.baninfo h2{text-align: center;}
 
 /* .bannergranso era un h2 porque el h1 del banner esta pensado como
@@ -9749,7 +9749,7 @@ h1.h1styled{
 
 	.profilhome .wrap, .statshome .wrap, .videoshome .wrap, .prop-bg .wrap, .teampage .wrap, .teamsingle .wrap, .wwupage .wrap, .toolsect .wrap, .pagecontact .wrap{padding-left: 0;padding-right: 0;}
 
-	.banner h1, .banner>p{font-size: 50px;}
+	.banner h1, .banner p.banbaja, .banner>p{font-size: 50px;}
 
 	.profilhome, .ctawide, .aboutsingle, .videoshome{background-attachment: scroll;}
 }
@@ -9837,8 +9837,8 @@ h1.h1styled{
 	}
 	.soldmap{overflow: hidden;}
 
-	.banner h1, .banner>p{font-size: 30px;}
-	.banner>.baninfo h1{margin-bottom: 15px;text-align: center;}
+	.banner h1, .banner p.banbaja, .banner>p{font-size: 30px;}
+	.banner>.baninfo h1, .banner>.baninfo p.banbaja{margin-bottom: 15px;text-align: center;}
 
 	img.bannerimg{min-height: 400px;object-fit: cover;}
 	.selectcont{width: 100%;margin-bottom: 10px;}

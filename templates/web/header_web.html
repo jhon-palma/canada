@@ -17,8 +17,48 @@
 	{% define 'properties-for-rent' as url_rent %}
 {% endif %}
 
+{% comment %}
+La ruta de esta misma pagina en el otro idioma. Se calcula aqui arriba porque
+la usan dos sitios: las etiquetas hreflang del head y el enlace del conmutador
+de idioma, mas abajo. Calcularla una vez es lo que garantiza que las dos digan
+lo mismo.
+
+post cubre la ficha del articulo y slug_actual las landings de busqueda,
+porque esos slugs estan en la base y no en la tabla de traduccion; el resto de
+paginas las resuelve alternate_path sola.
+{% endcomment %}
+{% if post %}
+	{% if new_language == 'en' %}{% alternate_url new_language post.slug_francaise post.slug_anglaise as alt_href %}{% else %}{% alternate_url new_language post.slug_anglaise post.slug_francaise as alt_href %}{% endif %}
+{% elif slug_actual and slug_traducido %}
+	{% alternate_url new_language slug_actual slug_traducido as alt_href %}
+{% else %}
+	{% alternate_url new_language as alt_href %}
+{% endif %}
+{% canonical_url as url_canonica %}
+
 <html lang="{{ language|default:'fr' }}" xmlns="http://www.w3.org/1999/xhtml">
 <head>
+
+	{% comment %}
+	Ninguna pagina del sitio declaraba cual es su direccion buena ni que existe
+	en otro idioma. La portada estaba indexada tres veces -- en http, en https
+	y en /en/ -- repartiendose la autoridad entre las tres.
+
+	x-default apunta al frances porque es el idioma por defecto del sitio y el
+	de Montreal. Las dos paginas tienen que nombrarse mutuamente, incluida a si
+	misma, o Google descarta el grupo entero.
+	{% endcomment %}
+	<link rel="canonical" href="{{ url_canonica }}"/>
+	{% if language == 'en' %}
+		<link rel="alternate" hreflang="en-CA" href="{{ url_canonica }}"/>
+		<link rel="alternate" hreflang="fr-CA" href="{% alternate_canonical alt_href %}"/>
+		<link rel="alternate" hreflang="x-default" href="{% alternate_canonical alt_href %}"/>
+	{% else %}
+		<link rel="alternate" hreflang="fr-CA" href="{{ url_canonica }}"/>
+		<link rel="alternate" hreflang="en-CA" href="{% alternate_canonical alt_href %}"/>
+		<link rel="alternate" hreflang="x-default" href="{{ url_canonica }}"/>
+	{% endif %}
+
 <style>
 	/* Relleno para cuando no hay foto: ni el icono de imagen rota ni un hueco
 	   de cero alto que descuadre la fila. Lo usan tanto las plantillas, cuando
@@ -224,21 +264,15 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             dentro. Con el href calculado en el servidor hay una sola tabla y
             la persona y el buscador van al mismo sitio.
 
-            post cubre la ficha del articulo y slug_actual las landings de
-            busqueda; el resto de paginas las resuelve alternate_path sola.
+            alt_href viene limpio de arriba, porque lo comparte con el
+            hreflang; la cadena de consulta se le pega aqui, que es donde hace
+            falta: cambiar de idioma en una pagina 2 debe dejarte en la 2.
             {% endcomment %}
-            {% if post %}
-                {% if new_language == 'en' %}{% alternate_url new_language post.slug_francaise post.slug_anglaise as alt_href %}{% else %}{% alternate_url new_language post.slug_anglaise post.slug_francaise as alt_href %}{% endif %}
-            {% elif slug_actual and slug_traducido %}
-                {% alternate_url new_language slug_actual slug_traducido as alt_href %}
-            {% else %}
-                {% alternate_url new_language as alt_href %}
-            {% endif %}
-            <a class="btn_language" href="{{ alt_href }}" hreflang="{{ new_language }}">{{ new_language_name }}</a>
+            <a class="btn_language" href="{{ alt_href }}{% if request.GET.urlencode %}?{{ request.GET.urlencode }}{% endif %}" hreflang="{{ new_language }}">{{ new_language_name }}</a>
 		</div>
 	</div>
 	<div class="wrap">
-		<a href="{{ server|server_url }}/{{ language }}/" class="logoh">
+		<a href="{{ server|server_url }}{% inicio_path language %}" class="logoh">
 			<img src="{% static 'web/images2/logo.png' %}" alt="LJ Immobilier">
 		</a>
 		<nav>
