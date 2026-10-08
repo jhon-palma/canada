@@ -167,7 +167,16 @@ paginas las resuelve alternate_path sola.
 		{
 		"@context": "https://schema.org",
 		"@type": "RealEstateAgent",
-		"name": "LJ Realties",
+		{% comment %} El nombre va en el idioma de la pagina. La marca es bilingue de
+		   verdad, no una traduccion de cortesia: el Perfil de Empresa en Google se
+		   llama "LJ Immobilier" y los titulos franceses que pedia la revision de
+		   Search Console tambien. Poner siempre "LJ Realties" hacia que el schema
+		   de la portada francesa contradijese al perfil, que es justo la
+		   incoherencia de nombre, direccion y telefono que esa revision avisaba.
+		   El otro nombre va como alternateName para que Google sepa que son la
+		   misma empresa y no dos. {% endcomment %}
+		"name": "{% if language == 'en' %}LJ Realties{% else %}LJ Immobilier{% endif %}",
+		"alternateName": "{% if language == 'en' %}LJ Immobilier{% else %}LJ Realties{% endif %}",
 		"image": "https://sfo3.digitaloceanspaces.com/media-canada/media/public/app/profile_imgs/LJ_RateMyAgent.jpg",
 		"@id": "https://www.ljrealties.com/#free_evaluation",
 		"url": "https://www.ljrealties.com/",
