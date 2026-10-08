@@ -178,7 +178,12 @@ paginas las resuelve alternate_path sola.
 		"name": "{% if language == 'en' %}LJ Realties{% else %}LJ Immobilier{% endif %}",
 		"alternateName": "{% if language == 'en' %}LJ Immobilier{% else %}LJ Realties{% endif %}",
 		"image": "https://sfo3.digitaloceanspaces.com/media-canada/media/public/app/profile_imgs/LJ_RateMyAgent.jpg",
-		"@id": "https://www.ljrealties.com/#free_evaluation",
+		{% comment %} El @id nombra a la entidad, y la entidad es la agencia. Apuntaba a
+		   #free_evaluation, que es el id del modal de evaluacion gratuita que abren
+		   index, work y la ficha de propiedad con fadeIn(): el schema venia diciendo
+		   que la agencia inmobiliaria era ese formulario. Nadie lo referenciaba, asi
+		   que cambiarlo no deja ningun nodo colgando. {% endcomment %}
+		"@id": "https://www.ljrealties.com/#organization",
 		"url": "https://www.ljrealties.com/",
 		"telephone": "+1-514-500-4040",
 		"address": {
