@@ -20,7 +20,6 @@ urlpatterns = [
     path('calc_monthly_payment/', web.calc_monthly_payment_view, name='calc_monthly_payment'),
     path('searchpropriete/', web.searchpropriete, name='searchpropriete'),
     path('searchMember/', web.searchMember, name='searchMember'),
-    path("search-videos/", web.search_videos, name="search_videos"),
     re_path(r'^(?P<language>fr|en)/search/', web.SearchView.as_view(), name='search'),
     path('contact_messages/', web_messages.contact_messages, name='contact_messages'),
     path('statistics/', staff_required(web.statistics), name='statistics'),

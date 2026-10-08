@@ -7,12 +7,12 @@
 </style>
 
 <style>
-	.portfolio-item {
-		display: none;
+	.filter-btn.activo {
+		background-color: #0b7f82;
 	}
-
-	.portfolio-item.show {
-		display: block;
+	.resultados {
+		text-align: center;
+		margin: 18px 0 0;
 	}
 	.centrar {
 		text-align: center !important;
@@ -59,18 +59,36 @@
 	<div class="text-center my-3">
 	</div>
 	<div class="wrap centrar">
+        {% comment %} Enlaces y no botones de JavaScript: el filtro tiene que viajar en la
+           URL para que el servidor pueda paginarlo. Asi ademas una pagina de
+           resultados se puede compartir y el navegador puede volver atras. {% endcomment %}
         <div class="__cnt pointer">
-            <a class="filter-btn bouton" data-filter="video">{{ labels.videos.title.five }}</a>
-            <a class="filter-btn bouton" data-filter="short">{{ labels.videos.title.four }}</a>
-            <a class="filter-btn bouton" data-filter="all">{{ labels.videos.title.three }}</a>
+            <a class="filter-btn bouton{% if not busqueda and tipo == 'video' %} activo{% endif %}" href="{% url 'web:videos' language=language %}">{{ labels.videos.title.five }}</a>
+            <a class="filter-btn bouton{% if not busqueda and tipo == 'short' %} activo{% endif %}" href="{% url 'web:videos' language=language %}?tipo=short">{{ labels.videos.title.four }}</a>
+            <a class="filter-btn bouton{% if not busqueda and tipo == 'all' %} activo{% endif %}" href="{% url 'web:videos' language=language %}?tipo=all">{{ labels.videos.title.three }}</a>
         </div>
         <div class="search-container">
-            <input type="text" id="search-videos" placeholder="{{ labels.videos.placeholder.one }}"  class="search-input">
+            <form method="get" action="{% url 'web:videos' language=language %}" role="search">
+                <input type="search" name="q" value="{{ busqueda }}" placeholder="{{ labels.videos.placeholder.one }}" class="search-input" aria-label="{{ labels.videos.placeholder.one }}">
+            </form>
         </div>
     </div>
+    {% if busqueda %}
+        <p class="resultados">
+            {% if total %}
+                {{ total }} {% if language == "en" %}result{{ total|pluralize }} for{% else %}résultat{{ total|pluralize }} pour{% endif %} &laquo;&nbsp;{{ busqueda }}&nbsp;&raquo;
+            {% else %}
+                {% if language == "en" %}No video matches{% else %}Aucune vidéo ne correspond à{% endif %} &laquo;&nbsp;{{ busqueda }}&nbsp;&raquo;
+            {% endif %}
+            &mdash; <a href="{% url 'web:videos' language=language %}">{% if language == "en" %}clear{% else %}effacer{% endif %}</a>
+        </p>
+    {% endif %}
 	<div class="wrap initial">
             {% for video in videos %}
-                <div href="https://www.youtube.com/watch?v={{ video.videoId }}" class="capsule msrItem portfolio-item {% if video.is_short %}short{% else %}video{% endif %}">
+                {% comment %} Sin portfolio-item ni short/video: esas clases solo servian para que
+                   el JavaScript escondiera y mostrara tarjetas, y ahora el filtro lo hace
+                   la consulta. El div ademas llevaba un href, que en un div no es nada. {% endcomment %}
+                <div class="capsule msrItem">
                     <a href="https://www.youtube.com/watch?v={{ video.videoId }}" class="img"> <img loading="lazy" decoding="async" src="https://img.youtube.com/vi/{{ video.videoId }}/hqdefault.jpg" alt="{{ video.title }}t" /></a>
                     <h3>{{ video.tittle }}</h3>
                     <p class="sm">{{ video.publishedAt|date:"d/m/Y" }}</p>
@@ -85,74 +103,43 @@
                 </div>
             {% endfor %}
 	</div>
+
+	{% comment %} Se arrastra la busqueda y el filtro en cada enlace: sin eso, pasar de
+	   pagina vuelve al listado completo y se pierde lo que se estaba mirando. {% endcomment %}
+	{% if videos.paginator.num_pages > 1 %}
+		<nav class="navigation pagination" aria-label="{% if language == 'en' %}Videos{% else %}Vidéos{% endif %}">
+			<div class="nav-links">
+				{% if videos.has_previous %}
+					<a class="prev page-numbers" href="?page={{ videos.previous_page_number }}{{ arrastre }}"><i class="fa fa-angle-left"></i></a>
+				{% endif %}
+				{% if videos.number >= 4 %}
+					<a class="page-numbers" href="?page=1{{ arrastre }}">1</a>
+					<span class="page-numbers dots">&hellip;</span>
+				{% endif %}
+				{% for num in videos.paginator.page_range %}
+					{% if num >= videos.number|add:"-2" and num <= videos.number|add:"2" %}
+						{% if videos.number == num %}
+							<span aria-current="page" class="page-numbers current">{{ num }}</span>
+						{% else %}
+							<a class="page-numbers" href="?page={{ num }}{{ arrastre }}">{{ num }}</a>
+						{% endif %}
+					{% endif %}
+				{% endfor %}
+				{% if videos.number < videos.paginator.num_pages|add:"-2" %}
+					<span class="page-numbers dots">&hellip;</span>
+					<a class="page-numbers" href="?page={{ videos.paginator.num_pages }}{{ arrastre }}">{{ videos.paginator.num_pages }}</a>
+				{% endif %}
+				{% if videos.has_next %}
+					<a class="next page-numbers" href="?page={{ videos.next_page_number }}{{ arrastre }}"><i class="fa fa-angle-right"></i></a>
+				{% endif %}
+			</div>
+		</nav>
+	{% endif %}
 </section>
 
 <div style="clear:both;"></div>
 
-<script>
-	var time = undefined;
 
-	$(document).ready(function() {
-		$(".filter-btn").click(function() {
-			var filter = $(this).attr("data-filter");
-			$(".portfolio-item").each(function() {
-				if (filter === "all" || $(this).hasClass(filter)) {
-					$(this).addClass("show");
-				} else {
-					$(this).removeClass("show");
-				}
-			});
-		});
-
-		$(".filter-btn[data-filter='video']").click();
-		
-	});
-    $(document).ready(function () {
-    var originalVideos = $(".wrap.initial").html();
-    var videosContainer = $(".wrap.initial");
-
-    $("#search-videos").on("keyup", function () {
-        var query = $(this).val().trim();
-
-        if (query === "") {
-            videosContainer.html(originalVideos).show();
-            return;
-        }
-
-        $.ajax({
-            url: "{% url 'web:search_videos' %}",
-            data: { q: query },
-            dataType: "json",
-            success: function (data) {
-                videosContainer.html("");
-              
-                if (data.videos.length > 0) {
-                    $.each(data.videos, function (index, video) {
-                        var videoHtml = `
-                        <div class="capsule msrItem portfolio-item ${video.is_short ? 'short' : 'video'} show">
-                            <a href="https://www.youtube.com/watch?v=${video.videoId}" class="img">
-                                <img loading="lazy" decoding="async" src="https://img.youtube.com/vi/${video.videoId}/hqdefault.jpg" alt="${video.title}" />
-                            </a>
-                            <h3>${video.title}</h3>
-                            <p class="sm">${video.publishedAt}</p>
-                            <p>${video.description} <br />
-                                <a>{% if language == "en" %}Read more{% else %}Lire plus{% endif %}</a>
-                            </p>
-                            <a href="https://www.youtube.com/watch?v=${video.videoId}" class="bouton">{{ labels.videos.button.one }}</a>
-                        </div>`;
-                        videosContainer.append(videoHtml);
-                    });
-                } else {
-                    videosContainer.html("<p>No se encontraron videos.</p>");
-                }
-            }
-        });
-    });
-});
-
-
-
-</script>
 
 
 {% load static %}{% include 'web/footer_web.html' %}

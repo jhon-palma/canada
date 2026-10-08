@@ -1,3 +1,5 @@
+from urllib.parse import quote_plus
+
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
@@ -440,6 +442,15 @@ class WebPropertyRedirect(View):
                         propertie_id=propertie.id, flag=flag)
 
 
+# La pagina servia los 1063 videos de una vez y los escondia con CSS, y los
+# botones de Videos/Shorts/Toutes solo alternaban una clase sobre lo ya
+# pintado. Eso pesaba varios megas de HTML y, sobre todo, ataba el filtro a lo
+# que estuviera en la pagina. Paginar obliga a mover filtro y busqueda al
+# servidor: es lo unico que hace que buscar encuentre un video que no esta en
+# la pagina que se esta mirando.
+VIDEOS_POR_PAGINA = 24
+
+
 class WebVideos(View):
     template_name = 'web/videos.html'
 
@@ -448,7 +459,33 @@ class WebVideos(View):
         genres = GenresProprietes.objects.filter(genre_proprietes__isnull=False).distinct()
         language = kwargs.get('language', 'fr')
         labels = DICT_LABELS.get(language).get('web')
-        videos = VideosWeb.objects.all().order_by('-publishedAt')
+        busqueda = request.GET.get('q', '').strip()
+        tipo = request.GET.get('tipo', 'video')
+        if tipo not in ('video', 'short', 'all'):
+            tipo = 'video'
+
+        videos = VideosWeb.objects.order_by('-publishedAt')
+        if busqueda:
+            # Buscando se miran los dos tipos a proposito. El filtro arranca en
+            # 'video', asi que respetarlo durante una busqueda haria que
+            # escribir el nombre de un short no devolviera nada, que es
+            # exactamente lo que nadie espera de un buscador.
+            videos = videos.filter(tittle__icontains=busqueda)
+        elif tipo != 'all':
+            videos = videos.filter(is_short=(tipo == 'short'))
+
+        paginador = Paginator(videos, VIDEOS_POR_PAGINA)
+        pagina = paginador.get_page(request.GET.get('page'))
+
+        # Lo que los enlaces del paginado tienen que arrastrar para no perder
+        # la busqueda ni el filtro al cambiar de pagina.
+        if busqueda:
+            arrastre = '&q=' + quote_plus(busqueda)
+        elif tipo != 'video':
+            arrastre = '&tipo=' + tipo
+        else:
+            arrastre = ''
+
         data_meta = MetaDataWeb.for_origin('video')
         images_query = ImagesWeb.objects.filter(reference__in=['videos_banner'])
         images_dict = {image.reference: image for image in images_query}
@@ -457,33 +494,15 @@ class WebVideos(View):
             'genres':genres,
             'language':language,
             'labels':labels,
-            'videos':videos,
+            'videos':pagina,
+            'tipo':tipo,
+            'busqueda':busqueda,
+            'total':paginador.count,
+            'arrastre':arrastre,
             'data_meta':data_meta,
             'images':images_dict,
         }
         return render(request, self.template_name, context)
-
-
-def search_videos(request):
-    print("entro")
-    query = request.GET.get("q", "")
-    if query:
-        videos = VideosWeb.objects.filter(tittle__icontains=query)
-        results = [
-            {
-                "videoId": video.videoId,
-                "title": video.tittle,
-                "publishedAt": video.publishedAt.strftime("%d/%m/%Y"),
-                "description": video.description[:200] + ("..." if len(video.description) > 200 else ""),
-                "is_short": video.is_short,
-            }
-            for video in videos
-        ]
-    else:
-        results = []
-    
-    print(results)
-    return JsonResponse({"videos": results})
 
 
 class WebContact(View):
