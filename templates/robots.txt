@@ -23,7 +23,6 @@ Disallow: /update_status_comment/
 # Points d'entree AJAX / fragments
 Disallow: /searchpropriete/
 Disallow: /searchMember/
-Disallow: /search-videos/
 Disallow: /calc_monthly_payment/
 Disallow: /calculator/
 Disallow: /comment/
@@ -35,6 +34,11 @@ Disallow: /loginComments/
 # Versions PDF des fiches (contenu duplique)
 Disallow: /fr/propriete/*/pdf/
 Disallow: /en/propertie/*/pdf/
+# El patron de urls.py acepta propertie y propriete en los dos idiomas, asi que
+# /en/propriete/<id>/pdf/ tambien responde. El middleware la redirige, pero un
+# 301 hacia un PDF duplicado sigue gastando rastreo.
+Disallow: /en/propriete/*/pdf/
+Disallow: /fr/propertie/*/pdf/
 
 # Resultats de recherche interne (les landings /search/<lang>/<slug>/ restent indexables)
 Disallow: /fr/search/
