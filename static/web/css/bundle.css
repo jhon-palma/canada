@@ -10117,6 +10117,16 @@ h1.h1styled{
 	background-size: 23px auto;
 }
 
+/* El hueco entre la ultima fila de tarjetas y el paginado, igual que en el
+   blog. .capsules .wrap lleva 60px abajo, que estan bien para separar la fila
+   de filtros del listado pero se suman al margen de la tarjeta cuando debajo
+   viene el paginado: salian 120px contra los 80px del blog. Con 20px aqui, la
+   tarjeta pone sus 30 y el total queda en 50, los mismos 50 que pone
+   .articleprev en el blog. */
+.capsules .wrap.initial {
+	margin-bottom: 20px;
+}
+
 /* El paginado usa el mismo marcado que el del blog, pero aquellas reglas viven
    en static/blog/css/styles.css y la pagina de videos no carga ese archivo:
    los numeros salian en crudo y pegados al margen izquierdo. Se copian tal
