@@ -91,10 +91,35 @@ Encadena los tres pasos y aborta en cuanto uno falla:
 1. `build_bundles` — regenera `web/css/bundle.css` y `web/js/bundle.js` a
    partir de los 9 CSS y 2 JS que carga el header.
 2. `sync_static` — sube a Spaces lo que haya cambiado, con ACL `public-read`.
-3. Descarga las URLs publicas y compara el sha1 con el archivo local.
+3. Descarga las URLs publicas y compara el sha1 con el archivo local, y si
+   no coinciden pregunta tambien al bucket para decir de quien es la culpa.
 
 Con todo al dia tarda unos segundos. Para ensayarlo sin escribir nada en el
 bucket, `publish_static --dry-run`.
+
+### Purgar el CDN es parte del despliegue
+
+Las URLs de los estaticos llevan una marca `?v=<hash>` del contenido, y es
+facil suponer que eso basta para que el edge sirva la version nueva. **No
+basta.** El CDN de Spaces ignora la query string al calcular la clave de
+cache, asi que `?v=nuevo` y `?v=viejo` son la misma entrada, con `max-age` de
+siete dias.
+
+Se midio el 7 de octubre de 2026: el edge devolvio un `bundle.css` con
+`last-modified` del 26 de agosto para un `?v=` recien generado, mientras el
+bucket tenia el archivo correcto. Seis semanas sirviendo un CSS que ya no
+estaba en el repositorio.
+
+Asi que tras cada `publish_static` que cambie un archivo hay que purgar, en el
+panel de Spaces o desde Cloudflare si el dominio esta detras suyo, y repetir
+`publish_static --check`. Cuando el paso 3 detecta este caso lo dice con esas
+palabras y lista las rutas a purgar, en vez de mandar a buscar un fallo de
+subida que no existe.
+
+La solucion duradera seria meter el hash en el **nombre** del archivo
+(`bundle.aca12741.css`) en lugar de en la query string: la ruta si forma parte
+de la clave de cache, de modo que cada version seria un objeto distinto y la
+purga dejaria de hacer falta.
 
 El tercer paso es el que importa: los dos primeros pueden terminar sin error y
 dejar el sitio roto igualmente. Para comprobar el estado sin subir nada, desde

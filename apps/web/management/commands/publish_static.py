@@ -82,6 +82,7 @@ class Command(BaseCommand):
             '3/3 Verificando lo que se sirve' if not solo_comprobar
             else 'Verificando lo que se sirve'))
 
+        self.cache_sucia = []
         fallos = []
         for ruta in rutas:
             error = self._verificar(ruta)
@@ -89,12 +90,16 @@ class Command(BaseCommand):
                 fallos.append('%s: %s' % (ruta, error))
 
         if fallos:
-            raise CommandError(
-                'Los estaticos NO se estan sirviendo correctamente:\n  - %s\n'
-                'Las URLs llevan la version del contenido, asi que el edge no las '
-                'tiene cacheadas y las pide al origen: esto no se arregla '
-                'esperando. Revise que el paso 2 subiera el archivo al bucket.'
-                % '\n  - '.join(fallos))
+            partes = ['Los estaticos NO se estan sirviendo correctamente:',
+                      '  - ' + '\n  - '.join(fallos)]
+            if self.cache_sucia:
+                partes.append(
+                    'El bucket esta bien: lo que sirve copias viejas es la cache del\n'
+                    'CDN, y no caduca sola hasta siete dias. Purguela y repita con\n'
+                    '--check. Se purga en el panel de Spaces, o desde Cloudflare si\n'
+                    'el dominio esta detras suyo. Rutas:\n'
+                    + '\n'.join('  static/%s' % r for r in self.cache_sucia))
+            raise CommandError('\n'.join(partes))
 
         self.stdout.write(self.style.SUCCESS(
             'Los %d estaticos verificados se sirven y coinciden con el repositorio.'
@@ -119,12 +124,57 @@ class Command(BaseCommand):
 
         servido = self._sha1(respuesta.content)
         if servido != esperado:
-            return ('%s sirve una version distinta (local %s, servido %s)'
-                    % (url, esperado[:12], servido[:12]))
+            return self._diagnosticar(ruta, esperado, servido)
 
         self.stdout.write('  = %-22s %d KB, %s' % (
             ruta, len(respuesta.content) / 1024, esperado[:12]))
         return None
+
+    def _diagnosticar(self, ruta, esperado, servido):
+        """Separa "no se subio" de "el edge sirve una copia vieja".
+
+        Son dos averias distintas con dos arreglos distintos, y antes este
+        paso daba por hecho la primera: el mensaje mandaba a comprobar que la
+        subida hubiese llegado al bucket. El 7 de octubre de 2026 el bucket
+        estaba perfecto y lo viejo lo servia el edge, asi que media hora se
+        fue en buscar un fallo de subida que no existia.
+
+        Distinguirlas cuesta una peticion mas: el mismo archivo pedido al
+        bucket, sin pasar por el CDN. Si ahi coincide con el repositorio, la
+        subida fue bien y lo unico que falta es purgar.
+        """
+        origen = self._url_origen(ruta)
+        try:
+            respuesta = requests.get(origen, timeout=30)
+        except requests.RequestException as error:
+            return ('el edge sirve otra version (local %s, edge %s) y no se pudo '
+                    'preguntar al bucket para saber por que (%s)'
+                    % (esperado[:12], servido[:12], error))
+
+        if respuesta.status_code != 200:
+            return ('el edge sirve otra version (local %s, edge %s) y el bucket '
+                    'responde HTTP %d en %s'
+                    % (esperado[:12], servido[:12], respuesta.status_code, origen))
+
+        en_bucket = self._sha1(respuesta.content)
+        if en_bucket == esperado:
+            self.cache_sucia.append(ruta)
+            return ('el bucket lo tiene correcto y el edge sirve una copia vieja '
+                    '(local %s, edge %s)' % (esperado[:12], servido[:12]))
+
+        return ('el bucket no lo tiene correcto (local %s, bucket %s): la subida '
+                'del paso 2 no llego' % (esperado[:12], en_bucket[:12]))
+
+    def _url_origen(self, ruta):
+        """La URL del archivo en el bucket, sin pasar por el edge.
+
+        Es la del CDN sin el '.cdn.', que es lo unico que separa el dominio
+        del edge del de Spaces. Sin marca de version: al bucket se le pide el
+        objeto, no una variante.
+        """
+        region = urlsplit(settings.AWS_S3_ENDPOINT_URL).netloc.split('.')[0]
+        return 'https://{}.{}.digitaloceanspaces.com/static/{}'.format(
+            settings.AWS_STORAGE_BUCKET_NAME, region, ruta)
 
     def _url_publica(self, ruta):
         """URL por la que el navegador pide el estatico.
@@ -134,11 +184,17 @@ class Command(BaseCommand):
         asi que se compone la de produccion: verificar desde la maquina de
         desarrollo si el bucket esta al dia es justo para lo que hace falta.
 
-        Lleva la misma marca ?v= que emite el tag static_v en las plantillas.
-        Sin ella este paso comprobaba una URL que ya nadie pide y que el edge
-        conserva cacheada hasta siete dias, de modo que fallaba en cada
-        despliegue aunque la subida hubiese ido bien. Un paso que existe para
-        dar la cara no puede dar rojo siempre: se aprende a ignorarlo.
+        Lleva la misma marca ?v= que emite el tag static_v en las plantillas,
+        para comprobar exactamente la URL que pide el navegador y no otra
+        parecida.
+
+        Lo que la marca NO hace es saltarse la cache del edge, aunque sea para
+        lo que suele ponerse. El CDN de Spaces ignora la query string al
+        calcular la clave, asi que ?v=nuevo y ?v=viejo son la misma entrada.
+        Medido el 7 de octubre de 2026: el edge devolvio un objeto con
+        last-modified del 26 de agosto para un ?v= recien generado. De ahi que
+        una version nueva pueda quedarse semanas sin llegar a nadie, y que
+        este paso tenga que preguntarle al bucket para saber a quien culpar.
         """
         url = staticfiles_storage.url(ruta)
         if not url.startswith('http'):
