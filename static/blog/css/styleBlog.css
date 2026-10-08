@@ -1877,3 +1877,67 @@ body a:visited {
     margin-right: 5px;
     cursor: pointer;
 }
+/* ------------------------------------------------ rejilla del listado del blog
+
+   El contenedor se llama "masonry" y las tarjetas llevan bwp-masonry-item,
+   pero el JavaScript que las recolocaba no esta en el proyecto: lo unico que
+   queda del tema original es float:left con width:33.33%. Flotadas y de
+   distinta altura, cada tarjeta se engancha en la mas baja que tenga encima en
+   vez de empezar fila nueva, y la rejilla sale con agujeros de media pantalla.
+
+   Grid hace filas de verdad y no necesita JavaScript. Las reglas van con el id
+   del contenedor delante para ganar a las del tema sin depender del orden de
+   carga, y solo afectan al listado: bwp-masonry-item y bwp-blog-col-3 no se
+   usan en ninguna otra plantilla.
+
+   El margin-right negativo era el truco del gutter, que se compensaba con un
+   .bwp-post-wrap que esta plantilla no usa; con grid lo hace column-gap. */
+#bwp-masonry-container {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	column-gap: 40px;
+	align-items: start;
+	margin-right: 0;
+}
+
+#bwp-masonry-container > .bwp-masonry-item {
+	float: none;
+	width: auto;
+}
+
+/* El div vacio que el tema usaba para medir la columna; en grid seria una celda. */
+#bwp-masonry-container > .bwp-blog-col-3-default {
+	display: none;
+}
+
+/* El hueco de la imagen manda altura aunque la imagen no cargue. Hace falta:
+   35 de las fichas publicadas apuntan a public/web/blog/images/default.png,
+   que no esta en el bucket y responde 404, asi que esas tarjetas median otra
+   cosa y descuadraban su fila. Con esto el listado aguanta una imagen rota. */
+#bwp-masonry-container .articleprev .img {
+	aspect-ratio: 3 / 2;
+	overflow: hidden;
+	background-color: #eceff1;
+}
+
+#bwp-masonry-container .articleprev .img > a {
+	display: block;
+	height: 100%;
+}
+
+#bwp-masonry-container .articleprev .img img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+@media screen and (max-width: 991px) {
+	#bwp-masonry-container { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media screen and (max-width: 680px) {
+	#bwp-masonry-container {
+		grid-template-columns: 1fr;
+		column-gap: 0;
+	}
+}

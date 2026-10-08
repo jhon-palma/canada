@@ -8197,6 +8197,20 @@ img.bannerimg{
    antetitulo, a 24px. Al pasar a h1 -- las paginas interiores no tenian
    ninguno -- hace falta que conserve el tamano grande, y por especificidad
    esta regla gana a .banner h1 este donde este en el archivo. */
+/* El h1 se quedaba con el letter-spacing del antetitulo. La regla de arriba
+   -- .banner h1, .banner p.banbaja, .banner>p -- separa las letras 7px porque
+   esta pensada para un kicker de 24px. Al reutilizar el h1 como titulo grande,
+   la regla de .bannergranso le sube el tamano a 70px pero no toca el
+   espaciado, asi que a 70px esos 7px se ven como un titulo desparramado. Pasa
+   solo en videos y propriedades, que son las dos paginas con h1.bannergranso;
+   las demas llevan h2 y nunca cogieron el espaciado.
+
+   Va en su propia regla y no dentro de la de abajo porque esa incluye
+   .banner>p, que si quiere conservar los 7px. */
+.banner h1.bannergranso{
+	letter-spacing: normal;
+}
+
 .banner h2, .banner h1.bannergranso, .banner>p{
 	color: #fff;
 	text-align: center;
