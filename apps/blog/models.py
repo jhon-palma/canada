@@ -38,6 +38,12 @@ def _sin_el_titulo(limpio, titulo):
     los 201 articulos publicados pasaba en 48 de las descripciones francesas y
     43 de las inglesas.
 
+    Del resto se limpia la puntuacion que queda suelta al principio. Los
+    signos de interrogacion importan mas de lo que parece: muchos titulares
+    son preguntas, y como la comparacion va sin puntuacion el corte cae antes
+    del signo, de modo que la descripcion empezaba por "? Demandez a la
+    plupart des acheteurs...".
+
     Si al quitarlo no queda texto util se devuelve el original: una
     descripcion repetida sigue siendo mejor que ninguna.
     """
@@ -50,7 +56,7 @@ def _sin_el_titulo(limpio, titulo):
         if not objetivo.startswith(acumulado):
             return limpio
         if acumulado == objetivo:
-            resto = limpio[corte:].lstrip(' –—-:·|.,')
+            resto = limpio[corte:].lstrip(' –—-:·|.,;?!¿¡')
             return resto if len(resto) >= 40 else limpio
     return limpio
 
@@ -207,15 +213,42 @@ class Article(models.Model):
         return SimpleNamespace(
             m_title_f=self.m_title_f or self._titulo_seo(self.title_francaise),
             m_title_a=self.m_title_a or self._titulo_seo(self.title_anglaise),
-            m_description_f=(self.m_description_f
-                             or resumen_de(self.content_francaise, self.title_francaise)),
-            m_description_a=(self.m_description_a
-                             or resumen_de(self.content_anglaise, self.title_anglaise)),
+            m_description_f=self._descripcion(
+                self.m_description_f, self.title_francaise, self.content_francaise),
+            m_description_a=self._descripcion(
+                self.m_description_a, self.title_anglaise, self.content_anglaise),
         )
 
     @staticmethod
     def _titulo_seo(titulo):
         return '{} | LJ Realties'.format((titulo or '').strip()) if titulo else ''
+
+    @staticmethod
+    def _descripcion(guardada, titulo, contenido):
+        """La descripcion guardada, salvo que no diga nada que el titulo no diga.
+
+        Lo que el redactor escribe manda sobre la reserva, y asi tiene que
+        ser. Pero en 20 articulos franceses y 20 ingleses lo guardado es el
+        titulo otra vez, a veces cortado a mitad de palabra porque la columna
+        era varchar(100). Eso no es criterio editorial, es un formulario
+        rellenado en bloque, y como lo guardado gana, el resultado era al
+        reves de lo que parece: los articulos donde alguien "puso el SEO"
+        salian con la descripcion duplicada y los 144 que nadie toco salian
+        bien.
+
+        La comparacion es si el titulo empieza por lo guardado, no si son
+        iguales, para pillar tambien los cortados: "Le vrai cout d'une
+        premiere maison a Kirkland, au-delaa du pr" no es igual al titulo pero
+        tampoco aporta nada. Va sin acentos ni puntuacion por lo mismo que en
+        _sin_el_titulo.
+
+        Una descripcion que empieza por el titulo y sigue con texto propio si
+        se respeta: ahi hay algo escrito, aunque arranque redundante.
+        """
+        guardada = (guardada or '').strip()
+        if guardada and not _comparable(titulo).startswith(_comparable(guardada)):
+            return guardada
+        return resumen_de(contenido, titulo)
 
     @property
     def estado(self):
