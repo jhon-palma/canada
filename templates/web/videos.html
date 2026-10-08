@@ -64,8 +64,8 @@
            resultados se puede compartir y el navegador puede volver atras. {% endcomment %}
         <div class="__cnt pointer">
             <a class="filter-btn bouton{% if not busqueda and tipo == 'video' %} activo{% endif %}" href="{% url 'web:videos' language=language %}">{{ labels.videos.title.five }}</a>
-            <a class="filter-btn bouton{% if not busqueda and tipo == 'short' %} activo{% endif %}" href="{% url 'web:videos' language=language %}?tipo=short">{{ labels.videos.title.four }}</a>
-            <a class="filter-btn bouton{% if not busqueda and tipo == 'all' %} activo{% endif %}" href="{% url 'web:videos' language=language %}?tipo=all">{{ labels.videos.title.three }}</a>
+            <a class="filter-btn bouton{% if not busqueda and tipo == 'short' %} activo{% endif %}" href="{% url 'web:videos' language=language %}?type={{ url_shorts }}">{{ labels.videos.title.four }}</a>
+            <a class="filter-btn bouton{% if not busqueda and tipo == 'all' %} activo{% endif %}" href="{% url 'web:videos' language=language %}?type={{ url_todos }}">{{ labels.videos.title.three }}</a>
         </div>
         <div class="search-container">
             <form method="get" action="{% url 'web:videos' language=language %}" role="search">

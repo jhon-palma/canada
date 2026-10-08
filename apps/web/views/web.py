@@ -450,6 +450,20 @@ class WebPropertyRedirect(View):
 # la pagina que se esta mirando.
 VIDEOS_POR_PAGINA = 24
 
+# El filtro viaja en la URL, y la URL es parte de lo que el visitante lee y
+# comparte: no puede estar en otro idioma que la pagina. "type" se escribe
+# igual en frances y en ingles, asi que solo cambian los valores, y de los
+# tres solo "toutes" y "all" se diferencian.
+TIPO_DESDE_URL = {
+    'fr': {'videos': 'video', 'shorts': 'short', 'toutes': 'all'},
+    'en': {'videos': 'video', 'shorts': 'short', 'all': 'all'},
+}
+
+URL_DESDE_TIPO = {
+    idioma: {interno: publico for publico, interno in mapa.items()}
+    for idioma, mapa in TIPO_DESDE_URL.items()
+}
+
 
 class WebVideos(View):
     template_name = 'web/videos.html'
@@ -460,9 +474,9 @@ class WebVideos(View):
         language = kwargs.get('language', 'fr')
         labels = DICT_LABELS.get(language).get('web')
         busqueda = request.GET.get('q', '').strip()
-        tipo = request.GET.get('tipo', 'video')
-        if tipo not in ('video', 'short', 'all'):
-            tipo = 'video'
+        desde_url = TIPO_DESDE_URL.get(language, TIPO_DESDE_URL['fr'])
+        hacia_url = URL_DESDE_TIPO.get(language, URL_DESDE_TIPO['fr'])
+        tipo = desde_url.get(request.GET.get('type', '').lower(), 'video')
 
         videos = VideosWeb.objects.order_by('-publishedAt')
         if busqueda:
@@ -482,7 +496,7 @@ class WebVideos(View):
         if busqueda:
             arrastre = '&q=' + quote_plus(busqueda)
         elif tipo != 'video':
-            arrastre = '&tipo=' + tipo
+            arrastre = '&type=' + hacia_url[tipo]
         else:
             arrastre = ''
 
@@ -496,6 +510,8 @@ class WebVideos(View):
             'labels':labels,
             'videos':pagina,
             'tipo':tipo,
+            'url_shorts':hacia_url['short'],
+            'url_todos':hacia_url['all'],
             'busqueda':busqueda,
             'total':paginador.count,
             'arrastre':arrastre,
