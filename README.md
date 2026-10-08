@@ -11,6 +11,25 @@ python3 manage.py migrate          # solo si el cambio trae migraciones
 pkill -HUP -f 'gunicorn immobilier.wsgi'
 ```
 
+### La configuracion del servidor
+
+Toda la configuracion sale de un archivo `.env`, que no se versiona. En el
+servidor ese archivo es `.env.prod` y tiene que estar en
+`/home/doadmin/canada/.env.prod` antes del primer `git pull` que traiga este
+codigo: a partir de ahi `local_settings.py` ya no se lee.
+
+No hay nada mas que configurar. `immobilier/settings.py` elige el archivo
+preguntando si existe `.env.dev`, que es lo que distingue una maquina de
+desarrollo; el servidor no lo tiene, asi que coge `.env.prod` solo. Eso es
+deliberado: la alternativa era una variable `DJANGO_ENV=prod` declarada en el
+crontab, en la linea de gunicorn y en el perfil de la shell, tres sitios que
+no comparten entorno y que fallan de tres formas distintas cuando a uno se le
+olvida. `DJANGO_ENV` y `ENV_FILE` siguen funcionando y mandan sobre la
+deteccion, para probar una configuracion sin renombrar archivos.
+
+Ninguna clave tiene valor por defecto. Si al `.env.prod` le falta una, el
+arranque se detiene diciendo cual, en vez de seguir con un valor inventado.
+
 ### Reiniciar la aplicacion
 
 **`systemctl restart gunicorn` no sirve: no hay ninguna unidad de systemd.**

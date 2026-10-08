@@ -6,18 +6,53 @@ import environ
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Toda la configuracion sale de .env.dev o .env.prod, segun DJANGO_ENV; el
-# servidor pone DJANGO_ENV=prod. ENV_FILE apunta a otra ruta y sirve para
-# probar una configuracion sin renombrar archivos.
-#
 # Ninguna clave tiene valor por defecto: el archivo las declara todas, aunque
 # alguna vaya vacia. Un defecto escondido en el codigo es una decision que no
 # se ve al leer la configuracion, y la que se acaba olvidando.
 #
 # Lo que ya exista en el entorno del proceso manda sobre el archivo, asi que un
 # secreto se puede inyectar desde el panel del servidor sin dejarlo escrito.
+
+
+def _archivo_de_configuracion():
+    """El .env que se lee, y por que se elige ese.
+
+    ENV_FILE manda sobre todo y apunta a una ruta cualquiera: sirve para
+    probar una configuracion sin renombrar archivos. Despues DJANGO_ENV, que
+    es el sufijo del nombre: prod lee .env.prod.
+
+    Sin ninguna de las dos, lo que decide es si existe .env.dev: tenerlo es
+    lo que distingue una maquina de desarrollo. El servidor no lo tiene, solo
+    .env.prod, asi que alli no hay nada que configurar.
+
+    Eso es lo importante de esta funcion: no es comodidad, es quitar algo que
+    habia que recordar en tres sitios que no comparten entorno -- el crontab,
+    la linea con la que arranca gunicorn y el perfil de la shell --. Olvidarlo
+    en cualquiera de los tres fallaba de una forma distinta, y las tres malas:
+    el cron moria en silencio porque su traceback va a un log que se borra
+    cada manana, y gunicorn recargado con HUP levantaba workers con el codigo
+    nuevo y el entorno viejo, o sea el sitio caido.
+
+    Antes esto miraba cuantos .env.* habia y usaba el unico que encontrase. Es
+    peor: un .env.prod.bak olvidado al lado ya contaba como segundo archivo y
+    la cuenta dejaba de dar uno. Preguntar por .env.dev no se rompe con lo que
+    haya alrededor.
+
+    El riesgo que queda es un portatil al que alguien le borre .env.dev y le
+    deje .env.prod, que apuntaria a produccion sin avisar. Es el mismo riesgo
+    que tener que acordarse de la variable, pero al reves, y se nota antes:
+    DEBUG apagado y los estaticos saliendo del CDN.
+    """
+    if os.environ.get('ENV_FILE'):
+        return Path(os.environ['ENV_FILE'])
+    if os.environ.get('DJANGO_ENV'):
+        return BASE_DIR / '.env.{}'.format(os.environ['DJANGO_ENV'])
+    desarrollo = BASE_DIR / '.env.dev'
+    return desarrollo if desarrollo.is_file() else BASE_DIR / '.env.prod'
+
+
 env = environ.Env()
-env.read_env(os.environ.get('ENV_FILE') or BASE_DIR / '.env.{}'.format(os.environ.get('DJANGO_ENV', 'dev')))
+env.read_env(_archivo_de_configuracion())
 
 DEBUG = env.bool('DEBUG')
 
