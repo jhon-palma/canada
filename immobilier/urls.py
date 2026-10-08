@@ -12,7 +12,7 @@ from apps.web.views.seo import RobotsTxtView, sitemap_index
 handler404 = 'apps.web.views.web.pagina_no_encontrada'
 
 class UUIDConverter:
-    regex = '[a-fA-F0-9\-]{36}'
+    regex = r'[a-fA-F0-9\-]{36}'
 
     def to_python(self, value):
         import uuid

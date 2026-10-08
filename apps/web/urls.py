@@ -27,6 +27,6 @@ urlpatterns = [
     re_path(r'^search/(?P<language>fr|en)/(?P<option>[\w-]+)/$', web.SearchProperties.as_view(), name='search_properties'),
     path('calculator/', web.WebCalculator.as_view(), name='calculator'),
     path('metadata/',login_required(web.metadata), name='list-metadata'),
-    re_path('metadata/update/(?P<pk>[\w-]+)/$', login_required(web.update_metadata), name='update-metadata'),
+    re_path(r'metadata/update/(?P<pk>[\w-]+)/$', login_required(web.update_metadata), name='update-metadata'),
 ]
 
