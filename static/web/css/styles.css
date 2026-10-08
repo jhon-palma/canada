@@ -2139,20 +2139,57 @@ h1.h1styled{
 
 /* ------------------------------------------------ buscador de videos y paginado
 
+   La lupa era un background-image del input: se veia como un boton y no hacia
+   nada, habia que pulsar Intro. Ahora es un submit de verdad con el icono
+   encima, y el input deja sitio a la derecha para que el texto no pase por
+   debajo. Las dos clases las usa solo la pagina de videos.
+
    El input es type="search" para que el teclado del movil ofrezca la tecla de
-   buscar, pero eso hace que Chrome y Edge pinten su propia X de borrar justo
-   encima de la lupa, que esta puesta como background-image a la derecha. Se
-   quita la X nativa: para vaciar ya esta el enlace "effacer" de los
-   resultados, que ademas vuelve al listado sin recargar la busqueda. */
+   buscar, pero eso hace que Chrome y Edge pinten su propio boton de borrar
+   justo ahi. Se quita el nativo: para vaciar ya esta el enlace "effacer" de la
+   linea de resultados. */
 .search-input::-webkit-search-cancel-button,
 .search-input::-webkit-search-decoration {
 	-webkit-appearance: none;
 	appearance: none;
 }
 
+/* inline-flex y no inline-block: con inline-block el form mide unos pixeles
+   mas que el input por el hueco de la linea base, y el boton, que se centra
+   sobre la altura del form, quedaba pegado al borde de abajo. */
+.search-container form {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+}
+
+.search-container .search-input {
+	background-image: none;
+	padding-right: 46px;
+}
+
+.search-container .search-boton {
+	position: absolute;
+	top: 50%;
+	right: 6px;
+	transform: translateY(-50%);
+	width: 38px;
+	height: 30px;
+	/* El tema le da margin-top: 20px a los button, y a uno posicionado el
+	   margen se suma al top: el icono caia 20px por debajo del input. */
+	margin: 0;
+	padding: 0;
+	border: 0;
+	cursor: pointer;
+	background: transparent url(../images2/loupe.png) no-repeat center;
+	background-size: 23px auto;
+}
+
 /* El paginado usa el mismo marcado que el del blog, pero aquellas reglas viven
-   en static/blog/css/styles.css y esta pagina no carga ese archivo: los
-   numeros salian en crudo y pegados al margen izquierdo. */
+   en static/blog/css/styles.css y la pagina de videos no carga ese archivo:
+   los numeros salian en crudo y pegados al margen izquierdo. Se copian tal
+   cual para que los dos paginados del sitio se vean iguales, que es como
+   estaban antes de que uno existiera. */
 .pagination .nav-links {
 	text-align: center;
 	margin: 30px 0 10px;
@@ -2161,30 +2198,32 @@ h1.h1styled{
 .pagination .nav-links .page-numbers {
 	display: inline-block;
 	margin: 5px;
-	min-width: 44px;
+	width: 44px;
 	height: 44px;
 	line-height: 44px;
-	padding: 0 8px;
 	text-align: center;
 	font-size: 16px;
-	font-weight: 700;
-	color: #2c2f36;
-	background-color: #eceff1;
-	border-radius: 3px;
+	font-style: normal;
+	font-weight: 400;
+	color: #3f434c;
+	background-color: #ffffff;
+	border-radius: 50%;
+	box-shadow: 0 4px 0 -2px rgba(46,51,64,0.1);
 	text-decoration: none;
 }
 
 .pagination .nav-links .page-numbers.dots {
-	min-width: 26px;
+	width: 26px;
 	margin: 5px 0;
-	padding: 0;
 	background-color: transparent;
+	border-radius: 0;
+	box-shadow: none;
 }
 
 .pagination .nav-links .page-numbers.current,
 .pagination .nav-links a.page-numbers:hover {
 	background-color: #00AAAE;
-	color: #fff;
+	color: #ffffff;
 }
 
 .pagination .nav-links a.page-numbers:active {
