@@ -38,6 +38,11 @@ class WebIndex(View):
                 output_field=models.IntegerField() 
             )
         ).order_by('usa_last', '-no_inscription')[:3]
+        # Las vendidas del mapa, ademas de los puntos fijos de la plantilla. Sin
+        # filtrar por status: al venderse casi todas quedan con status=False.
+        inscriptions_vendu = Inscriptions.objects.filter(
+            code_statut__valeur="VE", latitude__isnull=False, longitude__isnull=False
+        ).values('latitude', 'longitude')
         staticts_query = Statistics.objects.all()
         images_query = ImagesWeb.objects.filter(reference__in=[
             'index_banner','index_team_background','index_donate_background',
@@ -60,6 +65,7 @@ class WebIndex(View):
             'option':option,
             'labels':labels,
             'inscriptions':inscriptions,
+            'inscriptions_vendu':inscriptions_vendu,
             'video_urls':videos,
             'ultimos_articulos':ultimos_articulos,
             'images':images_dict,
