@@ -58,12 +58,18 @@ try:
         print("Archivo zip descargado y descomprimido correctamente.")
         os.remove(ultimo_archivo_zip)
 
-        carpeta_origen = '{}/generic/'.format(PATH_BASE)
+        # Las tablas de referencia (regiones, municipios...) vienen en generic/,
+        # pero no todos los zip la traen y git no la versiona: si falta, se
+        # cargan solo las inscripciones y esas tablas se quedan como estaban.
+        carpeta_origen = PATH_BASE / 'generic'
         carpeta_destino = PATH_BASE
-        for archivo in os.listdir(carpeta_origen):
-            ruta_archivo_origen = os.path.join(carpeta_origen, archivo)
-            ruta_archivo_destino = os.path.join(carpeta_destino, archivo)
-            shutil.copy(ruta_archivo_origen, ruta_archivo_destino)
+        if carpeta_origen.is_dir():
+            for archivo in os.listdir(carpeta_origen):
+                ruta_archivo_origen = os.path.join(carpeta_origen, archivo)
+                ruta_archivo_destino = os.path.join(carpeta_destino, archivo)
+                shutil.copy(ruta_archivo_origen, ruta_archivo_destino)
+        else:
+            print("No hay carpeta generic/; no se recargan las tablas de referencia.")
 
         shutil.rmtree(nueva_carpeta)
 
