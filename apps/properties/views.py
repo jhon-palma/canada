@@ -173,9 +173,7 @@ def download_files(request):
                 carpeta_origen = 'data/generic/'
                 carpeta_destino = 'data'
                 try:
-                    # download_data.py ya hizo esta copia; generic/ puede no existir
-                    archivos_genericos = os.listdir(carpeta_origen) if os.path.isdir(carpeta_origen) else []
-                    for archivo in archivos_genericos:
+                    for archivo in os.listdir(carpeta_origen):
                         ruta_archivo_origen = os.path.join(carpeta_origen, archivo)
                         ruta_archivo_destino = os.path.join(carpeta_destino, archivo)
                         shutil.copy(ruta_archivo_origen, ruta_archivo_destino)

@@ -22,6 +22,16 @@ FTP_LOCAL_PATH = '/home/ftp'  # SOLO reemplaza al FTP
 
 try:
 
+    # generic/ tiene las tablas de referencia (regiones, municipios...). El zip
+    # nunca la trae y git no la versiona: vive solo en el servidor. Se mira
+    # antes de mover nada para que, si falta, data/ se quede como estaba.
+    if not (PATH_BASE / 'generic').is_dir():
+        raise FileNotFoundError(
+            'Falta la carpeta {}/generic/ con las tablas de referencia. '
+            'No se ha cargado nada: hay que restaurarla y volver a lanzar la '
+            'descarga.'.format(PATH_BASE)
+        )
+
     fecha_hora_actual = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     nueva_carpeta = '{}/Backup_{}'.format(PATH_BACKUP, fecha_hora_actual)
     os.makedirs(nueva_carpeta)
@@ -58,18 +68,12 @@ try:
         print("Archivo zip descargado y descomprimido correctamente.")
         os.remove(ultimo_archivo_zip)
 
-        # Las tablas de referencia (regiones, municipios...) vienen en generic/,
-        # pero no todos los zip la traen y git no la versiona: si falta, se
-        # cargan solo las inscripciones y esas tablas se quedan como estaban.
-        carpeta_origen = PATH_BASE / 'generic'
+        carpeta_origen = '{}/generic/'.format(PATH_BASE)
         carpeta_destino = PATH_BASE
-        if carpeta_origen.is_dir():
-            for archivo in os.listdir(carpeta_origen):
-                ruta_archivo_origen = os.path.join(carpeta_origen, archivo)
-                ruta_archivo_destino = os.path.join(carpeta_destino, archivo)
-                shutil.copy(ruta_archivo_origen, ruta_archivo_destino)
-        else:
-            print("No hay carpeta generic/; no se recargan las tablas de referencia.")
+        for archivo in os.listdir(carpeta_origen):
+            ruta_archivo_origen = os.path.join(carpeta_origen, archivo)
+            ruta_archivo_destino = os.path.join(carpeta_destino, archivo)
+            shutil.copy(ruta_archivo_origen, ruta_archivo_destino)
 
         shutil.rmtree(nueva_carpeta)
 
